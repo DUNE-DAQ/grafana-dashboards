@@ -1,4 +1,54 @@
 {
+  "__inputs": [
+    {
+      "name": "DS_INFLUXTEST",
+      "label": "InfluxTest",
+      "description": "",
+      "type": "datasource",
+      "pluginId": "influxdb",
+      "pluginName": "InfluxDB"
+    },
+    {
+      "name": "DS_ERS",
+      "label": "ERS",
+      "description": "",
+      "type": "datasource",
+      "pluginId": "postgres",
+      "pluginName": "PostgreSQL"
+    }
+  ],
+  "__requires": [
+    {
+      "type": "grafana",
+      "id": "grafana",
+      "name": "Grafana",
+      "version": "8.0.6"
+    },
+    {
+      "type": "panel",
+      "id": "graph",
+      "name": "Graph (old)",
+      "version": ""
+    },
+    {
+      "type": "datasource",
+      "id": "influxdb",
+      "name": "InfluxDB",
+      "version": "1.0.0"
+    },
+    {
+      "type": "datasource",
+      "id": "postgres",
+      "name": "PostgreSQL",
+      "version": "1.0.0"
+    },
+    {
+      "type": "panel",
+      "id": "timeseries",
+      "name": "Time series",
+      "version": ""
+    }
+  ],
   "annotations": {
     "list": [
       {
@@ -8,6 +58,12 @@
         "hide": true,
         "iconColor": "rgba(0, 211, 255, 1)",
         "name": "Annotations & Alerts",
+        "target": {
+          "limit": 100,
+          "matchAny": false,
+          "tags": [],
+          "type": "dashboard"
+        },
         "type": "dashboard"
       }
     ]
@@ -16,27 +72,12 @@
   "editable": true,
   "gnetId": null,
   "graphTooltip": 0,
-  "id": 42,
-  "iteration": 1628422547973,
-  "links": [
-    {
-      "asDropdown": true,
-      "icon": "external link",
-      "includeVars": true,
-      "keepTime": true,
-      "tags": [
-        "MRoda"
-      ],
-      "targetBlank": true,
-      "title": "Test Link",
-      "tooltip": "",
-      "type": "dashboards",
-      "url": ""
-    }
-  ],
+  "id": null,
+  "iteration": 1634294411098,
+  "links": [],
   "panels": [
     {
-      "datasource": "InfluxTest",
+      "datasource": "${DS_INFLUXTEST}",
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -177,7 +218,7 @@
       "type": "timeseries"
     },
     {
-      "datasource": "InfluxTest",
+      "datasource": "${DS_INFLUXTEST}",
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -406,7 +447,7 @@
       "type": "timeseries"
     },
     {
-      "datasource": "InfluxTest",
+      "datasource": "${DS_INFLUXTEST}",
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -588,7 +629,7 @@
       "bars": false,
       "dashLength": 10,
       "dashes": false,
-      "datasource": "InfluxTest",
+      "datasource": "${DS_INFLUXTEST}",
       "fill": 0,
       "fillGradient": 0,
       "gridPos": {
@@ -762,7 +803,7 @@
       }
     },
     {
-      "datasource": "InfluxTest",
+      "datasource": "${DS_INFLUXTEST}",
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -1025,7 +1066,7 @@
       "type": "timeseries"
     },
     {
-      "datasource": "InfluxTest",
+      "datasource": "${DS_INFLUXTEST}",
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -1426,7 +1467,7 @@
       "type": "timeseries"
     },
     {
-      "datasource": "InfluxTest",
+      "datasource": "${DS_INFLUXTEST}",
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -1551,7 +1592,7 @@
       "type": "timeseries"
     },
     {
-      "datasource": "InfluxTest",
+      "datasource": "${DS_INFLUXTEST}",
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -1714,46 +1755,29 @@
   "schemaVersion": 30,
   "style": "dark",
   "tags": [
-    "MRoda",
-    "Sharable"
+    "Coldbox"
   ],
   "templating": {
     "list": [
       {
         "allValue": null,
-        "current": {
-          "selected": false,
-          "text": "maroda_test",
-          "value": "maroda_test"
-        },
+        "current": {},
+        "datasource": "${DS_ERS}",
+        "definition": "SELECT partition FROM public.\"ErrorReports\"",
         "description": null,
         "error": null,
         "hide": 0,
-        "includeAll": true,
+        "includeAll": false,
         "label": "Partition name",
         "multi": false,
         "name": "partition",
-        "options": [
-          {
-            "selected": false,
-            "text": "All",
-            "value": "$__all"
-          },
-          {
-            "selected": false,
-            "text": "gio_test",
-            "value": "gio_test"
-          },
-          {
-            "selected": false,
-            "text": "global",
-            "value": "global"
-          }
-        ],
-        "query": "gio_test,global",
-        "queryValue": "maroda_test",
+        "options": [],
+        "query": "SELECT partition FROM public.\"ErrorReports\"",
+        "refresh": 1,
+        "regex": "",
         "skipUrlSync": false,
-        "type": "custom"
+        "sort": 0,
+        "type": "query"
       },
       {
         "allValue": "dataflow",
@@ -1789,7 +1813,7 @@
       {
         "allValue": "trb",
         "current": {
-          "selected": true,
+          "selected": false,
           "text": "trb",
           "value": "trb"
         },
@@ -1820,7 +1844,7 @@
     ]
   },
   "time": {
-    "from": "now-15m",
+    "from": "now-30m",
     "to": "now"
   },
   "timepicker": {
@@ -1850,6 +1874,6 @@
   },
   "timezone": "",
   "title": "Event Builder",
-  "uid": "g1x185Z7l",
-  "version": 28
+  "uid": "9GPgqzO7z",
+  "version": 7
 }

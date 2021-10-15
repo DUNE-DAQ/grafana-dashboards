@@ -9,12 +9,12 @@
       "pluginName": "InfluxDB"
     },
     {
-      "name": "DS_NP04DAQ_SYSADMIN",
-      "label": "NP04DAQ_sysadmin",
+      "name": "DS_ERS",
+      "label": "ERS",
       "description": "",
       "type": "datasource",
-      "pluginId": "prometheus",
-      "pluginName": "Prometheus"
+      "pluginId": "postgres",
+      "pluginName": "PostgreSQL"
     }
   ],
   "__requires": [
@@ -38,8 +38,8 @@
     },
     {
       "type": "datasource",
-      "id": "prometheus",
-      "name": "Prometheus",
+      "id": "postgres",
+      "name": "PostgreSQL",
       "version": "1.0.0"
     }
   ],
@@ -66,7 +66,7 @@
   "gnetId": null,
   "graphTooltip": 0,
   "id": null,
-  "iteration": 1634226727135,
+  "iteration": 1634294460698,
   "links": [],
   "panels": [
     {
@@ -472,39 +472,17 @@
       {
         "allValue": null,
         "current": {},
-        "datasource": "${DS_NP04DAQ_SYSADMIN}",
+        "datasource": "${DS_ERS}",
         "definition": "SELECT partition FROM public.\"ErrorReports\"",
         "description": null,
-        "error": {
-          "config": {
-            "headers": {
-              "X-Grafana-Org-Id": 1
-            },
-            "hideFromInspector": true,
-            "method": "GET",
-            "retry": 0,
-            "url": "api/datasources/proxy/1/api/v1/series?match%5B%5D=SELECT%20partition%20FROM%20public.%22ErrorReports%22&start=1634224927&end=1634226727"
-          },
-          "data": {
-            "error": "parse error at char 8: could not parse remaining input \"partition FROM \"...",
-            "errorType": "bad_data",
-            "message": "parse error at char 8: could not parse remaining input \"partition FROM \"...",
-            "status": "error"
-          },
-          "message": "parse error at char 8: could not parse remaining input \"partition FROM \"...",
-          "status": 400,
-          "statusText": "Bad Request"
-        },
+        "error": null,
         "hide": 0,
         "includeAll": false,
         "label": "Partition name",
         "multi": false,
         "name": "partition",
         "options": [],
-        "query": {
-          "query": "SELECT partition FROM public.\"ErrorReports\"",
-          "refId": "NP04DAQ_sysadmin-partition-Variable-Query"
-        },
+        "query": "SELECT partition FROM public.\"ErrorReports\"",
         "refresh": 1,
         "regex": "",
         "skipUrlSync": false,
@@ -621,5 +599,5 @@
   "timezone": "",
   "title": "Trigger and HSI",
   "uid": "U_8ZFDZne",
-  "version": 2
+  "version": 3
 }

@@ -78,7 +78,7 @@
   "gnetId": null,
   "graphTooltip": 0,
   "id": null,
-  "iteration": 1634294388313,
+  "iteration": 1634309290732,
   "links": [
     {
       "asDropdown": true,
@@ -90,6 +90,20 @@
       ],
       "targetBlank": true,
       "title": "Subsystems",
+      "tooltip": "",
+      "type": "dashboards",
+      "url": ""
+    },
+    {
+      "asDropdown": true,
+      "icon": "external link",
+      "includeVars": true,
+      "keepTime": true,
+      "tags": [
+        "Global"
+      ],
+      "targetBlank": true,
+      "title": "Global",
       "tooltip": "",
       "type": "dashboards",
       "url": ""
@@ -241,7 +255,7 @@
             "mode": "palette-classic"
           },
           "custom": {
-            "axisLabel": "milliseconds",
+            "axisLabel": "Hz",
             "axisPlacement": "auto",
             "barAlignment": 0,
             "drawStyle": "line",
@@ -254,11 +268,11 @@
             },
             "lineInterpolation": "linear",
             "lineWidth": 2,
-            "pointSize": 4,
+            "pointSize": 5,
             "scaleDistribution": {
               "type": "linear"
             },
-            "showPoints": "always",
+            "showPoints": "never",
             "spanNulls": true,
             "stacking": {
               "group": "A",
@@ -269,6 +283,7 @@
             }
           },
           "mappings": [],
+          "min": 0,
           "thresholds": {
             "mode": "absolute",
             "steps": [
@@ -284,23 +299,7 @@
           },
           "unit": "short"
         },
-        "overrides": [
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "avg ms per TR"
-            },
-            "properties": [
-              {
-                "id": "color",
-                "value": {
-                  "fixedColor": "semi-dark-green",
-                  "mode": "fixed"
-                }
-              }
-            ]
-          }
-        ]
+        "overrides": []
       },
       "gridPos": {
         "h": 7,
@@ -308,7 +307,7 @@
         "x": 0,
         "y": 12
       },
-      "id": 23,
+      "id": 2,
       "links": [],
       "options": {
         "legend": {
@@ -323,7 +322,42 @@
       "pluginVersion": "8.0.6",
       "targets": [
         {
-          "alias": "avg ms per TR",
+          "alias": "Trigger",
+          "groupBy": [],
+          "hide": false,
+          "measurement": "dunedaq.trigger.moduleleveltriggerinfo.Info",
+          "orderByTime": "ASC",
+          "policy": "default",
+          "query": "SELECT non_negative_derivative(\"td_sent_count\", 1s) FROM \"dunedaq.trigger.moduleleveltriggerinfo.Info\" WHERE (\"source_id\" = '${partition}_${trigger_app}.${trigger_module}') AND $timeFilter",
+          "rawQuery": true,
+          "refId": "E",
+          "resultFormat": "time_series",
+          "select": [
+            [
+              {
+                "params": [
+                  "td_sent_count"
+                ],
+                "type": "field"
+              },
+              {
+                "params": [
+                  "1s"
+                ],
+                "type": "non_negative_derivative"
+              }
+            ]
+          ],
+          "tags": [
+            {
+              "key": "source_id",
+              "operator": "=",
+              "value": "${partition}_trigger.mlt"
+            }
+          ]
+        },
+        {
+          "alias": "Completed TR",
           "groupBy": [
             {
               "params": [
@@ -339,24 +373,30 @@
             }
           ],
           "hide": false,
-          "measurement": "dunedaq.dfmodules.triggerrecordbuilderinfo.Info",
+          "measurement": "dunedaq.dfmodules.datawriterinfo.Info",
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "SELECT mean(\"average_millisecond_per_trigger\") FROM \"dunedaq.dfmodules.triggerrecordbuilderinfo.Info\" WHERE (\"source_id\" = '${partition}_${df_application}.${TRBInstance}') AND $timeFilter GROUP BY time($__interval) fill(null)",
+          "query": "SELECT non_negative_derivative(mean(\"records_received\"), 1s) FROM \"dunedaq.dfmodules.datawriterinfo.Info\" WHERE (\"source_id\" = '${partition}_${df_application}.${data_writer}') AND $timeFilter GROUP BY time($__interval) fill(null)",
           "rawQuery": true,
-          "refId": "B",
+          "refId": "A",
           "resultFormat": "time_series",
           "select": [
             [
               {
                 "params": [
-                  "average_millisecond_per_trigger"
+                  "records_received"
                 ],
                 "type": "field"
               },
               {
                 "params": [],
-                "type": "distinct"
+                "type": "mean"
+              },
+              {
+                "params": [
+                  "1s"
+                ],
+                "type": "non_negative_derivative"
               }
             ]
           ],
@@ -364,14 +404,66 @@
             {
               "key": "source_id",
               "operator": "=",
-              "value": "maroda_test_dataflow.trb"
+              "value": "maroda_test_dataflow.datawriter"
+            }
+          ]
+        },
+        {
+          "alias": "Written TR",
+          "groupBy": [
+            {
+              "params": [
+                "$__interval"
+              ],
+              "type": "time"
+            },
+            {
+              "params": [
+                "null"
+              ],
+              "type": "fill"
+            }
+          ],
+          "hide": false,
+          "measurement": "dunedaq.dfmodules.datawriterinfo.Info",
+          "orderByTime": "ASC",
+          "policy": "default",
+          "query": "SELECT non_negative_derivative(mean(\"records_written\"), 1s) FROM \"dunedaq.dfmodules.datawriterinfo.Info\" WHERE (\"source_id\" = '${partition}_${df_application}.${data_writer}') AND $timeFilter GROUP BY time($__interval) fill(null)",
+          "rawQuery": true,
+          "refId": "B",
+          "resultFormat": "time_series",
+          "select": [
+            [
+              {
+                "params": [
+                  "records_received"
+                ],
+                "type": "field"
+              },
+              {
+                "params": [],
+                "type": "mean"
+              },
+              {
+                "params": [
+                  "1s"
+                ],
+                "type": "non_negative_derivative"
+              }
+            ]
+          ],
+          "tags": [
+            {
+              "key": "source_id",
+              "operator": "=",
+              "value": "maroda_test_dataflow.datawriter"
             }
           ]
         }
       ],
       "timeFrom": null,
       "timeShift": null,
-      "title": "Event Builder Information",
+      "title": "Trigger Rate",
       "type": "timeseries"
     },
     {
@@ -850,7 +942,7 @@
             "mode": "palette-classic"
           },
           "custom": {
-            "axisLabel": "Hz",
+            "axisLabel": "milliseconds",
             "axisPlacement": "auto",
             "barAlignment": 0,
             "drawStyle": "line",
@@ -863,11 +955,11 @@
             },
             "lineInterpolation": "linear",
             "lineWidth": 2,
-            "pointSize": 5,
+            "pointSize": 4,
             "scaleDistribution": {
               "type": "linear"
             },
-            "showPoints": "never",
+            "showPoints": "always",
             "spanNulls": true,
             "stacking": {
               "group": "A",
@@ -878,7 +970,6 @@
             }
           },
           "mappings": [],
-          "min": 0,
           "thresholds": {
             "mode": "absolute",
             "steps": [
@@ -894,7 +985,23 @@
           },
           "unit": "short"
         },
-        "overrides": []
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "avg ms per TR"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "semi-dark-green",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          }
+        ]
       },
       "gridPos": {
         "h": 7,
@@ -902,7 +1009,7 @@
         "x": 0,
         "y": 19
       },
-      "id": 2,
+      "id": 23,
       "links": [],
       "options": {
         "legend": {
@@ -917,28 +1024,40 @@
       "pluginVersion": "8.0.6",
       "targets": [
         {
-          "alias": "trigger_rate",
-          "groupBy": [],
-          "measurement": "dunedaq.trigger.moduleleveltriggerinfo.Info",
+          "alias": "avg ms per TR",
+          "groupBy": [
+            {
+              "params": [
+                "$__interval"
+              ],
+              "type": "time"
+            },
+            {
+              "params": [
+                "null"
+              ],
+              "type": "fill"
+            }
+          ],
+          "hide": false,
+          "measurement": "dunedaq.dfmodules.triggerrecordbuilderinfo.Info",
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "SELECT non_negative_derivative(\"td_sent_count\", 1s) FROM \"dunedaq.trigger.moduleleveltriggerinfo.Info\" WHERE (\"source_id\" = '${partition}_${trigger_app}.${trigger_module}') AND $timeFilter",
+          "query": "SELECT mean(\"average_millisecond_per_trigger\") FROM \"dunedaq.dfmodules.triggerrecordbuilderinfo.Info\" WHERE (\"source_id\" = '${partition}_${df_application}.${TRBInstance}') AND $timeFilter GROUP BY time($__interval) fill(null)",
           "rawQuery": true,
-          "refId": "E",
+          "refId": "B",
           "resultFormat": "time_series",
           "select": [
             [
               {
                 "params": [
-                  "td_sent_count"
+                  "average_millisecond_per_trigger"
                 ],
                 "type": "field"
               },
               {
-                "params": [
-                  "1s"
-                ],
-                "type": "non_negative_derivative"
+                "params": [],
+                "type": "distinct"
               }
             ]
           ],
@@ -946,14 +1065,14 @@
             {
               "key": "source_id",
               "operator": "=",
-              "value": "${partition}_trigger.mlt"
+              "value": "maroda_test_dataflow.trb"
             }
           ]
         }
       ],
       "timeFrom": null,
       "timeShift": null,
-      "title": "Trigger Rate",
+      "title": "Event Builder Information",
       "type": "timeseries"
     },
     {
@@ -1541,5 +1660,5 @@
   "timezone": "",
   "title": "DAQ overview",
   "uid": "U_8ZFDZnh",
-  "version": 18
+  "version": 27
 }

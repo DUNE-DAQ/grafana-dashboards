@@ -78,7 +78,7 @@
   "gnetId": null,
   "graphTooltip": 0,
   "id": null,
-  "iteration": 1634309290732,
+  "iteration": 1634638238113,
   "links": [
     {
       "asDropdown": true,
@@ -255,6 +255,147 @@
             "mode": "palette-classic"
           },
           "custom": {
+            "axisLabel": "milliseconds",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "drawStyle": "line",
+            "fillOpacity": 0,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "lineInterpolation": "linear",
+            "lineWidth": 2,
+            "pointSize": 4,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "always",
+            "spanNulls": true,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "short"
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "avg ms per TR"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "semi-dark-green",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 7,
+        "w": 8,
+        "x": 0,
+        "y": 12
+      },
+      "id": 23,
+      "links": [],
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom"
+        },
+        "tooltip": {
+          "mode": "single"
+        }
+      },
+      "pluginVersion": "8.0.6",
+      "targets": [
+        {
+          "alias": "avg ms per TR",
+          "groupBy": [
+            {
+              "params": [
+                "$__interval"
+              ],
+              "type": "time"
+            },
+            {
+              "params": [
+                "null"
+              ],
+              "type": "fill"
+            }
+          ],
+          "hide": false,
+          "measurement": "dunedaq.dfmodules.triggerrecordbuilderinfo.Info",
+          "orderByTime": "ASC",
+          "policy": "default",
+          "query": "SELECT mean(\"average_millisecond_per_trigger\") FROM \"dunedaq.dfmodules.triggerrecordbuilderinfo.Info\" WHERE (\"source_id\" = '${partition}_${df_application}.${TRBInstance}') AND $timeFilter GROUP BY time($__interval) fill(null)",
+          "rawQuery": true,
+          "refId": "B",
+          "resultFormat": "time_series",
+          "select": [
+            [
+              {
+                "params": [
+                  "average_millisecond_per_trigger"
+                ],
+                "type": "field"
+              },
+              {
+                "params": [],
+                "type": "distinct"
+              }
+            ]
+          ],
+          "tags": [
+            {
+              "key": "source_id",
+              "operator": "=",
+              "value": "maroda_test_dataflow.trb"
+            }
+          ]
+        }
+      ],
+      "timeFrom": null,
+      "timeShift": null,
+      "title": "Event Builder Information",
+      "type": "timeseries"
+    },
+    {
+      "datasource": "${DS_INFLUXTEST}",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
             "axisLabel": "Hz",
             "axisPlacement": "auto",
             "barAlignment": 0,
@@ -304,7 +445,7 @@
       "gridPos": {
         "h": 7,
         "w": 8,
-        "x": 0,
+        "x": 8,
         "y": 12
       },
       "id": 2,
@@ -322,7 +463,42 @@
       "pluginVersion": "8.0.6",
       "targets": [
         {
-          "alias": "Trigger",
+          "alias": "Generated triggers",
+          "groupBy": [],
+          "hide": false,
+          "measurement": "dunedaq.trigger.moduleleveltriggerinfo.Info",
+          "orderByTime": "ASC",
+          "policy": "default",
+          "query": "SELECT non_negative_derivative(\"td_total_count\", 1s) FROM \"dunedaq.trigger.moduleleveltriggerinfo.Info\" WHERE (\"source_id\" = '${partition}_${trigger_app}.${trigger_module}') AND $timeFilter",
+          "rawQuery": true,
+          "refId": "C",
+          "resultFormat": "time_series",
+          "select": [
+            [
+              {
+                "params": [
+                  "td_sent_count"
+                ],
+                "type": "field"
+              },
+              {
+                "params": [
+                  "1s"
+                ],
+                "type": "non_negative_derivative"
+              }
+            ]
+          ],
+          "tags": [
+            {
+              "key": "source_id",
+              "operator": "=",
+              "value": "${partition}_trigger.mlt"
+            }
+          ]
+        },
+        {
+          "alias": "Sent triggers",
           "groupBy": [],
           "hide": false,
           "measurement": "dunedaq.trigger.moduleleveltriggerinfo.Info",
@@ -522,7 +698,7 @@
       "gridPos": {
         "h": 7,
         "w": 8,
-        "x": 8,
+        "x": 16,
         "y": 12
       },
       "id": 11,
@@ -540,13 +716,13 @@
       "pluginVersion": "8.0.6",
       "targets": [
         {
-          "alias": "received_tc",
+          "alias": "Received triggers",
           "groupBy": [],
           "hide": false,
           "measurement": "dunedaq.trigger.moduleleveltriggerinfo.Info",
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "SELECT \"tc_received_count\" FROM \"dunedaq.trigger.moduleleveltriggerinfo.Info\" WHERE (\"source_id\" = '${partition}_trigger.mlt') AND $timeFilter",
+          "query": "SELECT \"tc_received_count\" FROM \"dunedaq.trigger.moduleleveltriggerinfo.Info\" WHERE (\"source_id\" = '${partition}_${trigger_app}.${trigger_module}') AND $timeFilter",
           "rawQuery": true,
           "refId": "A",
           "resultFormat": "time_series",
@@ -569,14 +745,14 @@
           ]
         },
         {
-          "alias": "sent_triggers",
+          "alias": "Sent triggers",
           "groupBy": [],
           "hide": false,
           "measurement": "dunedaq.trigger.moduleleveltriggerinfo.Info",
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "SELECT \"tc_received_count\" FROM \"dunedaq.trigger.moduleleveltriggerinfo.Info\" WHERE (\"source_id\" = '${partition}_trigger.mlt') AND $timeFilter",
-          "rawQuery": false,
+          "query": "SELECT \"td_sent_count\" FROM \"dunedaq.trigger.moduleleveltriggerinfo.Info\" WHERE (\"source_id\" = '${partition}_${trigger_app}.${trigger_module}') AND $timeFilter",
+          "rawQuery": true,
           "refId": "B",
           "resultFormat": "time_series",
           "select": [
@@ -598,14 +774,14 @@
           ]
         },
         {
-          "alias": "inhibited_triggers",
+          "alias": "Inhibited triggers",
           "groupBy": [],
           "hide": false,
           "measurement": "dunedaq.trigger.moduleleveltriggerinfo.Info",
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "SELECT \"tc_received_count\" FROM \"dunedaq.trigger.moduleleveltriggerinfo.Info\" WHERE (\"source_id\" = '${partition}_trigger.mlt') AND $timeFilter",
-          "rawQuery": false,
+          "query": "SELECT \"td_inhibited_count\" FROM \"dunedaq.trigger.moduleleveltriggerinfo.Info\" WHERE (\"source_id\" = '${partition}_${trigger_app}.${trigger_module}') AND $timeFilter",
+          "rawQuery": true,
           "refId": "C",
           "resultFormat": "time_series",
           "select": [
@@ -627,14 +803,14 @@
           ]
         },
         {
-          "alias": "paused_triggers",
+          "alias": "Paused triggers",
           "groupBy": [],
           "hide": false,
           "measurement": "dunedaq.trigger.moduleleveltriggerinfo.Info",
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "SELECT \"tc_received_count\" FROM \"dunedaq.trigger.moduleleveltriggerinfo.Info\" WHERE (\"source_id\" = '${partition}_trigger.mlt') AND $timeFilter",
-          "rawQuery": false,
+          "query": "SELECT \"td_paused_count\" FROM \"dunedaq.trigger.moduleleveltriggerinfo.Info\" WHERE (\"source_id\" = '${partition}_${trigger_app}.${trigger_module}') AND $timeFilter",
+          "rawQuery": true,
           "refId": "D",
           "resultFormat": "time_series",
           "select": [
@@ -662,8 +838,8 @@
           "measurement": "dunedaq.trigger.moduleleveltriggerinfo.Info",
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "SELECT \"tc_received_count\" FROM \"dunedaq.trigger.moduleleveltriggerinfo.Info\" WHERE (\"source_id\" = '${partition}_trigger.mlt') AND $timeFilter",
-          "rawQuery": false,
+          "query": "SELECT \"td_total_count\" FROM \"dunedaq.trigger.moduleleveltriggerinfo.Info\" WHERE (\"source_id\" = '${partition}_${trigger_app}.${trigger_module}') AND $timeFilter",
+          "rawQuery": true,
           "refId": "E",
           "resultFormat": "time_series",
           "select": [
@@ -683,32 +859,6 @@
               "value": "${partition}_trigger.mlt"
             }
           ]
-        },
-        {
-          "groupBy": [],
-          "hide": false,
-          "measurement": "dunedaq.timinglibs.fakehsieventgeneratorinfo.Info",
-          "orderByTime": "ASC",
-          "policy": "default",
-          "refId": "F",
-          "resultFormat": "time_series",
-          "select": [
-            [
-              {
-                "params": [
-                  "sent_hsi_events_counter"
-                ],
-                "type": "field"
-              }
-            ]
-          ],
-          "tags": [
-            {
-              "key": "source_id",
-              "operator": "=",
-              "value": "${partition}_hsi.fh_sig"
-            }
-          ]
         }
       ],
       "timeFrom": null,
@@ -725,10 +875,126 @@
       "fill": 0,
       "fillGradient": 0,
       "gridPos": {
-        "h": 7,
+        "h": 8,
+        "w": 8,
+        "x": 8,
+        "y": 19
+      },
+      "hiddenSeries": false,
+      "id": 10,
+      "legend": {
+        "avg": false,
+        "current": false,
+        "max": false,
+        "min": false,
+        "rightSide": false,
+        "show": true,
+        "total": false,
+        "values": false
+      },
+      "lines": true,
+      "linewidth": 2,
+      "links": [],
+      "nullPointMode": "null",
+      "options": {
+        "alertThreshold": true
+      },
+      "percentage": false,
+      "pluginVersion": "8.0.6",
+      "pointradius": 1,
+      "points": false,
+      "renderer": "flot",
+      "seriesOverrides": [],
+      "spaceLength": 10,
+      "stack": false,
+      "steppedLine": false,
+      "targets": [
+        {
+          "alias": "written GiB",
+          "groupBy": [],
+          "measurement": "dunedaq.dfmodules.datawriterinfo.Info",
+          "orderByTime": "ASC",
+          "policy": "default",
+          "query": "SELECT non_negative_derivative(distinct(\"bytes_output\"), 1s)  / 1073741824 FROM \"dunedaq.dfmodules.datawriterinfo.Info\" WHERE (\"source_id\" = '${partition}_dataflow.${data_writer}') AND $timeFilter GROUP BY time($__interval) \nfill(null)",
+          "rawQuery": true,
+          "refId": "C",
+          "resultFormat": "time_series",
+          "select": [
+            [
+              {
+                "params": [
+                  "bytes_output"
+                ],
+                "type": "field"
+              }
+            ]
+          ],
+          "tags": [
+            {
+              "key": "source_id",
+              "operator": "=",
+              "value": "${partition}_dataflow.datawriter"
+            }
+          ]
+        }
+      ],
+      "thresholds": [],
+      "timeFrom": null,
+      "timeRegions": [],
+      "timeShift": null,
+      "title": "Data Writer Information",
+      "tooltip": {
+        "shared": true,
+        "sort": 0,
+        "value_type": "individual"
+      },
+      "type": "graph",
+      "xaxis": {
+        "buckets": null,
+        "mode": "time",
+        "name": null,
+        "show": true,
+        "values": []
+      },
+      "yaxes": [
+        {
+          "$$hashKey": "object:1245",
+          "format": "short",
+          "label": "GiBytes ",
+          "logBase": 1,
+          "max": null,
+          "min": null,
+          "show": true
+        },
+        {
+          "$$hashKey": "object:1246",
+          "decimals": null,
+          "format": "short",
+          "label": "GB written",
+          "logBase": 1,
+          "max": null,
+          "min": null,
+          "show": false
+        }
+      ],
+      "yaxis": {
+        "align": false,
+        "alignLevel": null
+      }
+    },
+    {
+      "aliasColors": {},
+      "bars": false,
+      "dashLength": 10,
+      "dashes": false,
+      "datasource": "${DS_INFLUXTEST}",
+      "fill": 0,
+      "fillGradient": 0,
+      "gridPos": {
+        "h": 8,
         "w": 8,
         "x": 16,
-        "y": 12
+        "y": 19
       },
       "hiddenSeries": false,
       "id": 6,
@@ -933,541 +1199,6 @@
         "align": false,
         "alignLevel": null
       }
-    },
-    {
-      "datasource": "${DS_INFLUXTEST}",
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "mode": "palette-classic"
-          },
-          "custom": {
-            "axisLabel": "milliseconds",
-            "axisPlacement": "auto",
-            "barAlignment": 0,
-            "drawStyle": "line",
-            "fillOpacity": 0,
-            "gradientMode": "none",
-            "hideFrom": {
-              "legend": false,
-              "tooltip": false,
-              "viz": false
-            },
-            "lineInterpolation": "linear",
-            "lineWidth": 2,
-            "pointSize": 4,
-            "scaleDistribution": {
-              "type": "linear"
-            },
-            "showPoints": "always",
-            "spanNulls": true,
-            "stacking": {
-              "group": "A",
-              "mode": "none"
-            },
-            "thresholdsStyle": {
-              "mode": "off"
-            }
-          },
-          "mappings": [],
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "green",
-                "value": null
-              },
-              {
-                "color": "red",
-                "value": 80
-              }
-            ]
-          },
-          "unit": "short"
-        },
-        "overrides": [
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "avg ms per TR"
-            },
-            "properties": [
-              {
-                "id": "color",
-                "value": {
-                  "fixedColor": "semi-dark-green",
-                  "mode": "fixed"
-                }
-              }
-            ]
-          }
-        ]
-      },
-      "gridPos": {
-        "h": 7,
-        "w": 8,
-        "x": 0,
-        "y": 19
-      },
-      "id": 23,
-      "links": [],
-      "options": {
-        "legend": {
-          "calcs": [],
-          "displayMode": "list",
-          "placement": "bottom"
-        },
-        "tooltip": {
-          "mode": "single"
-        }
-      },
-      "pluginVersion": "8.0.6",
-      "targets": [
-        {
-          "alias": "avg ms per TR",
-          "groupBy": [
-            {
-              "params": [
-                "$__interval"
-              ],
-              "type": "time"
-            },
-            {
-              "params": [
-                "null"
-              ],
-              "type": "fill"
-            }
-          ],
-          "hide": false,
-          "measurement": "dunedaq.dfmodules.triggerrecordbuilderinfo.Info",
-          "orderByTime": "ASC",
-          "policy": "default",
-          "query": "SELECT mean(\"average_millisecond_per_trigger\") FROM \"dunedaq.dfmodules.triggerrecordbuilderinfo.Info\" WHERE (\"source_id\" = '${partition}_${df_application}.${TRBInstance}') AND $timeFilter GROUP BY time($__interval) fill(null)",
-          "rawQuery": true,
-          "refId": "B",
-          "resultFormat": "time_series",
-          "select": [
-            [
-              {
-                "params": [
-                  "average_millisecond_per_trigger"
-                ],
-                "type": "field"
-              },
-              {
-                "params": [],
-                "type": "distinct"
-              }
-            ]
-          ],
-          "tags": [
-            {
-              "key": "source_id",
-              "operator": "=",
-              "value": "maroda_test_dataflow.trb"
-            }
-          ]
-        }
-      ],
-      "timeFrom": null,
-      "timeShift": null,
-      "title": "Event Builder Information",
-      "type": "timeseries"
-    },
-    {
-      "aliasColors": {},
-      "bars": false,
-      "dashLength": 10,
-      "dashes": false,
-      "datasource": "${DS_INFLUXTEST}",
-      "fill": 0,
-      "fillGradient": 0,
-      "gridPos": {
-        "h": 8,
-        "w": 8,
-        "x": 8,
-        "y": 19
-      },
-      "hiddenSeries": false,
-      "id": 10,
-      "legend": {
-        "avg": false,
-        "current": false,
-        "max": false,
-        "min": false,
-        "rightSide": false,
-        "show": true,
-        "total": false,
-        "values": false
-      },
-      "lines": true,
-      "linewidth": 2,
-      "links": [],
-      "nullPointMode": "null",
-      "options": {
-        "alertThreshold": true
-      },
-      "percentage": false,
-      "pluginVersion": "8.0.6",
-      "pointradius": 1,
-      "points": false,
-      "renderer": "flot",
-      "seriesOverrides": [],
-      "spaceLength": 10,
-      "stack": false,
-      "steppedLine": false,
-      "targets": [
-        {
-          "alias": "written GiB",
-          "groupBy": [],
-          "measurement": "dunedaq.dfmodules.datawriterinfo.Info",
-          "orderByTime": "ASC",
-          "policy": "default",
-          "query": "SELECT non_negative_derivative(distinct(\"bytes_output\"), 1s)  / 1073741824 FROM \"dunedaq.dfmodules.datawriterinfo.Info\" WHERE (\"source_id\" = '${partition}_dataflow.${data_writer}') AND $timeFilter GROUP BY time($__interval) \nfill(null)",
-          "rawQuery": true,
-          "refId": "C",
-          "resultFormat": "time_series",
-          "select": [
-            [
-              {
-                "params": [
-                  "bytes_output"
-                ],
-                "type": "field"
-              }
-            ]
-          ],
-          "tags": [
-            {
-              "key": "source_id",
-              "operator": "=",
-              "value": "${partition}_dataflow.datawriter"
-            }
-          ]
-        }
-      ],
-      "thresholds": [],
-      "timeFrom": null,
-      "timeRegions": [],
-      "timeShift": null,
-      "title": "Data Writer Information",
-      "tooltip": {
-        "shared": true,
-        "sort": 0,
-        "value_type": "individual"
-      },
-      "type": "graph",
-      "xaxis": {
-        "buckets": null,
-        "mode": "time",
-        "name": null,
-        "show": true,
-        "values": []
-      },
-      "yaxes": [
-        {
-          "$$hashKey": "object:1245",
-          "format": "short",
-          "label": "GiBytes ",
-          "logBase": 1,
-          "max": null,
-          "min": null,
-          "show": true
-        },
-        {
-          "$$hashKey": "object:1246",
-          "decimals": null,
-          "format": "short",
-          "label": "GB written",
-          "logBase": 1,
-          "max": null,
-          "min": null,
-          "show": false
-        }
-      ],
-      "yaxis": {
-        "align": false,
-        "alignLevel": null
-      }
-    },
-    {
-      "aliasColors": {},
-      "bars": false,
-      "dashLength": 10,
-      "dashes": false,
-      "datasource": "${DS_INFLUXTEST}",
-      "fill": 0,
-      "fillGradient": 0,
-      "gridPos": {
-        "h": 8,
-        "w": 8,
-        "x": 16,
-        "y": 19
-      },
-      "hiddenSeries": false,
-      "id": 4,
-      "legend": {
-        "avg": false,
-        "current": false,
-        "max": false,
-        "min": false,
-        "rightSide": false,
-        "show": true,
-        "total": false,
-        "values": false
-      },
-      "lines": true,
-      "linewidth": 2,
-      "links": [],
-      "nullPointMode": "null",
-      "options": {
-        "alertThreshold": true
-      },
-      "percentage": false,
-      "pluginVersion": "8.0.6",
-      "pointradius": 1,
-      "points": false,
-      "renderer": "flot",
-      "seriesOverrides": [],
-      "spaceLength": 10,
-      "stack": false,
-      "steppedLine": false,
-      "targets": [
-        {
-          "alias": "received_trigger_records",
-          "expr": "",
-          "format": "time_series",
-          "groupBy": [],
-          "hide": false,
-          "intervalFactor": 1,
-          "measurement": "dunedaq.dfmodules.datawriterinfo.Info",
-          "orderByTime": "ASC",
-          "policy": "default",
-          "query": "SELECT \"bytes_output\" FROM \"dunedaq.dfmodules.datawriterinfo.Info\" WHERE (\"source_id\" = '${partition}_dataflow.datawriter') AND $timeFilter",
-          "rawQuery": false,
-          "refId": "A",
-          "resultFormat": "time_series",
-          "select": [
-            [
-              {
-                "params": [
-                  "records_received"
-                ],
-                "type": "field"
-              }
-            ]
-          ],
-          "tags": [
-            {
-              "key": "source_id",
-              "operator": "=",
-              "value": "${partition}_dataflow.datawriter"
-            }
-          ]
-        },
-        {
-          "alias": "written_trigger_records",
-          "groupBy": [
-            {
-              "params": [
-                "$__interval"
-              ],
-              "type": "time"
-            },
-            {
-              "params": [
-                "null"
-              ],
-              "type": "fill"
-            }
-          ],
-          "measurement": "dunedaq.dfmodules.datawriterinfo.Info",
-          "orderByTime": "ASC",
-          "policy": "default",
-          "query": "SELECT records_written FROM \"dunedaq.dfmodules.datawriterinfo.Info\" WHERE (\"source_id\" = '${partition}_dataflow.datawriter')",
-          "rawQuery": true,
-          "refId": "B",
-          "resultFormat": "time_series",
-          "select": [
-            [
-              {
-                "params": [
-                  "records_written"
-                ],
-                "type": "field"
-              },
-              {
-                "params": [],
-                "type": "mean"
-              }
-            ]
-          ],
-          "tags": [
-            {
-              "key": "source_id",
-              "operator": "=",
-              "value": "gio_test_dataflow.datawriter"
-            }
-          ]
-        }
-      ],
-      "thresholds": [],
-      "timeFrom": null,
-      "timeRegions": [],
-      "timeShift": null,
-      "title": "Data Writer Information",
-      "tooltip": {
-        "shared": true,
-        "sort": 0,
-        "value_type": "individual"
-      },
-      "type": "graph",
-      "xaxis": {
-        "buckets": null,
-        "mode": "time",
-        "name": null,
-        "show": true,
-        "values": []
-      },
-      "yaxes": [
-        {
-          "$$hashKey": "object:651",
-          "format": "short",
-          "label": "Trigger records",
-          "logBase": 1,
-          "max": null,
-          "min": null,
-          "show": true
-        },
-        {
-          "$$hashKey": "object:652",
-          "decimals": null,
-          "format": "short",
-          "label": "GB written",
-          "logBase": 1,
-          "max": null,
-          "min": null,
-          "show": false
-        }
-      ],
-      "yaxis": {
-        "align": false,
-        "alignLevel": null
-      }
-    },
-    {
-      "aliasColors": {},
-      "bars": false,
-      "dashLength": 10,
-      "dashes": false,
-      "datasource": "${DS_INFLUXTEST}",
-      "fill": 0,
-      "fillGradient": 0,
-      "gridPos": {
-        "h": 11,
-        "w": 24,
-        "x": 0,
-        "y": 27
-      },
-      "hiddenSeries": false,
-      "id": 17,
-      "legend": {
-        "avg": false,
-        "current": false,
-        "max": false,
-        "min": false,
-        "show": true,
-        "total": false,
-        "values": false
-      },
-      "lines": true,
-      "linewidth": 1,
-      "nullPointMode": "null",
-      "options": {
-        "alertThreshold": true
-      },
-      "percentage": false,
-      "pluginVersion": "8.0.6",
-      "pointradius": 2,
-      "points": false,
-      "renderer": "flot",
-      "seriesOverrides": [],
-      "spaceLength": 10,
-      "stack": false,
-      "steppedLine": false,
-      "targets": [
-        {
-          "groupBy": [
-            {
-              "params": [
-                "source_id"
-              ],
-              "type": "tag"
-            }
-          ],
-          "measurement": "dunedaq.appfwk.queueinfo.Info",
-          "orderByTime": "ASC",
-          "policy": "default",
-          "query": "SELECT \"number_of_elements\"/\"capacity\" FROM \"dunedaq.appfwk.queueinfo.Info\"  GROUP BY \"source_id\"",
-          "rawQuery": true,
-          "refId": "A",
-          "resultFormat": "time_series",
-          "select": [
-            [
-              {
-                "params": [
-                  "number_of_elements"
-                ],
-                "type": "field"
-              }
-            ]
-          ],
-          "tags": []
-        }
-      ],
-      "thresholds": [],
-      "timeFrom": null,
-      "timeRegions": [],
-      "timeShift": null,
-      "title": "Queues occupancy",
-      "tooltip": {
-        "shared": true,
-        "sort": 0,
-        "value_type": "individual"
-      },
-      "type": "graph",
-      "xaxis": {
-        "buckets": null,
-        "mode": "time",
-        "name": null,
-        "show": true,
-        "values": []
-      },
-      "yaxes": [
-        {
-          "$$hashKey": "object:565",
-          "format": "short",
-          "label": null,
-          "logBase": 1,
-          "max": null,
-          "min": null,
-          "show": true
-        },
-        {
-          "$$hashKey": "object:566",
-          "format": "short",
-          "label": null,
-          "logBase": 1,
-          "max": null,
-          "min": null,
-          "show": true
-        }
-      ],
-      "yaxis": {
-        "align": false,
-        "alignLevel": null
-      }
     }
   ],
   "refresh": "5s",
@@ -1629,7 +1360,7 @@
     ]
   },
   "time": {
-    "from": "now-30m",
+    "from": "now-15m",
     "to": "now"
   },
   "timepicker": {
@@ -1660,5 +1391,5 @@
   "timezone": "",
   "title": "DAQ overview",
   "uid": "U_8ZFDZnh",
-  "version": 27
+  "version": 33
 }

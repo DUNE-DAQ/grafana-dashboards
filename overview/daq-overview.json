@@ -84,7 +84,7 @@
   "gnetId": null,
   "graphTooltip": 0,
   "id": null,
-  "iteration": 1634727724982,
+  "iteration": 1634727724985,
   "links": [
     {
       "asDropdown": true,
@@ -265,7 +265,7 @@
       },
       "gridPos": {
         "h": 4,
-        "w": 5,
+        "w": 4,
         "x": 5,
         "y": 1
       },
@@ -343,6 +343,101 @@
               "type": "special"
             }
           ],
+          "noValue": "N/A",
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "semi-dark-green",
+                "value": null
+              }
+            ]
+          },
+          "unit": "s"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 4,
+        "w": 5,
+        "x": 9,
+        "y": 1
+      },
+      "id": 28,
+      "interval": null,
+      "links": [],
+      "maxDataPoints": 100,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "none",
+        "justifyMode": "auto",
+        "orientation": "horizontal",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "text": {},
+        "textMode": "auto"
+      },
+      "pluginVersion": "8.0.6",
+      "targets": [
+        {
+          "expr": "",
+          "format": "time_series",
+          "groupBy": [],
+          "intervalFactor": 1,
+          "measurement": "dunedaq.rcif.runinfo.Info",
+          "orderByTime": "ASC",
+          "policy": "default",
+          "query": "SELECT \"runtime\" FROM \"dunedaq.rcif.runinfo.Info\" WHERE (\"source_id\" = '${partition}_${df_application}') AND $timeFilter",
+          "rawQuery": true,
+          "refId": "A",
+          "resultFormat": "table",
+          "select": [
+            [
+              {
+                "params": [
+                  "runtime"
+                ],
+                "type": "field"
+              }
+            ]
+          ],
+          "tags": [
+            {
+              "condition": "OR",
+              "key": "source_id",
+              "operator": "=",
+              "value": "maroda_test_dataflow"
+            }
+          ]
+        }
+      ],
+      "title": "Run time",
+      "type": "stat"
+    },
+    {
+      "cacheTimeout": null,
+      "datasource": "${DS_INFLUXTEST}",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [
+            {
+              "options": {
+                "match": "null",
+                "result": {
+                  "text": "N/A"
+                }
+              },
+              "type": "special"
+            }
+          ],
           "thresholds": {
             "mode": "absolute",
             "steps": [
@@ -359,10 +454,10 @@
       "gridPos": {
         "h": 4,
         "w": 5,
-        "x": 10,
+        "x": 14,
         "y": 1
       },
-      "id": 28,
+      "id": 32,
       "interval": null,
       "links": [],
       "maxDataPoints": 100,
@@ -373,7 +468,7 @@
         "orientation": "horizontal",
         "reduceOptions": {
           "calcs": [],
-          "fields": "/^state$/",
+          "fields": "",
           "values": false
         },
         "text": {},
@@ -386,10 +481,10 @@
           "format": "time_series",
           "groupBy": [],
           "intervalFactor": 1,
-          "measurement": "dunedaq.appfwk.appinfo.Info",
+          "measurement": "dunedaq.rcif.runinfo.Info",
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "SELECT \"state\" FROM \"dunedaq.appfwk.appinfo.Info\" WHERE (\"source_id\" = '${partition}_${trigger_app}') AND $timeFilter",
+          "query": "SELECT \"runno\" FROM \"dunedaq.rcif.runinfo.Info\" WHERE (\"source_id\" = '${partition}_${df_application}') AND $timeFilter",
           "rawQuery": true,
           "refId": "A",
           "resultFormat": "table",
@@ -397,18 +492,13 @@
             [
               {
                 "params": [
-                  "state"
+                  "runno"
                 ],
                 "type": "field"
               }
             ]
           ],
           "tags": [
-            {
-              "key": "source_id",
-              "operator": "=",
-              "value": "maroda_test_trigger"
-            },
             {
               "condition": "OR",
               "key": "source_id",
@@ -456,7 +546,7 @@
       "gridPos": {
         "h": 4,
         "w": 5,
-        "x": 15,
+        "x": 19,
         "y": 1
       },
       "id": 29,
@@ -470,7 +560,7 @@
         "orientation": "horizontal",
         "reduceOptions": {
           "calcs": [],
-          "fields": "/^state$/",
+          "fields": "",
           "values": false
         },
         "text": {},
@@ -483,10 +573,10 @@
           "format": "time_series",
           "groupBy": [],
           "intervalFactor": 1,
-          "measurement": "dunedaq.appfwk.appinfo.Info",
+          "measurement": "dunedaq.dfmodules.datawriterinfo.Info",
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "SELECT \"state\" FROM \"dunedaq.appfwk.appinfo.Info\" WHERE (\"source_id\" = '${partition}_${trigger_app}') AND $timeFilter",
+          "query": "SELECT \"records_received\" FROM \"dunedaq.dfmodules.datawriterinfo.Info\" WHERE (\"source_id\" = '${partition}_${df_application}.${data_writer}') AND $timeFilter",
           "rawQuery": true,
           "refId": "A",
           "resultFormat": "table",
@@ -494,7 +584,7 @@
             [
               {
                 "params": [
-                  "state"
+                  "records_received"
                 ],
                 "type": "field"
               }
@@ -504,18 +594,12 @@
             {
               "key": "source_id",
               "operator": "=",
-              "value": "maroda_test_trigger"
-            },
-            {
-              "condition": "OR",
-              "key": "source_id",
-              "operator": "=",
-              "value": "maroda_test_dataflow"
+              "value": "maroda_test_dataflow.datawriter"
             }
           ]
         }
       ],
-      "title": "Processing trigger number",
+      "title": "Processed triggers",
       "type": "stat"
     },
     {
@@ -1799,5 +1883,5 @@
   "timezone": "",
   "title": "DAQ overview",
   "uid": "U_8ZFDZnh",
-  "version": 41
+  "version": 42
 }

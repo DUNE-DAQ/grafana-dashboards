@@ -72,7 +72,7 @@
   "gnetId": null,
   "graphTooltip": 0,
   "id": null,
-  "iteration": 1634826183507,
+  "iteration": 1634826183510,
   "links": [],
   "panels": [
     {
@@ -322,8 +322,8 @@
           "measurement": "dunedaq.readout.readoutinfo.ReadoutInfo",
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "SELECT derivative(\"num_payloads\", 1s) FROM \"dunedaq.readout.readoutinfo.ReadoutInfo\" WHERE (\"source_id\" =~ /test_ruflx0.datahandler_.*/) AND $timeFilter GROUP BY \"source_id\"",
-          "rawQuery": false,
+          "query": "SELECT \"rate_payloads_consumed\" FROM \"dunedaq.readout.readoutinfo.ReadoutInfo\" WHERE (\"source_id\" =~ /${partition}_ruemu\\d+.datahandler_\\d+/) AND $timeFilter GROUP BY \"source_id\"",
+          "rawQuery": true,
           "refId": "E",
           "resultFormat": "time_series",
           "select": [
@@ -336,7 +336,13 @@
               }
             ]
           ],
-          "tags": []
+          "tags": [
+            {
+              "key": "source_id",
+              "operator": "=",
+              "value": "maroda_test_ruemu0.datahandler_0"
+            }
+          ]
         }
       ],
       "thresholds": [],
@@ -381,6 +387,126 @@
         "align": false,
         "alignLevel": null
       }
+    },
+    {
+      "datasource": "${DS_INFLUXTEST}",
+      "description": "This should only contain the rates for TP DLHs",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "drawStyle": "line",
+            "fillOpacity": 0,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "auto",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 7,
+        "w": 8,
+        "x": 16,
+        "y": 0
+      },
+      "id": 28,
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom"
+        },
+        "tooltip": {
+          "mode": "single"
+        }
+      },
+      "targets": [
+        {
+          "alias": "",
+          "groupBy": [
+            {
+              "params": [
+                "$__interval"
+              ],
+              "type": "time"
+            },
+            {
+              "params": [
+                "source_id"
+              ],
+              "type": "tag"
+            }
+          ],
+          "measurement": "dunedaq.readout.readoutinfo.ReadoutInfo",
+          "orderByTime": "ASC",
+          "policy": "default",
+          "query": "SELECT mean(\"rate_payloads_consumed\") FROM \"dunedaq.readout.readoutinfo.ReadoutInfo\" WHERE (\"source_id\" =~ /${partition}_ruemu\\d+\\.datahandler_\\d+/) AND $timeFilter GROUP BY time($__interval), \"source_id\"",
+          "rawQuery": true,
+          "refId": "A",
+          "resultFormat": "time_series",
+          "select": [
+            [
+              {
+                "params": [
+                  "rate_payloads_consumed"
+                ],
+                "type": "field"
+              },
+              {
+                "params": [],
+                "type": "mean"
+              }
+            ]
+          ],
+          "tags": [
+            {
+              "key": "source_id",
+              "operator": "=",
+              "value": "maroda_test_ruemu0.datahandler_0"
+            }
+          ]
+        }
+      ],
+      "title": "Received TPs",
+      "type": "timeseries"
     },
     {
       "datasource": "${DS_INFLUXTEST}",
@@ -1206,26 +1332,11 @@
                 "type": "mean"
               }
             ]
-          ],
-          "tags": []
+          ]
         }
       ],
       "title": "Received TPs",
       "type": "timeseries"
-    },
-    {
-      "collapsed": false,
-      "datasource": null,
-      "gridPos": {
-        "h": 1,
-        "w": 24,
-        "x": 0,
-        "y": 21
-      },
-      "id": 19,
-      "panels": [],
-      "title": "Operational monitoring",
-      "type": "row"
     }
   ],
   "refresh": "5s",
@@ -1366,5 +1477,5 @@
   "timezone": "",
   "title": "Readout",
   "uid": "HBIpw-dnz",
-  "version": 2
+  "version": 5
 }

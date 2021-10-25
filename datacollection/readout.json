@@ -66,7 +66,7 @@
   "gnetId": null,
   "graphTooltip": 0,
   "id": null,
-  "iteration": 1635169310447,
+  "iteration": 1635169310450,
   "links": [],
   "panels": [
     {
@@ -1194,7 +1194,7 @@
           "measurement": "dunedaq.readout.readoutinfo.ReadoutInfo",
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "SELECT sum(\"num_payloads_overwritten\") FROM \"dunedaq.readout.readoutinfo.ReadoutInfo\" WHERE (\"source_id\" =~ /${partition}_ruemu\\d+.datahandler_\\d+/) AND $timeFilter GROUP BY time($__interval) fill(null)",
+          "query": "SELECT sum(\"num_payloads_overwritten\") FROM \"dunedaq.readout.readoutinfo.ReadoutInfo\" WHERE (\"source_id\" =~ /${partition}_.*\\.datahandler_\\d+/) AND $timeFilter GROUP BY time($__interval) fill(null)",
           "rawQuery": true,
           "refId": "B",
           "resultFormat": "time_series",
@@ -1240,7 +1240,7 @@
           "measurement": "dunedaq.readout.readoutinfo.ReadoutInfo",
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "SELECT sum(\"num_buffer_elements\") FROM \"dunedaq.readout.readoutinfo.ReadoutInfo\" WHERE (\"source_id\" =~ /${partition}_ruemu\\d+.datahandler_\\d+/) AND $timeFilter GROUP BY time($__interval) fill(null)",
+          "query": "SELECT sum(\"num_buffer_elements\") FROM \"dunedaq.readout.readoutinfo.ReadoutInfo\" WHERE (\"source_id\" =~ /${partition}_.*\\.datahandler_\\d+/) AND $timeFilter GROUP BY time($__interval) fill(null)",
           "rawQuery": true,
           "refId": "C",
           "resultFormat": "time_series",
@@ -1839,5 +1839,5 @@
   "timezone": "",
   "title": "Readout",
   "uid": "HBIpw-dnz",
-  "version": 21
+  "version": 22
 }

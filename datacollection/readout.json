@@ -7,14 +7,6 @@
       "type": "datasource",
       "pluginId": "influxdb",
       "pluginName": "InfluxDB"
-    },
-    {
-      "name": "DS_ERS",
-      "label": "ERS",
-      "description": "",
-      "type": "datasource",
-      "pluginId": "postgres",
-      "pluginName": "PostgreSQL"
     }
   ],
   "__requires": [
@@ -28,12 +20,6 @@
       "type": "datasource",
       "id": "influxdb",
       "name": "InfluxDB",
-      "version": "1.0.0"
-    },
-    {
-      "type": "datasource",
-      "id": "postgres",
-      "name": "PostgreSQL",
       "version": "1.0.0"
     },
     {
@@ -66,7 +52,7 @@
   "gnetId": null,
   "graphTooltip": 0,
   "id": null,
-  "iteration": 1635175568082,
+  "iteration": 1635175568087,
   "links": [],
   "panels": [
     {
@@ -2189,8 +2175,8 @@
       {
         "allValue": null,
         "current": {},
-        "datasource": "${DS_ERS}",
-        "definition": "SELECT partition FROM public.\"ErrorReports\"",
+        "datasource": "${DS_INFLUXTEST}",
+        "definition": "SHOW SERIES FROM \"dunedaq.appfwk.appinfo.Info\"  ",
         "description": null,
         "error": null,
         "hide": 0,
@@ -2199,11 +2185,11 @@
         "multi": false,
         "name": "partition",
         "options": [],
-        "query": "SELECT partition FROM public.\"ErrorReports\"",
+        "query": "SHOW SERIES FROM \"dunedaq.appfwk.appinfo.Info\"  ",
         "refresh": 1,
-        "regex": "",
+        "regex": "/.*source_id=(.*)_.*/",
         "skipUrlSync": false,
-        "sort": 0,
+        "sort": 1,
         "type": "query"
       },
       {

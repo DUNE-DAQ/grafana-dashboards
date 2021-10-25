@@ -66,7 +66,7 @@
   "gnetId": null,
   "graphTooltip": 0,
   "id": null,
-  "iteration": 1635172681571,
+  "iteration": 1635175568082,
   "links": [],
   "panels": [
     {
@@ -1777,7 +1777,7 @@
     },
     {
       "datasource": "${DS_INFLUXTEST}",
-      "description": "Payloads that were overwritten because the latency buffer could not keep up",
+      "description": "",
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -2207,48 +2207,44 @@
         "type": "query"
       },
       {
-        "current": {
-          "selected": false,
-          "text": "ruemu0",
-          "value": "ruemu0"
-        },
+        "allValue": null,
+        "current": {},
+        "datasource": "${DS_INFLUXTEST}",
+        "definition": "SHOW  SERIES  FROM \"dunedaq.readout.readoutinfo.RawDataProcessorInfo\" ",
         "description": null,
         "error": null,
         "hide": 0,
+        "includeAll": false,
         "label": "Readout application",
+        "multi": false,
         "name": "readout_app",
-        "options": [
-          {
-            "selected": true,
-            "text": "ruemu0",
-            "value": "ruemu0"
-          }
-        ],
-        "query": "ruemu0",
+        "options": [],
+        "query": "SHOW  SERIES  FROM \"dunedaq.readout.readoutinfo.RawDataProcessorInfo\" ",
+        "refresh": 1,
+        "regex": "/${partition}_(.*)\\..*/",
         "skipUrlSync": false,
-        "type": "textbox"
+        "sort": 1,
+        "type": "query"
       },
       {
-        "current": {
-          "selected": false,
-          "text": "datahandler_1",
-          "value": "datahandler_1"
-        },
+        "allValue": null,
+        "current": {},
+        "datasource": "${DS_INFLUXTEST}",
+        "definition": "SHOW  SERIES  FROM \"dunedaq.readout.readoutinfo.RawDataProcessorInfo\" ",
         "description": null,
         "error": null,
         "hide": 0,
-        "label": "Readout Module",
+        "includeAll": false,
+        "label": "Readout module",
+        "multi": false,
         "name": "readout_module",
-        "options": [
-          {
-            "selected": true,
-            "text": "datahandler_1",
-            "value": "datahandler_1"
-          }
-        ],
-        "query": "datahandler_1",
+        "options": [],
+        "query": "SHOW  SERIES  FROM \"dunedaq.readout.readoutinfo.RawDataProcessorInfo\" ",
+        "refresh": 1,
+        "regex": "/${partition}_${readout_app}\\.(.*)/",
         "skipUrlSync": false,
-        "type": "textbox"
+        "sort": 1,
+        "type": "query"
       }
     ]
   },
@@ -2284,5 +2280,5 @@
   "timezone": "",
   "title": "Readout",
   "uid": "HBIpw-dnz",
-  "version": 30
+  "version": 32
 }

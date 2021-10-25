@@ -84,7 +84,7 @@
   "gnetId": null,
   "graphTooltip": 0,
   "id": null,
-  "iteration": 1634844404389,
+  "iteration": 1635168509319,
   "links": [
     {
       "asDropdown": true,
@@ -1895,14 +1895,16 @@
   "refresh": "5s",
   "schemaVersion": 30,
   "style": "dark",
-  "tags": [],
+  "tags": [
+    "Coldbox"
+  ],
   "templating": {
     "list": [
       {
         "allValue": null,
         "current": {},
-        "datasource": "${DS_ERS}",
-        "definition": "SELECT partition FROM public.\"ErrorReports\"",
+        "datasource": "${DS_INFLUXTEST}",
+        "definition": "SHOW SERIES FROM \"dunedaq.appfwk.appinfo.Info\"  ",
         "description": null,
         "error": null,
         "hide": 0,
@@ -1911,23 +1913,19 @@
         "multi": false,
         "name": "partition",
         "options": [],
-        "query": "SELECT partition FROM public.\"ErrorReports\"",
+        "query": "SHOW SERIES FROM \"dunedaq.appfwk.appinfo.Info\"  ",
         "refresh": 1,
-        "regex": "",
+        "regex": "/.*source_id=(.*)_.*/",
         "skipUrlSync": false,
-        "sort": 0,
+        "sort": 1,
         "type": "query"
       },
       {
         "allValue": null,
         "current": {
-          "selected": true,
-          "text": [
-            "dataflow"
-          ],
-          "value": [
-            "dataflow"
-          ]
+          "selected": false,
+          "text": "dataflow",
+          "value": "dataflow"
         },
         "description": null,
         "error": null,
@@ -2082,5 +2080,5 @@
   "timezone": "",
   "title": "DAQ overview",
   "uid": "U_8ZFDZnh",
-  "version": 51
+  "version": 53
 }

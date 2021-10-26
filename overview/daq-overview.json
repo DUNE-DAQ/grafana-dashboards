@@ -84,7 +84,7 @@
   "gnetId": null,
   "graphTooltip": 0,
   "id": null,
-  "iteration": 1635168509319,
+  "iteration": 1635168509332,
   "links": [
     {
       "asDropdown": true,
@@ -188,6 +188,7 @@
       "pluginVersion": "8.0.6",
       "targets": [
         {
+          "alias": "",
           "expr": "",
           "format": "time_series",
           "groupBy": [],
@@ -195,7 +196,7 @@
           "measurement": "dunedaq.appfwk.appinfo.Info",
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "SELECT \"state\" FROM \"dunedaq.appfwk.appinfo.Info\" WHERE (\"source_id\" = '${partition}_${trigger_app}' OR \"source_id\" = '${partition}_${df_application}') AND $timeFilter",
+          "query": "SELECT \"state\" FROM \"dunedaq.appfwk.appinfo.Info\" WHERE (\"source_id\" =~ /${partition}_.*/) AND $timeFilter",
           "rawQuery": true,
           "refId": "A",
           "resultFormat": "table",
@@ -225,6 +226,18 @@
         }
       ],
       "title": "Current Status",
+      "transformations": [
+        {
+          "id": "reduce",
+          "options": {
+            "includeTimeField": false,
+            "mode": "reduceFields",
+            "reducers": [
+              "last"
+            ]
+          }
+        }
+      ],
       "type": "stat"
     },
     {
@@ -303,7 +316,7 @@
           "measurement": "dunedaq.dfmodules.datawriterinfo.Info",
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "SELECT non_negative_derivative(\"records_written\", 1s) FROM \"dunedaq.dfmodules.datawriterinfo.Info\" WHERE (\"source_id\" = '${partition}_${df_application}.${data_writer}') AND $timeFilter",
+          "query": "SELECT non_negative_derivative(distinct(\"records_written\"), 1s) FROM \"dunedaq.dfmodules.datawriterinfo.Info\" WHERE (\"source_id\" =~ /${partition}_.*/) AND $timeFilter GROUP BY time($__interval), \"source_id\" fill(null)",
           "rawQuery": true,
           "refId": "A",
           "resultFormat": "table",
@@ -333,6 +346,21 @@
         }
       ],
       "title": "Taking data at",
+      "transformations": [
+        {
+          "id": "calculateField",
+          "options": {
+            "mode": "reduceRow",
+            "reduce": {
+              "include": [
+                "non_negative_derivative"
+              ],
+              "reducer": "sum"
+            },
+            "replaceFields": true
+          }
+        }
+      ],
       "type": "stat"
     },
     {
@@ -400,7 +428,7 @@
           "measurement": "dunedaq.appfwk.appinfo.Info",
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "SELECT \"error\" FROM \"dunedaq.appfwk.appinfo.Info\" WHERE (\"source_id\" = '${partition}_${trigger_app}' OR \"source_id\" = '${partition}_${df_application}') AND $timeFilter",
+          "query": "SELECT \"error\" FROM \"dunedaq.appfwk.appinfo.Info\" WHERE (\"source_id\" =~ /${partition}_.*/) AND $timeFilter",
           "rawQuery": true,
           "refId": "A",
           "resultFormat": "time_series",
@@ -430,6 +458,18 @@
         }
       ],
       "title": "App Fwk Error State",
+      "transformations": [
+        {
+          "id": "reduce",
+          "options": {
+            "includeTimeField": false,
+            "mode": "reduceFields",
+            "reducers": [
+              "lastNotNull"
+            ]
+          }
+        }
+      ],
       "type": "stat"
     },
     {
@@ -679,12 +719,19 @@
         {
           "expr": "",
           "format": "time_series",
-          "groupBy": [],
+          "groupBy": [
+            {
+              "params": [
+                "$interval"
+              ],
+              "type": "time"
+            }
+          ],
           "intervalFactor": 1,
           "measurement": "dunedaq.dfmodules.datawriterinfo.Info",
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "SELECT \"records_received\" FROM \"dunedaq.dfmodules.datawriterinfo.Info\" WHERE (\"source_id\" = '${partition}_${df_application}.${data_writer}') AND $timeFilter",
+          "query": "SELECT distinct(\"records_received\") FROM \"dunedaq.dfmodules.datawriterinfo.Info\" WHERE (\"source_id\" =~ /${partition}_.*/) AND $timeFilter GROUP BY time($__interval), \"source_id\" fill(null)",
           "rawQuery": true,
           "refId": "A",
           "resultFormat": "table",
@@ -692,9 +739,17 @@
             [
               {
                 "params": [
-                  "records_received"
+                  "new_records_received"
                 ],
                 "type": "field"
+              },
+              {
+                "params": [],
+                "type": "sum"
+              },
+              {
+                "params": [],
+                "type": "cumulative_sum"
               }
             ]
           ],
@@ -708,6 +763,19 @@
         }
       ],
       "title": "Processed triggers",
+      "transformations": [
+        {
+          "id": "calculateField",
+          "options": {
+            "mode": "reduceRow",
+            "reduce": {
+              "include": [],
+              "reducer": "sum"
+            },
+            "replaceFields": true
+          }
+        }
+      ],
       "type": "stat"
     },
     {
@@ -775,7 +843,7 @@
           "measurement": "dunedaq.dfmodules.datawriterinfo.Info",
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "SELECT \"records_written\" FROM \"dunedaq.dfmodules.datawriterinfo.Info\" WHERE (\"source_id\" = '${partition}_${df_application}.${data_writer}') AND $timeFilter",
+          "query": "SELECT distinct(\"records_written\") FROM \"dunedaq.dfmodules.datawriterinfo.Info\" WHERE (\"source_id\" =~ /${partition}_.*/) AND $timeFilter GROUP BY time($__interval), \"source_id\"",
           "rawQuery": true,
           "refId": "A",
           "resultFormat": "table",
@@ -799,6 +867,18 @@
         }
       ],
       "title": "Written TRs",
+      "transformations": [
+        {
+          "id": "calculateField",
+          "options": {
+            "mode": "reduceRow",
+            "reduce": {
+              "reducer": "sum"
+            },
+            "replaceFields": true
+          }
+        }
+      ],
       "type": "stat"
     },
     {
@@ -1047,7 +1127,7 @@
           "measurement": "dunedaq.dfmodules.triggerrecordbuilderinfo.Info",
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "SELECT mean(\"average_millisecond_per_trigger\") FROM \"dunedaq.dfmodules.triggerrecordbuilderinfo.Info\" WHERE (\"source_id\" = '${partition}_${df_application}.${TRBInstance}') AND $timeFilter GROUP BY time($__interval) fill(null)",
+          "query": "SELECT mean(\"average_millisecond_per_trigger\") FROM \"dunedaq.dfmodules.triggerrecordbuilderinfo.Info\" WHERE (\"source_id\" =~ /${partition}_.*/) AND $timeFilter GROUP BY time($__interval) fill(null)",
           "rawQuery": true,
           "refId": "B",
           "resultFormat": "time_series",
@@ -1160,7 +1240,7 @@
           "measurement": "dunedaq.trigger.moduleleveltriggerinfo.Info",
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "SELECT non_negative_derivative(\"td_total_count\", 1s) FROM \"dunedaq.trigger.moduleleveltriggerinfo.Info\" WHERE (\"source_id\" = '${partition}_${trigger_app}.${trigger_module}') AND $timeFilter",
+          "query": "SELECT non_negative_derivative(sum(\"td_total_count\"), 1s) FROM \"dunedaq.trigger.moduleleveltriggerinfo.Info\" WHERE (\"source_id\" =~ /${partition}_.*/) AND $timeFilter GROUP BY time($__interval)",
           "rawQuery": true,
           "refId": "C",
           "resultFormat": "time_series",
@@ -1195,7 +1275,7 @@
           "measurement": "dunedaq.trigger.moduleleveltriggerinfo.Info",
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "SELECT non_negative_derivative(\"td_sent_count\", 1s) FROM \"dunedaq.trigger.moduleleveltriggerinfo.Info\" WHERE (\"source_id\" = '${partition}_${trigger_app}.${trigger_module}') AND $timeFilter",
+          "query": "SELECT non_negative_derivative(sum(\"td_sent_count\"), 1s) FROM \"dunedaq.trigger.moduleleveltriggerinfo.Info\" WHERE (\"source_id\" =~ /${partition}_.*/) AND $timeFilter GROUP BY time($__interval)",
           "rawQuery": true,
           "refId": "E",
           "resultFormat": "time_series",
@@ -1243,7 +1323,7 @@
           "measurement": "dunedaq.dfmodules.datawriterinfo.Info",
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "SELECT non_negative_derivative(mean(\"records_received\"), 1s) FROM \"dunedaq.dfmodules.datawriterinfo.Info\" WHERE (\"source_id\" = '${partition}_${df_application}.${data_writer}') AND $timeFilter GROUP BY time($__interval) fill(null)",
+          "query": "SELECT non_negative_derivative(sum(\"records_received\"), 1s) FROM \"dunedaq.dfmodules.datawriterinfo.Info\" WHERE (\"source_id\" =~ /${partition}_.*/) AND $timeFilter GROUP BY time($__interval) fill(null)",
           "rawQuery": true,
           "refId": "A",
           "resultFormat": "time_series",
@@ -1295,7 +1375,7 @@
           "measurement": "dunedaq.dfmodules.datawriterinfo.Info",
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "SELECT non_negative_derivative(mean(\"records_written\"), 1s) FROM \"dunedaq.dfmodules.datawriterinfo.Info\" WHERE (\"source_id\" = '${partition}_${df_application}.${data_writer}') AND $timeFilter GROUP BY time($__interval) fill(null)",
+          "query": "SELECT non_negative_derivative(cumulative_sum(sum(\"new_records_written\")), 1s) FROM \"dunedaq.dfmodules.datawriterinfo.Info\" WHERE (\"source_id\" =~ /${partition}_.*/) AND $timeFilter GROUP BY time($__interval) fill(null)",
           "rawQuery": true,
           "refId": "B",
           "resultFormat": "time_series",
@@ -1331,50 +1411,81 @@
       "timeFrom": null,
       "timeShift": null,
       "title": "Trigger Rate",
+      "transformations": [],
       "type": "timeseries"
     },
     {
-      "aliasColors": {},
-      "bars": false,
-      "dashLength": 10,
-      "dashes": false,
       "datasource": "${DS_INFLUXTEST}",
-      "fill": 0,
-      "fillGradient": 0,
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisLabel": "GiBytes ",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "drawStyle": "line",
+            "fillOpacity": 0,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "lineInterpolation": "linear",
+            "lineWidth": 2,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "never",
+            "spanNulls": true,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "none"
+        },
+        "overrides": []
+      },
       "gridPos": {
         "h": 7,
         "w": 8,
         "x": 16,
         "y": 17
       },
-      "hiddenSeries": false,
       "id": 10,
-      "legend": {
-        "avg": false,
-        "current": false,
-        "max": false,
-        "min": false,
-        "rightSide": false,
-        "show": true,
-        "total": false,
-        "values": false
-      },
-      "lines": true,
-      "linewidth": 2,
       "links": [],
-      "nullPointMode": "null",
       "options": {
-        "alertThreshold": true
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom"
+        },
+        "tooltip": {
+          "mode": "single"
+        }
       },
-      "percentage": false,
       "pluginVersion": "8.0.6",
-      "pointradius": 1,
-      "points": false,
-      "renderer": "flot",
-      "seriesOverrides": [],
-      "spaceLength": 10,
-      "stack": false,
-      "steppedLine": false,
       "targets": [
         {
           "alias": "written GiB",
@@ -1382,7 +1493,7 @@
           "measurement": "dunedaq.dfmodules.datawriterinfo.Info",
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "SELECT non_negative_derivative(distinct(\"bytes_output\"), 1s)  / 1073741824 FROM \"dunedaq.dfmodules.datawriterinfo.Info\" WHERE (\"source_id\" = '${partition}_dataflow.${data_writer}') AND $timeFilter GROUP BY time($__interval) \nfill(null)",
+          "query": "SELECT non_negative_derivative(sum(\"bytes_output\"), 1s)  / 1073741824 FROM \"dunedaq.dfmodules.datawriterinfo.Info\" WHERE (\"source_id\" =~ /${partition}_.*/) AND $timeFilter GROUP BY time($__interval) \nfill(null)",
           "rawQuery": true,
           "refId": "C",
           "resultFormat": "time_series",
@@ -1405,49 +1516,10 @@
           ]
         }
       ],
-      "thresholds": [],
       "timeFrom": null,
-      "timeRegions": [],
       "timeShift": null,
       "title": "Data Writer Information",
-      "tooltip": {
-        "shared": true,
-        "sort": 0,
-        "value_type": "individual"
-      },
-      "type": "graph",
-      "xaxis": {
-        "buckets": null,
-        "mode": "time",
-        "name": null,
-        "show": true,
-        "values": []
-      },
-      "yaxes": [
-        {
-          "$$hashKey": "object:1245",
-          "format": "short",
-          "label": "GiBytes ",
-          "logBase": 1,
-          "max": null,
-          "min": null,
-          "show": true
-        },
-        {
-          "$$hashKey": "object:1246",
-          "decimals": null,
-          "format": "short",
-          "label": "GB written",
-          "logBase": 1,
-          "max": null,
-          "min": null,
-          "show": false
-        }
-      ],
-      "yaxis": {
-        "align": false,
-        "alignLevel": null
-      }
+      "type": "timeseries"
     },
     {
       "datasource": "${DS_INFLUXTEST}",
@@ -1904,7 +1976,7 @@
         "allValue": null,
         "current": {},
         "datasource": "${DS_INFLUXTEST}",
-        "definition": "SHOW SERIES FROM \"dunedaq.appfwk.appinfo.Info\"  ",
+        "definition": "SHOW SERIES FROM \"dunedaq.appfwk.appinfo.Info\" WHERE $timeFilter",
         "description": null,
         "error": null,
         "hide": 0,
@@ -1913,9 +1985,9 @@
         "multi": false,
         "name": "partition",
         "options": [],
-        "query": "SHOW SERIES FROM \"dunedaq.appfwk.appinfo.Info\"  ",
-        "refresh": 1,
-        "regex": "/.*source_id=(.*)_.*/",
+        "query": "SHOW SERIES FROM \"dunedaq.appfwk.appinfo.Info\" WHERE $timeFilter",
+        "refresh": 2,
+        "regex": "/.*,source_id=(.*)_.*/",
         "skipUrlSync": false,
         "sort": 1,
         "type": "query"
@@ -2049,7 +2121,7 @@
     ]
   },
   "time": {
-    "from": "now-30m",
+    "from": "now-5m",
     "to": "now"
   },
   "timepicker": {
@@ -2080,5 +2152,5 @@
   "timezone": "",
   "title": "DAQ overview",
   "uid": "U_8ZFDZnh",
-  "version": 53
+  "version": 60
 }

@@ -52,7 +52,7 @@
   "gnetId": null,
   "graphTooltip": 0,
   "id": null,
-  "iteration": 1635256890422,
+  "iteration": 1635259745099,
   "links": [],
   "panels": [
     {
@@ -2601,7 +2601,7 @@
     },
     {
       "datasource": "${DS_INFLUXTEST}",
-      "description": "Group this by source_id for different e_links",
+      "description": "",
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -2664,7 +2664,7 @@
         "legend": {
           "calcs": [],
           "displayMode": "list",
-          "placement": "bottom"
+          "placement": "right"
         },
         "tooltip": {
           "mode": "single"
@@ -2672,57 +2672,7 @@
       },
       "targets": [
         {
-          "groupBy": [
-            {
-              "params": [
-                "$__interval"
-              ],
-              "type": "time"
-            },
-            {
-              "params": [
-                "source_id"
-              ],
-              "type": "tag"
-            },
-            {
-              "params": [
-                "null"
-              ],
-              "type": "fill"
-            }
-          ],
-          "hide": true,
-          "measurement": "dunedaq.flxlibs.felixcardreaderinfo.ELinkInfo",
-          "orderByTime": "ASC",
-          "policy": "default",
-          "query": "SELECT mean(\"value\") FROM \"dunedaq.flxlibs.felixcardreaderinfo.ELinkInfo\" WHERE $timeFilter GROUP BY time($__interval) fill(null)",
-          "rawQuery": false,
-          "refId": "A",
-          "resultFormat": "time_series",
-          "select": [
-            [
-              {
-                "params": [
-                  "num_blocks_processed_with_error"
-                ],
-                "type": "field"
-              },
-              {
-                "params": [],
-                "type": "mean"
-              }
-            ]
-          ],
-          "tags": [
-            {
-              "key": "source_id",
-              "operator": "=",
-              "value": ":{USER}_test_ruflx0.flxcard_0.elink_0_0_0"
-            }
-          ]
-        },
-        {
+          "alias": "Total error rates",
           "groupBy": [
             {
               "params": [
@@ -2737,12 +2687,12 @@
               "type": "fill"
             }
           ],
-          "hide": true,
+          "hide": false,
           "measurement": "dunedaq.flxlibs.felixcardreaderinfo.ELinkInfo",
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "SELECT mean(\"value\") FROM \"dunedaq.flxlibs.felixcardreaderinfo.ELinkInfo\" WHERE $timeFilter GROUP BY time($__interval) fill(null)",
-          "rawQuery": false,
+          "query": "SELECT non_negative_derivative(cumulative_sum(sum(\"num_chunks_processed_with_error\")), 1s) FROM \"dunedaq.flxlibs.felixcardreaderinfo.ELinkInfo\" WHERE (\"source_id\" =~ /${partition}_.*/) AND $timeFilter GROUP BY time($__interval) fill(null)",
+          "rawQuery": true,
           "refId": "B",
           "resultFormat": "time_series",
           "select": [
@@ -2755,11 +2705,27 @@
               },
               {
                 "params": [],
-                "type": "mean"
+                "type": "sum"
+              },
+              {
+                "params": [],
+                "type": "cumulative_sum"
+              },
+              {
+                "params": [
+                  "1s"
+                ],
+                "type": "non_negative_derivative"
               }
             ]
           ],
-          "tags": []
+          "tags": [
+            {
+              "key": "source_id",
+              "operator": "=",
+              "value": "felix_test_ruflx0.flxcard_1.elink_0_1_2"
+            }
+          ]
         },
         {
           "alias": "$tag_source_id",
@@ -2818,7 +2784,264 @@
           ]
         }
       ],
-      "title": "Felix rates",
+      "title": "Felix rates - Chunks",
+      "transformations": [
+        {
+          "id": "renameByRegex",
+          "options": {
+            "regex": ".*_(.*)\\.(.*)",
+            "renamePattern": "$1 $2"
+          }
+        }
+      ],
+      "type": "timeseries"
+    },
+    {
+      "datasource": "${DS_INFLUXTEST}",
+      "description": "",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisLabel": "Hz",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "drawStyle": "line",
+            "fillOpacity": 0,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "log": 10,
+              "type": "log"
+            },
+            "showPoints": "auto",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 7,
+        "w": 8,
+        "x": 8,
+        "y": 30
+      },
+      "id": 49,
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "right"
+        },
+        "tooltip": {
+          "mode": "single"
+        }
+      },
+      "targets": [
+        {
+          "groupBy": [
+            {
+              "params": [
+                "$__interval"
+              ],
+              "type": "time"
+            },
+            {
+              "params": [
+                "source_id"
+              ],
+              "type": "tag"
+            },
+            {
+              "params": [
+                "null"
+              ],
+              "type": "fill"
+            }
+          ],
+          "hide": true,
+          "measurement": "dunedaq.flxlibs.felixcardreaderinfo.ELinkInfo",
+          "orderByTime": "ASC",
+          "policy": "default",
+          "query": "SELECT mean(\"value\") FROM \"dunedaq.flxlibs.felixcardreaderinfo.ELinkInfo\" WHERE $timeFilter GROUP BY time($__interval) fill(null)",
+          "rawQuery": false,
+          "refId": "A",
+          "resultFormat": "time_series",
+          "select": [
+            [
+              {
+                "params": [
+                  "num_blocks_processed_with_error"
+                ],
+                "type": "field"
+              },
+              {
+                "params": [],
+                "type": "mean"
+              }
+            ]
+          ],
+          "tags": [
+            {
+              "key": "source_id",
+              "operator": "=",
+              "value": ":{USER}_test_ruflx0.flxcard_0.elink_0_0_0"
+            }
+          ]
+        },
+        {
+          "alias": "Total error rates",
+          "groupBy": [
+            {
+              "params": [
+                "$__interval"
+              ],
+              "type": "time"
+            },
+            {
+              "params": [
+                "null"
+              ],
+              "type": "fill"
+            }
+          ],
+          "hide": false,
+          "measurement": "dunedaq.flxlibs.felixcardreaderinfo.ELinkInfo",
+          "orderByTime": "ASC",
+          "policy": "default",
+          "query": "SELECT non_negative_derivative(cumulative_sum(sum(\"num_blocks_processed_with_error\")), 1s) FROM \"dunedaq.flxlibs.felixcardreaderinfo.ELinkInfo\" WHERE (\"source_id\" =~ /${partition}_.*/) AND $timeFilter GROUP BY time($__interval) fill(null)",
+          "rawQuery": true,
+          "refId": "B",
+          "resultFormat": "time_series",
+          "select": [
+            [
+              {
+                "params": [
+                  "num_chunks_processed_with_error"
+                ],
+                "type": "field"
+              },
+              {
+                "params": [],
+                "type": "sum"
+              },
+              {
+                "params": [],
+                "type": "cumulative_sum"
+              },
+              {
+                "params": [
+                  "1s"
+                ],
+                "type": "non_negative_derivative"
+              }
+            ]
+          ],
+          "tags": [
+            {
+              "key": "source_id",
+              "operator": "=",
+              "value": "felix_test_ruflx0.flxcard_1.elink_0_1_2"
+            }
+          ]
+        },
+        {
+          "alias": "$tag_source_id",
+          "groupBy": [
+            {
+              "params": [
+                "$__interval"
+              ],
+              "type": "time"
+            },
+            {
+              "params": [
+                "source_id"
+              ],
+              "type": "tag"
+            }
+          ],
+          "hide": false,
+          "measurement": "dunedaq.flxlibs.felixcardreaderinfo.ELinkInfo",
+          "orderByTime": "ASC",
+          "policy": "default",
+          "query": "SELECT non_negative_derivative(cumulative_sum(sum(\"num_blocks_processed\")), 1s) FROM \"dunedaq.flxlibs.felixcardreaderinfo.ELinkInfo\" WHERE (\"source_id\" =~ /${partition}_.*/) AND $timeFilter GROUP BY time($__interval), \"source_id\"",
+          "rawQuery": true,
+          "refId": "C",
+          "resultFormat": "time_series",
+          "select": [
+            [
+              {
+                "params": [
+                  "num_chunks_processed"
+                ],
+                "type": "field"
+              },
+              {
+                "params": [],
+                "type": "sum"
+              },
+              {
+                "params": [],
+                "type": "cumulative_sum"
+              },
+              {
+                "params": [
+                  "1s"
+                ],
+                "type": "non_negative_derivative"
+              }
+            ]
+          ],
+          "tags": [
+            {
+              "key": "source_id",
+              "operator": "=",
+              "value": ":{USER}_test_ruflx0.flxcard_1.elink_0_1_1"
+            }
+          ]
+        }
+      ],
+      "title": "Felix rates - Blocks",
+      "transformations": [
+        {
+          "id": "renameByRegex",
+          "options": {
+            "regex": ".*_(.*)\\.(.*)",
+            "renamePattern": "$1 $2"
+          }
+        }
+      ],
       "type": "timeseries"
     }
   ],
@@ -2924,5 +3147,5 @@
   "timezone": "",
   "title": "Readout",
   "uid": "HBIpw-dnz",
-  "version": 37
+  "version": 38
 }

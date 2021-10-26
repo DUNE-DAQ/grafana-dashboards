@@ -1,66 +1,4 @@
 {
-  "__inputs": [
-    {
-      "name": "DS_INFLUXTEST",
-      "label": "InfluxTest",
-      "description": "",
-      "type": "datasource",
-      "pluginId": "influxdb",
-      "pluginName": "InfluxDB"
-    },
-    {
-      "name": "DS_ERS",
-      "label": "ERS",
-      "description": "",
-      "type": "datasource",
-      "pluginId": "postgres",
-      "pluginName": "PostgreSQL"
-    }
-  ],
-  "__requires": [
-    {
-      "type": "grafana",
-      "id": "grafana",
-      "name": "Grafana",
-      "version": "8.0.6"
-    },
-    {
-      "type": "panel",
-      "id": "graph",
-      "name": "Graph (old)",
-      "version": ""
-    },
-    {
-      "type": "datasource",
-      "id": "influxdb",
-      "name": "InfluxDB",
-      "version": "1.0.0"
-    },
-    {
-      "type": "datasource",
-      "id": "postgres",
-      "name": "PostgreSQL",
-      "version": "1.0.0"
-    },
-    {
-      "type": "panel",
-      "id": "stat",
-      "name": "Stat",
-      "version": ""
-    },
-    {
-      "type": "panel",
-      "id": "table",
-      "name": "Table",
-      "version": ""
-    },
-    {
-      "type": "panel",
-      "id": "timeseries",
-      "name": "Time series",
-      "version": ""
-    }
-  ],
   "annotations": {
     "list": [
       {
@@ -83,8 +21,8 @@
   "editable": true,
   "gnetId": null,
   "graphTooltip": 0,
-  "id": null,
-  "iteration": 1635168509332,
+  "id": 45,
+  "iteration": 1635168509334,
   "links": [
     {
       "asDropdown": true,
@@ -132,7 +70,7 @@
     },
     {
       "cacheTimeout": null,
-      "datasource": "${DS_INFLUXTEST}",
+      "datasource": "InfluxTest",
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -242,7 +180,7 @@
     },
     {
       "cacheTimeout": null,
-      "datasource": "${DS_INFLUXTEST}",
+      "datasource": "InfluxTest",
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -364,7 +302,7 @@
       "type": "stat"
     },
     {
-      "datasource": "${DS_INFLUXTEST}",
+      "datasource": "InfluxTest",
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -474,7 +412,7 @@
     },
     {
       "cacheTimeout": null,
-      "datasource": "${DS_INFLUXTEST}",
+      "datasource": "InfluxTest",
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -540,7 +478,7 @@
           "measurement": "dunedaq.rcif.runinfo.Info",
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "SELECT \"runtime\" FROM \"dunedaq.rcif.runinfo.Info\" WHERE (\"source_id\" = '${partition}_${df_application}') AND $timeFilter",
+          "query": "SELECT \"runtime\" FROM \"dunedaq.rcif.runinfo.Info\" WHERE (\"source_id\" =~ /${partition}_.*/) AND $timeFilter",
           "rawQuery": true,
           "refId": "A",
           "resultFormat": "table",
@@ -569,7 +507,7 @@
     },
     {
       "cacheTimeout": null,
-      "datasource": "${DS_INFLUXTEST}",
+      "datasource": "InfluxTest",
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -632,7 +570,7 @@
           "measurement": "dunedaq.rcif.runinfo.Info",
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "SELECT \"runno\" FROM \"dunedaq.rcif.runinfo.Info\" WHERE (\"source_id\" = '${partition}_${df_application}') AND $timeFilter",
+          "query": "SELECT \"runno\" FROM \"dunedaq.rcif.runinfo.Info\" WHERE (\"source_id\" =~ /${partition}_.*/) AND $timeFilter",
           "rawQuery": true,
           "refId": "A",
           "resultFormat": "table",
@@ -661,7 +599,7 @@
     },
     {
       "cacheTimeout": null,
-      "datasource": "${DS_INFLUXTEST}",
+      "datasource": "InfluxTest",
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -780,7 +718,7 @@
     },
     {
       "cacheTimeout": null,
-      "datasource": "${DS_INFLUXTEST}",
+      "datasource": "InfluxTest",
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -896,7 +834,7 @@
       "type": "row"
     },
     {
-      "datasource": "${DS_ERS}",
+      "datasource": "ERS",
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -1019,7 +957,7 @@
       "type": "row"
     },
     {
-      "datasource": "${DS_INFLUXTEST}",
+      "datasource": "InfluxTest",
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -1108,7 +1046,7 @@
       "pluginVersion": "8.0.6",
       "targets": [
         {
-          "alias": "avg ms per TR",
+          "alias": "$tag_source_id",
           "groupBy": [
             {
               "params": [
@@ -1127,7 +1065,7 @@
           "measurement": "dunedaq.dfmodules.triggerrecordbuilderinfo.Info",
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "SELECT mean(\"average_millisecond_per_trigger\") FROM \"dunedaq.dfmodules.triggerrecordbuilderinfo.Info\" WHERE (\"source_id\" =~ /${partition}_.*/) AND $timeFilter GROUP BY time($__interval) fill(null)",
+          "query": "SELECT mean(\"average_millisecond_per_trigger\") FROM \"dunedaq.dfmodules.triggerrecordbuilderinfo.Info\" WHERE (\"source_id\" =~ /${partition}_.*/) AND $timeFilter GROUP BY time($__interval), \"source_id\" fill(null)",
           "rawQuery": true,
           "refId": "B",
           "resultFormat": "time_series",
@@ -1157,10 +1095,29 @@
       "timeFrom": null,
       "timeShift": null,
       "title": "Event Builder Information",
+      "transformations": [
+        {
+          "id": "renameByRegex",
+          "options": {
+            "regex": ".*_(.*)\\.(.*)",
+            "renamePattern": "$1 $2"
+          }
+        },
+        {
+          "id": "calculateField",
+          "options": {
+            "alias": "Overall average",
+            "mode": "reduceRow",
+            "reduce": {
+              "reducer": "mean"
+            }
+          }
+        }
+      ],
       "type": "timeseries"
     },
     {
-      "datasource": "${DS_INFLUXTEST}",
+      "datasource": "InfluxTest",
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -1415,14 +1372,14 @@
       "type": "timeseries"
     },
     {
-      "datasource": "${DS_INFLUXTEST}",
+      "datasource": "InfluxTest",
       "fieldConfig": {
         "defaults": {
           "color": {
             "mode": "palette-classic"
           },
           "custom": {
-            "axisLabel": "GiBytes ",
+            "axisLabel": "GiBytes/s",
             "axisPlacement": "auto",
             "barAlignment": 0,
             "drawStyle": "line",
@@ -1488,12 +1445,12 @@
       "pluginVersion": "8.0.6",
       "targets": [
         {
-          "alias": "written GiB",
+          "alias": "$tag_source_id",
           "groupBy": [],
           "measurement": "dunedaq.dfmodules.datawriterinfo.Info",
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "SELECT non_negative_derivative(sum(\"bytes_output\"), 1s)  / 1073741824 FROM \"dunedaq.dfmodules.datawriterinfo.Info\" WHERE (\"source_id\" =~ /${partition}_.*/) AND $timeFilter GROUP BY time($__interval) \nfill(null)",
+          "query": "SELECT non_negative_derivative(distinct(\"bytes_output\"), 1s)  / 1073741824 FROM \"dunedaq.dfmodules.datawriterinfo.Info\" WHERE (\"source_id\" =~ /${partition}_.*/) AND $timeFilter GROUP BY time($__interval), \"source_id\"\nfill(null)",
           "rawQuery": true,
           "refId": "C",
           "resultFormat": "time_series",
@@ -1519,10 +1476,23 @@
       "timeFrom": null,
       "timeShift": null,
       "title": "Data Writer Information",
+      "transformations": [
+        {
+          "id": "renameByRegex",
+          "options": {
+            "regex": ".*_(.*)\\.(.*)",
+            "renamePattern": "$1 $2"
+          }
+        },
+        {
+          "id": "calculateField",
+          "options": {}
+        }
+      ],
       "type": "timeseries"
     },
     {
-      "datasource": "${DS_INFLUXTEST}",
+      "datasource": "InfluxTest",
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -1750,7 +1720,7 @@
       "bars": false,
       "dashLength": 10,
       "dashes": false,
-      "datasource": "${DS_INFLUXTEST}",
+      "datasource": "InfluxTest",
       "fill": 0,
       "fillGradient": 0,
       "gridPos": {
@@ -1974,8 +1944,12 @@
     "list": [
       {
         "allValue": null,
-        "current": {},
-        "datasource": "${DS_INFLUXTEST}",
+        "current": {
+          "selected": false,
+          "text": "maroda_test",
+          "value": "maroda_test"
+        },
+        "datasource": "InfluxTest",
         "definition": "SHOW SERIES FROM \"dunedaq.appfwk.appinfo.Info\" WHERE $timeFilter",
         "description": null,
         "error": null,
@@ -1991,137 +1965,11 @@
         "skipUrlSync": false,
         "sort": 1,
         "type": "query"
-      },
-      {
-        "allValue": null,
-        "current": {
-          "selected": false,
-          "text": "dataflow",
-          "value": "dataflow"
-        },
-        "description": null,
-        "error": null,
-        "hide": 0,
-        "includeAll": false,
-        "label": "DataFlow Application",
-        "multi": false,
-        "name": "df_application",
-        "options": [
-          {
-            "selected": true,
-            "text": "dataflow",
-            "value": "dataflow"
-          }
-        ],
-        "query": "dataflow",
-        "queryValue": "",
-        "skipUrlSync": false,
-        "type": "custom"
-      },
-      {
-        "allValue": null,
-        "current": {
-          "selected": false,
-          "text": "trb",
-          "value": "trb"
-        },
-        "description": null,
-        "error": null,
-        "hide": 0,
-        "includeAll": false,
-        "label": "TRB Instance",
-        "multi": false,
-        "name": "TRBInstance",
-        "options": [
-          {
-            "selected": true,
-            "text": "trb",
-            "value": "trb"
-          }
-        ],
-        "query": "trb",
-        "skipUrlSync": false,
-        "type": "custom"
-      },
-      {
-        "allValue": null,
-        "current": {
-          "selected": false,
-          "text": "datawriter",
-          "value": "datawriter"
-        },
-        "description": null,
-        "error": null,
-        "hide": 0,
-        "includeAll": false,
-        "label": "Data Writer Instance",
-        "multi": false,
-        "name": "data_writer",
-        "options": [
-          {
-            "selected": true,
-            "text": "datawriter",
-            "value": "datawriter"
-          }
-        ],
-        "query": "datawriter",
-        "skipUrlSync": false,
-        "type": "custom"
-      },
-      {
-        "allValue": null,
-        "current": {
-          "selected": false,
-          "text": "trigger",
-          "value": "trigger"
-        },
-        "description": null,
-        "error": null,
-        "hide": 0,
-        "includeAll": false,
-        "label": "Trigger App",
-        "multi": false,
-        "name": "trigger_app",
-        "options": [
-          {
-            "selected": true,
-            "text": "trigger",
-            "value": "trigger"
-          }
-        ],
-        "query": "trigger",
-        "skipUrlSync": false,
-        "type": "custom"
-      },
-      {
-        "allValue": null,
-        "current": {
-          "selected": false,
-          "text": "mlt",
-          "value": "mlt"
-        },
-        "description": null,
-        "error": null,
-        "hide": 0,
-        "includeAll": false,
-        "label": "Trigger Module",
-        "multi": false,
-        "name": "trigger_module",
-        "options": [
-          {
-            "selected": true,
-            "text": "mlt",
-            "value": "mlt"
-          }
-        ],
-        "query": "mlt",
-        "skipUrlSync": false,
-        "type": "custom"
       }
     ]
   },
   "time": {
-    "from": "now-5m",
+    "from": "now-15m",
     "to": "now"
   },
   "timepicker": {
@@ -2152,5 +2000,5 @@
   "timezone": "",
   "title": "DAQ overview",
   "uid": "U_8ZFDZnh",
-  "version": 60
+  "version": 62
 }

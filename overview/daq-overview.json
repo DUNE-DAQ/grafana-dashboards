@@ -25,12 +25,6 @@
       "version": "8.0.6"
     },
     {
-      "type": "panel",
-      "id": "graph",
-      "name": "Graph (old)",
-      "version": ""
-    },
-    {
       "type": "datasource",
       "id": "influxdb",
       "name": "InfluxDB",
@@ -84,7 +78,7 @@
   "gnetId": null,
   "graphTooltip": 0,
   "id": null,
-  "iteration": 1635168509354,
+  "iteration": 1635264822103,
   "links": [
     {
       "asDropdown": true,
@@ -540,7 +534,7 @@
           "measurement": "dunedaq.rcif.runinfo.Info",
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "SELECT \"runtime\" FROM \"dunedaq.rcif.runinfo.Info\" WHERE (\"source_id\" =~ /${partition}_.*/) AND $timeFilter",
+          "query": "SELECT last(\"runtime\") FROM \"dunedaq.rcif.runinfo.Info\" WHERE (\"source_id\" =~ /${partition}_.*/) AND $timeFilter",
           "rawQuery": true,
           "refId": "A",
           "resultFormat": "table",
@@ -632,7 +626,7 @@
           "measurement": "dunedaq.rcif.runinfo.Info",
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "SELECT \"runno\" FROM \"dunedaq.rcif.runinfo.Info\" WHERE (\"source_id\" =~ /${partition}_.*/) AND $timeFilter",
+          "query": "SELECT last(\"runno\") FROM \"dunedaq.rcif.runinfo.Info\" WHERE (\"source_id\" =~ /${partition}_.*/) AND $timeFilter",
           "rawQuery": true,
           "refId": "A",
           "resultFormat": "table",
@@ -670,8 +664,19 @@
           "mappings": [
             {
               "options": {
+                "0": {
+                  "color": "dark-red",
+                  "index": 1,
+                  "text": "0"
+                }
+              },
+              "type": "value"
+            },
+            {
+              "options": {
                 "match": "null",
                 "result": {
+                  "index": 0,
                   "text": "N/A"
                 }
               },
@@ -789,8 +794,19 @@
           "mappings": [
             {
               "options": {
+                "0": {
+                  "color": "dark-red",
+                  "index": 1,
+                  "text": "0"
+                }
+              },
+              "type": "value"
+            },
+            {
+              "options": {
                 "match": "null",
                 "result": {
+                  "index": 0,
                   "text": "N/A"
                 }
               },
@@ -801,7 +817,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "dark-yellow",
+                "color": "dark-green",
                 "value": null
               }
             ]
@@ -882,303 +898,6 @@
       "type": "stat"
     },
     {
-      "collapsed": false,
-      "datasource": null,
-      "gridPos": {
-        "h": 1,
-        "w": 24,
-        "x": 0,
-        "y": 5
-      },
-      "id": 21,
-      "panels": [],
-      "title": "Message reporting",
-      "type": "row"
-    },
-    {
-      "datasource": "${DS_ERS}",
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "mode": "thresholds"
-          },
-          "custom": {
-            "align": "auto",
-            "displayMode": "color-text",
-            "filterable": true
-          },
-          "mappings": [
-            {
-              "options": {
-                "ERROR": {
-                  "color": "orange",
-                  "index": 2,
-                  "text": "ERROR"
-                },
-                "FATAL": {
-                  "color": "red",
-                  "index": 3,
-                  "text": "FATAL"
-                },
-                "INFO": {
-                  "color": "blue",
-                  "index": 0,
-                  "text": "INFO"
-                },
-                "WARNING": {
-                  "color": "yellow",
-                  "index": 1,
-                  "text": "WARNING"
-                }
-              },
-              "type": "value"
-            }
-          ],
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "yellow",
-                "value": null
-              }
-            ]
-          }
-        },
-        "overrides": [
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "message"
-            },
-            "properties": [
-              {
-                "id": "custom.width",
-                "value": 935
-              }
-            ]
-          }
-        ]
-      },
-      "gridPos": {
-        "h": 10,
-        "w": 24,
-        "x": 0,
-        "y": 6
-      },
-      "id": 15,
-      "options": {
-        "showHeader": true,
-        "sortBy": []
-      },
-      "pluginVersion": "8.0.6",
-      "targets": [
-        {
-          "format": "table",
-          "group": [],
-          "metricColumn": "none",
-          "rawQuery": true,
-          "rawSql": "SELECT time,severity,application_name,issue_name,message,host_name\nFROM public.\"ErrorReports\"\nWHERE partition='${partition}'\nORDER BY -time\n",
-          "refId": "A",
-          "select": [
-            [
-              {
-                "params": [
-                  "chain"
-                ],
-                "type": "column"
-              }
-            ]
-          ],
-          "table": "\"ErrorReports\"",
-          "timeColumn": "\"time\"",
-          "timeColumnType": "int8",
-          "where": [
-            {
-              "name": "$__unixEpochFilter",
-              "params": [],
-              "type": "macro"
-            }
-          ]
-        }
-      ],
-      "title": "Message Reporting",
-      "type": "table"
-    },
-    {
-      "collapsed": false,
-      "datasource": null,
-      "gridPos": {
-        "h": 1,
-        "w": 24,
-        "x": 0,
-        "y": 16
-      },
-      "id": 19,
-      "panels": [],
-      "title": "Operational monitoring",
-      "type": "row"
-    },
-    {
-      "datasource": "${DS_INFLUXTEST}",
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "mode": "palette-classic"
-          },
-          "custom": {
-            "axisLabel": "milliseconds",
-            "axisPlacement": "auto",
-            "barAlignment": 0,
-            "drawStyle": "line",
-            "fillOpacity": 0,
-            "gradientMode": "none",
-            "hideFrom": {
-              "legend": false,
-              "tooltip": false,
-              "viz": false
-            },
-            "lineInterpolation": "linear",
-            "lineWidth": 2,
-            "pointSize": 4,
-            "scaleDistribution": {
-              "type": "linear"
-            },
-            "showPoints": "always",
-            "spanNulls": true,
-            "stacking": {
-              "group": "A",
-              "mode": "none"
-            },
-            "thresholdsStyle": {
-              "mode": "off"
-            }
-          },
-          "mappings": [],
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "green",
-                "value": null
-              },
-              {
-                "color": "red",
-                "value": 80
-              }
-            ]
-          },
-          "unit": "short"
-        },
-        "overrides": [
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "avg ms per TR"
-            },
-            "properties": [
-              {
-                "id": "color",
-                "value": {
-                  "fixedColor": "semi-dark-green",
-                  "mode": "fixed"
-                }
-              }
-            ]
-          }
-        ]
-      },
-      "gridPos": {
-        "h": 7,
-        "w": 6,
-        "x": 0,
-        "y": 17
-      },
-      "id": 23,
-      "links": [],
-      "options": {
-        "legend": {
-          "calcs": [],
-          "displayMode": "list",
-          "placement": "bottom"
-        },
-        "tooltip": {
-          "mode": "single"
-        }
-      },
-      "pluginVersion": "8.0.6",
-      "targets": [
-        {
-          "alias": "$tag_source_id",
-          "groupBy": [
-            {
-              "params": [
-                "$__interval"
-              ],
-              "type": "time"
-            },
-            {
-              "params": [
-                "null"
-              ],
-              "type": "fill"
-            }
-          ],
-          "hide": false,
-          "measurement": "dunedaq.dfmodules.triggerrecordbuilderinfo.Info",
-          "orderByTime": "ASC",
-          "policy": "default",
-          "query": "SELECT mean(\"average_millisecond_per_trigger\") FROM \"dunedaq.dfmodules.triggerrecordbuilderinfo.Info\" WHERE (\"source_id\" =~ /${partition}_.*/) AND $timeFilter GROUP BY time($__interval), \"source_id\" fill(null)",
-          "rawQuery": true,
-          "refId": "B",
-          "resultFormat": "time_series",
-          "select": [
-            [
-              {
-                "params": [
-                  "average_millisecond_per_trigger"
-                ],
-                "type": "field"
-              },
-              {
-                "params": [],
-                "type": "distinct"
-              }
-            ]
-          ],
-          "tags": [
-            {
-              "key": "source_id",
-              "operator": "=",
-              "value": "maroda_test_dataflow.trb"
-            }
-          ]
-        }
-      ],
-      "timeFrom": null,
-      "timeShift": null,
-      "title": "Event Builders Information",
-      "transformations": [
-        {
-          "id": "renameByRegex",
-          "options": {
-            "regex": ".*_(.*)\\.(.*)",
-            "renamePattern": "$1 $2"
-          }
-        },
-        {
-          "id": "calculateField",
-          "options": {
-            "alias": "Overall average",
-            "mode": "reduceRow",
-            "reduce": {
-              "reducer": "mean"
-            }
-          }
-        }
-      ],
-      "type": "timeseries"
-    },
-    {
       "datasource": "${DS_INFLUXTEST}",
       "fieldConfig": {
         "defaults": {
@@ -1235,8 +954,8 @@
       "gridPos": {
         "h": 7,
         "w": 6,
-        "x": 6,
-        "y": 17
+        "x": 0,
+        "y": 5
       },
       "id": 2,
       "links": [],
@@ -1441,7 +1160,7 @@
             "mode": "palette-classic"
           },
           "custom": {
-            "axisLabel": "GiBytes/s",
+            "axisLabel": "MiBytes/s",
             "axisPlacement": "auto",
             "barAlignment": 0,
             "drawStyle": "line",
@@ -1489,8 +1208,8 @@
       "gridPos": {
         "h": 7,
         "w": 6,
-        "x": 12,
-        "y": 17
+        "x": 6,
+        "y": 5
       },
       "id": 10,
       "links": [],
@@ -1512,7 +1231,7 @@
           "measurement": "dunedaq.dfmodules.datawriterinfo.Info",
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "SELECT non_negative_derivative(distinct(\"bytes_output\"), 1s)  / 1073741824 FROM \"dunedaq.dfmodules.datawriterinfo.Info\" WHERE (\"source_id\" =~ /${partition}_.*/) AND $timeFilter GROUP BY time($__interval), \"source_id\"\nfill(null)",
+          "query": "SELECT non_negative_derivative(distinct(\"bytes_output\"), 1s)  / 1048576 FROM \"dunedaq.dfmodules.datawriterinfo.Info\" WHERE (\"source_id\" =~ /${partition}_.*/) AND $timeFilter GROUP BY time($__interval), \"source_id\"\nfill(null)",
           "rawQuery": true,
           "refId": "C",
           "resultFormat": "time_series",
@@ -1554,6 +1273,246 @@
       "type": "timeseries"
     },
     {
+      "datasource": "${DS_ERS}",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "custom": {
+            "align": "auto",
+            "displayMode": "color-text",
+            "filterable": true
+          },
+          "mappings": [
+            {
+              "options": {
+                "ERROR": {
+                  "color": "orange",
+                  "index": 2,
+                  "text": "ERROR"
+                },
+                "FATAL": {
+                  "color": "red",
+                  "index": 3,
+                  "text": "FATAL"
+                },
+                "INFO": {
+                  "color": "blue",
+                  "index": 0,
+                  "text": "INFO"
+                },
+                "WARNING": {
+                  "color": "yellow",
+                  "index": 1,
+                  "text": "WARNING"
+                }
+              },
+              "type": "value"
+            }
+          ],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "yellow",
+                "value": null
+              }
+            ]
+          }
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "message"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 277
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "severity"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 92
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "application_name"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 94
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "host_name"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 117
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 22,
+        "w": 12,
+        "x": 12,
+        "y": 5
+      },
+      "id": 15,
+      "options": {
+        "showHeader": true,
+        "sortBy": []
+      },
+      "pluginVersion": "8.0.6",
+      "targets": [
+        {
+          "format": "table",
+          "group": [],
+          "metricColumn": "none",
+          "rawQuery": true,
+          "rawSql": "SELECT time,severity,application_name,issue_name,message,host_name\nFROM public.\"ErrorReports\"\nWHERE partition='${partition}'\nORDER BY -time\n",
+          "refId": "A",
+          "select": [
+            [
+              {
+                "params": [
+                  "chain"
+                ],
+                "type": "column"
+              }
+            ]
+          ],
+          "table": "\"ErrorReports\"",
+          "timeColumn": "\"time\"",
+          "timeColumnType": "int8",
+          "where": [
+            {
+              "name": "$__unixEpochFilter",
+              "params": [],
+              "type": "macro"
+            }
+          ]
+        }
+      ],
+      "title": "Message Reporting",
+      "type": "table"
+    },
+    {
+      "datasource": null,
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisLabel": "MBytes/s",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "drawStyle": "line",
+            "fillOpacity": 0,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "auto",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "decimals": 2,
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "sci"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 7,
+        "w": 6,
+        "x": 0,
+        "y": 12
+      },
+      "id": 36,
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "hidden",
+          "placement": "bottom"
+        },
+        "tooltip": {
+          "mode": "single"
+        }
+      },
+      "targets": [
+        {
+          "exemplar": true,
+          "expr": "rate(node_network_receive_bytes_total{job=\"node\", device!=\"lo\"}[1m])/1000000.",
+          "hide": false,
+          "instant": false,
+          "interval": "",
+          "legendFormat": "",
+          "refId": "A"
+        },
+        {
+          "exemplar": true,
+          "expr": "rate(node_network_transmit_bytes_total{job=\"node\", device!=\"lo\"}[1m])/1000000.",
+          "hide": false,
+          "instant": false,
+          "interval": "",
+          "legendFormat": "",
+          "refId": "B"
+        }
+      ],
+      "timeFrom": null,
+      "title": "Network I/O",
+      "type": "timeseries"
+    },
+    {
       "datasource": "${DS_INFLUXTEST}",
       "fieldConfig": {
         "defaults": {
@@ -1561,7 +1520,7 @@
             "mode": "palette-classic"
           },
           "custom": {
-            "axisLabel": "",
+            "axisLabel": "milliseconds",
             "axisPlacement": "auto",
             "barAlignment": 0,
             "drawStyle": "line",
@@ -1574,11 +1533,11 @@
             },
             "lineInterpolation": "linear",
             "lineWidth": 2,
-            "pointSize": 5,
+            "pointSize": 4,
             "scaleDistribution": {
               "type": "linear"
             },
-            "showPoints": "never",
+            "showPoints": "always",
             "spanNulls": true,
             "stacking": {
               "group": "A",
@@ -1604,15 +1563,31 @@
           },
           "unit": "short"
         },
-        "overrides": []
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "avg ms per TR"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "semi-dark-green",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          }
+        ]
       },
       "gridPos": {
         "h": 7,
-        "w": 8,
-        "x": 8,
-        "y": 24
+        "w": 6,
+        "x": 0,
+        "y": 19
       },
-      "id": 11,
+      "id": 23,
       "links": [],
       "options": {
         "legend": {
@@ -1627,42 +1602,26 @@
       "pluginVersion": "8.0.6",
       "targets": [
         {
-          "alias": "Received triggers",
-          "groupBy": [],
-          "hide": false,
-          "measurement": "dunedaq.trigger.moduleleveltriggerinfo.Info",
-          "orderByTime": "ASC",
-          "policy": "default",
-          "query": "SELECT \"tc_received_count\" FROM \"dunedaq.trigger.moduleleveltriggerinfo.Info\" WHERE (\"source_id\" = '${partition}_${trigger_app}.${trigger_module}') AND $timeFilter",
-          "rawQuery": true,
-          "refId": "A",
-          "resultFormat": "time_series",
-          "select": [
-            [
-              {
-                "params": [
-                  "tc_received_count"
-                ],
-                "type": "field"
-              }
-            ]
-          ],
-          "tags": [
+          "alias": "$tag_source_id",
+          "groupBy": [
             {
-              "key": "source_id",
-              "operator": "=",
-              "value": "${partition}_trigger.mlt"
+              "params": [
+                "$__interval"
+              ],
+              "type": "time"
+            },
+            {
+              "params": [
+                "null"
+              ],
+              "type": "fill"
             }
-          ]
-        },
-        {
-          "alias": "Sent triggers",
-          "groupBy": [],
+          ],
           "hide": false,
-          "measurement": "dunedaq.trigger.moduleleveltriggerinfo.Info",
+          "measurement": "dunedaq.dfmodules.triggerrecordbuilderinfo.Info",
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "SELECT \"td_sent_count\" FROM \"dunedaq.trigger.moduleleveltriggerinfo.Info\" WHERE (\"source_id\" = '${partition}_${trigger_app}.${trigger_module}') AND $timeFilter",
+          "query": "SELECT mean(\"average_millisecond_per_trigger\") FROM \"dunedaq.dfmodules.triggerrecordbuilderinfo.Info\" WHERE (\"source_id\" =~ /${partition}_.*/) AND $timeFilter GROUP BY time($__interval), \"source_id\" fill(null)",
           "rawQuery": true,
           "refId": "B",
           "resultFormat": "time_series",
@@ -1670,38 +1629,13 @@
             [
               {
                 "params": [
-                  "td_sent_count"
+                  "average_millisecond_per_trigger"
                 ],
                 "type": "field"
-              }
-            ]
-          ],
-          "tags": [
-            {
-              "key": "source_id",
-              "operator": "=",
-              "value": "${partition}_trigger.mlt"
-            }
-          ]
-        },
-        {
-          "alias": "Inhibited triggers",
-          "groupBy": [],
-          "hide": false,
-          "measurement": "dunedaq.trigger.moduleleveltriggerinfo.Info",
-          "orderByTime": "ASC",
-          "policy": "default",
-          "query": "SELECT \"td_inhibited_count\" FROM \"dunedaq.trigger.moduleleveltriggerinfo.Info\" WHERE (\"source_id\" = '${partition}_${trigger_app}.${trigger_module}') AND $timeFilter",
-          "rawQuery": true,
-          "refId": "C",
-          "resultFormat": "time_series",
-          "select": [
-            [
+              },
               {
-                "params": [
-                  "td_inhibited_count"
-                ],
-                "type": "field"
+                "params": [],
+                "type": "distinct"
               }
             ]
           ],
@@ -1709,291 +1643,34 @@
             {
               "key": "source_id",
               "operator": "=",
-              "value": "${partition}_trigger.mlt"
-            }
-          ]
-        },
-        {
-          "alias": "Paused triggers",
-          "groupBy": [],
-          "hide": false,
-          "measurement": "dunedaq.trigger.moduleleveltriggerinfo.Info",
-          "orderByTime": "ASC",
-          "policy": "default",
-          "query": "SELECT \"td_paused_count\" FROM \"dunedaq.trigger.moduleleveltriggerinfo.Info\" WHERE (\"source_id\" = '${partition}_${trigger_app}.${trigger_module}') AND $timeFilter",
-          "rawQuery": true,
-          "refId": "D",
-          "resultFormat": "time_series",
-          "select": [
-            [
-              {
-                "params": [
-                  "td_paused_count"
-                ],
-                "type": "field"
-              }
-            ]
-          ],
-          "tags": [
-            {
-              "key": "source_id",
-              "operator": "=",
-              "value": "${partition}_trigger.mlt"
-            }
-          ]
-        },
-        {
-          "alias": "total_triggers",
-          "groupBy": [],
-          "hide": false,
-          "measurement": "dunedaq.trigger.moduleleveltriggerinfo.Info",
-          "orderByTime": "ASC",
-          "policy": "default",
-          "query": "SELECT \"td_total_count\" FROM \"dunedaq.trigger.moduleleveltriggerinfo.Info\" WHERE (\"source_id\" = '${partition}_${trigger_app}.${trigger_module}') AND $timeFilter",
-          "rawQuery": true,
-          "refId": "E",
-          "resultFormat": "time_series",
-          "select": [
-            [
-              {
-                "params": [
-                  "td_total_count"
-                ],
-                "type": "field"
-              }
-            ]
-          ],
-          "tags": [
-            {
-              "key": "source_id",
-              "operator": "=",
-              "value": "${partition}_trigger.mlt"
+              "value": "maroda_test_dataflow.trb"
             }
           ]
         }
       ],
       "timeFrom": null,
       "timeShift": null,
-      "title": "Trigger & HSI Information",
+      "title": "Event Builders Information",
+      "transformations": [
+        {
+          "id": "renameByRegex",
+          "options": {
+            "regex": ".*_(.*)\\.(.*)",
+            "renamePattern": "$1 $2"
+          }
+        },
+        {
+          "id": "calculateField",
+          "options": {
+            "alias": "Overall average",
+            "mode": "reduceRow",
+            "reduce": {
+              "reducer": "mean"
+            }
+          }
+        }
+      ],
       "type": "timeseries"
-    },
-    {
-      "aliasColors": {},
-      "bars": false,
-      "dashLength": 10,
-      "dashes": false,
-      "datasource": "${DS_INFLUXTEST}",
-      "fill": 0,
-      "fillGradient": 0,
-      "gridPos": {
-        "h": 7,
-        "w": 8,
-        "x": 16,
-        "y": 24
-      },
-      "hiddenSeries": false,
-      "id": 6,
-      "legend": {
-        "avg": false,
-        "current": false,
-        "max": false,
-        "min": false,
-        "show": true,
-        "total": false,
-        "values": false
-      },
-      "lines": true,
-      "linewidth": 1,
-      "links": [],
-      "nullPointMode": "null",
-      "options": {
-        "alertThreshold": true
-      },
-      "percentage": false,
-      "pluginVersion": "8.0.6",
-      "pointradius": 1,
-      "points": false,
-      "renderer": "flot",
-      "seriesOverrides": [],
-      "spaceLength": 10,
-      "stack": false,
-      "steppedLine": false,
-      "targets": [
-        {
-          "alias": "",
-          "expr": "",
-          "format": "time_series",
-          "groupBy": [
-            {
-              "params": [
-                "source_id"
-              ],
-              "type": "tag"
-            }
-          ],
-          "hide": true,
-          "intervalFactor": 1,
-          "measurement": "dunedaq.readout.datalinkhandlerinfo.Info",
-          "orderByTime": "ASC",
-          "policy": "default",
-          "query": "SELECT requests FROM \"dunedaq.readout.datalinkhandlerinfo.Info\" ",
-          "rawQuery": false,
-          "refId": "A",
-          "resultFormat": "time_series",
-          "select": [
-            [
-              {
-                "params": [
-                  "requests"
-                ],
-                "type": "field"
-              }
-            ]
-          ],
-          "tags": []
-        },
-        {
-          "alias": "",
-          "expr": "",
-          "format": "time_series",
-          "groupBy": [
-            {
-              "params": [
-                "source_id"
-              ],
-              "type": "tag"
-            }
-          ],
-          "hide": true,
-          "intervalFactor": 1,
-          "measurement": "dunedaq.readout.datalinkhandlerinfo.Info",
-          "orderByTime": "ASC",
-          "policy": "default",
-          "query": "SELECT found_requested FROM \"dunedaq.readout.datalinkhandlerinfo.Info\"",
-          "rawQuery": false,
-          "refId": "B",
-          "resultFormat": "time_series",
-          "select": [
-            [
-              {
-                "params": [
-                  "found_requested"
-                ],
-                "type": "field"
-              }
-            ]
-          ],
-          "tags": []
-        },
-        {
-          "alias": "",
-          "expr": "",
-          "format": "time_series",
-          "groupBy": [
-            {
-              "params": [
-                "source_id"
-              ],
-              "type": "tag"
-            }
-          ],
-          "hide": false,
-          "intervalFactor": 1,
-          "measurement": "dunedaq.readout.datalinkhandlerinfo.Info",
-          "orderByTime": "ASC",
-          "policy": "default",
-          "query": "SELECT retry_request FROM \"dunedaq.readout.datalinkhandlerinfo.Info\"",
-          "rawQuery": false,
-          "refId": "C",
-          "resultFormat": "time_series",
-          "select": [
-            [
-              {
-                "params": [
-                  "retry_request"
-                ],
-                "type": "field"
-              }
-            ]
-          ],
-          "tags": []
-        },
-        {
-          "alias": "",
-          "expr": "",
-          "format": "time_series",
-          "groupBy": [
-            {
-              "params": [
-                "source_id"
-              ],
-              "type": "tag"
-            }
-          ],
-          "hide": false,
-          "intervalFactor": 1,
-          "measurement": "dunedaq.readout.datalinkhandlerinfo.Info",
-          "orderByTime": "ASC",
-          "policy": "default",
-          "query": "SELECT request_window_too_old FROM \"dunedaq.readout.datalinkhandlerinfo.Info\"",
-          "rawQuery": false,
-          "refId": "D",
-          "resultFormat": "time_series",
-          "select": [
-            [
-              {
-                "params": [
-                  "request_window_too_old"
-                ],
-                "type": "field"
-              }
-            ]
-          ],
-          "tags": []
-        }
-      ],
-      "thresholds": [],
-      "timeFrom": null,
-      "timeRegions": [],
-      "timeShift": null,
-      "title": "Link Handler Information",
-      "tooltip": {
-        "shared": true,
-        "sort": 0,
-        "value_type": "individual"
-      },
-      "type": "graph",
-      "xaxis": {
-        "buckets": null,
-        "mode": "time",
-        "name": null,
-        "show": true,
-        "values": []
-      },
-      "yaxes": [
-        {
-          "$$hashKey": "object:204",
-          "format": "short",
-          "label": null,
-          "logBase": 1,
-          "max": null,
-          "min": null,
-          "show": true
-        },
-        {
-          "$$hashKey": "object:205",
-          "format": "short",
-          "label": null,
-          "logBase": 1,
-          "max": null,
-          "min": null,
-          "show": true
-        }
-      ],
-      "yaxis": {
-        "align": false,
-        "alignLevel": null
-      }
     }
   ],
   "refresh": "5s",
@@ -2058,5 +1735,5 @@
   "timezone": "",
   "title": "DAQ overview",
   "uid": "U_8ZFDZnh",
-  "version": 68
+  "version": 74
 }

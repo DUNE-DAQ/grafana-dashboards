@@ -7,14 +7,6 @@
       "type": "datasource",
       "pluginId": "influxdb",
       "pluginName": "InfluxDB"
-    },
-    {
-      "name": "DS_ERS",
-      "label": "ERS",
-      "description": "",
-      "type": "datasource",
-      "pluginId": "postgres",
-      "pluginName": "PostgreSQL"
     }
   ],
   "__requires": [
@@ -34,12 +26,6 @@
       "type": "datasource",
       "id": "influxdb",
       "name": "InfluxDB",
-      "version": "1.0.0"
-    },
-    {
-      "type": "datasource",
-      "id": "postgres",
-      "name": "PostgreSQL",
       "version": "1.0.0"
     },
     {
@@ -73,7 +59,7 @@
   "gnetId": null,
   "graphTooltip": 0,
   "id": null,
-  "iteration": 1634294411098,
+  "iteration": 1635358180293,
   "links": [],
   "panels": [
     {
@@ -1762,8 +1748,8 @@
       {
         "allValue": null,
         "current": {},
-        "datasource": "${DS_ERS}",
-        "definition": "SELECT partition FROM public.\"ErrorReports\"",
+        "datasource": "${DS_INFLUXTEST}",
+        "definition": "SHOW SERIES FROM \"dunedaq.dfmodules.triggerrecordbuilderinfo.Info\" WHERE $timeFilter",
         "description": null,
         "error": null,
         "hide": 0,
@@ -1772,74 +1758,52 @@
         "multi": false,
         "name": "partition",
         "options": [],
-        "query": "SELECT partition FROM public.\"ErrorReports\"",
+        "query": "SHOW SERIES FROM \"dunedaq.dfmodules.triggerrecordbuilderinfo.Info\" WHERE $timeFilter",
         "refresh": 1,
-        "regex": "",
+        "regex": ".*,source_id=(.*)_.*",
         "skipUrlSync": false,
         "sort": 0,
         "type": "query"
       },
       {
-        "allValue": "dataflow",
-        "current": {
-          "selected": true,
-          "text": "dataflow",
-          "value": "dataflow"
-        },
+        "allValue": null,
+        "current": {},
+        "datasource": "${DS_INFLUXTEST}",
+        "definition": "SHOW SERIES FROM \"dunedaq.dfmodules.triggerrecordbuilderinfo.Info\" WHERE $timeFilter",
         "description": null,
         "error": null,
         "hide": 0,
-        "includeAll": true,
+        "includeAll": false,
         "label": "Application name",
         "multi": false,
         "name": "application",
-        "options": [
-          {
-            "selected": false,
-            "text": "All",
-            "value": "$__all"
-          },
-          {
-            "selected": true,
-            "text": "dataflow",
-            "value": "dataflow"
-          }
-        ],
-        "query": "dataflow",
-        "queryValue": "",
+        "options": [],
+        "query": "SHOW SERIES FROM \"dunedaq.dfmodules.triggerrecordbuilderinfo.Info\" WHERE $timeFilter",
+        "refresh": 1,
+        "regex": ".*,source_id=${partition}_(.*)\\..*",
         "skipUrlSync": false,
-        "type": "custom"
+        "sort": 0,
+        "type": "query"
       },
       {
-        "allValue": "trb",
-        "current": {
-          "selected": false,
-          "text": "trb",
-          "value": "trb"
-        },
+        "allValue": null,
+        "current": {},
+        "datasource": "${DS_INFLUXTEST}",
+        "definition": "SHOW SERIES FROm \"dunedaq.dfmodules.triggerrecordbuilderinfo.Info\" WHERE $timeFilter",
         "description": "name of the ",
         "error": null,
         "hide": 0,
-        "includeAll": true,
+        "includeAll": false,
         "label": "TRB name",
         "multi": false,
         "name": "TRBInstance",
-        "options": [
-          {
-            "selected": false,
-            "text": "All",
-            "value": "$__all"
-          },
-          {
-            "selected": true,
-            "text": "trb",
-            "value": "trb"
-          }
-        ],
-        "query": "trb",
-        "queryValue": "",
+        "options": [],
+        "query": "SHOW SERIES FROm \"dunedaq.dfmodules.triggerrecordbuilderinfo.Info\" WHERE $timeFilter",
+        "refresh": 1,
+        "regex": ".*,source_id=${partition}_${application}\\.(.*)",
         "skipUrlSync": false,
-        "type": "custom"
+        "sort": 0,
+        "type": "query"
       }
     ]
   },
@@ -1875,5 +1839,5 @@
   "timezone": "",
   "title": "Event Builder",
   "uid": "9GPgqzO7z",
-  "version": 7
+  "version": 8
 }

@@ -78,7 +78,7 @@
   "gnetId": null,
   "graphTooltip": 0,
   "id": null,
-  "iteration": 1635264822106,
+  "iteration": 1635264822109,
   "links": [
     {
       "asDropdown": true,
@@ -307,10 +307,10 @@
           "format": "time_series",
           "groupBy": [],
           "intervalFactor": 1,
-          "measurement": "dunedaq.dfmodules.datawriterinfo.Info",
+          "measurement": "dunedaq.trigger.moduleleveltriggerinfo.Info",
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "SELECT non_negative_derivative(cumulative_sum(sum(\"new_records_written\")), 1s) FROM \"dunedaq.dfmodules.datawriterinfo.Info\" WHERE (\"source_id\" =~ /${partition}_.*/) AND $timeFilter GROUP BY time(500ms), \"source_id\" fill(null)",
+          "query": "SELECT non_negative_derivative(last(\"td_sent_count\"), 1s) FROM \"dunedaq.trigger.moduleleveltriggerinfo.Info\" WHERE (\"source_id\" =~ /${partition}_.*/) AND $timeFilter GROUP BY time(500ms), \"source_id\"",
           "rawQuery": true,
           "refId": "A",
           "resultFormat": "table",
@@ -318,7 +318,7 @@
             [
               {
                 "params": [
-                  "records_written"
+                  "td_sent_count"
                 ],
                 "type": "field"
               },
@@ -334,12 +334,12 @@
             {
               "key": "source_id",
               "operator": "=",
-              "value": "maroda_test_dataflow.datawriter"
+              "value": "maroda_test_trigger.mlt"
             }
           ]
         }
       ],
-      "title": "Taking data at",
+      "title": "Sending triggers at",
       "transformations": [
         {
           "id": "calculateField",
@@ -733,10 +733,10 @@
             }
           ],
           "intervalFactor": 1,
-          "measurement": "dunedaq.dfmodules.datawriterinfo.Info",
+          "measurement": "dunedaq.trigger.moduleleveltriggerinfo.Info",
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "SELECT distinct(\"records_received\") FROM \"dunedaq.dfmodules.datawriterinfo.Info\" WHERE (\"source_id\" =~ /${partition}_.*/) AND $timeFilter GROUP BY time(500ms), \"source_id\" fill(null)",
+          "query": "SELECT last(\"td_sent_count\") FROM \"dunedaq.trigger.moduleleveltriggerinfo.Info\" WHERE (\"source_id\" =~ /${partition}_.*/) GROUP BY \"source_id\"",
           "rawQuery": true,
           "refId": "A",
           "resultFormat": "table",
@@ -744,17 +744,13 @@
             [
               {
                 "params": [
-                  "new_records_received"
+                  "td_sent_count"
                 ],
                 "type": "field"
               },
               {
                 "params": [],
                 "type": "sum"
-              },
-              {
-                "params": [],
-                "type": "cumulative_sum"
               }
             ]
           ],
@@ -762,12 +758,12 @@
             {
               "key": "source_id",
               "operator": "=",
-              "value": "maroda_test_dataflow.datawriter"
+              "value": "maroda_test_trigger.mlt"
             }
           ]
         }
       ],
-      "title": "Processed triggers",
+      "title": "Issued triggers",
       "transformations": [
         {
           "id": "calculateField",
@@ -1808,7 +1804,7 @@
     ]
   },
   "time": {
-    "from": "now-30m",
+    "from": "now-15m",
     "to": "now"
   },
   "timepicker": {
@@ -1839,5 +1835,5 @@
   "timezone": "",
   "title": "DAQ overview",
   "uid": "U_8ZFDZnh",
-  "version": 75
+  "version": 77
 }

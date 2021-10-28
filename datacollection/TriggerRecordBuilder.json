@@ -59,7 +59,7 @@
   "gnetId": null,
   "graphTooltip": 0,
   "id": null,
-  "iteration": 1635358180293,
+  "iteration": 1635413394337,
   "links": [],
   "panels": [
     {
@@ -843,7 +843,7 @@
           {
             "matcher": {
               "id": "byName",
-              "options": "Pending TDs"
+              "options": "Pending TRs"
             },
             "properties": [
               {
@@ -1000,7 +1000,7 @@
           ]
         },
         {
-          "alias": "Pending TDs",
+          "alias": "Pending TRs",
           "groupBy": [
             {
               "params": [
@@ -1539,7 +1539,7 @@
           "measurement": "dunedaq.appfwk.queueinfo.Info",
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "SELECT \"number_of_elements\"/\"capacity\"  * 100 FROM \"dunedaq.appfwk.queueinfo.Info\" WHERE (\"source_id\" = '${partition}_dataflow.trigger_record_q') ",
+          "query": "SELECT \"number_of_elements\"/\"capacity\"  * 100 FROM \"dunedaq.appfwk.queueinfo.Info\" WHERE (\"source_id\" = '${partition}_dataflow.trigger_record_q') AND $timeFilter",
           "rawQuery": true,
           "refId": "C",
           "resultFormat": "time_series",
@@ -1664,7 +1664,7 @@
           "measurement": "dunedaq.appfwk.queueinfo.Info",
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "SELECT \"number_of_elements\" / \"capacity\" * 100 FROM \"dunedaq.appfwk.queueinfo.Info\" WHERE (\"source_id\" = '${partition}_${application}.data_fragments_q')",
+          "query": "SELECT \"number_of_elements\" / \"capacity\" * 100 FROM \"dunedaq.appfwk.queueinfo.Info\" WHERE (\"source_id\" = '${partition}_${application}.data_fragments_q') AND $timeFilter",
           "rawQuery": true,
           "refId": "C",
           "resultFormat": "time_series",
@@ -1704,7 +1704,7 @@
           "measurement": "dunedaq.appfwk.queueinfo.Info",
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "SELECT \"number_of_elements\" / \"capacity\" * 100 FROM \"dunedaq.appfwk.queueinfo.Info\" WHERE (\"source_id\" = '${partition}_${application}.trigger_decision_from_netq') ",
+          "query": "SELECT \"number_of_elements\" / \"capacity\" * 100 FROM \"dunedaq.appfwk.queueinfo.Info\" WHERE (\"source_id\" = '${partition}_${application}.trigger_decision_from_netq') AND $timeFilter",
           "rawQuery": true,
           "refId": "A",
           "resultFormat": "time_series",
@@ -1808,7 +1808,7 @@
     ]
   },
   "time": {
-    "from": "now-30m",
+    "from": "now-15m",
     "to": "now"
   },
   "timepicker": {
@@ -1839,5 +1839,5 @@
   "timezone": "",
   "title": "Event Builder",
   "uid": "9GPgqzO7z",
-  "version": 8
+  "version": 9
 }

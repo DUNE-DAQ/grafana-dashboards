@@ -52,7 +52,7 @@
   "gnetId": null,
   "graphTooltip": 0,
   "id": null,
-  "iteration": 1635331478303,
+  "iteration": 1636130671282,
   "links": [],
   "panels": [
     {
@@ -160,7 +160,7 @@
           "measurement": "dunedaq.readout.readoutinfo.ReadoutInfo",
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "SELECT mean(\"rate_payloads_consumed\") FROM \"dunedaq.readout.readoutinfo.ReadoutInfo\" WHERE (\"source_id\" =~ /${partition}_.*\\.datahandler_\\d+/) AND $timeFilter GROUP BY time($__interval), \"source_id\"",
+          "query": "SELECT mean(\"rate_payloads_consumed\") FROM \"dunedaq.readout.readoutinfo.ReadoutInfo\" WHERE (partition_id = \"\"source_id\" =~ /${partition}_.*\\.datahandler_\\d+/) AND $timeFilter GROUP BY time($__interval), \"source_id\"",
           "rawQuery": true,
           "refId": "A",
           "resultFormat": "time_series",
@@ -1446,7 +1446,7 @@
       },
       "id": 44,
       "panels": [],
-      "title": "Signle elements",
+      "title": "Single elements",
       "type": "row"
     },
     {
@@ -2390,7 +2390,7 @@
         "allValue": null,
         "current": {},
         "datasource": "${DS_INFLUXTEST}",
-        "definition": "SHOW SERIES FROM \"dunedaq.appfwk.appinfo.Info\"  where $timeFilter",
+        "definition": "SHOW TAG VALUES WITH KEY=\"partition_id\" where $timeFilter",
         "description": null,
         "error": null,
         "hide": 0,
@@ -2399,9 +2399,9 @@
         "multi": false,
         "name": "partition",
         "options": [],
-        "query": "SHOW SERIES FROM \"dunedaq.appfwk.appinfo.Info\"  where $timeFilter",
+        "query": "SHOW TAG VALUES WITH KEY=\"partition_id\" where $timeFilter",
         "refresh": 1,
-        "regex": "/.*source_id=(.*)_.*/",
+        "regex": "",
         "skipUrlSync": false,
         "sort": 1,
         "type": "query"
@@ -2410,7 +2410,7 @@
         "allValue": null,
         "current": {},
         "datasource": "${DS_INFLUXTEST}",
-        "definition": "SHOW  SERIES  FROM \"dunedaq.readout.readoutinfo.RawDataProcessorInfo\" WHERE $timeFilter",
+        "definition": "SHOW  TAG VALUES  FROM \"dunedaq.readout.readoutinfo.RawDataProcessorInfo\" WITH KEY=\"source_id\" WHERE $timeFilter",
         "description": null,
         "error": null,
         "hide": 0,
@@ -2419,9 +2419,9 @@
         "multi": false,
         "name": "readout_app",
         "options": [],
-        "query": "SHOW  SERIES  FROM \"dunedaq.readout.readoutinfo.RawDataProcessorInfo\" WHERE $timeFilter",
+        "query": "SHOW  TAG VALUES  FROM \"dunedaq.readout.readoutinfo.RawDataProcessorInfo\" WITH KEY=\"source_id\" WHERE $timeFilter",
         "refresh": 1,
-        "regex": "/${partition}_(.*)\\..*/",
+        "regex": "${partition}\\.(.*)\\..*",
         "skipUrlSync": false,
         "sort": 1,
         "type": "query"
@@ -2430,7 +2430,7 @@
         "allValue": null,
         "current": {},
         "datasource": "${DS_INFLUXTEST}",
-        "definition": "SHOW  SERIES  FROM \"dunedaq.readout.readoutinfo.RawDataProcessorInfo\" WHERE $timeFilter",
+        "definition": "SHOW TAG VALUES FROM \"dunedaq.readout.readoutinfo.RawDataProcessorInfo\" WITH KEY=\"source_id\" WHERE $timeFilter",
         "description": null,
         "error": null,
         "hide": 0,
@@ -2439,9 +2439,9 @@
         "multi": false,
         "name": "readout_module",
         "options": [],
-        "query": "SHOW  SERIES  FROM \"dunedaq.readout.readoutinfo.RawDataProcessorInfo\" WHERE $timeFilter",
+        "query": "SHOW TAG VALUES FROM \"dunedaq.readout.readoutinfo.RawDataProcessorInfo\" WITH KEY=\"source_id\" WHERE $timeFilter",
         "refresh": 1,
-        "regex": "/${partition}_${readout_app}\\.(.*)/",
+        "regex": "${partition}\\.${readout_app}\\.(.*)",
         "skipUrlSync": false,
         "sort": 1,
         "type": "query"
@@ -2480,5 +2480,5 @@
   "timezone": "",
   "title": "Readout",
   "uid": "HBIpw-dnz",
-  "version": 43
+  "version": 47
 }

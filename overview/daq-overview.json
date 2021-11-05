@@ -78,7 +78,7 @@
   "gnetId": null,
   "graphTooltip": 0,
   "id": null,
-  "iteration": 1635426342419,
+  "iteration": 1636127095553,
   "links": [
     {
       "asDropdown": true,
@@ -190,7 +190,7 @@
           "measurement": "dunedaq.appfwk.appinfo.Info",
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "SELECT \"state\" FROM \"dunedaq.appfwk.appinfo.Info\" WHERE (\"source_id\" =~ /${partition}_.*/) AND $timeFilter",
+          "query": "SELECT \"state\" FROM \"dunedaq.appfwk.appinfo.Info\" WHERE (\"partition_id\" = '${partition}') AND $timeFilter",
           "rawQuery": true,
           "refId": "A",
           "resultFormat": "table",
@@ -310,7 +310,7 @@
           "measurement": "dunedaq.trigger.moduleleveltriggerinfo.Info",
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "SELECT non_negative_derivative(last(\"td_sent_count\"), 1s) FROM \"dunedaq.trigger.moduleleveltriggerinfo.Info\" WHERE (\"source_id\" =~ /${partition}_.*/) AND $timeFilter GROUP BY time(500ms), \"source_id\"",
+          "query": "SELECT non_negative_derivative(last(\"td_sent_count\"), 1s) FROM \"dunedaq.trigger.moduleleveltriggerinfo.Info\" WHERE (\"partition_id\" ='${partition}') AND $timeFilter GROUP BY time(500ms), \"source_id\"",
           "rawQuery": true,
           "refId": "A",
           "resultFormat": "table",
@@ -422,7 +422,7 @@
           "measurement": "dunedaq.appfwk.appinfo.Info",
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "SELECT \"error\" FROM \"dunedaq.appfwk.appinfo.Info\" WHERE (\"source_id\" =~ /${partition}_.*/) AND $timeFilter",
+          "query": "SELECT \"error\" FROM \"dunedaq.appfwk.appinfo.Info\" WHERE (\"partition_id\" = '${partition}' )AND $timeFilter",
           "rawQuery": true,
           "refId": "A",
           "resultFormat": "time_series",
@@ -534,7 +534,7 @@
           "measurement": "dunedaq.rcif.runinfo.Info",
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "SELECT last(\"runtime\") FROM \"dunedaq.rcif.runinfo.Info\" WHERE (\"source_id\" =~ /${partition}_.*/) AND $timeFilter",
+          "query": "SELECT last(\"runtime\") FROM \"dunedaq.rcif.runinfo.Info\" WHERE (\"partition_id\" = '${partition}') AND $timeFilter",
           "rawQuery": true,
           "refId": "A",
           "resultFormat": "table",
@@ -559,6 +559,7 @@
         }
       ],
       "title": "Run time",
+      "transformations": [],
       "type": "stat"
     },
     {
@@ -626,7 +627,7 @@
           "measurement": "dunedaq.rcif.runinfo.Info",
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "SELECT last(\"runno\") FROM \"dunedaq.rcif.runinfo.Info\" WHERE (\"source_id\" =~ /${partition}_.*/) AND $timeFilter",
+          "query": "SELECT last(\"runno\") FROM \"dunedaq.rcif.runinfo.Info\" WHERE (\"partition_id\" = '${partition}') AND $timeFilter",
           "rawQuery": true,
           "refId": "A",
           "resultFormat": "table",
@@ -736,7 +737,7 @@
           "measurement": "dunedaq.trigger.moduleleveltriggerinfo.Info",
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "SELECT last(\"td_sent_count\") FROM \"dunedaq.trigger.moduleleveltriggerinfo.Info\" WHERE (\"source_id\" =~ /${partition}_.*/) GROUP BY \"source_id\"",
+          "query": "SELECT last(\"td_sent_count\") FROM \"dunedaq.trigger.moduleleveltriggerinfo.Info\" WHERE (\"partition_id\" ='${partition}' )  GROUP BY \"source_id\"",
           "rawQuery": true,
           "refId": "A",
           "resultFormat": "table",
@@ -855,7 +856,7 @@
           "measurement": "dunedaq.dfmodules.datawriterinfo.Info",
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "SELECT distinct(\"records_written\") FROM \"dunedaq.dfmodules.datawriterinfo.Info\" WHERE (\"source_id\" =~ /${partition}_.*/) AND $timeFilter GROUP BY time(500ms), \"source_id\"",
+          "query": "SELECT last(\"records_written\") FROM \"dunedaq.dfmodules.datawriterinfo.Info\" WHERE (\"partition_id\" = '${partition}' ) AND $timeFilter GROUP BY \"source_id\"",
           "rawQuery": true,
           "refId": "A",
           "resultFormat": "table",
@@ -945,7 +946,98 @@
           },
           "unit": "short"
         },
-        "overrides": []
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Generated triggers"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "super-light-yellow",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Completed TR"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "dark-orange",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Written TR"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "dark-red",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Sent triggers"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "dark-yellow",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Generated HSI triggers"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "super-light-blue",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Sent HSI triggers"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "dark-blue",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          }
+        ]
       },
       "gridPos": {
         "h": 7,
@@ -974,7 +1066,7 @@
           "measurement": "dunedaq.trigger.moduleleveltriggerinfo.Info",
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "SELECT non_negative_derivative(sum(\"td_total_count\"), 1s) FROM \"dunedaq.trigger.moduleleveltriggerinfo.Info\" WHERE (\"source_id\" =~ /${partition}_.*/) AND $timeFilter GROUP BY time(500ms)",
+          "query": "SELECT non_negative_derivative(sum(\"td_total_count\"), 1s) FROM \"dunedaq.trigger.moduleleveltriggerinfo.Info\" WHERE (\"partition_id\" ='${partition}') AND $timeFilter GROUP BY time(500ms)",
           "rawQuery": true,
           "refId": "C",
           "resultFormat": "time_series",
@@ -1009,7 +1101,7 @@
           "measurement": "dunedaq.trigger.moduleleveltriggerinfo.Info",
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "SELECT non_negative_derivative(sum(\"td_sent_count\"), 1s) FROM \"dunedaq.trigger.moduleleveltriggerinfo.Info\" WHERE (\"source_id\" =~ /${partition}_.*/) AND $timeFilter GROUP BY time(500ms)",
+          "query": "SELECT non_negative_derivative(sum(\"td_sent_count\"), 1s) FROM \"dunedaq.trigger.moduleleveltriggerinfo.Info\" WHERE (\"partition_id\" = '${partition}') AND $timeFilter GROUP BY time(500ms)",
           "rawQuery": true,
           "refId": "E",
           "resultFormat": "time_series",
@@ -1057,7 +1149,7 @@
           "measurement": "dunedaq.dfmodules.datawriterinfo.Info",
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "SELECT non_negative_derivative(cumulative_sum(sum(\"new_records_received\")), 1s) FROM \"dunedaq.dfmodules.datawriterinfo.Info\" WHERE (\"source_id\" =~ /${partition}_.*/) AND $timeFilter GROUP BY time($__interval) fill(null)",
+          "query": "SELECT non_negative_derivative(cumulative_sum(sum(\"new_records_received\")), 1s) FROM \"dunedaq.dfmodules.datawriterinfo.Info\" WHERE (\"partition_id\" = '${partition}') AND $timeFilter GROUP BY time($__interval) fill(null)",
           "rawQuery": true,
           "refId": "A",
           "resultFormat": "time_series",
@@ -1109,7 +1201,7 @@
           "measurement": "dunedaq.dfmodules.datawriterinfo.Info",
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "SELECT non_negative_derivative(cumulative_sum(sum(\"new_records_written\")), 1s) FROM \"dunedaq.dfmodules.datawriterinfo.Info\" WHERE (\"source_id\" =~ /${partition}_.*/) AND $timeFilter GROUP BY time($__interval) fill(null)",
+          "query": "SELECT non_negative_derivative(cumulative_sum(sum(\"new_records_written\")), 1s) FROM \"dunedaq.dfmodules.datawriterinfo.Info\" WHERE (\"partition_id\" = '${partition}') AND $timeFilter GROUP BY time($__interval) fill(null)",
           "rawQuery": true,
           "refId": "B",
           "resultFormat": "time_series",
@@ -1161,7 +1253,7 @@
           "measurement": "dunedaq.timinglibs.fakehsieventgeneratorinfo.Info",
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "SELECT non_negative_derivative(sum(\"generated_hsi_events_counter\"), 1s) FROM \"dunedaq.timinglibs.fakehsieventgeneratorinfo.Info\" WHERE (\"source_id\" =~ /${partition}_.*/) AND $timeFilter GROUP BY time(500ms) fill(null)",
+          "query": "SELECT non_negative_derivative(sum(\"generated_hsi_events_counter\"), 1s) FROM \"dunedaq.timinglibs.fakehsieventgeneratorinfo.Info\" WHERE (\"partition_id\" = '${partition}') AND $timeFilter GROUP BY time(500ms) fill(null)",
           "rawQuery": true,
           "refId": "D",
           "resultFormat": "time_series",
@@ -1213,7 +1305,7 @@
           "measurement": "dunedaq.timinglibs.fakehsieventgeneratorinfo.Info",
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "SELECT non_negative_derivative(sum(\"sent_hsi_events_counter\"), 1s) FROM \"dunedaq.timinglibs.fakehsieventgeneratorinfo.Info\" WHERE (\"source_id\" =~ /${partition}_.*/) AND $timeFilter GROUP BY time(500ms) fill(null)",
+          "query": "SELECT non_negative_derivative(sum(\"sent_hsi_events_counter\"), 1s) FROM \"dunedaq.timinglibs.fakehsieventgeneratorinfo.Info\" WHERE (\"partition_id\" = '${partition}') AND $timeFilter GROUP BY time(500ms) fill(null)",
           "rawQuery": true,
           "refId": "F",
           "resultFormat": "time_series",
@@ -1331,7 +1423,7 @@
           "measurement": "dunedaq.dfmodules.datawriterinfo.Info",
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "SELECT non_negative_derivative(distinct(\"bytes_output\"), 1s)  / 1048576 FROM \"dunedaq.dfmodules.datawriterinfo.Info\" WHERE (\"source_id\" =~ /${partition}_.*/) AND $timeFilter GROUP BY time($__interval), \"source_id\"\nfill(null)",
+          "query": "SELECT non_negative_derivative(distinct(\"bytes_output\"), 1s)  / 1048576 FROM \"dunedaq.dfmodules.datawriterinfo.Info\" WHERE (\"partition_id\" = '${partition}') AND $timeFilter GROUP BY time($__interval), \"source_id\"\nfill(null)",
           "rawQuery": true,
           "refId": "C",
           "resultFormat": "time_series",
@@ -1361,7 +1453,7 @@
         {
           "id": "renameByRegex",
           "options": {
-            "regex": ".*_(.*)\\.(.*)",
+            "regex": ".*\\.(.*)\\.(.*)",
             "renamePattern": "$1 $2"
           }
         },
@@ -1793,7 +1885,7 @@
           "measurement": "dunedaq.dfmodules.triggerrecordbuilderinfo.Info",
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "SELECT mean(\"average_millisecond_per_trigger\") FROM \"dunedaq.dfmodules.triggerrecordbuilderinfo.Info\" WHERE (\"source_id\" =~ /${partition}_.*/) AND $timeFilter GROUP BY time($__interval), \"source_id\" fill(null)",
+          "query": "SELECT mean(\"average_millisecond_per_trigger\") FROM \"dunedaq.dfmodules.triggerrecordbuilderinfo.Info\" WHERE (\"partition_id\" = '${partition}') AND $timeFilter GROUP BY time($__interval), \"source_id\" fill(null)",
           "rawQuery": true,
           "refId": "B",
           "resultFormat": "time_series",
@@ -1827,7 +1919,7 @@
         {
           "id": "renameByRegex",
           "options": {
-            "regex": ".*_(.*)\\.(.*)",
+            "regex": ".*\\.(.*)\\.(.*)",
             "renamePattern": "$1 $2"
           }
         },
@@ -1935,7 +2027,7 @@
           "measurement": "dunedaq.flxlibs.felixcardreaderinfo.ELinkInfo",
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "SELECT sum(\"num_chunks_processed_with_error\") FROM \"dunedaq.flxlibs.felixcardreaderinfo.ELinkInfo\" WHERE (\"source_id\" =~ /${partition}_.*/) AND $timeFilter GROUP BY time($__interval) fill(null)",
+          "query": "SELECT sum(\"num_chunks_processed_with_error\") FROM \"dunedaq.flxlibs.felixcardreaderinfo.ELinkInfo\" WHERE (\"partition_id\" = '${partition}') AND $timeFilter GROUP BY time($__interval) fill(null)",
           "rawQuery": true,
           "refId": "B",
           "resultFormat": "time_series",
@@ -1991,7 +2083,7 @@
           "measurement": "dunedaq.flxlibs.felixcardreaderinfo.ELinkInfo",
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "SELECT sum(\"num_blocks_processed_with_error\") FROM \"dunedaq.flxlibs.felixcardreaderinfo.ELinkInfo\" WHERE (\"source_id\" =~ /${partition}_.*/) AND $timeFilter GROUP BY time($__interval) fill(null)",
+          "query": "SELECT sum(\"num_blocks_processed_with_error\") FROM \"dunedaq.flxlibs.felixcardreaderinfo.ELinkInfo\" WHERE (\"partition_id\" = '${partition}') AND $timeFilter GROUP BY time($__interval) fill(null)",
           "rawQuery": true,
           "refId": "A",
           "resultFormat": "time_series",
@@ -2033,7 +2125,7 @@
         {
           "id": "renameByRegex",
           "options": {
-            "regex": ".*_(.*)\\.(.*)\\.(.*)",
+            "regex": ".*\\.(.*)\\.(.*)\\.(.*)",
             "renamePattern": "$1 $2 $3"
           }
         }
@@ -2053,7 +2145,7 @@
         "allValue": null,
         "current": {},
         "datasource": "${DS_INFLUXTEST}",
-        "definition": "SHOW SERIES FROM \"dunedaq.appfwk.appinfo.Info\" WHERE $timeFilter",
+        "definition": "SHOW TAG VALUES WITH KEY=\"partition_id\" WHERE $timeFilter",
         "description": null,
         "error": null,
         "hide": 0,
@@ -2062,9 +2154,9 @@
         "multi": false,
         "name": "partition",
         "options": [],
-        "query": "SHOW SERIES FROM \"dunedaq.appfwk.appinfo.Info\" WHERE $timeFilter",
+        "query": "SHOW TAG VALUES WITH KEY=\"partition_id\" WHERE $timeFilter",
         "refresh": 2,
-        "regex": "/.*,source_id=(.*)_.*/",
+        "regex": "",
         "skipUrlSync": false,
         "sort": 1,
         "type": "query"
@@ -2072,7 +2164,7 @@
     ]
   },
   "time": {
-    "from": "now-2d",
+    "from": "now-15m",
     "to": "now"
   },
   "timepicker": {
@@ -2103,5 +2195,5 @@
   "timezone": "",
   "title": "DAQ overview",
   "uid": "U_8ZFDZnh",
-  "version": 78
+  "version": 84
 }

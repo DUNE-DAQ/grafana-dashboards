@@ -52,7 +52,7 @@
   "gnetId": null,
   "graphTooltip": 0,
   "id": null,
-  "iteration": 1635354448566,
+  "iteration": 1636382833522,
   "links": [],
   "panels": [
     {
@@ -160,7 +160,7 @@
           "measurement": "dunedaq.readout.readoutinfo.ReadoutInfo",
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "SELECT mean(\"rate_payloads_consumed\") FROM \"dunedaq.readout.readoutinfo.ReadoutInfo\" WHERE (\"source_id\" =~ /${partition}_.*\\.tp_datahandler_\\d+/) AND $timeFilter GROUP BY time($__interval), \"source_id\"",
+          "query": "SELECT mean(\"rate_payloads_consumed\") FROM \"dunedaq.readout.readoutinfo.ReadoutInfo\" WHERE (\"partition_id\"='${partition}' AND \"source_id\" =~ /.*\\.tp_datahandler_\\d+/) AND $timeFilter GROUP BY time($__interval), \"source_id\"",
           "rawQuery": true,
           "refId": "A",
           "resultFormat": "time_series",
@@ -192,7 +192,7 @@
         {
           "id": "renameByRegex",
           "options": {
-            "regex": ".*_(.*)\\.(.*)",
+            "regex": ".*\\.(.*)\\.(.*)",
             "renamePattern": "$1 $2"
           }
         }
@@ -305,7 +305,7 @@
           "measurement": "dunedaq.readout.readoutinfo.ReadoutInfo",
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "SELECT mean(\"num_buffer_elements\") FROM \"dunedaq.readout.readoutinfo.ReadoutInfo\" WHERE (\"source_id\" =~ /${partition}_ruemu\\d+.tp_datahandler_\\d+/) AND $timeFilter GROUP BY time($__interval), \"source_id\" fill(null)",
+          "query": "SELECT mean(\"num_buffer_elements\") FROM \"dunedaq.readout.readoutinfo.ReadoutInfo\" WHERE (\"partition_id\"='${partition}' AND \"source_id\" =~ /.*\\.tp_datahandler_\\d+/) AND $timeFilter GROUP BY time($__interval), \"source_id\" fill(null)",
           "rawQuery": true,
           "refId": "C",
           "resultFormat": "time_series",
@@ -337,7 +337,7 @@
         {
           "id": "renameByRegex",
           "options": {
-            "regex": ".*_(.*)\\.(.*)",
+            "regex": ".*\\.(.*)\\.(.*)",
             "renamePattern": "$1 $2"
           }
         },
@@ -438,7 +438,7 @@
           "measurement": "dunedaq.readout.readoutinfo.RequestHandlerInfo",
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "SELECT non_negative_derivative(cumulative_sum(sum(\"num_buffer_cleanups\")), 1s) FROM \"dunedaq.readout.readoutinfo.RequestHandlerInfo\" WHERE (\"source_id\" =~ /${partition}_.*\\.tp_datahandler_\\d+/) AND $timeFilter GROUP BY time($__interval) fill(null)",
+          "query": "SELECT non_negative_derivative(cumulative_sum(sum(\"num_buffer_cleanups\")), 1s) FROM \"dunedaq.readout.readoutinfo.RequestHandlerInfo\" WHERE (\"partition_id\"='${partition}' AND  \"source_id\" =~ /.*\\.tp_datahandler_\\d+/) AND $timeFilter GROUP BY time($__interval) fill(null)",
           "rawQuery": true,
           "refId": "A",
           "resultFormat": "time_series",
@@ -494,7 +494,7 @@
           "measurement": "dunedaq.readout.readoutinfo.ReadoutInfo",
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "SELECT non_negative_derivative(cumulative_sum(sum(\"num_payloads_overwritten\")), 1s) FROM \"dunedaq.readout.readoutinfo.ReadoutInfo\" WHERE (\"source_id\" =~ /${partition}_.*\\.tp_datahandler_\\d+/) AND $timeFilter GROUP BY time($__interval) fill(null)",
+          "query": "SELECT non_negative_derivative(cumulative_sum(sum(\"num_payloads_overwritten\")), 1s) FROM \"dunedaq.readout.readoutinfo.ReadoutInfo\" WHERE (\"partition_id\"='${partition}' AND  \"source_id\" =~ /.*\\.tp_datahandler_\\d+/) AND $timeFilter GROUP BY time($__interval) fill(null)",
           "rawQuery": true,
           "refId": "B",
           "resultFormat": "time_series",
@@ -624,7 +624,7 @@
           "measurement": "dunedaq.readout.readoutinfo.RequestHandlerInfo",
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "SELECT mean(\"num_buffer_cleanups\") FROM \"dunedaq.readout.readoutinfo.RequestHandlerInfo\" WHERE (\"source_id\" = '${partition}_${readout_app}.${readout_module}') AND $timeFilter GROUP BY time($__interval) fill(null)",
+          "query": "SELECT mean(\"num_buffer_cleanups\") FROM \"dunedaq.readout.readoutinfo.RequestHandlerInfo\" WHERE (\"source_id\" = '${partition}.${readout_app}.${readout_module}') AND $timeFilter GROUP BY time($__interval) fill(null)",
           "rawQuery": true,
           "refId": "A",
           "resultFormat": "time_series",
@@ -670,7 +670,7 @@
           "measurement": "dunedaq.readout.readoutinfo.ReadoutInfo",
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "SELECT mean(\"num_payloads_overwritten\") FROM \"dunedaq.readout.readoutinfo.ReadoutInfo\" WHERE  (\"source_id\" = '${partition}_${readout_app}.${readout_module}')  AND $timeFilter GROUP BY time($__interval) fill(null)",
+          "query": "SELECT mean(\"num_payloads_overwritten\") FROM \"dunedaq.readout.readoutinfo.ReadoutInfo\" WHERE  (\"source_id\" = '${partition}.${readout_app}.${readout_module}')  AND $timeFilter GROUP BY time($__interval) fill(null)",
           "rawQuery": true,
           "refId": "B",
           "resultFormat": "time_series",
@@ -713,7 +713,7 @@
         "allValue": null,
         "current": {},
         "datasource": "${DS_INFLUXTEST}",
-        "definition": "SHOW SERIES FROM \"dunedaq.appfwk.appinfo.Info\"  where $timeFilter",
+        "definition": "SHOW TAG VALUES WITH KEY=\"partition_id\" where $timeFilter ",
         "description": null,
         "error": null,
         "hide": 0,
@@ -722,9 +722,9 @@
         "multi": false,
         "name": "partition",
         "options": [],
-        "query": "SHOW SERIES FROM \"dunedaq.appfwk.appinfo.Info\"  where $timeFilter",
+        "query": "SHOW TAG VALUES WITH KEY=\"partition_id\" where $timeFilter ",
         "refresh": 1,
-        "regex": "/.*source_id=(.*)_.*/",
+        "regex": "",
         "skipUrlSync": false,
         "sort": 0,
         "type": "query"
@@ -733,7 +733,7 @@
         "allValue": null,
         "current": {},
         "datasource": "${DS_INFLUXTEST}",
-        "definition": "SHOW  SERIES  FROM \"dunedaq.readout.readoutinfo.RequestHandlerInfo\" WHERE $timeFilter",
+        "definition": "SHOW  TAG VALUES FROM \"dunedaq.readout.readoutinfo.RequestHandlerInfo\" WITH KEY=\"source_id\" WHERE $timeFilter AND \"partition_id\"='${partition}'",
         "description": null,
         "error": null,
         "hide": 0,
@@ -742,9 +742,9 @@
         "multi": false,
         "name": "readout_app",
         "options": [],
-        "query": "SHOW  SERIES  FROM \"dunedaq.readout.readoutinfo.RequestHandlerInfo\" WHERE $timeFilter",
+        "query": "SHOW  TAG VALUES FROM \"dunedaq.readout.readoutinfo.RequestHandlerInfo\" WITH KEY=\"source_id\" WHERE $timeFilter AND \"partition_id\"='${partition}'",
         "refresh": 1,
-        "regex": ".*,source_id=${partition}_(.*)\\.tp_datahandler_\\d+",
+        "regex": ".*\\.(.*)\\.tp_datahandler_\\d+",
         "skipUrlSync": false,
         "sort": 0,
         "type": "query"
@@ -753,7 +753,7 @@
         "allValue": null,
         "current": {},
         "datasource": "${DS_INFLUXTEST}",
-        "definition": "SHOW  SERIES  FROM \"dunedaq.readout.readoutinfo.RequestHandlerInfo\" WHERE $timeFilter",
+        "definition": "SHOW  TAG VALUES FROM \"dunedaq.readout.readoutinfo.RequestHandlerInfo\" WITH KEY=\"source_id\" WHERE $timeFilter AND \"partition_id\"='${partition}'",
         "description": null,
         "error": null,
         "hide": 0,
@@ -762,9 +762,9 @@
         "multi": false,
         "name": "readout_module",
         "options": [],
-        "query": "SHOW  SERIES  FROM \"dunedaq.readout.readoutinfo.RequestHandlerInfo\" WHERE $timeFilter",
+        "query": "SHOW  TAG VALUES FROM \"dunedaq.readout.readoutinfo.RequestHandlerInfo\" WITH KEY=\"source_id\" WHERE $timeFilter AND \"partition_id\"='${partition}'",
         "refresh": 1,
-        "regex": ".*,source_id=${partition}_${readout_app}\\.(tp_datahandler_\\d+)",
+        "regex": ".*\\.${readout_app}\\.(tp_datahandler_\\d+)",
         "skipUrlSync": false,
         "sort": 0,
         "type": "query"
@@ -802,6 +802,6 @@
   },
   "timezone": "",
   "title": "Trigger Primitives",
-  "uid": "HBIpw-djs",
+  "uid": "HBIpw-djsk",
   "version": 4
 }

@@ -17,12 +17,6 @@
       "version": "8.0.6"
     },
     {
-      "type": "panel",
-      "id": "graph",
-      "name": "Graph (old)",
-      "version": ""
-    },
-    {
       "type": "datasource",
       "id": "influxdb",
       "name": "InfluxDB",
@@ -59,7 +53,7 @@
   "gnetId": null,
   "graphTooltip": 0,
   "id": null,
-  "iteration": 1635413394337,
+  "iteration": 1636384777237,
   "links": [],
   "panels": [
     {
@@ -171,7 +165,7 @@
           "measurement": "dunedaq.dfmodules.triggerrecordbuilderinfo.Info",
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "SELECT mean(\"average_millisecond_per_trigger\") FROM \"dunedaq.dfmodules.triggerrecordbuilderinfo.Info\" WHERE (\"source_id\" = '${partition}_${application}.${TRBInstance}') AND $timeFilter GROUP BY time($__interval) fill(null)",
+          "query": "SELECT mean(\"average_millisecond_per_trigger\") FROM \"dunedaq.dfmodules.triggerrecordbuilderinfo.Info\" WHERE (\"source_id\" = '${partition}.${application}.${TRBInstance}') AND $timeFilter GROUP BY time($__interval) fill(null)",
           "rawQuery": true,
           "refId": "B",
           "resultFormat": "time_series",
@@ -342,7 +336,7 @@
           "measurement": "dunedaq.dfmodules.triggerrecordbuilderinfo.Info",
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "SELECT non_negative_derivative(mean(\"generated_trigger_records\"), 1s) FROM \"dunedaq.dfmodules.triggerrecordbuilderinfo.Info\" WHERE (\"source_id\" = '${partition}_${application}.${TRBInstance}') AND $timeFilter GROUP BY time($__interval) fill(null)",
+          "query": "SELECT non_negative_derivative(mean(\"generated_trigger_records\"), 1s) FROM \"dunedaq.dfmodules.triggerrecordbuilderinfo.Info\" WHERE (\"source_id\" = '${partition}.${application}.${TRBInstance}') AND $timeFilter GROUP BY time($__interval) fill(null)",
           "rawQuery": true,
           "refId": "D",
           "resultFormat": "time_series",
@@ -394,7 +388,7 @@
           "measurement": "dunedaq.dfmodules.triggerrecordbuilderinfo.Info",
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "SELECT non_negative_derivative(mean(\"received_trigger_decisions\"), 1s) FROM \"dunedaq.dfmodules.triggerrecordbuilderinfo.Info\" WHERE (\"source_id\" = '${partition}_${application}.${TRBInstance}') AND $timeFilter GROUP BY time($__interval) fill(null)",
+          "query": "SELECT non_negative_derivative(mean(\"received_trigger_decisions\"), 1s) FROM \"dunedaq.dfmodules.triggerrecordbuilderinfo.Info\" WHERE (\"source_id\" = '${partition}.${application}.${TRBInstance}') AND $timeFilter GROUP BY time($__interval) fill(null)",
           "rawQuery": true,
           "refId": "A",
           "resultFormat": "time_series",
@@ -528,7 +522,7 @@
           "measurement": "dunedaq.dfmodules.triggerrecordbuilderinfo.Info",
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "SELECT non_negative_derivative(cumulative_sum(sum(\"loop_counter\")), 1s) FROM \"dunedaq.dfmodules.triggerrecordbuilderinfo.Info\" WHERE (\"source_id\" = '${partition}_${application}.${TRBInstance}') AND $timeFilter GROUP BY time($__interval) fill(null)\n",
+          "query": "SELECT non_negative_derivative(cumulative_sum(sum(\"loop_counter\")), 1s) FROM \"dunedaq.dfmodules.triggerrecordbuilderinfo.Info\" WHERE (\"source_id\" = '${partition}.${application}.${TRBInstance}') AND $timeFilter GROUP BY time($__interval) fill(null)\n",
           "rawQuery": true,
           "refId": "F",
           "resultFormat": "time_series",
@@ -576,7 +570,7 @@
           "measurement": "dunedaq.dfmodules.triggerrecordbuilderinfo.Info",
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "SELECT non_negative_derivative(cumulative_sum(sum(\"sleep_counter\")), 1s) FROM \"dunedaq.dfmodules.triggerrecordbuilderinfo.Info\" WHERE (\"source_id\" = '${partition}_${application}.${TRBInstance}') AND $timeFilter GROUP BY time($__interval) fill(null)",
+          "query": "SELECT non_negative_derivative(cumulative_sum(sum(\"sleep_counter\")), 1s) FROM \"dunedaq.dfmodules.triggerrecordbuilderinfo.Info\" WHERE (\"source_id\" = '${partition}.${application}.${TRBInstance}') AND $timeFilter GROUP BY time($__interval) fill(null)",
           "rawQuery": true,
           "refId": "A",
           "resultFormat": "time_series",
@@ -609,48 +603,93 @@
       "type": "timeseries"
     },
     {
-      "aliasColors": {
-        "avg Data Request width": "dark-blue"
-      },
-      "bars": false,
-      "dashLength": 10,
-      "dashes": false,
       "datasource": "${DS_INFLUXTEST}",
-      "fill": 0,
-      "fillGradient": 0,
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisLabel": "clock ticks",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "drawStyle": "line",
+            "fillOpacity": 0,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "lineInterpolation": "linear",
+            "lineWidth": 2,
+            "pointSize": 4,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "always",
+            "spanNulls": true,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "short"
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "avg Data Request width"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "dark-blue",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          }
+        ]
+      },
       "gridPos": {
         "h": 7,
         "w": 8,
         "x": 0,
         "y": 7
       },
-      "hiddenSeries": false,
       "id": 16,
-      "legend": {
-        "avg": false,
-        "current": false,
-        "max": false,
-        "min": false,
-        "show": true,
-        "total": false,
-        "values": false
-      },
-      "lines": true,
-      "linewidth": 2,
       "links": [],
-      "nullPointMode": "null",
       "options": {
-        "alertThreshold": true
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom"
+        },
+        "tooltip": {
+          "mode": "single"
+        }
       },
-      "percentage": false,
       "pluginVersion": "8.0.6",
-      "pointradius": 1,
-      "points": true,
-      "renderer": "flot",
-      "seriesOverrides": [],
-      "spaceLength": 10,
-      "stack": false,
-      "steppedLine": false,
       "targets": [
         {
           "alias": "avg Data Request width",
@@ -672,7 +711,7 @@
           "measurement": "dunedaq.dfmodules.triggerrecordbuilderinfo.Info",
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "SELECT mean(\"average_data_request_width\") FROM \"dunedaq.dfmodules.triggerrecordbuilderinfo.Info\" WHERE (\"source_id\" = '${partition}_${application}.${TRBInstance}') AND $timeFilter GROUP BY time($__interval) fill(null)\n",
+          "query": "SELECT mean(\"average_data_request_width\") FROM \"dunedaq.dfmodules.triggerrecordbuilderinfo.Info\" WHERE (\"source_id\" = '${partition}.${application}.${TRBInstance}') AND $timeFilter GROUP BY time($__interval) fill(null)\n",
           "rawQuery": true,
           "refId": "B",
           "resultFormat": "time_series",
@@ -718,7 +757,7 @@
           "measurement": "dunedaq.dfmodules.triggerrecordbuilderinfo.Info",
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "SELECT mean(\"average_decision_width\") FROM \"dunedaq.dfmodules.triggerrecordbuilderinfo.Info\" WHERE (\"source_id\" = '${partition}_${application}.${TRBInstance}') AND $timeFilter GROUP BY time($__interval) fill(null)",
+          "query": "SELECT mean(\"average_decision_width\") FROM \"dunedaq.dfmodules.triggerrecordbuilderinfo.Info\" WHERE (\"source_id\" = '${partition}.${application}.${TRBInstance}') AND $timeFilter GROUP BY time($__interval) fill(null)",
           "rawQuery": true,
           "refId": "C",
           "resultFormat": "time_series",
@@ -745,48 +784,10 @@
           ]
         }
       ],
-      "thresholds": [],
       "timeFrom": null,
-      "timeRegions": [],
       "timeShift": null,
       "title": "TDs statistics",
-      "tooltip": {
-        "shared": true,
-        "sort": 0,
-        "value_type": "individual"
-      },
-      "type": "graph",
-      "xaxis": {
-        "buckets": null,
-        "mode": "time",
-        "name": null,
-        "show": true,
-        "values": []
-      },
-      "yaxes": [
-        {
-          "$$hashKey": "object:1163",
-          "format": "short",
-          "label": "clock ticks",
-          "logBase": 1,
-          "max": null,
-          "min": null,
-          "show": true
-        },
-        {
-          "$$hashKey": "object:1164",
-          "format": "short",
-          "label": null,
-          "logBase": 1,
-          "max": null,
-          "min": null,
-          "show": true
-        }
-      ],
-      "yaxis": {
-        "align": false,
-        "alignLevel": null
-      }
+      "type": "timeseries"
     },
     {
       "datasource": "${DS_INFLUXTEST}",
@@ -927,7 +928,7 @@
           "measurement": "dunedaq.dfmodules.triggerrecordbuilderinfo.Info",
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "SELECT distinct(\"pending_fragments\") FROM \"dunedaq.dfmodules.triggerrecordbuilderinfo.Info\" WHERE (\"source_id\" = '${partition}_${application}.${TRBInstance}') AND $timeFilter GROUP BY time($__interval) fill(null)",
+          "query": "SELECT distinct(\"pending_fragments\") FROM \"dunedaq.dfmodules.triggerrecordbuilderinfo.Info\" WHERE (\"source_id\" = '${partition}.${application}.${TRBInstance}') AND $timeFilter GROUP BY time($__interval) fill(null)",
           "rawQuery": true,
           "refId": "D",
           "resultFormat": "time_series",
@@ -973,7 +974,7 @@
           "measurement": "dunedaq.dfmodules.triggerrecordbuilderinfo.Info",
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "SELECT distinct(\"fragments_in_the_book\") FROM \"dunedaq.dfmodules.triggerrecordbuilderinfo.Info\" WHERE (\"source_id\" = '${partition}_${application}.${TRBInstance}') AND $timeFilter GROUP BY time($__interval) fill(null)",
+          "query": "SELECT distinct(\"fragments_in_the_book\") FROM \"dunedaq.dfmodules.triggerrecordbuilderinfo.Info\" WHERE (\"source_id\" = '${partition}.${application}.${TRBInstance}') AND $timeFilter GROUP BY time($__interval) fill(null)",
           "rawQuery": true,
           "refId": "A",
           "resultFormat": "time_series",
@@ -1019,7 +1020,7 @@
           "measurement": "dunedaq.dfmodules.triggerrecordbuilderinfo.Info",
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "SELECT distinct(\"pending_trigger_decisions\") FROM \"dunedaq.dfmodules.triggerrecordbuilderinfo.Info\" WHERE (\"source_id\" = '${partition}_${application}.${TRBInstance}') AND $timeFilter GROUP BY time($__interval) fill(null)",
+          "query": "SELECT distinct(\"pending_trigger_decisions\") FROM \"dunedaq.dfmodules.triggerrecordbuilderinfo.Info\" WHERE (\"source_id\" = '${partition}.${application}.${TRBInstance}') AND $timeFilter GROUP BY time($__interval) fill(null)",
           "rawQuery": true,
           "refId": "B",
           "resultFormat": "time_series",
@@ -1146,7 +1147,7 @@
           "measurement": "dunedaq.dfmodules.triggerrecordbuilderinfo.Info",
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "SELECT mean(\"lost_fragments\") FROM \"dunedaq.dfmodules.triggerrecordbuilderinfo.Info\" WHERE (\"source_id\" = '${partition}_${application}.${TRBInstance}') AND $timeFilter GROUP BY time($__interval) fill(null)",
+          "query": "SELECT mean(\"lost_fragments\") FROM \"dunedaq.dfmodules.triggerrecordbuilderinfo.Info\" WHERE (\"source_id\" = '${partition}.${application}.${TRBInstance}') AND $timeFilter GROUP BY time($__interval) fill(null)",
           "rawQuery": true,
           "refId": "B",
           "resultFormat": "time_series",
@@ -1192,7 +1193,7 @@
           "measurement": "dunedaq.dfmodules.triggerrecordbuilderinfo.Info",
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "SELECT mean(\"unexpected_fragments\") FROM \"dunedaq.dfmodules.triggerrecordbuilderinfo.Info\" WHERE (\"source_id\" = '${partition}_${application}.${TRBInstance}') AND $timeFilter GROUP BY time($__interval) fill(null)",
+          "query": "SELECT mean(\"unexpected_fragments\") FROM \"dunedaq.dfmodules.triggerrecordbuilderinfo.Info\" WHERE (\"source_id\" = '${partition}.${application}.${TRBInstance}') AND $timeFilter GROUP BY time($__interval) fill(null)",
           "rawQuery": true,
           "refId": "E",
           "resultFormat": "time_series",
@@ -1240,7 +1241,7 @@
           "measurement": "dunedaq.dfmodules.triggerrecordbuilderinfo.Info",
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "SELECT mean(\"invalid_requests\") FROM \"dunedaq.dfmodules.triggerrecordbuilderinfo.Info\" WHERE (\"source_id\" = '${partition}_${application}.${TRBInstance}') AND $timeFilter GROUP BY time($__interval) fill(null)",
+          "query": "SELECT mean(\"invalid_requests\") FROM \"dunedaq.dfmodules.triggerrecordbuilderinfo.Info\" WHERE (\"source_id\" = '${partition}.${application}.${TRBInstance}') AND $timeFilter GROUP BY time($__interval) fill(null)",
           "rawQuery": true,
           "refId": "A",
           "resultFormat": "time_series",
@@ -1286,7 +1287,7 @@
           "measurement": "dunedaq.dfmodules.triggerrecordbuilderinfo.Info",
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "SELECT mean(\"duplicated_trigger_ids\") FROM \"dunedaq.dfmodules.triggerrecordbuilderinfo.Info\" WHERE (\"source_id\" = '${partition}_${application}.${TRBInstance}') AND $timeFilter GROUP BY time($__interval) fill(null)",
+          "query": "SELECT mean(\"duplicated_trigger_ids\") FROM \"dunedaq.dfmodules.triggerrecordbuilderinfo.Info\" WHERE (\"source_id\" = '${partition}.${application}.${TRBInstance}') AND $timeFilter GROUP BY time($__interval) fill(null)",
           "rawQuery": true,
           "refId": "C",
           "resultFormat": "time_series",
@@ -1332,7 +1333,7 @@
           "measurement": "dunedaq.dfmodules.triggerrecordbuilderinfo.Info",
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "SELECT mean(\"timed_out_trigger_records\") FROM \"dunedaq.dfmodules.triggerrecordbuilderinfo.Info\" WHERE (\"source_id\" = '${partition}_${application}.${TRBInstance}') AND $timeFilter GROUP BY time($__interval) fill(null)",
+          "query": "SELECT mean(\"timed_out_trigger_records\") FROM \"dunedaq.dfmodules.triggerrecordbuilderinfo.Info\" WHERE (\"source_id\" = '${partition}.${application}.${TRBInstance}') AND $timeFilter GROUP BY time($__interval) fill(null)",
           "rawQuery": true,
           "refId": "D",
           "resultFormat": "time_series",
@@ -1378,7 +1379,7 @@
           "measurement": "dunedaq.dfmodules.triggerrecordbuilderinfo.Info",
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "SELECT mean(\"unexpected_trigger_decisions\") FROM \"dunedaq.dfmodules.triggerrecordbuilderinfo.Info\" WHERE (\"source_id\" = '${partition}_${application}.${TRBInstance}') AND $timeFilter GROUP BY time($__interval) fill(null)",
+          "query": "SELECT mean(\"unexpected_trigger_decisions\") FROM \"dunedaq.dfmodules.triggerrecordbuilderinfo.Info\" WHERE (\"source_id\" = '${partition}.${application}.${TRBInstance}') AND $timeFilter GROUP BY time($__interval) fill(null)",
           "rawQuery": true,
           "refId": "F",
           "resultFormat": "time_series",
@@ -1424,7 +1425,7 @@
           "measurement": "dunedaq.dfmodules.triggerrecordbuilderinfo.Info",
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "SELECT distinct(\"abandoned_trigger_records\") FROM \"dunedaq.dfmodules.triggerrecordbuilderinfo.Info\" WHERE (\"source_id\" = '${partition}_${application}.${TRBInstance}') AND $timeFilter GROUP BY time($__interval) fill(null)",
+          "query": "SELECT distinct(\"abandoned_trigger_records\") FROM \"dunedaq.dfmodules.triggerrecordbuilderinfo.Info\" WHERE (\"source_id\" = '${partition}.${application}.${TRBInstance}') AND $timeFilter GROUP BY time($__interval) fill(null)",
           "rawQuery": true,
           "refId": "G",
           "resultFormat": "time_series",
@@ -1539,7 +1540,7 @@
           "measurement": "dunedaq.appfwk.queueinfo.Info",
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "SELECT \"number_of_elements\"/\"capacity\"  * 100 FROM \"dunedaq.appfwk.queueinfo.Info\" WHERE (\"source_id\" = '${partition}_dataflow.trigger_record_q') AND $timeFilter",
+          "query": "SELECT \"number_of_elements\"/\"capacity\"  * 100 FROM \"dunedaq.appfwk.queueinfo.Info\" WHERE (\"source_id\" = '${partition}.${application}.trigger_record_q') AND $timeFilter",
           "rawQuery": true,
           "refId": "C",
           "resultFormat": "time_series",
@@ -1664,7 +1665,7 @@
           "measurement": "dunedaq.appfwk.queueinfo.Info",
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "SELECT \"number_of_elements\" / \"capacity\" * 100 FROM \"dunedaq.appfwk.queueinfo.Info\" WHERE (\"source_id\" = '${partition}_${application}.data_fragments_q') AND $timeFilter",
+          "query": "SELECT \"number_of_elements\" / \"capacity\" * 100 FROM \"dunedaq.appfwk.queueinfo.Info\" WHERE (\"source_id\" = '${partition}.${application}.data_fragments_q') AND $timeFilter",
           "rawQuery": true,
           "refId": "C",
           "resultFormat": "time_series",
@@ -1704,7 +1705,7 @@
           "measurement": "dunedaq.appfwk.queueinfo.Info",
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "SELECT \"number_of_elements\" / \"capacity\" * 100 FROM \"dunedaq.appfwk.queueinfo.Info\" WHERE (\"source_id\" = '${partition}_${application}.trigger_decision_from_netq') AND $timeFilter",
+          "query": "SELECT \"number_of_elements\" / \"capacity\" * 100 FROM \"dunedaq.appfwk.queueinfo.Info\" WHERE (\"source_id\" = '${partition}.${application}.trigger_decision_from_netq') AND $timeFilter",
           "rawQuery": true,
           "refId": "A",
           "resultFormat": "time_series",
@@ -1749,7 +1750,7 @@
         "allValue": null,
         "current": {},
         "datasource": "${DS_INFLUXTEST}",
-        "definition": "SHOW SERIES FROM \"dunedaq.dfmodules.triggerrecordbuilderinfo.Info\" WHERE $timeFilter",
+        "definition": "SHOW TAG VALUES WITH KEY=\"partition_id\" where $timeFilter",
         "description": null,
         "error": null,
         "hide": 0,
@@ -1758,9 +1759,9 @@
         "multi": false,
         "name": "partition",
         "options": [],
-        "query": "SHOW SERIES FROM \"dunedaq.dfmodules.triggerrecordbuilderinfo.Info\" WHERE $timeFilter",
+        "query": "SHOW TAG VALUES WITH KEY=\"partition_id\" where $timeFilter",
         "refresh": 1,
-        "regex": ".*,source_id=(.*)_.*",
+        "regex": "",
         "skipUrlSync": false,
         "sort": 0,
         "type": "query"
@@ -1769,7 +1770,7 @@
         "allValue": null,
         "current": {},
         "datasource": "${DS_INFLUXTEST}",
-        "definition": "SHOW SERIES FROM \"dunedaq.dfmodules.triggerrecordbuilderinfo.Info\" WHERE $timeFilter",
+        "definition": "SHOW TAG VALUES FROM \"dunedaq.dfmodules.triggerrecordbuilderinfo.Info\" WITH KEY=\"source_id\" WHERE $timeFilter AND \"partition_id\"='${partition}'",
         "description": null,
         "error": null,
         "hide": 0,
@@ -1778,9 +1779,9 @@
         "multi": false,
         "name": "application",
         "options": [],
-        "query": "SHOW SERIES FROM \"dunedaq.dfmodules.triggerrecordbuilderinfo.Info\" WHERE $timeFilter",
+        "query": "SHOW TAG VALUES FROM \"dunedaq.dfmodules.triggerrecordbuilderinfo.Info\" WITH KEY=\"source_id\" WHERE $timeFilter AND \"partition_id\"='${partition}'",
         "refresh": 1,
-        "regex": ".*,source_id=${partition}_(.*)\\..*",
+        "regex": ".*\\.(.*)\\..*",
         "skipUrlSync": false,
         "sort": 0,
         "type": "query"
@@ -1789,7 +1790,7 @@
         "allValue": null,
         "current": {},
         "datasource": "${DS_INFLUXTEST}",
-        "definition": "SHOW SERIES FROm \"dunedaq.dfmodules.triggerrecordbuilderinfo.Info\" WHERE $timeFilter",
+        "definition": "SHOW TAG VALUES FROM \"dunedaq.dfmodules.triggerrecordbuilderinfo.Info\" WITH KEY=\"source_id\" WHERE $timeFilter AND \"partition_id\"='${partition}'",
         "description": "name of the ",
         "error": null,
         "hide": 0,
@@ -1798,9 +1799,9 @@
         "multi": false,
         "name": "TRBInstance",
         "options": [],
-        "query": "SHOW SERIES FROm \"dunedaq.dfmodules.triggerrecordbuilderinfo.Info\" WHERE $timeFilter",
+        "query": "SHOW TAG VALUES FROM \"dunedaq.dfmodules.triggerrecordbuilderinfo.Info\" WITH KEY=\"source_id\" WHERE $timeFilter AND \"partition_id\"='${partition}'",
         "refresh": 1,
-        "regex": ".*,source_id=${partition}_${application}\\.(.*)",
+        "regex": ".*\\.${application}\\.(.*)",
         "skipUrlSync": false,
         "sort": 0,
         "type": "query"
@@ -1838,6 +1839,6 @@
   },
   "timezone": "",
   "title": "Event Builder",
-  "uid": "9GPgqzO7z",
-  "version": 9
+  "uid": "9GPgqzO7po",
+  "version": 3
 }

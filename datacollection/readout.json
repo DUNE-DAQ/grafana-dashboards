@@ -52,7 +52,7 @@
   "gnetId": null,
   "graphTooltip": 0,
   "id": null,
-  "iteration": 1636460908049,
+  "iteration": 1636460908052,
   "links": [],
   "panels": [
     {
@@ -1543,7 +1543,7 @@
           "measurement": "dunedaq.readout.readoutinfo.RawDataProcessorInfo",
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "SELECT non_negative_derivative(cumulative_sum(sum(\"num_tps_sent\")), 1s) FROM \"dunedaq.readout.readoutinfo.RawDataProcessorInfo\" WHERE (\"source_id\" = '${partition}_${readout_app}.${readout_module}') AND $timeFilter GROUP BY time($__interval) fill(null)",
+          "query": "SELECT non_negative_derivative(cumulative_sum(sum(\"num_tps_sent\")), 1s) FROM \"dunedaq.readout.readoutinfo.RawDataProcessorInfo\" WHERE (\"partition_id\"='${partition}' AND \"source_id\" = '${partition}.${readout_app}.${readout_module}') AND $timeFilter GROUP BY time($__interval) fill(null)",
           "rawQuery": true,
           "refId": "D",
           "resultFormat": "time_series",
@@ -2481,5 +2481,5 @@
   "timezone": "",
   "title": "Readout",
   "uid": "HBIpw-dnzd",
-  "version": 8
+  "version": 9
 }

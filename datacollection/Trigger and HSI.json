@@ -70,7 +70,7 @@
   "gnetId": null,
   "graphTooltip": 0,
   "id": null,
-  "iteration": 1636480537157,
+  "iteration": 1636480537180,
   "links": [],
   "panels": [
     {
@@ -418,6 +418,102 @@
       "fieldConfig": {
         "defaults": {
           "color": {
+            "mode": "palette-classic"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 4,
+        "w": 8,
+        "x": 16,
+        "y": 4
+      },
+      "id": 25,
+      "options": {
+        "displayMode": "gradient",
+        "orientation": "horizontal",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "showUnfilled": true,
+        "text": {}
+      },
+      "pluginVersion": "8.0.6",
+      "targets": [
+        {
+          "alias": "HSI events sent counter",
+          "groupBy": [],
+          "measurement": "dunedaq.timinglibs.hsireadoutinfo.Info",
+          "orderByTime": "ASC",
+          "policy": "default",
+          "query": "SELECT sum(\"sent_hsi_events_counter\") FROM \"dunedaq.timinglibs.${series}.Info\" WHERE (\"partition_id\" = 'maroda_test') AND $timeFilter GROUP BY time(500ms)",
+          "rawQuery": true,
+          "refId": "A",
+          "resultFormat": "time_series",
+          "select": [
+            [
+              {
+                "params": [
+                  "sent_hsi_events_counter"
+                ],
+                "type": "field"
+              }
+            ]
+          ],
+          "tags": [
+            {
+              "key": "partition_id",
+              "operator": "=",
+              "value": "maroda_test"
+            }
+          ]
+        },
+        {
+          "alias": "HSI events ${field} counter",
+          "groupBy": [],
+          "hide": false,
+          "measurement": "dunedaq.timinglibs.hsireadoutinfo.Info",
+          "orderByTime": "ASC",
+          "policy": "default",
+          "query": "SELECT sum(\"${field}_hsi_events_counter\") FROM \"dunedaq.timinglibs.${series}.Info\" WHERE (\"partition_id\" = 'maroda_test') AND $timeFilter GROUP BY time(500ms) ",
+          "rawQuery": true,
+          "refId": "B",
+          "resultFormat": "time_series",
+          "select": [
+            [
+              {
+                "params": [
+                  "readout_hsi_events_counter"
+                ],
+                "type": "field"
+              }
+            ]
+          ],
+          "tags": []
+        }
+      ],
+      "type": "bargauge"
+    },
+    {
+      "datasource": "${DS_INFLUXTEST}",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
             "mode": "thresholds"
           },
           "mappings": [],
@@ -442,7 +538,7 @@
         "h": 3,
         "w": 4,
         "x": 16,
-        "y": 4
+        "y": 8
       },
       "id": 27,
       "options": {
@@ -522,7 +618,7 @@
         "h": 3,
         "w": 4,
         "x": 20,
-        "y": 4
+        "y": 8
       },
       "id": 29,
       "options": {
@@ -547,7 +643,7 @@
           "measurement": "dunedaq.timinglibs.hsireadoutinfo.Info",
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "SELECT last(\"last_readout_timestamp\") FROM \"dunedaq.timinglibs.${series}.Info\" WHERE (\"partition_id\" = '${partition}') AND $timeFilter",
+          "query": "SELECT last(\"last_${field}_timestamp\") FROM \"dunedaq.timinglibs.${series}.Info\" WHERE (\"partition_id\" = '${partition}') AND $timeFilter",
           "rawQuery": true,
           "refId": "A",
           "resultFormat": "time_series",
@@ -570,104 +666,8 @@
           ]
         }
       ],
-      "title": "Last Readout Timestamp",
+      "title": "Last ${field} Timestamp",
       "type": "stat"
-    },
-    {
-      "datasource": "${DS_INFLUXTEST}",
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "mode": "palette-classic"
-          },
-          "mappings": [],
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "green",
-                "value": null
-              }
-            ]
-          }
-        },
-        "overrides": []
-      },
-      "gridPos": {
-        "h": 4,
-        "w": 8,
-        "x": 16,
-        "y": 7
-      },
-      "id": 25,
-      "options": {
-        "displayMode": "gradient",
-        "orientation": "horizontal",
-        "reduceOptions": {
-          "calcs": [
-            "lastNotNull"
-          ],
-          "fields": "",
-          "values": false
-        },
-        "showUnfilled": true,
-        "text": {}
-      },
-      "pluginVersion": "8.0.6",
-      "targets": [
-        {
-          "alias": "HSI events sent counter",
-          "groupBy": [],
-          "measurement": "dunedaq.timinglibs.hsireadoutinfo.Info",
-          "orderByTime": "ASC",
-          "policy": "default",
-          "query": "SELECT sum(\"sent_hsi_events_counter\") FROM \"dunedaq.timinglibs.${series}.Info\" WHERE (\"partition_id\" = 'maroda_test') AND $timeFilter GROUP BY time(500ms)",
-          "rawQuery": true,
-          "refId": "A",
-          "resultFormat": "time_series",
-          "select": [
-            [
-              {
-                "params": [
-                  "sent_hsi_events_counter"
-                ],
-                "type": "field"
-              }
-            ]
-          ],
-          "tags": [
-            {
-              "key": "partition_id",
-              "operator": "=",
-              "value": "maroda_test"
-            }
-          ]
-        },
-        {
-          "alias": "HSI events readout counter",
-          "groupBy": [],
-          "hide": false,
-          "measurement": "dunedaq.timinglibs.hsireadoutinfo.Info",
-          "orderByTime": "ASC",
-          "policy": "default",
-          "query": "SELECT sum(\"readout_hsi_events_counter\") FROM \"dunedaq.timinglibs.${series}.Info\" WHERE (\"partition_id\" = 'maroda_test') AND $timeFilter GROUP BY time(500ms) ",
-          "rawQuery": true,
-          "refId": "B",
-          "resultFormat": "time_series",
-          "select": [
-            [
-              {
-                "params": [
-                  "readout_hsi_events_counter"
-                ],
-                "type": "field"
-              }
-            ]
-          ],
-          "tags": []
-        }
-      ],
-      "type": "bargauge"
     },
     {
       "aliasColors": {},
@@ -1095,6 +1095,26 @@
         "skipUrlSync": false,
         "sort": 0,
         "type": "query"
+      },
+      {
+        "allValue": null,
+        "current": {},
+        "datasource": "${DS_INFLUXTEST}",
+        "definition": "SHOW FIELD KEYS FROM \"dunedaq.timinglibs.${series}.Info\"",
+        "description": null,
+        "error": null,
+        "hide": 2,
+        "includeAll": false,
+        "label": null,
+        "multi": false,
+        "name": "field",
+        "options": [],
+        "query": "SHOW FIELD KEYS FROM \"dunedaq.timinglibs.${series}.Info\"",
+        "refresh": 1,
+        "regex": "(readout|generated)_hsi_events_counter",
+        "skipUrlSync": false,
+        "sort": 0,
+        "type": "query"
       }
     ]
   },
@@ -1130,5 +1150,5 @@
   "timezone": "",
   "title": "Trigger and HSI",
   "uid": "U_8ZFDZng",
-  "version": 8
+  "version": 13
 }

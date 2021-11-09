@@ -7,17 +7,15 @@
       "type": "datasource",
       "pluginId": "influxdb",
       "pluginName": "InfluxDB"
-    },
-    {
-      "name": "DS_ERS",
-      "label": "ERS",
-      "description": "",
-      "type": "datasource",
-      "pluginId": "postgres",
-      "pluginName": "PostgreSQL"
     }
   ],
   "__requires": [
+    {
+      "type": "panel",
+      "id": "bargauge",
+      "name": "Bar gauge",
+      "version": ""
+    },
     {
       "type": "grafana",
       "id": "grafana",
@@ -37,10 +35,16 @@
       "version": "1.0.0"
     },
     {
-      "type": "datasource",
-      "id": "postgres",
-      "name": "PostgreSQL",
-      "version": "1.0.0"
+      "type": "panel",
+      "id": "stat",
+      "name": "Stat",
+      "version": ""
+    },
+    {
+      "type": "panel",
+      "id": "timeseries",
+      "name": "Time series",
+      "version": ""
     }
   ],
   "annotations": {
@@ -66,22 +70,604 @@
   "gnetId": null,
   "graphTooltip": 0,
   "id": null,
-  "iteration": 1636460932989,
+  "iteration": 1636480537157,
   "links": [],
   "panels": [
     {
-      "collapsed": false,
-      "datasource": null,
+      "datasource": "${DS_INFLUXTEST}",
+      "description": "Only available for real HSI",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "drawStyle": "line",
+            "fillOpacity": 10,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "never",
+            "spanNulls": true,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "short"
+        },
+        "overrides": []
+      },
       "gridPos": {
-        "h": 1,
-        "w": 24,
+        "h": 11,
+        "w": 16,
         "x": 0,
         "y": 0
       },
-      "id": 19,
-      "panels": [],
-      "title": "Operational monitoring",
-      "type": "row"
+      "id": 21,
+      "links": [],
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom"
+        },
+        "tooltip": {
+          "mode": "single"
+        }
+      },
+      "pluginVersion": "8.0.6",
+      "targets": [
+        {
+          "alias": "Average buffer occupancy",
+          "expr": "",
+          "format": "time_series",
+          "groupBy": [],
+          "intervalFactor": 1,
+          "measurement": "dunedaq.timinglibs.hsireadoutinfo.Info",
+          "orderByTime": "ASC",
+          "policy": "default",
+          "query": "SELECT mean(\"average_buffer_occupancy\") FROM \"dunedaq.timinglibs.${series}.Info\" WHERE (\"partition_id\" = '${partition}') AND $timeFilter",
+          "rawQuery": true,
+          "refId": "A",
+          "resultFormat": "time_series",
+          "select": [
+            [
+              {
+                "params": [
+                  "average_buffer_occupancy"
+                ],
+                "type": "field"
+              }
+            ]
+          ],
+          "tags": [
+            {
+              "key": "partition_id",
+              "operator": "=",
+              "value": "select tag value"
+            }
+          ]
+        }
+      ],
+      "timeFrom": null,
+      "timeShift": null,
+      "title": "HSI Average Buffer Occupancy",
+      "type": "timeseries"
+    },
+    {
+      "datasource": "${DS_INFLUXTEST}",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [],
+          "noValue": "0",
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 1
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 4,
+        "w": 3,
+        "x": 16,
+        "y": 0
+      },
+      "id": 23,
+      "options": {
+        "colorMode": "background",
+        "graphMode": "none",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "text": {},
+        "textMode": "auto"
+      },
+      "pluginVersion": "8.0.6",
+      "targets": [
+        {
+          "alias": "",
+          "groupBy": [],
+          "measurement": "dunedaq.timinglibs.hsireadoutinfo.Info",
+          "orderByTime": "ASC",
+          "policy": "default",
+          "query": "SELECT last(\"failed_to_send_hsi_events_counter\") FROM \"dunedaq.timinglibs.${series}.Info\" WHERE (\"partition_id\" = 'maroda_test') AND $timeFilter ",
+          "rawQuery": true,
+          "refId": "A",
+          "resultFormat": "time_series",
+          "select": [
+            [
+              {
+                "params": [
+                  "failed_to_send_hsi_events_counter"
+                ],
+                "type": "field"
+              }
+            ]
+          ],
+          "tags": [
+            {
+              "key": "partition_id",
+              "operator": "=",
+              "value": "maroda_test"
+            }
+          ]
+        }
+      ],
+      "title": "Failed HSI Events ",
+      "transformations": [],
+      "type": "stat"
+    },
+    {
+      "alert": {
+        "alertRuleTags": {},
+        "conditions": [
+          {
+            "evaluator": {
+              "params": [
+                0.9
+              ],
+              "type": "gt"
+            },
+            "operator": {
+              "type": "and"
+            },
+            "query": {
+              "params": [
+                "A",
+                "5m",
+                "now"
+              ]
+            },
+            "reducer": {
+              "params": [],
+              "type": "max"
+            },
+            "type": "query"
+          }
+        ],
+        "executionErrorState": "alerting",
+        "for": "5m",
+        "frequency": "1s",
+        "handler": 1,
+        "name": "HSI Event Failed",
+        "noDataState": "no_data",
+        "notifications": []
+      },
+      "datasource": "${DS_INFLUXTEST}",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "axisSoftMax": 2,
+            "barAlignment": 0,
+            "drawStyle": "line",
+            "fillOpacity": 0,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 6,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "auto",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "line+area"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 1
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 4,
+        "w": 5,
+        "x": 19,
+        "y": 0
+      },
+      "id": 31,
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "hidden",
+          "placement": "bottom"
+        },
+        "tooltip": {
+          "mode": "single"
+        }
+      },
+      "pluginVersion": "8.0.6",
+      "targets": [
+        {
+          "alias": "",
+          "groupBy": [],
+          "measurement": "dunedaq.timinglibs.hsireadoutinfo.Info",
+          "orderByTime": "ASC",
+          "policy": "default",
+          "query": "SELECT mean(\"failed_to_send_hsi_events_counter\") FROM \"dunedaq.timinglibs.${series}.Info\" WHERE (\"partition_id\" = '${partition}') AND $timeFilter GROUP BY time($__interval)",
+          "rawQuery": true,
+          "refId": "A",
+          "resultFormat": "time_series",
+          "select": [
+            [
+              {
+                "params": [
+                  "failed_to_send_hsi_events_counter"
+                ],
+                "type": "field"
+              }
+            ]
+          ],
+          "tags": [
+            {
+              "key": "partition_id",
+              "operator": "=",
+              "value": "select tag value"
+            }
+          ]
+        }
+      ],
+      "thresholds": [
+        {
+          "colorMode": "critical",
+          "op": "gt",
+          "value": 0.9,
+          "visible": true
+        }
+      ],
+      "title": "Failed to sent HSI",
+      "type": "timeseries"
+    },
+    {
+      "datasource": "${DS_INFLUXTEST}",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [],
+          "noValue": "ERROR: no data",
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "red",
+                "value": null
+              },
+              {
+                "color": "green",
+                "value": 1
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 3,
+        "w": 4,
+        "x": 16,
+        "y": 4
+      },
+      "id": 27,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "none",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "text": {},
+        "textMode": "auto"
+      },
+      "pluginVersion": "8.0.6",
+      "targets": [
+        {
+          "groupBy": [],
+          "measurement": "dunedaq.timinglibs.hsireadoutinfo.Info",
+          "orderByTime": "ASC",
+          "policy": "default",
+          "query": "SELECT last(\"last_sent_timestamp\") FROM \"dunedaq.timinglibs.${series}.Info\" WHERE (\"partition_id\" = '${partition}') AND $timeFilter ",
+          "rawQuery": true,
+          "refId": "A",
+          "resultFormat": "time_series",
+          "select": [
+            [
+              {
+                "params": [
+                  "last_sent_timestamp"
+                ],
+                "type": "field"
+              }
+            ]
+          ],
+          "tags": [
+            {
+              "key": "partition_id",
+              "operator": "=",
+              "value": "maroda_test"
+            }
+          ]
+        }
+      ],
+      "title": "Last Sent Timestamp",
+      "type": "stat"
+    },
+    {
+      "datasource": "${DS_INFLUXTEST}",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [],
+          "noValue": "ERROR: no data",
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "red",
+                "value": null
+              },
+              {
+                "color": "green",
+                "value": 1
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 3,
+        "w": 4,
+        "x": 20,
+        "y": 4
+      },
+      "id": 29,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "none",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "text": {},
+        "textMode": "auto"
+      },
+      "pluginVersion": "8.0.6",
+      "targets": [
+        {
+          "groupBy": [],
+          "measurement": "dunedaq.timinglibs.hsireadoutinfo.Info",
+          "orderByTime": "ASC",
+          "policy": "default",
+          "query": "SELECT last(\"last_readout_timestamp\") FROM \"dunedaq.timinglibs.${series}.Info\" WHERE (\"partition_id\" = '${partition}') AND $timeFilter",
+          "rawQuery": true,
+          "refId": "A",
+          "resultFormat": "time_series",
+          "select": [
+            [
+              {
+                "params": [
+                  "last_readout_timestamp"
+                ],
+                "type": "field"
+              }
+            ]
+          ],
+          "tags": [
+            {
+              "key": "partition_id",
+              "operator": "=",
+              "value": "select tag value"
+            }
+          ]
+        }
+      ],
+      "title": "Last Readout Timestamp",
+      "type": "stat"
+    },
+    {
+      "datasource": "${DS_INFLUXTEST}",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 4,
+        "w": 8,
+        "x": 16,
+        "y": 7
+      },
+      "id": 25,
+      "options": {
+        "displayMode": "gradient",
+        "orientation": "horizontal",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "showUnfilled": true,
+        "text": {}
+      },
+      "pluginVersion": "8.0.6",
+      "targets": [
+        {
+          "alias": "HSI events sent counter",
+          "groupBy": [],
+          "measurement": "dunedaq.timinglibs.hsireadoutinfo.Info",
+          "orderByTime": "ASC",
+          "policy": "default",
+          "query": "SELECT sum(\"sent_hsi_events_counter\") FROM \"dunedaq.timinglibs.${series}.Info\" WHERE (\"partition_id\" = 'maroda_test') AND $timeFilter GROUP BY time(500ms)",
+          "rawQuery": true,
+          "refId": "A",
+          "resultFormat": "time_series",
+          "select": [
+            [
+              {
+                "params": [
+                  "sent_hsi_events_counter"
+                ],
+                "type": "field"
+              }
+            ]
+          ],
+          "tags": [
+            {
+              "key": "partition_id",
+              "operator": "=",
+              "value": "maroda_test"
+            }
+          ]
+        },
+        {
+          "alias": "HSI events readout counter",
+          "groupBy": [],
+          "hide": false,
+          "measurement": "dunedaq.timinglibs.hsireadoutinfo.Info",
+          "orderByTime": "ASC",
+          "policy": "default",
+          "query": "SELECT sum(\"readout_hsi_events_counter\") FROM \"dunedaq.timinglibs.${series}.Info\" WHERE (\"partition_id\" = 'maroda_test') AND $timeFilter GROUP BY time(500ms) ",
+          "rawQuery": true,
+          "refId": "B",
+          "resultFormat": "time_series",
+          "select": [
+            [
+              {
+                "params": [
+                  "readout_hsi_events_counter"
+                ],
+                "type": "field"
+              }
+            ]
+          ],
+          "tags": []
+        }
+      ],
+      "type": "bargauge"
     },
     {
       "aliasColors": {},
@@ -95,7 +681,7 @@
         "h": 7,
         "w": 8,
         "x": 0,
-        "y": 1
+        "y": 11
       },
       "hiddenSeries": false,
       "id": 2,
@@ -215,7 +801,7 @@
         "h": 7,
         "w": 8,
         "x": 8,
-        "y": 1
+        "y": 11
       },
       "hiddenSeries": false,
       "id": 11,
@@ -473,8 +1059,8 @@
       {
         "allValue": null,
         "current": {},
-        "datasource": "${DS_ERS}",
-        "definition": "SELECT partition FROM public.\"ErrorReports\"",
+        "datasource": "${DS_INFLUXTEST}",
+        "definition": "SHOW TAG VALUES WITH KEY=\"partition_id\" WHERE $timeFilter",
         "description": null,
         "error": null,
         "hide": 0,
@@ -483,7 +1069,7 @@
         "multi": false,
         "name": "partition",
         "options": [],
-        "query": "SELECT partition FROM public.\"ErrorReports\"",
+        "query": "SHOW TAG VALUES WITH KEY=\"partition_id\" WHERE $timeFilter",
         "refresh": 1,
         "regex": "",
         "skipUrlSync": false,
@@ -492,79 +1078,23 @@
       },
       {
         "allValue": null,
-        "current": {
-          "selected": false,
-          "text": "dataflow",
-          "value": "dataflow"
-        },
+        "current": {},
+        "datasource": "${DS_INFLUXTEST}",
+        "definition": "SHOW SERIES WHERE \"partition_id\"='${partition}' AND $timeFilter",
         "description": null,
         "error": null,
         "hide": 0,
         "includeAll": false,
-        "label": "DataFlow Application",
+        "label": null,
         "multi": false,
-        "name": "df_application",
-        "options": [
-          {
-            "selected": true,
-            "text": "dataflow",
-            "value": "dataflow"
-          }
-        ],
-        "query": "dataflow",
-        "queryValue": "",
+        "name": "series",
+        "options": [],
+        "query": "SHOW SERIES WHERE \"partition_id\"='${partition}' AND $timeFilter",
+        "refresh": 1,
+        "regex": "dunedaq\\.timinglibs\\.(.*)\\.Info,.*",
         "skipUrlSync": false,
-        "type": "custom"
-      },
-      {
-        "allValue": null,
-        "current": {
-          "selected": false,
-          "text": "trb",
-          "value": "trb"
-        },
-        "description": null,
-        "error": null,
-        "hide": 0,
-        "includeAll": false,
-        "label": "TRB Instance",
-        "multi": false,
-        "name": "TRBInstance",
-        "options": [
-          {
-            "selected": true,
-            "text": "trb",
-            "value": "trb"
-          }
-        ],
-        "query": "trb",
-        "skipUrlSync": false,
-        "type": "custom"
-      },
-      {
-        "allValue": null,
-        "current": {
-          "selected": false,
-          "text": "datawriter",
-          "value": "datawriter"
-        },
-        "description": null,
-        "error": null,
-        "hide": 0,
-        "includeAll": false,
-        "label": "Data Writer Instance",
-        "multi": false,
-        "name": "data_writer",
-        "options": [
-          {
-            "selected": true,
-            "text": "datawriter",
-            "value": "datawriter"
-          }
-        ],
-        "query": "datawriter",
-        "skipUrlSync": false,
-        "type": "custom"
+        "sort": 0,
+        "type": "query"
       }
     ]
   },
@@ -599,6 +1129,6 @@
   },
   "timezone": "",
   "title": "Trigger and HSI",
-  "uid": "U_8ZFDZnf",
-  "version": 3
+  "uid": "U_8ZFDZng",
+  "version": 8
 }

@@ -78,7 +78,7 @@
   "gnetId": null,
   "graphTooltip": 0,
   "id": null,
-  "iteration": 1636472247938,
+  "iteration": 1636543946377,
   "links": [
     {
       "asDropdown": true,
@@ -1038,6 +1038,21 @@
                 }
               }
             ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "generated HSI triggers"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "super-light-blue",
+                  "mode": "fixed"
+                }
+              }
+            ]
           }
         ]
       },
@@ -1236,7 +1251,7 @@
           ]
         },
         {
-          "alias": "Generated HSI triggers",
+          "alias": "${hsi_field} HSI triggers",
           "groupBy": [
             {
               "params": [
@@ -1255,7 +1270,7 @@
           "measurement": "dunedaq.timinglibs.fakehsieventgeneratorinfo.Info",
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "SELECT non_negative_derivative(sum(\"generated_hsi_events_counter\"), 1s) FROM \"dunedaq.timinglibs.fakehsieventgeneratorinfo.Info\" WHERE (\"partition_id\" = '${partition}') AND $timeFilter GROUP BY time(500ms) fill(null)",
+          "query": "SELECT non_negative_derivative(sum(\"${hsi_field}_hsi_events_counter\"), 1s) FROM \"dunedaq.timinglibs.${hsi_series}.Info\" WHERE (\"partition_id\" = '${partition}') AND $timeFilter GROUP BY time(500ms) fill(null)",
           "rawQuery": true,
           "refId": "D",
           "resultFormat": "time_series",
@@ -1307,7 +1322,7 @@
           "measurement": "dunedaq.timinglibs.fakehsieventgeneratorinfo.Info",
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "SELECT non_negative_derivative(sum(\"sent_hsi_events_counter\"), 1s) FROM \"dunedaq.timinglibs.fakehsieventgeneratorinfo.Info\" WHERE (\"partition_id\" = '${partition}') AND $timeFilter GROUP BY time(500ms) fill(null)",
+          "query": "SELECT non_negative_derivative(sum(\"sent_hsi_events_counter\"), 1s) FROM \"dunedaq.timinglibs.${hsi_series}.Info\" WHERE (\"partition_id\" = '${partition}') AND $timeFilter GROUP BY time(500ms) fill(null)",
           "rawQuery": true,
           "refId": "F",
           "resultFormat": "time_series",
@@ -2162,6 +2177,46 @@
         "skipUrlSync": false,
         "sort": 1,
         "type": "query"
+      },
+      {
+        "allValue": null,
+        "current": {},
+        "datasource": "${DS_INFLUXTEST}",
+        "definition": "SHOW SERIES WHERE \"partition_id\"='${partition}' AND $timeFilter",
+        "description": null,
+        "error": null,
+        "hide": 2,
+        "includeAll": false,
+        "label": null,
+        "multi": false,
+        "name": "hsi_series",
+        "options": [],
+        "query": "SHOW SERIES WHERE \"partition_id\"='${partition}' AND $timeFilter",
+        "refresh": 1,
+        "regex": "dunedaq\\.timinglibs\\.(.*)\\.Info,.*",
+        "skipUrlSync": false,
+        "sort": 0,
+        "type": "query"
+      },
+      {
+        "allValue": null,
+        "current": {},
+        "datasource": "${DS_INFLUXTEST}",
+        "definition": "SHOW FIELD KEYS FROM \"dunedaq.timinglibs.${hsi_series}.Info\"",
+        "description": null,
+        "error": null,
+        "hide": 2,
+        "includeAll": false,
+        "label": null,
+        "multi": false,
+        "name": "hsi_field",
+        "options": [],
+        "query": "SHOW FIELD KEYS FROM \"dunedaq.timinglibs.${hsi_series}.Info\"",
+        "refresh": 1,
+        "regex": "(readout|generated)_hsi_events_counter",
+        "skipUrlSync": false,
+        "sort": 0,
+        "type": "query"
       }
     ]
   },
@@ -2197,5 +2252,5 @@
   "timezone": "",
   "title": "DAQ overview",
   "uid": "k6xMNncnk",
-  "version": 3
+  "version": 5
 }

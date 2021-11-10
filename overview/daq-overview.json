@@ -15,14 +15,6 @@
       "type": "datasource",
       "pluginId": "postgres",
       "pluginName": "PostgreSQL"
-    },
-    {
-      "name": "DS_NP04DAQ_SYSADMIN",
-      "label": "NP04DAQ_sysadmin",
-      "description": "",
-      "type": "datasource",
-      "pluginId": "prometheus",
-      "pluginName": "Prometheus"
     }
   ],
   "__requires": [
@@ -39,21 +31,9 @@
       "version": "1.0.0"
     },
     {
-      "type": "panel",
-      "id": "piechart",
-      "name": "Pie chart",
-      "version": ""
-    },
-    {
       "type": "datasource",
       "id": "postgres",
       "name": "PostgreSQL",
-      "version": "1.0.0"
-    },
-    {
-      "type": "datasource",
-      "id": "prometheus",
-      "name": "Prometheus",
       "version": "1.0.0"
     },
     {
@@ -98,7 +78,7 @@
   "gnetId": null,
   "graphTooltip": 0,
   "id": null,
-  "iteration": 1636568011528,
+  "iteration": 1636569662026,
   "links": [
     {
       "asDropdown": true,
@@ -1749,13 +1729,47 @@
             "mode": "palette-classic"
           },
           "custom": {
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "drawStyle": "line",
+            "fillOpacity": 16,
+            "gradientMode": "none",
             "hideFrom": {
               "legend": false,
               "tooltip": false,
               "viz": false
+            },
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 1,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "auto",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
             }
           },
           "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
           "unit": "bits"
         },
         "overrides": [
@@ -1768,7 +1782,7 @@
               {
                 "id": "color",
                 "value": {
-                  "fixedColor": "semi-dark-yellow",
+                  "fixedColor": "semi-dark-orange",
                   "mode": "fixed"
                 }
               }
@@ -1800,16 +1814,9 @@
       "id": 40,
       "options": {
         "legend": {
+          "calcs": [],
           "displayMode": "list",
           "placement": "bottom"
-        },
-        "pieType": "pie",
-        "reduceOptions": {
-          "calcs": [
-            "lastNotNull"
-          ],
-          "fields": "",
-          "values": false
         },
         "tooltip": {
           "mode": "single"
@@ -1818,8 +1825,9 @@
       "targets": [
         {
           "exemplar": true,
-          "expr": "sum(\n  max by (device) (\n    node_filesystem_size_bytes{job=\"node\", instance=\"$instance\", fstype!=\"\"}\n  -\n    node_filesystem_avail_bytes{job=\"node\", instance=\"$instance\", fstype!=\"\"}\n  )\n)",
+          "expr": "sum ( \n  max by (device) (\n    node_filesystem_size_bytes{job=\"node\", instance=~\".*:.*\", fstype!=\"\"}\n  -\n    node_filesystem_avail_bytes{job=\"node\", instance=~\".*:.*\", fstype!=\"\"}\n  )\n)",
           "format": "time_series",
+          "hide": false,
           "interval": "",
           "intervalFactor": 2,
           "legendFormat": "Used",
@@ -1827,16 +1835,18 @@
         },
         {
           "exemplar": true,
-          "expr": "sum(\n  max by (device) (\n    node_filesystem_avail_bytes{job=\"node\", instance=\"$instance\", fstype!=\"\"}\n  )\n)\n",
+          "expr": "sum(\n  max by (device) (\n    node_filesystem_avail_bytes{job=\"node\", instance=~\".*:.*\", fstype!=\"\"}\n  )\n)\n",
+          "format": "time_series",
           "hide": false,
+          "instant": false,
           "interval": "",
           "intervalFactor": 2,
           "legendFormat": "Available",
           "refId": "B"
         }
       ],
-      "title": "Placeholder for disk occupancy",
-      "type": "piechart"
+      "title": "Disk occupancy",
+      "type": "timeseries"
     },
     {
       "datasource": "${DS_INFLUXTEST}",
@@ -2262,29 +2272,6 @@
         "skipUrlSync": false,
         "sort": 0,
         "type": "query"
-      },
-      {
-        "allValue": null,
-        "current": {},
-        "datasource": "${DS_NP04DAQ_SYSADMIN}",
-        "definition": "label_values(node_exporter_build_info{job=\"node\"}, instance)",
-        "description": null,
-        "error": null,
-        "hide": 0,
-        "includeAll": false,
-        "label": null,
-        "multi": false,
-        "name": "instance",
-        "options": [],
-        "query": {
-          "query": "label_values(node_exporter_build_info{job=\"node\"}, instance)",
-          "refId": "StandardVariableQuery"
-        },
-        "refresh": 1,
-        "regex": "",
-        "skipUrlSync": false,
-        "sort": 0,
-        "type": "query"
       }
     ]
   },
@@ -2320,5 +2307,5 @@
   "timezone": "",
   "title": "DAQ overview",
   "uid": "k6xMNncnk",
-  "version": 7
+  "version": 9
 }

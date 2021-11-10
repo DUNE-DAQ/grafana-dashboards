@@ -1,52 +1,4 @@
 {
-  "__inputs": [
-    {
-      "name": "DS_INFLUXTEST",
-      "label": "InfluxTest",
-      "description": "",
-      "type": "datasource",
-      "pluginId": "influxdb",
-      "pluginName": "InfluxDB"
-    }
-  ],
-  "__requires": [
-    {
-      "type": "panel",
-      "id": "bargauge",
-      "name": "Bar gauge",
-      "version": ""
-    },
-    {
-      "type": "grafana",
-      "id": "grafana",
-      "name": "Grafana",
-      "version": "8.0.6"
-    },
-    {
-      "type": "panel",
-      "id": "graph",
-      "name": "Graph (old)",
-      "version": ""
-    },
-    {
-      "type": "datasource",
-      "id": "influxdb",
-      "name": "InfluxDB",
-      "version": "1.0.0"
-    },
-    {
-      "type": "panel",
-      "id": "stat",
-      "name": "Stat",
-      "version": ""
-    },
-    {
-      "type": "panel",
-      "id": "timeseries",
-      "name": "Time series",
-      "version": ""
-    }
-  ],
   "annotations": {
     "list": [
       {
@@ -69,12 +21,12 @@
   "editable": true,
   "gnetId": null,
   "graphTooltip": 0,
-  "id": null,
-  "iteration": 1636480537180,
+  "id": 71,
+  "iteration": 1636544119736,
   "links": [],
   "panels": [
     {
-      "datasource": "${DS_INFLUXTEST}",
+      "datasource": "InfluxTest",
       "description": "Only available for real HSI",
       "fieldConfig": {
         "defaults": {
@@ -185,7 +137,7 @@
       "type": "timeseries"
     },
     {
-      "datasource": "${DS_INFLUXTEST}",
+      "datasource": "InfluxTest",
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -302,7 +254,7 @@
         "noDataState": "no_data",
         "notifications": []
       },
-      "datasource": "${DS_INFLUXTEST}",
+      "datasource": "InfluxTest",
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -414,7 +366,7 @@
       "type": "timeseries"
     },
     {
-      "datasource": "${DS_INFLUXTEST}",
+      "datasource": "InfluxTest",
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -510,7 +462,7 @@
       "type": "bargauge"
     },
     {
-      "datasource": "${DS_INFLUXTEST}",
+      "datasource": "InfluxTest",
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -538,86 +490,6 @@
         "h": 3,
         "w": 4,
         "x": 16,
-        "y": 8
-      },
-      "id": 27,
-      "options": {
-        "colorMode": "value",
-        "graphMode": "none",
-        "justifyMode": "auto",
-        "orientation": "auto",
-        "reduceOptions": {
-          "calcs": [
-            "lastNotNull"
-          ],
-          "fields": "",
-          "values": false
-        },
-        "text": {},
-        "textMode": "auto"
-      },
-      "pluginVersion": "8.0.6",
-      "targets": [
-        {
-          "groupBy": [],
-          "measurement": "dunedaq.timinglibs.hsireadoutinfo.Info",
-          "orderByTime": "ASC",
-          "policy": "default",
-          "query": "SELECT last(\"last_sent_timestamp\") FROM \"dunedaq.timinglibs.${series}.Info\" WHERE (\"partition_id\" = '${partition}') AND $timeFilter ",
-          "rawQuery": true,
-          "refId": "A",
-          "resultFormat": "time_series",
-          "select": [
-            [
-              {
-                "params": [
-                  "last_sent_timestamp"
-                ],
-                "type": "field"
-              }
-            ]
-          ],
-          "tags": [
-            {
-              "key": "partition_id",
-              "operator": "=",
-              "value": "maroda_test"
-            }
-          ]
-        }
-      ],
-      "title": "Last Sent Timestamp",
-      "type": "stat"
-    },
-    {
-      "datasource": "${DS_INFLUXTEST}",
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "mode": "thresholds"
-          },
-          "mappings": [],
-          "noValue": "ERROR: no data",
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "red",
-                "value": null
-              },
-              {
-                "color": "green",
-                "value": 1
-              }
-            ]
-          }
-        },
-        "overrides": []
-      },
-      "gridPos": {
-        "h": 3,
-        "w": 4,
-        "x": 20,
         "y": 8
       },
       "id": 29,
@@ -670,55 +542,324 @@
       "type": "stat"
     },
     {
-      "aliasColors": {},
-      "bars": false,
-      "dashLength": 10,
-      "dashes": false,
-      "datasource": "${DS_INFLUXTEST}",
-      "fill": 0,
-      "fillGradient": 0,
+      "datasource": "InfluxTest",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [],
+          "noValue": "ERROR: no data",
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "red",
+                "value": null
+              },
+              {
+                "color": "green",
+                "value": 1
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 3,
+        "w": 4,
+        "x": 20,
+        "y": 8
+      },
+      "id": 27,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "none",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "text": {},
+        "textMode": "auto"
+      },
+      "pluginVersion": "8.0.6",
+      "targets": [
+        {
+          "groupBy": [],
+          "measurement": "dunedaq.timinglibs.hsireadoutinfo.Info",
+          "orderByTime": "ASC",
+          "policy": "default",
+          "query": "SELECT last(\"last_sent_timestamp\") FROM \"dunedaq.timinglibs.${series}.Info\" WHERE (\"partition_id\" = '${partition}') AND $timeFilter ",
+          "rawQuery": true,
+          "refId": "A",
+          "resultFormat": "time_series",
+          "select": [
+            [
+              {
+                "params": [
+                  "last_sent_timestamp"
+                ],
+                "type": "field"
+              }
+            ]
+          ],
+          "tags": [
+            {
+              "key": "partition_id",
+              "operator": "=",
+              "value": "maroda_test"
+            }
+          ]
+        }
+      ],
+      "title": "Last Sent Timestamp",
+      "type": "stat"
+    },
+    {
+      "datasource": "InfluxTest",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisLabel": "Hz",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "drawStyle": "line",
+            "fillOpacity": 0,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "lineInterpolation": "linear",
+            "lineWidth": 2,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "never",
+            "spanNulls": true,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "min": 0,
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "short"
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Generated triggers"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "super-light-yellow",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Completed TR"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "dark-orange",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Written TR"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "dark-red",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Sent triggers"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "dark-yellow",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Generated HSI triggers"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "super-light-blue",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Sent HSI triggers"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "dark-blue",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Inhibited triggers"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "dark-red",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Paused triggers"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "semi-dark-orange",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          }
+        ]
+      },
       "gridPos": {
         "h": 7,
         "w": 8,
         "x": 0,
         "y": 11
       },
-      "hiddenSeries": false,
-      "id": 2,
-      "legend": {
-        "avg": false,
-        "current": false,
-        "max": false,
-        "min": false,
-        "show": true,
-        "total": false,
-        "values": false
-      },
-      "lines": true,
-      "linewidth": 2,
+      "id": 33,
       "links": [],
-      "nullPointMode": "null",
       "options": {
-        "alertThreshold": true
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom"
+        },
+        "tooltip": {
+          "mode": "single"
+        }
       },
-      "percentage": false,
       "pluginVersion": "8.0.6",
-      "pointradius": 1,
-      "points": false,
-      "renderer": "flot",
-      "seriesOverrides": [],
-      "spaceLength": 10,
-      "stack": false,
-      "steppedLine": false,
       "targets": [
         {
-          "alias": "trigger_rate",
+          "alias": "Generated triggers",
           "groupBy": [],
+          "hide": false,
           "measurement": "dunedaq.trigger.moduleleveltriggerinfo.Info",
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "SELECT derivative(td_sent_count, 1s) FROM \"dunedaq.trigger.moduleleveltriggerinfo.Info\" WHERE (\"source_id\" = '${partition}_trigger.mlt')",
-          "rawQuery": false,
+          "query": "SELECT non_negative_derivative(sum(\"td_total_count\"), 1s) FROM \"dunedaq.trigger.moduleleveltriggerinfo.Info\" WHERE (\"partition_id\" ='${partition}') AND $timeFilter GROUP BY time(500ms)",
+          "rawQuery": true,
+          "refId": "C",
+          "resultFormat": "time_series",
+          "select": [
+            [
+              {
+                "params": [
+                  "td_total_count"
+                ],
+                "type": "field"
+              },
+              {
+                "params": [
+                  "1s"
+                ],
+                "type": "non_negative_derivative"
+              }
+            ]
+          ],
+          "tags": [
+            {
+              "key": "source_id",
+              "operator": "=",
+              "value": "${partition}_trigger.mlt"
+            }
+          ]
+        },
+        {
+          "alias": "Sent triggers",
+          "groupBy": [],
+          "hide": false,
+          "measurement": "dunedaq.trigger.moduleleveltriggerinfo.Info",
+          "orderByTime": "ASC",
+          "policy": "default",
+          "query": "SELECT non_negative_derivative(sum(\"td_sent_count\"), 1s) FROM \"dunedaq.trigger.moduleleveltriggerinfo.Info\" WHERE (\"partition_id\" = '${partition}') AND $timeFilter GROUP BY time(500ms)",
+          "rawQuery": true,
           "refId": "E",
           "resultFormat": "time_series",
           "select": [
@@ -733,7 +874,7 @@
                 "params": [
                   "1s"
                 ],
-                "type": "derivative"
+                "type": "non_negative_derivative"
               }
             ]
           ],
@@ -744,101 +885,15 @@
               "value": "${partition}_trigger.mlt"
             }
           ]
-        }
-      ],
-      "thresholds": [],
-      "timeFrom": null,
-      "timeRegions": [],
-      "timeShift": null,
-      "title": "Trigger Rate",
-      "tooltip": {
-        "shared": true,
-        "sort": 0,
-        "value_type": "individual"
-      },
-      "type": "graph",
-      "xaxis": {
-        "buckets": null,
-        "mode": "time",
-        "name": null,
-        "show": true,
-        "values": []
-      },
-      "yaxes": [
-        {
-          "$$hashKey": "object:892",
-          "format": "short",
-          "label": "Hz",
-          "logBase": 1,
-          "max": null,
-          "min": "0",
-          "show": true
         },
         {
-          "$$hashKey": "object:893",
-          "format": "short",
-          "label": null,
-          "logBase": 1,
-          "max": null,
-          "min": null,
-          "show": true
-        }
-      ],
-      "yaxis": {
-        "align": false,
-        "alignLevel": null
-      }
-    },
-    {
-      "aliasColors": {},
-      "bars": false,
-      "dashLength": 10,
-      "dashes": false,
-      "datasource": "${DS_INFLUXTEST}",
-      "fill": 0,
-      "fillGradient": 0,
-      "gridPos": {
-        "h": 7,
-        "w": 8,
-        "x": 8,
-        "y": 11
-      },
-      "hiddenSeries": false,
-      "id": 11,
-      "legend": {
-        "avg": false,
-        "current": false,
-        "max": false,
-        "min": false,
-        "show": true,
-        "total": false,
-        "values": false
-      },
-      "lines": true,
-      "linewidth": 2,
-      "links": [],
-      "nullPointMode": "null",
-      "options": {
-        "alertThreshold": true
-      },
-      "percentage": false,
-      "pluginVersion": "8.0.6",
-      "pointradius": 1,
-      "points": false,
-      "renderer": "flot",
-      "seriesOverrides": [],
-      "spaceLength": 10,
-      "stack": false,
-      "steppedLine": false,
-      "targets": [
-        {
-          "alias": "received_tc",
+          "alias": "Paused triggers",
           "groupBy": [],
           "hide": false,
           "measurement": "dunedaq.trigger.moduleleveltriggerinfo.Info",
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "SELECT \"tc_received_count\" FROM \"dunedaq.trigger.moduleleveltriggerinfo.Info\" WHERE (\"source_id\" = '${partition}_trigger.mlt') AND $timeFilter",
+          "query": "SELECT non_negative_derivative(sum(\"td_paused_count\"), 1s) FROM \"dunedaq.trigger.moduleleveltriggerinfo.Info\" WHERE (\"partition_id\" = '${partition}') AND $timeFilter GROUP BY time(500ms)",
           "rawQuery": true,
           "refId": "A",
           "resultFormat": "time_series",
@@ -846,9 +901,15 @@
             [
               {
                 "params": [
-                  "tc_received_count"
+                  "td_sent_count"
                 ],
                 "type": "field"
+              },
+              {
+                "params": [
+                  "1s"
+                ],
+                "type": "non_negative_derivative"
               }
             ]
           ],
@@ -861,14 +922,14 @@
           ]
         },
         {
-          "alias": "sent_triggers",
+          "alias": "Inhibited triggers",
           "groupBy": [],
           "hide": false,
           "measurement": "dunedaq.trigger.moduleleveltriggerinfo.Info",
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "SELECT \"tc_received_count\" FROM \"dunedaq.trigger.moduleleveltriggerinfo.Info\" WHERE (\"source_id\" = '${partition}_trigger.mlt') AND $timeFilter",
-          "rawQuery": false,
+          "query": "SELECT non_negative_derivative(sum(\"td_inhibited_count\"), 1s) FROM \"dunedaq.trigger.moduleleveltriggerinfo.Info\" WHERE (\"partition_id\" = '${partition}') AND $timeFilter GROUP BY time(500ms)",
+          "rawQuery": true,
           "refId": "B",
           "resultFormat": "time_series",
           "select": [
@@ -878,35 +939,12 @@
                   "td_sent_count"
                 ],
                 "type": "field"
-              }
-            ]
-          ],
-          "tags": [
-            {
-              "key": "source_id",
-              "operator": "=",
-              "value": "${partition}_trigger.mlt"
-            }
-          ]
-        },
-        {
-          "alias": "inhibited_triggers",
-          "groupBy": [],
-          "hide": false,
-          "measurement": "dunedaq.trigger.moduleleveltriggerinfo.Info",
-          "orderByTime": "ASC",
-          "policy": "default",
-          "query": "SELECT \"tc_received_count\" FROM \"dunedaq.trigger.moduleleveltriggerinfo.Info\" WHERE (\"source_id\" = '${partition}_trigger.mlt') AND $timeFilter",
-          "rawQuery": false,
-          "refId": "C",
-          "resultFormat": "time_series",
-          "select": [
-            [
+              },
               {
                 "params": [
-                  "td_inhibited_count"
+                  "1s"
                 ],
-                "type": "field"
+                "type": "non_negative_derivative"
               }
             ]
           ],
@@ -917,54 +955,235 @@
               "value": "${partition}_trigger.mlt"
             }
           ]
+        }
+      ],
+      "timeFrom": null,
+      "timeShift": null,
+      "title": "Trigger Rate",
+      "transformations": [],
+      "type": "timeseries"
+    },
+    {
+      "datasource": "InfluxTest",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisLabel": "Hz",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "drawStyle": "line",
+            "fillOpacity": 0,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "lineInterpolation": "linear",
+            "lineWidth": 2,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "never",
+            "spanNulls": true,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "min": 0,
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "short"
         },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Generated triggers"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "super-light-yellow",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Completed TR"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "dark-orange",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Written TR"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "dark-red",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Sent triggers"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "dark-yellow",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Generated HSI triggers"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "super-light-blue",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Sent HSI triggers"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "dark-blue",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "generated HSI triggers"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "super-light-blue",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 7,
+        "w": 8,
+        "x": 16,
+        "y": 11
+      },
+      "id": 34,
+      "links": [],
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom"
+        },
+        "tooltip": {
+          "mode": "single"
+        }
+      },
+      "pluginVersion": "8.0.6",
+      "targets": [
         {
-          "alias": "paused_triggers",
-          "groupBy": [],
+          "alias": "${field} HSI triggers",
+          "groupBy": [
+            {
+              "params": [
+                "$__interval"
+              ],
+              "type": "time"
+            },
+            {
+              "params": [
+                "null"
+              ],
+              "type": "fill"
+            }
+          ],
           "hide": false,
-          "measurement": "dunedaq.trigger.moduleleveltriggerinfo.Info",
+          "measurement": "dunedaq.timinglibs.fakehsieventgeneratorinfo.Info",
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "SELECT \"tc_received_count\" FROM \"dunedaq.trigger.moduleleveltriggerinfo.Info\" WHERE (\"source_id\" = '${partition}_trigger.mlt') AND $timeFilter",
-          "rawQuery": false,
+          "query": "SELECT non_negative_derivative(sum(\"${field}_hsi_events_counter\"), 1s) FROM \"dunedaq.timinglibs.${series}.Info\" WHERE (\"partition_id\" = '${partition}') AND $timeFilter GROUP BY time(500ms) fill(null)",
+          "rawQuery": true,
           "refId": "D",
           "resultFormat": "time_series",
           "select": [
             [
               {
                 "params": [
-                  "td_paused_count"
+                  "generated_hsi_events_counter"
                 ],
                 "type": "field"
-              }
-            ]
-          ],
-          "tags": [
-            {
-              "key": "source_id",
-              "operator": "=",
-              "value": "${partition}_trigger.mlt"
-            }
-          ]
-        },
-        {
-          "alias": "total_triggers",
-          "groupBy": [],
-          "hide": false,
-          "measurement": "dunedaq.trigger.moduleleveltriggerinfo.Info",
-          "orderByTime": "ASC",
-          "policy": "default",
-          "query": "SELECT \"tc_received_count\" FROM \"dunedaq.trigger.moduleleveltriggerinfo.Info\" WHERE (\"source_id\" = '${partition}_trigger.mlt') AND $timeFilter",
-          "rawQuery": false,
-          "refId": "E",
-          "resultFormat": "time_series",
-          "select": [
-            [
+              },
+              {
+                "params": [],
+                "type": "sum"
+              },
               {
                 "params": [
-                  "td_total_count"
+                  "1s"
                 ],
-                "type": "field"
+                "type": "non_negative_derivative"
               }
             ]
           ],
@@ -972,16 +1191,32 @@
             {
               "key": "source_id",
               "operator": "=",
-              "value": "${partition}_trigger.mlt"
+              "value": "maroda_test_hsi.fhsig"
             }
           ]
         },
         {
-          "groupBy": [],
+          "alias": "Sent HSI triggers",
+          "groupBy": [
+            {
+              "params": [
+                "$__interval"
+              ],
+              "type": "time"
+            },
+            {
+              "params": [
+                "null"
+              ],
+              "type": "fill"
+            }
+          ],
           "hide": false,
           "measurement": "dunedaq.timinglibs.fakehsieventgeneratorinfo.Info",
           "orderByTime": "ASC",
           "policy": "default",
+          "query": "SELECT non_negative_derivative(sum(\"${field}_hsi_events_counter\"), 1s) FROM \"dunedaq.timinglibs.${series}.Info\" WHERE (\"partition_id\" = '${partition}') AND $timeFilter GROUP BY time(500ms) fill(null)",
+          "rawQuery": true,
           "refId": "F",
           "resultFormat": "time_series",
           "select": [
@@ -991,6 +1226,16 @@
                   "sent_hsi_events_counter"
                 ],
                 "type": "field"
+              },
+              {
+                "params": [],
+                "type": "sum"
+              },
+              {
+                "params": [
+                  "1s"
+                ],
+                "type": "non_negative_derivative"
               }
             ]
           ],
@@ -998,53 +1243,16 @@
             {
               "key": "source_id",
               "operator": "=",
-              "value": "${partition}_hsi.fh_sig"
+              "value": "maroda_test_hsi.fhsig"
             }
           ]
         }
       ],
-      "thresholds": [],
       "timeFrom": null,
-      "timeRegions": [],
       "timeShift": null,
-      "title": "Trigger & HSI Information",
-      "tooltip": {
-        "shared": true,
-        "sort": 0,
-        "value_type": "individual"
-      },
-      "type": "graph",
-      "xaxis": {
-        "buckets": null,
-        "mode": "time",
-        "name": null,
-        "show": true,
-        "values": []
-      },
-      "yaxes": [
-        {
-          "$$hashKey": "object:448",
-          "format": "short",
-          "label": null,
-          "logBase": 1,
-          "max": null,
-          "min": null,
-          "show": true
-        },
-        {
-          "$$hashKey": "object:449",
-          "format": "short",
-          "label": null,
-          "logBase": 1,
-          "max": null,
-          "min": null,
-          "show": true
-        }
-      ],
-      "yaxis": {
-        "align": false,
-        "alignLevel": null
-      }
+      "title": "HSI Rate",
+      "transformations": [],
+      "type": "timeseries"
     }
   ],
   "refresh": "5s",
@@ -1058,8 +1266,12 @@
     "list": [
       {
         "allValue": null,
-        "current": {},
-        "datasource": "${DS_INFLUXTEST}",
+        "current": {
+          "selected": false,
+          "text": "maroda_test",
+          "value": "maroda_test"
+        },
+        "datasource": "InfluxTest",
         "definition": "SHOW TAG VALUES WITH KEY=\"partition_id\" WHERE $timeFilter",
         "description": null,
         "error": null,
@@ -1078,8 +1290,12 @@
       },
       {
         "allValue": null,
-        "current": {},
-        "datasource": "${DS_INFLUXTEST}",
+        "current": {
+          "selected": true,
+          "text": "fakehsieventgeneratorinfo",
+          "value": "fakehsieventgeneratorinfo"
+        },
+        "datasource": "InfluxTest",
         "definition": "SHOW SERIES WHERE \"partition_id\"='${partition}' AND $timeFilter",
         "description": null,
         "error": null,
@@ -1098,8 +1314,12 @@
       },
       {
         "allValue": null,
-        "current": {},
-        "datasource": "${DS_INFLUXTEST}",
+        "current": {
+          "selected": false,
+          "text": "generated",
+          "value": "generated"
+        },
+        "datasource": "InfluxTest",
         "definition": "SHOW FIELD KEYS FROM \"dunedaq.timinglibs.${series}.Info\"",
         "description": null,
         "error": null,
@@ -1150,5 +1370,5 @@
   "timezone": "",
   "title": "Trigger and HSI",
   "uid": "U_8ZFDZng",
-  "version": 13
+  "version": 17
 }

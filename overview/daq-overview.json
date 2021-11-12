@@ -78,7 +78,7 @@
   "gnetId": null,
   "graphTooltip": 0,
   "id": null,
-  "iteration": 1636569662029,
+  "iteration": 1636715620966,
   "links": [
     {
       "asDropdown": true,
@@ -1539,7 +1539,7 @@
             "properties": [
               {
                 "id": "custom.width",
-                "value": 277
+                "value": 407
               }
             ]
           },
@@ -1551,7 +1551,7 @@
             "properties": [
               {
                 "id": "custom.width",
-                "value": 92
+                "value": 30
               }
             ]
           },
@@ -1563,7 +1563,7 @@
             "properties": [
               {
                 "id": "custom.width",
-                "value": 94
+                "value": 77
               }
             ]
           },
@@ -1575,14 +1575,38 @@
             "properties": [
               {
                 "id": "custom.width",
-                "value": 117
+                "value": 103
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "time"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 152
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "issue_name"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 118
               }
             ]
           }
         ]
       },
       "gridPos": {
-        "h": 22,
+        "h": 21,
         "w": 12,
         "x": 12,
         "y": 5
@@ -1599,7 +1623,7 @@
           "group": [],
           "metricColumn": "none",
           "rawQuery": true,
-          "rawSql": "SELECT time,severity,application_name,issue_name,message,host_name\nFROM public.\"ErrorReports\"\nWHERE partition='${partition}'\nORDER BY -time\n",
+          "rawSql": "SELECT time,application_name,message,issue_name,host_name,severity\nFROM public.\"ErrorReports\"\nWHERE partition='${partition}' AND time >= ${__from} AND time <= ${__to}\nORDER BY -time\n",
           "refId": "A",
           "select": [
             [
@@ -2276,7 +2300,7 @@
     ]
   },
   "time": {
-    "from": "now-30m",
+    "from": "now-3h",
     "to": "now"
   },
   "timepicker": {
@@ -2307,5 +2331,5 @@
   "timezone": "",
   "title": "DAQ overview",
   "uid": "k6xMNncnk",
-  "version": 9
+  "version": 15
 }

@@ -78,7 +78,7 @@
   "gnetId": null,
   "graphTooltip": 0,
   "id": null,
-  "iteration": 1636717470761,
+  "iteration": 1636747658790,
   "links": [
     {
       "asDropdown": true,
@@ -2002,9 +2002,9 @@
           "measurement": "dunedaq.dfmodules.triggerrecordbuilderinfo.Info",
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "SELECT mean(\"average_millisecond_per_trigger\") FROM \"dunedaq.dfmodules.triggerrecordbuilderinfo.Info\" WHERE (\"partition_id\" = '${partition}') AND $timeFilter GROUP BY time($__interval), \"source_id\" fill(null)",
+          "query": "SELECT mean(\"average_millisecond_per_trigger\") FROM \"dunedaq.dfmodules.triggerrecordbuilderinfo.Info\" WHERE (\"partition_id\" = '${partition}') AND $timeFilter AND \"average_millisecond_per_trigger\" >= 0 GROUP BY time($__interval), \"source_id\" fill(null)",
           "rawQuery": true,
-          "refId": "B",
+          "refId": "A",
           "resultFormat": "time_series",
           "select": [
             [
@@ -2033,24 +2033,6 @@
       "timeShift": null,
       "title": "Event Builders Information",
       "transformations": [
-        {
-          "id": "filterByValue",
-          "options": {
-            "filters": [
-              {
-                "config": {
-                  "id": "lower",
-                  "options": {
-                    "value": 0
-                  }
-                },
-                "fieldName": "maroda_test.dataflow.trb"
-              }
-            ],
-            "match": "any",
-            "type": "exclude"
-          }
-        },
         {
           "id": "renameByRegex",
           "options": {
@@ -2372,5 +2354,5 @@
   "timezone": "",
   "title": "DAQ overview",
   "uid": "k6xMNncnk",
-  "version": 19
+  "version": 20
 }

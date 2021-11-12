@@ -78,7 +78,7 @@
   "gnetId": null,
   "graphTooltip": 0,
   "id": null,
-  "iteration": 1636715620966,
+  "iteration": 1636717470758,
   "links": [
     {
       "asDropdown": true,
@@ -1497,12 +1497,12 @@
             {
               "options": {
                 "ERROR": {
-                  "color": "orange",
+                  "color": "dark-orange",
                   "index": 2,
                   "text": "ERROR"
                 },
                 "FATAL": {
-                  "color": "red",
+                  "color": "dark-red",
                   "index": 3,
                   "text": "FATAL"
                 },
@@ -1551,7 +1551,15 @@
             "properties": [
               {
                 "id": "custom.width",
-                "value": 30
+                "value": 20
+              },
+              {
+                "id": "custom.displayMode",
+                "value": "color-background-solid"
+              },
+              {
+                "id": "custom.width",
+                "value": 1
               }
             ]
           },
@@ -1602,6 +1610,18 @@
                 "value": 118
               }
             ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "i"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 25
+              }
+            ]
           }
         ]
       },
@@ -1623,7 +1643,7 @@
           "group": [],
           "metricColumn": "none",
           "rawQuery": true,
-          "rawSql": "SELECT time,application_name,message,issue_name,host_name,severity\nFROM public.\"ErrorReports\"\nWHERE partition='${partition}' AND time >= ${__from} AND time <= ${__to}\nORDER BY -time\n",
+          "rawSql": "SELECT severity,time,application_name,message,issue_name,host_name\nFROM public.\"ErrorReports\"\nWHERE partition='${partition}' AND time >= ${__from} AND time <= ${__to}\nORDER BY -time\n",
           "refId": "A",
           "select": [
             [
@@ -1648,6 +1668,7 @@
         }
       ],
       "title": "Message Reporting",
+      "transformations": [],
       "type": "table"
     },
     {
@@ -2025,8 +2046,10 @@
             "alias": "Overall average",
             "mode": "reduceRow",
             "reduce": {
+              "include": [],
               "reducer": "mean"
-            }
+            },
+            "replaceFields": false
           }
         }
       ],
@@ -2331,5 +2354,5 @@
   "timezone": "",
   "title": "DAQ overview",
   "uid": "k6xMNncnk",
-  "version": 15
+  "version": 18
 }

@@ -64,7 +64,7 @@
   "gnetId": null,
   "graphTooltip": 0,
   "id": null,
-  "iteration": 1636987095510,
+  "iteration": 1636987095513,
   "links": [],
   "panels": [
     {
@@ -117,7 +117,7 @@
               }
             ]
           },
-          "unit": "short"
+          "unit": "none"
         },
         "overrides": []
       },
@@ -150,7 +150,7 @@
           "measurement": "dunedaq.timinglibs.hsireadoutinfo.Info",
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "SELECT mean(\"average_buffer_occupancy\") FROM \"dunedaq.timinglibs.${series}.Info\" WHERE (\"partition_id\" = '${partition}') AND $timeFilter",
+          "query": "SELECT \"average_buffer_occupancy\" FROM \"dunedaq.timinglibs.hsireadoutinfo.Info\" WHERE (\"partition_id\" = '${partition}') AND $timeFilter",
           "rawQuery": true,
           "refId": "A",
           "resultFormat": "time_series",
@@ -168,7 +168,7 @@
             {
               "key": "partition_id",
               "operator": "=",
-              "value": "select tag value"
+              "value": "np02_coldbox"
             }
           ]
         }
@@ -452,10 +452,11 @@
         {
           "alias": "HSI events sent counter",
           "groupBy": [],
+          "hide": false,
           "measurement": "dunedaq.timinglibs.hsireadoutinfo.Info",
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "SELECT sum(\"sent_hsi_events_counter\") FROM \"dunedaq.timinglibs.${series}.Info\" WHERE (\"partition_id\" = 'maroda_test') AND $timeFilter GROUP BY time(500ms)",
+          "query": "SELECT last(\"sent_hsi_events_counter\") FROM \"dunedaq.timinglibs.${series}.Info\" WHERE (\"partition_id\" = 'np02_coldbox') AND $timeFilter",
           "rawQuery": true,
           "refId": "A",
           "resultFormat": "time_series",
@@ -473,7 +474,7 @@
             {
               "key": "partition_id",
               "operator": "=",
-              "value": "maroda_test"
+              "value": "np02_coldbox"
             }
           ]
         },
@@ -484,7 +485,7 @@
           "measurement": "dunedaq.timinglibs.hsireadoutinfo.Info",
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "SELECT sum(\"${field}_hsi_events_counter\") FROM \"dunedaq.timinglibs.${series}.Info\" WHERE (\"partition_id\" = 'maroda_test') AND $timeFilter GROUP BY time(500ms) ",
+          "query": "SELECT last(\"${field}_hsi_events_counter\") FROM \"dunedaq.timinglibs.${series}.Info\" WHERE (\"partition_id\"='${partition}') AND $timeFilter",
           "rawQuery": true,
           "refId": "B",
           "resultFormat": "time_series",
@@ -1782,5 +1783,5 @@
   "timezone": "",
   "title": "Trigger and HSI",
   "uid": "U_8ZFDZng",
-  "version": 23
+  "version": 25
 }

@@ -46,7 +46,7 @@
   "gnetId": null,
   "graphTooltip": 0,
   "id": null,
-  "iteration": 1637678643116,
+  "iteration": 1637678643177,
   "links": [],
   "panels": [
     {
@@ -174,7 +174,7 @@
       ],
       "timeFrom": null,
       "timeShift": null,
-      "title": "Queue occupancy for ${application} application",
+      "title": "Queue occupancy for application: ${application}",
       "transformations": [
         {
           "id": "renameByRegex",
@@ -219,7 +219,7 @@
         "allValue": null,
         "current": {},
         "datasource": "${DS_INFLUXTEST}",
-        "definition": "SHOW TAG VALUES WITH KEY=\"source_id\" WHERE \"partition_id\"='${partition}' AND $timeFilter",
+        "definition": "SHOW TAG VALUES FROM \"dunedaq.appfwk.queueinfo.Info\" WITH KEY=\"source_id\" WHERE \"partition_id\"='${partition}' AND $timeFilter",
         "description": null,
         "error": null,
         "hide": 0,
@@ -228,7 +228,7 @@
         "multi": true,
         "name": "application",
         "options": [],
-        "query": "SHOW TAG VALUES WITH KEY=\"source_id\" WHERE \"partition_id\"='${partition}' AND $timeFilter",
+        "query": "SHOW TAG VALUES FROM \"dunedaq.appfwk.queueinfo.Info\" WITH KEY=\"source_id\" WHERE \"partition_id\"='${partition}' AND $timeFilter",
         "refresh": 1,
         "regex": ".*\\.(.*)\\..*",
         "skipUrlSync": false,
@@ -238,12 +238,12 @@
     ]
   },
   "time": {
-    "from": "now-30m",
+    "from": "now-7d",
     "to": "now"
   },
   "timepicker": {},
   "timezone": "",
   "title": "Queues",
   "uid": "asdfvd3",
-  "version": 5
+  "version": 7
 }

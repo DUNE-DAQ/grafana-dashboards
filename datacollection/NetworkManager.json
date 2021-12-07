@@ -46,9 +46,289 @@
   "gnetId": null,
   "graphTooltip": 0,
   "id": null,
-  "iteration": 1638808893970,
+  "iteration": 1638882649029,
   "links": [],
   "panels": [
+    {
+      "datasource": "${DS_INFLUXTEST}",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "drawStyle": "line",
+            "fillOpacity": 0,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "log": 10,
+              "type": "log"
+            },
+            "showPoints": "auto",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "binBps"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 8,
+        "x": 0,
+        "y": 0
+      },
+      "id": 8,
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "right"
+        },
+        "tooltip": {
+          "mode": "single"
+        }
+      },
+      "targets": [
+        {
+          "alias": "$tag_source_id",
+          "groupBy": [
+            {
+              "params": [
+                "$__interval"
+              ],
+              "type": "time"
+            },
+            {
+              "params": [
+                "null"
+              ],
+              "type": "fill"
+            }
+          ],
+          "measurement": "dunedaq.networkmanager.nwmgrsentinfo.Info",
+          "orderByTime": "ASC",
+          "policy": "default",
+          "query": "SELECT non_negative_derivative(cumulative_sum(sum(\"sent_bytes\")), 1s) FROM \"dunedaq.networkmanager.connectioninfo.Info\" WHERE (\"partition_id\" = '${partition}' ) AND \"sent_bytes\" >0  AND $timeFilter GROUP BY time($__interval), \"source_id\" fill(null)",
+          "rawQuery": true,
+          "refId": "A",
+          "resultFormat": "time_series",
+          "select": [
+            [
+              {
+                "params": [
+                  "bytes"
+                ],
+                "type": "field"
+              },
+              {
+                "params": [],
+                "type": "sum"
+              },
+              {
+                "params": [],
+                "type": "cumulative_sum"
+              },
+              {
+                "params": [
+                  "1s"
+                ],
+                "type": "non_negative_derivative"
+              }
+            ]
+          ],
+          "tags": [
+            {
+              "key": "partition_id",
+              "operator": "=",
+              "value": "maroda_test"
+            }
+          ]
+        }
+      ],
+      "title": "Sent Bytes",
+      "transformations": [
+        {
+          "id": "renameByRegex",
+          "options": {
+            "regex": ".*\\..*\\..*\\.(.*)",
+            "renamePattern": "$1"
+          }
+        }
+      ],
+      "type": "timeseries"
+    },
+    {
+      "datasource": "${DS_INFLUXTEST}",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "drawStyle": "line",
+            "fillOpacity": 0,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "log": 10,
+              "type": "log"
+            },
+            "showPoints": "auto",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "binBps"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 8,
+        "x": 8,
+        "y": 0
+      },
+      "id": 15,
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "right"
+        },
+        "tooltip": {
+          "mode": "single"
+        }
+      },
+      "targets": [
+        {
+          "alias": "$tag_source_id",
+          "groupBy": [
+            {
+              "params": [
+                "$__interval"
+              ],
+              "type": "time"
+            },
+            {
+              "params": [
+                "null"
+              ],
+              "type": "fill"
+            }
+          ],
+          "measurement": "dunedaq.networkmanager.nwmgrsentinfo.Info",
+          "orderByTime": "ASC",
+          "policy": "default",
+          "query": "SELECT non_negative_derivative(cumulative_sum(sum(\"received_bytes\")), 1s) FROM \"dunedaq.networkmanager.connectioninfo.Info\" WHERE (\"partition_id\" = '${partition}' ) AND \"received_bytes\" >0  AND $timeFilter GROUP BY time($__interval), \"source_id\" fill(null)",
+          "rawQuery": true,
+          "refId": "A",
+          "resultFormat": "time_series",
+          "select": [
+            [
+              {
+                "params": [
+                  "bytes"
+                ],
+                "type": "field"
+              },
+              {
+                "params": [],
+                "type": "sum"
+              },
+              {
+                "params": [],
+                "type": "cumulative_sum"
+              },
+              {
+                "params": [
+                  "1s"
+                ],
+                "type": "non_negative_derivative"
+              }
+            ]
+          ],
+          "tags": [
+            {
+              "key": "partition_id",
+              "operator": "=",
+              "value": "maroda_test"
+            }
+          ]
+        }
+      ],
+      "title": "Received Bytes",
+      "transformations": [
+        {
+          "id": "renameByRegex",
+          "options": {
+            "regex": ".*\\.([^.]+)$",
+            "renamePattern": "$1"
+          }
+        }
+      ],
+      "type": "timeseries"
+    },
     {
       "datasource": "${DS_INFLUXTEST}",
       "fieldConfig": {
@@ -106,7 +386,7 @@
         "h": 9,
         "w": 12,
         "x": 0,
-        "y": 0
+        "y": 8
       },
       "id": 2,
       "links": [],
@@ -243,7 +523,7 @@
         "h": 9,
         "w": 12,
         "x": 12,
-        "y": 0
+        "y": 8
       },
       "id": 6,
       "links": [],
@@ -357,27 +637,7 @@
         "allValue": null,
         "current": {},
         "datasource": "${DS_INFLUXTEST}",
-        "definition": "SHOW MEASUREMENTS WITH MEASUREMENT=~/dunedaq.networkmanager.nwmgr.*info.Info/ WHERE \"partition_id\"='$partition'",
-        "description": null,
-        "error": null,
-        "hide": 0,
-        "includeAll": false,
-        "label": "Measurment",
-        "multi": true,
-        "name": "measurement",
-        "options": [],
-        "query": "SHOW MEASUREMENTS WITH MEASUREMENT=~/dunedaq.networkmanager.nwmgr.*info.Info/ WHERE \"partition_id\"='$partition'",
-        "refresh": 1,
-        "regex": ".*\\..*.nwmgr(.*)info.Info",
-        "skipUrlSync": false,
-        "sort": 0,
-        "type": "query"
-      },
-      {
-        "allValue": null,
-        "current": {},
-        "datasource": "${DS_INFLUXTEST}",
-        "definition": "SHOW SERIES WHERE \"partition_id\"='$partition' AND $timeFilter",
+        "definition": "SHOW TAG VALUES FROM \"dunedaq.networkmanager.connectioninfo.Info\" WITH KEY=\"source_id\"  WHERE \"partition_id\"='$partition' AND $timeFilter",
         "description": null,
         "error": null,
         "hide": 0,
@@ -386,9 +646,49 @@
         "multi": true,
         "name": "application",
         "options": [],
-        "query": "SHOW SERIES WHERE \"partition_id\"='$partition' AND $timeFilter",
+        "query": "SHOW TAG VALUES FROM \"dunedaq.networkmanager.connectioninfo.Info\" WITH KEY=\"source_id\"  WHERE \"partition_id\"='$partition' AND $timeFilter",
         "refresh": 1,
-        "regex": "dunedaq.networkmanager.nwmgr.*info.Info,.*,source_id=${partition}\\.(.*)\\..*\\..*",
+        "regex": ".*\\.(.*)\\..*\\..*",
+        "skipUrlSync": false,
+        "sort": 0,
+        "type": "query"
+      },
+      {
+        "allValue": null,
+        "current": {},
+        "datasource": "${DS_INFLUXTEST}",
+        "definition": "SHOW TAG VALUES FROM \"dunedaq.networkmanager.connectioninfo.Info\" WITH KEY=\"source_id\"  WHERE \"partition_id\"='$partition' AND $timeFilter",
+        "description": "This selection removes the topics from the source ids, in this way we can setup alarms on the connections",
+        "error": null,
+        "hide": 0,
+        "includeAll": false,
+        "label": "Connection name",
+        "multi": true,
+        "name": "connection",
+        "options": [],
+        "query": "SHOW TAG VALUES FROM \"dunedaq.networkmanager.connectioninfo.Info\" WITH KEY=\"source_id\"  WHERE \"partition_id\"='$partition' AND $timeFilter",
+        "refresh": 1,
+        "regex": "[^.]+\\.[^.]+\\.[^.]+\\.([^.]+)$",
+        "skipUrlSync": false,
+        "sort": 0,
+        "type": "query"
+      },
+      {
+        "allValue": null,
+        "current": {},
+        "datasource": "${DS_INFLUXTEST}",
+        "definition": "SHOW TAG VALUES FROM \"dunedaq.networkmanager.connectioninfo.Info\" WITH KEY=\"source_id\"  WHERE \"partition_id\"='$partition' AND $timeFilter",
+        "description": "This selection removes the topics from the source ids, in this way we can setup alarms on the connections",
+        "error": null,
+        "hide": 0,
+        "includeAll": false,
+        "label": "Topic",
+        "multi": true,
+        "name": "topic",
+        "options": [],
+        "query": "SHOW TAG VALUES FROM \"dunedaq.networkmanager.connectioninfo.Info\" WITH KEY=\"source_id\"  WHERE \"partition_id\"='$partition' AND $timeFilter",
+        "refresh": 1,
+        "regex": "^[^.]+\\.[^.]+\\.([^.]+)$",
         "skipUrlSync": false,
         "sort": 0,
         "type": "query"
@@ -403,5 +703,5 @@
   "timezone": "",
   "title": "Network Manager",
   "uid": "a098ubsd",
-  "version": 6
+  "version": 12
 }

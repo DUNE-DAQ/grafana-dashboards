@@ -46,7 +46,7 @@
   "gnetId": null,
   "graphTooltip": 0,
   "id": null,
-  "iteration": 1638882649082,
+  "iteration": 1638952977089,
   "links": [],
   "panels": [
     {
@@ -416,10 +416,66 @@
               "type": "fill"
             }
           ],
+          "hide": false,
           "measurement": "dunedaq.networkmanager.nwmgrsentinfo.Info",
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "SELECT (cumulative_sum(sum(\"received_bytes\")) - cumulative_sum(sum(\"sent_bytes\")))/(cumulative_sum(sum(\"sent_bytes\"))) FROM \"dunedaq.networkmanager.connectioninfo.Info\" WHERE (\"partition_id\" = '${partition}')  AND $timeFilter GROUP BY time($__interval)  fill(null)",
+          "query": "SELECT (cumulative_sum(sum(\"received_bytes\")) - cumulative_sum(sum(\"sent_bytes\")))/(cumulative_sum(sum(\"sent_bytes\"))) FROM \"dunedaq.networkmanager.connectioninfo.Info\" WHERE (\"partition_id\" = '${partition}' )  AND $timeFilter GROUP BY time($__interval)  fill(null)",
+          "rawQuery": true,
+          "refId": "C",
+          "resultFormat": "time_series",
+          "select": [
+            [
+              {
+                "params": [
+                  "bytes"
+                ],
+                "type": "field"
+              },
+              {
+                "params": [],
+                "type": "sum"
+              },
+              {
+                "params": [],
+                "type": "cumulative_sum"
+              },
+              {
+                "params": [
+                  "1s"
+                ],
+                "type": "non_negative_derivative"
+              }
+            ]
+          ],
+          "tags": [
+            {
+              "key": "partition_id",
+              "operator": "=",
+              "value": "maroda_test"
+            }
+          ]
+        },
+        {
+          "alias": "Connection only",
+          "groupBy": [
+            {
+              "params": [
+                "$__interval"
+              ],
+              "type": "time"
+            },
+            {
+              "params": [
+                "null"
+              ],
+              "type": "fill"
+            }
+          ],
+          "measurement": "dunedaq.networkmanager.nwmgrsentinfo.Info",
+          "orderByTime": "ASC",
+          "policy": "default",
+          "query": "SELECT (cumulative_sum(sum(\"received_bytes\")) - cumulative_sum(sum(\"sent_bytes\")))/(cumulative_sum(sum(\"sent_bytes\"))) FROM \"dunedaq.networkmanager.connectioninfo.Info\" WHERE (\"partition_id\" = '${partition}' AND \"source_id\"=~/[^.]+\\.[^.]+\\.[^.]+\\.[^.]+/)  AND $timeFilter GROUP BY time($__interval)  fill(null)",
           "rawQuery": true,
           "refId": "A",
           "resultFormat": "time_series",
@@ -1063,6 +1119,62 @@
           ]
         },
         {
+          "alias": "Connection only",
+          "groupBy": [
+            {
+              "params": [
+                "$__interval"
+              ],
+              "type": "time"
+            },
+            {
+              "params": [
+                "null"
+              ],
+              "type": "fill"
+            }
+          ],
+          "hide": false,
+          "measurement": "dunedaq.networkmanager.nwmgrsentinfo.Info",
+          "orderByTime": "ASC",
+          "policy": "default",
+          "query": "SELECT (cumulative_sum(sum(\"received_messages\")) - cumulative_sum(sum(\"sent_messages\")))/(cumulative_sum(sum(\"sent_messages\"))) FROM \"dunedaq.networkmanager.connectioninfo.Info\" WHERE (\"partition_id\" = '${partition}' AND \"source_id\"=~/[^.]+\\.[^.]+\\.[^.]+\\.[^.]+/)  AND $timeFilter GROUP BY time($__interval)  fill(null)",
+          "rawQuery": true,
+          "refId": "C",
+          "resultFormat": "time_series",
+          "select": [
+            [
+              {
+                "params": [
+                  "bytes"
+                ],
+                "type": "field"
+              },
+              {
+                "params": [],
+                "type": "sum"
+              },
+              {
+                "params": [],
+                "type": "cumulative_sum"
+              },
+              {
+                "params": [
+                  "1s"
+                ],
+                "type": "non_negative_derivative"
+              }
+            ]
+          ],
+          "tags": [
+            {
+              "key": "partition_id",
+              "operator": "=",
+              "value": "maroda_test"
+            }
+          ]
+        },
+        {
           "alias": "${connection}",
           "groupBy": [
             {
@@ -1637,5 +1749,5 @@
   "timezone": "",
   "title": "Network Manager",
   "uid": "a098ubsd",
-  "version": 20
+  "version": 23
 }

@@ -46,7 +46,7 @@
   "gnetId": null,
   "graphTooltip": 0,
   "id": null,
-  "iteration": 1638952977089,
+  "iteration": 1638952977110,
   "links": [],
   "panels": [
     {
@@ -1398,7 +1398,8 @@
             "lineWidth": 2,
             "pointSize": 4,
             "scaleDistribution": {
-              "type": "linear"
+              "log": 10,
+              "type": "log"
             },
             "showPoints": "always",
             "spanNulls": true,
@@ -1429,14 +1430,14 @@
         "overrides": []
       },
       "gridPos": {
-        "h": 9,
-        "w": 12,
+        "h": 6,
+        "w": 6,
         "x": 0,
         "y": 12
       },
       "id": 2,
       "links": [],
-      "maxPerRow": 2,
+      "maxPerRow": 4,
       "options": {
         "legend": {
           "calcs": [],
@@ -1449,10 +1450,10 @@
       },
       "pluginVersion": "8.0.6",
       "repeat": "application",
-      "repeatDirection": "v",
+      "repeatDirection": "h",
       "targets": [
         {
-          "alias": "$tag_source_id",
+          "alias": "To $tag_source_id",
           "groupBy": [
             {
               "params": [
@@ -1465,9 +1466,55 @@
           "measurement": "dunedaq.appfwk.queueinfo.Info",
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "SELECT non_negative_derivative(cumulative_sum(sum(\"bytes\")), 1s) FROM \"dunedaq.networkmanager.nwmgrsentinfo.Info\" WHERE (\"partition_id\" = '${partition}' AND \"source_id\"=~ /.*\\.${application}\\..*/) AND $timeFilter GROUP BY time($__interval), \"source_id\"",
+          "query": "SELECT non_negative_derivative(cumulative_sum(sum(\"sent_bytes\")), 1s) FROM \"dunedaq.networkmanager.connectioninfo.Info\" WHERE (\"partition_id\" = '${partition}' AND \"source_id\"=~ /.*\\.${application}\\..*/ AND \"sent_bytes\" > 0 ) AND $timeFilter GROUP BY time($__interval), \"source_id\"",
           "rawQuery": true,
           "refId": "C",
+          "resultFormat": "time_series",
+          "select": [
+            [
+              {
+                "params": [
+                  "number_of_elements"
+                ],
+                "type": "field"
+              },
+              {
+                "params": [],
+                "type": "distinct"
+              },
+              {
+                "params": [
+                  " * 100"
+                ],
+                "type": "math"
+              }
+            ]
+          ],
+          "tags": [
+            {
+              "key": "source_id",
+              "operator": "=",
+              "value": "maroda_test_dataflow.trigger_record_q"
+            }
+          ]
+        },
+        {
+          "alias": "From $tag_source_id",
+          "groupBy": [
+            {
+              "params": [
+                "$__interval"
+              ],
+              "type": "time"
+            }
+          ],
+          "hide": false,
+          "measurement": "dunedaq.appfwk.queueinfo.Info",
+          "orderByTime": "ASC",
+          "policy": "default",
+          "query": "SELECT non_negative_derivative(cumulative_sum(sum(\"received_bytes\")), 1s) FROM \"dunedaq.networkmanager.connectioninfo.Info\" WHERE (\"partition_id\" = '${partition}' AND \"source_id\"=~ /.*\\.${application}\\..*/ AND \"received_bytes\" > 0 ) AND $timeFilter GROUP BY time($__interval), \"source_id\"",
+          "rawQuery": true,
+          "refId": "A",
           "resultFormat": "time_series",
           "select": [
             [
@@ -1500,150 +1547,13 @@
       ],
       "timeFrom": null,
       "timeShift": null,
-      "title": "Sent data for application: ${application}",
+      "title": "${application} data",
       "transformations": [
         {
           "id": "renameByRegex",
           "options": {
-            "regex": ".*\\..*\\.(.*\\..*)",
-            "renamePattern": "$1"
-          }
-        }
-      ],
-      "type": "timeseries"
-    },
-    {
-      "datasource": "${DS_INFLUXTEST}",
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "mode": "palette-classic"
-          },
-          "custom": {
-            "axisLabel": "",
-            "axisPlacement": "auto",
-            "barAlignment": 0,
-            "drawStyle": "line",
-            "fillOpacity": 0,
-            "gradientMode": "none",
-            "hideFrom": {
-              "legend": false,
-              "tooltip": false,
-              "viz": false
-            },
-            "lineInterpolation": "linear",
-            "lineWidth": 2,
-            "pointSize": 4,
-            "scaleDistribution": {
-              "type": "linear"
-            },
-            "showPoints": "always",
-            "spanNulls": true,
-            "stacking": {
-              "group": "A",
-              "mode": "none"
-            },
-            "thresholdsStyle": {
-              "mode": "off"
-            }
-          },
-          "mappings": [],
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "green",
-                "value": null
-              },
-              {
-                "color": "red",
-                "value": 80
-              }
-            ]
-          },
-          "unit": "binBps"
-        },
-        "overrides": []
-      },
-      "gridPos": {
-        "h": 9,
-        "w": 12,
-        "x": 12,
-        "y": 12
-      },
-      "id": 6,
-      "links": [],
-      "maxPerRow": 2,
-      "options": {
-        "legend": {
-          "calcs": [],
-          "displayMode": "list",
-          "placement": "right"
-        },
-        "tooltip": {
-          "mode": "single"
-        }
-      },
-      "pluginVersion": "8.0.6",
-      "repeat": "application",
-      "repeatDirection": "v",
-      "targets": [
-        {
-          "alias": "$tag_source_id",
-          "groupBy": [
-            {
-              "params": [
-                "$__interval"
-              ],
-              "type": "time"
-            }
-          ],
-          "hide": false,
-          "measurement": "dunedaq.appfwk.queueinfo.Info",
-          "orderByTime": "ASC",
-          "policy": "default",
-          "query": "SELECT non_negative_derivative(cumulative_sum(sum(\"bytes\")), 1s) FROM \"dunedaq.networkmanager.nwmgrreceivedinfo.Info\" WHERE (\"partition_id\" = '${partition}' AND \"source_id\"=~ /.*\\.${application}\\..*/) AND $timeFilter GROUP BY time($__interval), \"source_id\"",
-          "rawQuery": true,
-          "refId": "C",
-          "resultFormat": "time_series",
-          "select": [
-            [
-              {
-                "params": [
-                  "number_of_elements"
-                ],
-                "type": "field"
-              },
-              {
-                "params": [],
-                "type": "distinct"
-              },
-              {
-                "params": [
-                  " * 100"
-                ],
-                "type": "math"
-              }
-            ]
-          ],
-          "tags": [
-            {
-              "key": "source_id",
-              "operator": "=",
-              "value": "maroda_test_dataflow.trigger_record_q"
-            }
-          ]
-        }
-      ],
-      "timeFrom": null,
-      "timeShift": null,
-      "title": "Received data for application: ${application}",
-      "transformations": [
-        {
-          "id": "renameByRegex",
-          "options": {
-            "regex": ".*\\..*\\.(.*\\..*)",
-            "renamePattern": "$1"
+            "regex": "(.*) .*\\.([^.]+)",
+            "renamePattern": "$1 $2"
           }
         }
       ],
@@ -1742,12 +1652,12 @@
     ]
   },
   "time": {
-    "from": "now-30m",
+    "from": "now-15m",
     "to": "now"
   },
   "timepicker": {},
   "timezone": "",
   "title": "Network Manager",
   "uid": "a098ubsd",
-  "version": 23
+  "version": 25
 }

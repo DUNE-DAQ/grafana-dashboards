@@ -46,7 +46,7 @@
   "gnetId": null,
   "graphTooltip": 0,
   "id": null,
-  "iteration": 1638952977161,
+  "iteration": 1638952977172,
   "links": [],
   "panels": [
     {
@@ -401,7 +401,7 @@
       },
       "targets": [
         {
-          "alias": "Total",
+          "alias": "Connections and topics",
           "groupBy": [
             {
               "params": [
@@ -420,7 +420,7 @@
           "measurement": "dunedaq.networkmanager.nwmgrsentinfo.Info",
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "SELECT (cumulative_sum(sum(\"received_bytes\")) - cumulative_sum(sum(\"sent_bytes\")))/(cumulative_sum(sum(\"sent_bytes\"))) FROM \"dunedaq.networkmanager.connectioninfo.Info\" WHERE (\"partition_id\" = '${partition}' )  AND $timeFilter GROUP BY time($__interval)  fill(null)",
+          "query": "SELECT (sum(\"received_bytes\") - sum(\"sent_bytes\"))/(sum(\"sent_bytes\")) FROM \"dunedaq.networkmanager.connectioninfo.Info\" WHERE (\"partition_id\" = '${partition}' )  AND $timeFilter GROUP BY time($__interval)  fill(null)",
           "rawQuery": true,
           "refId": "C",
           "resultFormat": "time_series",
@@ -475,7 +475,7 @@
           "measurement": "dunedaq.networkmanager.nwmgrsentinfo.Info",
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "SELECT (cumulative_sum(sum(\"received_bytes\")) - cumulative_sum(sum(\"sent_bytes\")))/(cumulative_sum(sum(\"sent_bytes\"))) FROM \"dunedaq.networkmanager.connectioninfo.Info\" WHERE (\"partition_id\" = '${partition}' AND \"source_id\"=~/[^.]+\\.[^.]+\\.[^.]+\\.[^.]+/)  AND $timeFilter GROUP BY time($__interval)  fill(null)",
+          "query": "SELECT (sum(\"received_bytes\") - sum(\"sent_bytes\"))/(sum(\"sent_bytes\")) FROM \"dunedaq.networkmanager.connectioninfo.Info\" WHERE (\"partition_id\" = '${partition}' AND \"source_id\"=~/[^.]+\\.[^.]+\\.[^.]+\\.[^.]+/)  AND $timeFilter GROUP BY time($__interval)  fill(null)",
           "rawQuery": true,
           "refId": "A",
           "resultFormat": "time_series",
@@ -531,7 +531,7 @@
           "measurement": "dunedaq.networkmanager.nwmgrsentinfo.Info",
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "SELECT (cumulative_sum(sum(\"received_bytes\")) - cumulative_sum(sum(\"sent_bytes\")))/(cumulative_sum(sum(\"sent_bytes\"))) FROM \"dunedaq.networkmanager.connectioninfo.Info\" WHERE (\"partition_id\" = '${partition}' AND \"source_id\"=~/[^.]+\\.[^.]+\\.[^.]+\\.${connection}/)  AND $timeFilter GROUP BY time($__interval)  fill(null)",
+          "query": "SELECT (sum(\"received_bytes\") - sum(\"sent_bytes\"))/(sum(\"sent_bytes\")) FROM \"dunedaq.networkmanager.connectioninfo.Info\" WHERE (\"partition_id\" = '${partition}' AND \"source_id\"=~/[^.]+\\.[^.]+\\.[^.]+\\.${connection}/)  AND $timeFilter GROUP BY time($__interval)  fill(null)",
           "rawQuery": true,
           "refId": "B",
           "resultFormat": "time_series",
@@ -1064,7 +1064,7 @@
       },
       "targets": [
         {
-          "alias": "Total",
+          "alias": "Connection and topics",
           "groupBy": [
             {
               "params": [
@@ -1082,7 +1082,7 @@
           "measurement": "dunedaq.networkmanager.nwmgrsentinfo.Info",
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "SELECT (cumulative_sum(sum(\"received_messages\")) - cumulative_sum(sum(\"sent_messages\")))/(cumulative_sum(sum(\"sent_messages\"))) FROM \"dunedaq.networkmanager.connectioninfo.Info\" WHERE (\"partition_id\" = '${partition}')  AND $timeFilter GROUP BY time($__interval)  fill(null)",
+          "query": "SELECT (sum(\"received_messages\") - sum(\"sent_messages\"))/(sum(\"sent_messages\")) FROM \"dunedaq.networkmanager.connectioninfo.Info\" WHERE (\"partition_id\" = '${partition}')  AND $timeFilter GROUP BY time($__interval)  fill(null)",
           "rawQuery": true,
           "refId": "A",
           "resultFormat": "time_series",
@@ -1138,7 +1138,7 @@
           "measurement": "dunedaq.networkmanager.nwmgrsentinfo.Info",
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "SELECT (cumulative_sum(sum(\"received_messages\")) - cumulative_sum(sum(\"sent_messages\")))/(cumulative_sum(sum(\"sent_messages\"))) FROM \"dunedaq.networkmanager.connectioninfo.Info\" WHERE (\"partition_id\" = '${partition}' AND \"source_id\"=~/[^.]+\\.[^.]+\\.[^.]+\\.[^.]+/)  AND $timeFilter GROUP BY time($__interval)  fill(null)",
+          "query": "SELECT (sum(\"received_messages\") - sum(\"sent_messages\"))/(sum(\"sent_messages\")) FROM \"dunedaq.networkmanager.connectioninfo.Info\" WHERE (\"partition_id\" = '${partition}' AND \"source_id\"=~/[^.]+\\.[^.]+\\.[^.]+\\.[^.]+/)  AND $timeFilter GROUP BY time($__interval)  fill(null)",
           "rawQuery": true,
           "refId": "C",
           "resultFormat": "time_series",
@@ -1194,7 +1194,7 @@
           "measurement": "dunedaq.networkmanager.nwmgrsentinfo.Info",
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "SELECT (cumulative_sum(sum(\"received_messages\")) - cumulative_sum(sum(\"sent_messages\")))/(cumulative_sum(sum(\"sent_messages\"))) FROM \"dunedaq.networkmanager.connectioninfo.Info\" WHERE (\"partition_id\" = '${partition}' AND \"source_id\"=~/[^.]+\\.[^.]+\\.[^.]+\\.${connection}/)  AND $timeFilter GROUP BY time($__interval)  fill(null)",
+          "query": "SELECT (sum(\"received_messages\") - sum(\"sent_messages\"))/(sum(\"sent_messages\")) FROM \"dunedaq.networkmanager.connectioninfo.Info\" WHERE (\"partition_id\" = '${partition}' AND \"source_id\"=~/[^.]+\\.[^.]+\\.[^.]+\\.${connection}/)  AND $timeFilter GROUP BY time($__interval)  fill(null)",
           "rawQuery": true,
           "refId": "B",
           "resultFormat": "time_series",
@@ -1867,5 +1867,5 @@
   "timezone": "",
   "title": "Network Manager",
   "uid": "a098ubsd",
-  "version": 27
+  "version": 29
 }

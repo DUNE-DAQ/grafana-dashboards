@@ -53,7 +53,7 @@
   "gnetId": null,
   "graphTooltip": 0,
   "id": null,
-  "iteration": 1639501488744,
+  "iteration": 1639501488751,
   "links": [],
   "panels": [
     {
@@ -129,14 +129,14 @@
       },
       "targets": [
         {
-          "alias": "sending time",
+          "alias": "Allocation time",
           "hide": false,
           "query": "SELECT sum(\"dataflow_busy\") / (sum(\"dataflow_busy\")+sum(\"dfo_busy\") + sum(\"waiting_for_decision\")) FROM \"dunedaq.dfmodules.datafloworchestratorinfo.Info\" WHERE \"partition_id\"= '$partition' AND $timeFilter GROUP BY time($__interval) fill(null)",
           "rawQuery": true,
           "refId": "A"
         },
         {
-          "alias": "receiving time",
+          "alias": "Monitoring the data structure",
           "hide": false,
           "query": "SELECT sum(\"dfo_busy\") / (sum(\"dataflow_busy\")+sum(\"dfo_busy\") + sum(\"waiting_for_decision\")) FROM \"dunedaq.dfmodules.datafloworchestratorinfo.Info\" WHERE \"partition_id\"= '$partition' AND $timeFilter GROUP BY time($__interval) fill(null)",
           "rawQuery": true,
@@ -150,7 +150,7 @@
           "refId": "C"
         }
       ],
-      "title": "DFO",
+      "title": "DFO time ",
       "type": "timeseries"
     },
     {
@@ -1940,5 +1940,5 @@
   "timezone": "",
   "title": "Event Builder",
   "uid": "ynqDHncnx",
-  "version": 3
+  "version": 4
 }

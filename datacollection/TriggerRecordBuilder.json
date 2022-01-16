@@ -14,7 +14,7 @@
       "type": "grafana",
       "id": "grafana",
       "name": "Grafana",
-      "version": "8.0.6"
+      "version": "8.0.7"
     },
     {
       "type": "datasource",
@@ -53,7 +53,7 @@
   "gnetId": null,
   "graphTooltip": 0,
   "id": null,
-  "iteration": 1639501488751,
+  "iteration": 1642173386036,
   "links": [],
   "panels": [
     {
@@ -129,23 +129,23 @@
       },
       "targets": [
         {
-          "alias": "Allocation time",
+          "alias": "Waiting for free slots",
           "hide": false,
-          "query": "SELECT sum(\"dataflow_busy\") / (sum(\"dataflow_busy\")+sum(\"dfo_busy\") + sum(\"waiting_for_decision\")) FROM \"dunedaq.dfmodules.datafloworchestratorinfo.Info\" WHERE \"partition_id\"= '$partition' AND $timeFilter GROUP BY time($__interval) fill(null)",
+          "query": "SELECT sum(\"waiting_for_slots\") / (sum(\"waiting_for_slots\")+sum(\"deciding_destination\") + sum(\"waiting_for_decision\")) FROM \"dunedaq.dfmodules.datafloworchestratorinfo.Info\" WHERE \"partition_id\"= '$partition' AND $timeFilter GROUP BY time($__interval) fill(null)",
           "rawQuery": true,
           "refId": "A"
         },
         {
-          "alias": "Monitoring the data structure",
+          "alias": "Assignment time",
           "hide": false,
-          "query": "SELECT sum(\"dfo_busy\") / (sum(\"dataflow_busy\")+sum(\"dfo_busy\") + sum(\"waiting_for_decision\")) FROM \"dunedaq.dfmodules.datafloworchestratorinfo.Info\" WHERE \"partition_id\"= '$partition' AND $timeFilter GROUP BY time($__interval) fill(null)",
+          "query": "SELECT sum(\"deciding_destination\") / (sum(\"waiting_for_slots\")+sum(\"deciding_destination\") + sum(\"waiting_for_decision\")) FROM \"dunedaq.dfmodules.datafloworchestratorinfo.Info\" WHERE \"partition_id\"= '$partition' AND $timeFilter GROUP BY time($__interval) fill(null)",
           "rawQuery": true,
           "refId": "B"
         },
         {
           "alias": "Waiting for TD",
           "hide": false,
-          "query": "SELECT sum(\"waiting_for_decision\") / (sum(\"dataflow_busy\")+sum(\"dfo_busy\") + sum(\"waiting_for_decision\")) FROM \"dunedaq.dfmodules.datafloworchestratorinfo.Info\" WHERE \"partition_id\"= '$partition' AND $timeFilter GROUP BY time($__interval) fill(null)",
+          "query": "SELECT sum(\"waiting_for_decision\") / (sum(\"waiting_for_slots\")+sum(\"deciding_destination\") + sum(\"waiting_for_decision\")) FROM \"dunedaq.dfmodules.datafloworchestratorinfo.Info\" WHERE \"partition_id\"= '$partition' AND $timeFilter GROUP BY time($__interval) fill(null)",
           "rawQuery": true,
           "refId": "C"
         }
@@ -1940,5 +1940,5 @@
   "timezone": "",
   "title": "Event Builder",
   "uid": "ynqDHncnx",
-  "version": 4
+  "version": 6
 }

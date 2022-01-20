@@ -22,7 +22,7 @@
       "type": "grafana",
       "id": "grafana",
       "name": "Grafana",
-      "version": "8.0.6"
+      "version": "8.0.7"
     },
     {
       "type": "datasource",
@@ -78,7 +78,7 @@
   "gnetId": null,
   "graphTooltip": 0,
   "id": null,
-  "iteration": 1637072516365,
+  "iteration": 1642611499114,
   "links": [
     {
       "asDropdown": true,
@@ -181,7 +181,7 @@
         "text": {},
         "textMode": "auto"
       },
-      "pluginVersion": "8.0.6",
+      "pluginVersion": "8.0.7",
       "targets": [
         {
           "alias": "",
@@ -302,7 +302,7 @@
         "text": {},
         "textMode": "auto"
       },
-      "pluginVersion": "8.0.6",
+      "pluginVersion": "8.0.7",
       "targets": [
         {
           "expr": "",
@@ -417,7 +417,7 @@
         "text": {},
         "textMode": "auto"
       },
-      "pluginVersion": "8.0.6",
+      "pluginVersion": "8.0.7",
       "targets": [
         {
           "groupBy": [],
@@ -526,7 +526,7 @@
         "text": {},
         "textMode": "auto"
       },
-      "pluginVersion": "8.0.6",
+      "pluginVersion": "8.0.7",
       "targets": [
         {
           "expr": "",
@@ -619,7 +619,7 @@
         "text": {},
         "textMode": "auto"
       },
-      "pluginVersion": "8.0.6",
+      "pluginVersion": "8.0.7",
       "targets": [
         {
           "expr": "",
@@ -722,7 +722,7 @@
         "text": {},
         "textMode": "auto"
       },
-      "pluginVersion": "8.0.6",
+      "pluginVersion": "8.0.7",
       "targets": [
         {
           "expr": "",
@@ -848,7 +848,7 @@
         "text": {},
         "textMode": "auto"
       },
-      "pluginVersion": "8.0.6",
+      "pluginVersion": "8.0.7",
       "targets": [
         {
           "expr": "",
@@ -1636,7 +1636,7 @@
         "showHeader": true,
         "sortBy": []
       },
-      "pluginVersion": "8.0.6",
+      "pluginVersion": "8.0.7",
       "targets": [
         {
           "format": "table",
@@ -1672,14 +1672,14 @@
       "type": "table"
     },
     {
-      "datasource": null,
+      "datasource": "${DS_INFLUXTEST}",
       "fieldConfig": {
         "defaults": {
           "color": {
             "mode": "palette-classic"
           },
           "custom": {
-            "axisLabel": "MBytes/s",
+            "axisLabel": "",
             "axisPlacement": "auto",
             "barAlignment": 0,
             "drawStyle": "line",
@@ -1694,7 +1694,8 @@
             "lineWidth": 1,
             "pointSize": 5,
             "scaleDistribution": {
-              "type": "linear"
+              "log": 10,
+              "type": "log"
             },
             "showPoints": "auto",
             "spanNulls": false,
@@ -1706,7 +1707,6 @@
               "mode": "off"
             }
           },
-          "decimals": 2,
           "mappings": [],
           "thresholds": {
             "mode": "absolute",
@@ -1721,7 +1721,7 @@
               }
             ]
           },
-          "unit": "sci"
+          "unit": "percentunit"
         },
         "overrides": []
       },
@@ -1731,11 +1731,11 @@
         "x": 0,
         "y": 12
       },
-      "id": 36,
+      "id": 42,
       "options": {
         "legend": {
           "calcs": [],
-          "displayMode": "hidden",
+          "displayMode": "list",
           "placement": "bottom"
         },
         "tooltip": {
@@ -1744,26 +1744,28 @@
       },
       "targets": [
         {
-          "exemplar": true,
-          "expr": "rate(node_network_receive_bytes_total{job=\"node\", device!=\"lo\"}[1m])/1000000.",
+          "alias": "Waiting for free slots",
           "hide": false,
-          "instant": false,
-          "interval": "",
-          "legendFormat": "",
+          "query": "SELECT sum(\"waiting_for_slots\") / (sum(\"waiting_for_slots\")+sum(\"deciding_destination\") + sum(\"waiting_for_decision\")) FROM \"dunedaq.dfmodules.datafloworchestratorinfo.Info\" WHERE \"partition_id\"= '$partition' AND $timeFilter GROUP BY time($__interval) fill(null)",
+          "rawQuery": true,
           "refId": "A"
         },
         {
-          "exemplar": true,
-          "expr": "rate(node_network_transmit_bytes_total{job=\"node\", device!=\"lo\"}[1m])/1000000.",
+          "alias": "Assignment time",
           "hide": false,
-          "instant": false,
-          "interval": "",
-          "legendFormat": "",
+          "query": "SELECT sum(\"deciding_destination\") / (sum(\"waiting_for_slots\")+sum(\"deciding_destination\") + sum(\"waiting_for_decision\")) FROM \"dunedaq.dfmodules.datafloworchestratorinfo.Info\" WHERE \"partition_id\"= '$partition' AND $timeFilter GROUP BY time($__interval) fill(null)",
+          "rawQuery": true,
           "refId": "B"
+        },
+        {
+          "alias": "Waiting for TD",
+          "hide": false,
+          "query": "SELECT sum(\"waiting_for_decision\") / (sum(\"waiting_for_slots\")+sum(\"deciding_destination\") + sum(\"waiting_for_decision\")) FROM \"dunedaq.dfmodules.datafloworchestratorinfo.Info\" WHERE \"partition_id\"= '$partition' AND $timeFilter GROUP BY time($__interval) fill(null)",
+          "rawQuery": true,
+          "refId": "C"
         }
       ],
-      "timeFrom": null,
-      "title": "Network I/O",
+      "title": "DFO time ",
       "type": "timeseries"
     },
     {
@@ -1894,14 +1896,14 @@
       "type": "timeseries"
     },
     {
-      "datasource": "${DS_INFLUXTEST}",
+      "datasource": null,
       "fieldConfig": {
         "defaults": {
           "color": {
             "mode": "palette-classic"
           },
           "custom": {
-            "axisLabel": "milliseconds",
+            "axisLabel": "MBytes/s",
             "axisPlacement": "auto",
             "barAlignment": 0,
             "drawStyle": "line",
@@ -1913,13 +1915,13 @@
               "viz": false
             },
             "lineInterpolation": "linear",
-            "lineWidth": 2,
-            "pointSize": 4,
+            "lineWidth": 1,
+            "pointSize": 5,
             "scaleDistribution": {
               "type": "linear"
             },
-            "showPoints": "always",
-            "spanNulls": true,
+            "showPoints": "auto",
+            "spanNulls": false,
             "stacking": {
               "group": "A",
               "mode": "none"
@@ -1928,6 +1930,7 @@
               "mode": "off"
             }
           },
+          "decimals": 2,
           "mappings": [],
           "thresholds": {
             "mode": "absolute",
@@ -1942,25 +1945,9 @@
               }
             ]
           },
-          "unit": "short"
+          "unit": "sci"
         },
-        "overrides": [
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "avg ms per TR"
-            },
-            "properties": [
-              {
-                "id": "color",
-                "value": {
-                  "fixedColor": "semi-dark-green",
-                  "mode": "fixed"
-                }
-              }
-            ]
-          }
-        ]
+        "overrides": []
       },
       "gridPos": {
         "h": 7,
@@ -1968,91 +1955,39 @@
         "x": 0,
         "y": 19
       },
-      "id": 23,
-      "links": [],
+      "id": 36,
       "options": {
         "legend": {
           "calcs": [],
-          "displayMode": "list",
+          "displayMode": "hidden",
           "placement": "bottom"
         },
         "tooltip": {
           "mode": "single"
         }
       },
-      "pluginVersion": "8.0.6",
       "targets": [
         {
-          "alias": "$tag_source_id",
-          "groupBy": [
-            {
-              "params": [
-                "$__interval"
-              ],
-              "type": "time"
-            },
-            {
-              "params": [
-                "null"
-              ],
-              "type": "fill"
-            }
-          ],
+          "exemplar": true,
+          "expr": "rate(node_network_receive_bytes_total{job=\"node\", device!=\"lo\"}[1m])/1000000.",
           "hide": false,
-          "measurement": "dunedaq.dfmodules.triggerrecordbuilderinfo.Info",
-          "orderByTime": "ASC",
-          "policy": "default",
-          "query": "SELECT mean(\"average_millisecond_per_trigger\") FROM \"dunedaq.dfmodules.triggerrecordbuilderinfo.Info\" WHERE (\"partition_id\" = '${partition}') AND $timeFilter AND \"average_millisecond_per_trigger\" >= 0 GROUP BY time($__interval), \"source_id\" fill(null)",
-          "rawQuery": true,
-          "refId": "A",
-          "resultFormat": "time_series",
-          "select": [
-            [
-              {
-                "params": [
-                  "average_millisecond_per_trigger"
-                ],
-                "type": "field"
-              },
-              {
-                "params": [],
-                "type": "distinct"
-              }
-            ]
-          ],
-          "tags": [
-            {
-              "key": "source_id",
-              "operator": "=",
-              "value": "maroda_test_dataflow.trb"
-            }
-          ]
+          "instant": false,
+          "interval": "",
+          "legendFormat": "",
+          "refId": "A"
+        },
+        {
+          "exemplar": true,
+          "expr": "rate(node_network_transmit_bytes_total{job=\"node\", device!=\"lo\"}[1m])/1000000.",
+          "hide": false,
+          "instant": false,
+          "interval": "",
+          "legendFormat": "",
+          "refId": "B"
         }
       ],
       "timeFrom": null,
-      "timeShift": null,
-      "title": "Event Builders Information",
-      "transformations": [
-        {
-          "id": "renameByRegex",
-          "options": {
-            "regex": ".*\\.(.*)\\.(.*)",
-            "renamePattern": "$1 $2"
-          }
-        },
-        {
-          "id": "calculateField",
-          "options": {
-            "alias": "Overall average",
-            "mode": "reduceRow",
-            "reduce": {
-              "include": [],
-              "reducer": "mean"
-            },
-            "replaceFields": false
-          }
-        }
-      ],
+      "title": "Network I/O",
       "type": "timeseries"
     },
     {
@@ -2323,7 +2258,7 @@
     ]
   },
   "time": {
-    "from": "now-30m",
+    "from": "now-15m",
     "to": "now"
   },
   "timepicker": {
@@ -2354,5 +2289,5 @@
   "timezone": "",
   "title": "DAQ overview",
   "uid": "k6xMNncnl",
-  "version": 4
+  "version": 6
 }

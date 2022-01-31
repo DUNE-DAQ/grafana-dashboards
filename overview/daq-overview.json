@@ -78,7 +78,7 @@
   "gnetId": null,
   "graphTooltip": 0,
   "id": null,
-  "iteration": 1642611499114,
+  "iteration": 1643650920980,
   "links": [
     {
       "asDropdown": true,
@@ -1362,14 +1362,14 @@
       "type": "timeseries"
     },
     {
-      "datasource": "${DS_INFLUXTEST}",
+      "datasource": null,
       "fieldConfig": {
         "defaults": {
           "color": {
             "mode": "palette-classic"
           },
           "custom": {
-            "axisLabel": "MiBytes/s",
+            "axisLabel": "MBytes/s",
             "axisPlacement": "auto",
             "barAlignment": 0,
             "drawStyle": "line",
@@ -1381,13 +1381,13 @@
               "viz": false
             },
             "lineInterpolation": "linear",
-            "lineWidth": 2,
+            "lineWidth": 1,
             "pointSize": 5,
             "scaleDistribution": {
               "type": "linear"
             },
-            "showPoints": "never",
-            "spanNulls": true,
+            "showPoints": "auto",
+            "spanNulls": false,
             "stacking": {
               "group": "A",
               "mode": "none"
@@ -1396,6 +1396,7 @@
               "mode": "off"
             }
           },
+          "decimals": 2,
           "mappings": [],
           "thresholds": {
             "mode": "absolute",
@@ -1410,7 +1411,7 @@
               }
             ]
           },
-          "unit": "none"
+          "unit": "sci"
         },
         "overrides": []
       },
@@ -1420,65 +1421,39 @@
         "x": 6,
         "y": 5
       },
-      "id": 10,
-      "links": [],
+      "id": 36,
       "options": {
         "legend": {
           "calcs": [],
-          "displayMode": "list",
+          "displayMode": "hidden",
           "placement": "bottom"
         },
         "tooltip": {
           "mode": "single"
         }
       },
-      "pluginVersion": "8.0.6",
       "targets": [
         {
-          "alias": "$tag_source_id",
-          "groupBy": [],
-          "measurement": "dunedaq.dfmodules.datawriterinfo.Info",
-          "orderByTime": "ASC",
-          "policy": "default",
-          "query": "SELECT non_negative_derivative(distinct(\"bytes_output\"), 1s)  / 1048576 FROM \"dunedaq.dfmodules.datawriterinfo.Info\" WHERE (\"partition_id\" = '${partition}') AND $timeFilter GROUP BY time($__interval), \"source_id\"\nfill(null)",
-          "rawQuery": true,
-          "refId": "C",
-          "resultFormat": "time_series",
-          "select": [
-            [
-              {
-                "params": [
-                  "bytes_output"
-                ],
-                "type": "field"
-              }
-            ]
-          ],
-          "tags": [
-            {
-              "key": "source_id",
-              "operator": "=",
-              "value": "${partition}_dataflow.datawriter"
-            }
-          ]
+          "exemplar": true,
+          "expr": "rate(node_network_receive_bytes_total{job=\"node\", device!=\"lo\"}[1m])/1000000.",
+          "hide": false,
+          "instant": false,
+          "interval": "",
+          "legendFormat": "",
+          "refId": "A"
+        },
+        {
+          "exemplar": true,
+          "expr": "rate(node_network_transmit_bytes_total{job=\"node\", device!=\"lo\"}[1m])/1000000.",
+          "hide": false,
+          "instant": false,
+          "interval": "",
+          "legendFormat": "",
+          "refId": "B"
         }
       ],
       "timeFrom": null,
-      "timeShift": null,
-      "title": "Data Writers Information",
-      "transformations": [
-        {
-          "id": "renameByRegex",
-          "options": {
-            "regex": ".*\\.(.*)\\.(.*)",
-            "renamePattern": "$1 $2"
-          }
-        },
-        {
-          "id": "calculateField",
-          "options": {}
-        }
-      ],
+      "title": "Network I/O",
       "type": "timeseries"
     },
     {
@@ -1723,113 +1698,17 @@
           },
           "unit": "percentunit"
         },
-        "overrides": []
-      },
-      "gridPos": {
-        "h": 7,
-        "w": 6,
-        "x": 0,
-        "y": 12
-      },
-      "id": 42,
-      "options": {
-        "legend": {
-          "calcs": [],
-          "displayMode": "list",
-          "placement": "bottom"
-        },
-        "tooltip": {
-          "mode": "single"
-        }
-      },
-      "targets": [
-        {
-          "alias": "Waiting for free slots",
-          "hide": false,
-          "query": "SELECT sum(\"waiting_for_slots\") / (sum(\"waiting_for_slots\")+sum(\"deciding_destination\") + sum(\"waiting_for_decision\")) FROM \"dunedaq.dfmodules.datafloworchestratorinfo.Info\" WHERE \"partition_id\"= '$partition' AND $timeFilter GROUP BY time($__interval) fill(null)",
-          "rawQuery": true,
-          "refId": "A"
-        },
-        {
-          "alias": "Assignment time",
-          "hide": false,
-          "query": "SELECT sum(\"deciding_destination\") / (sum(\"waiting_for_slots\")+sum(\"deciding_destination\") + sum(\"waiting_for_decision\")) FROM \"dunedaq.dfmodules.datafloworchestratorinfo.Info\" WHERE \"partition_id\"= '$partition' AND $timeFilter GROUP BY time($__interval) fill(null)",
-          "rawQuery": true,
-          "refId": "B"
-        },
-        {
-          "alias": "Waiting for TD",
-          "hide": false,
-          "query": "SELECT sum(\"waiting_for_decision\") / (sum(\"waiting_for_slots\")+sum(\"deciding_destination\") + sum(\"waiting_for_decision\")) FROM \"dunedaq.dfmodules.datafloworchestratorinfo.Info\" WHERE \"partition_id\"= '$partition' AND $timeFilter GROUP BY time($__interval) fill(null)",
-          "rawQuery": true,
-          "refId": "C"
-        }
-      ],
-      "title": "DFO time ",
-      "type": "timeseries"
-    },
-    {
-      "datasource": null,
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "mode": "palette-classic"
-          },
-          "custom": {
-            "axisLabel": "",
-            "axisPlacement": "auto",
-            "barAlignment": 0,
-            "drawStyle": "line",
-            "fillOpacity": 16,
-            "gradientMode": "none",
-            "hideFrom": {
-              "legend": false,
-              "tooltip": false,
-              "viz": false
-            },
-            "lineInterpolation": "linear",
-            "lineWidth": 1,
-            "pointSize": 1,
-            "scaleDistribution": {
-              "type": "linear"
-            },
-            "showPoints": "auto",
-            "spanNulls": false,
-            "stacking": {
-              "group": "A",
-              "mode": "none"
-            },
-            "thresholdsStyle": {
-              "mode": "off"
-            }
-          },
-          "mappings": [],
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "green",
-                "value": null
-              },
-              {
-                "color": "red",
-                "value": 80
-              }
-            ]
-          },
-          "unit": "bits"
-        },
         "overrides": [
           {
             "matcher": {
               "id": "byName",
-              "options": "Used"
+              "options": "Assignment time"
             },
             "properties": [
               {
                 "id": "color",
                 "value": {
-                  "fixedColor": "semi-dark-orange",
+                  "fixedColor": "semi-dark-green",
                   "mode": "fixed"
                 }
               }
@@ -1838,13 +1717,58 @@
           {
             "matcher": {
               "id": "byName",
-              "options": "Available"
+              "options": "Waiting for TD"
             },
             "properties": [
               {
                 "id": "color",
                 "value": {
-                  "fixedColor": "dark-green",
+                  "fixedColor": "dark-blue",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Forwading decision"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "super-light-blue",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Waiting for token"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "dark-yellow",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Processing token"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "dark-orange",
                   "mode": "fixed"
                 }
               }
@@ -1855,10 +1779,10 @@
       "gridPos": {
         "h": 7,
         "w": 6,
-        "x": 6,
+        "x": 0,
         "y": 12
       },
-      "id": 40,
+      "id": 44,
       "options": {
         "legend": {
           "calcs": [],
@@ -1871,39 +1795,53 @@
       },
       "targets": [
         {
-          "exemplar": true,
-          "expr": "sum ( \n  max by (device) (\n    node_filesystem_size_bytes{job=\"node\", instance=~\".*:.*\", fstype!=\"\"}\n  -\n    node_filesystem_avail_bytes{job=\"node\", instance=~\".*:.*\", fstype!=\"\"}\n  )\n)",
-          "format": "time_series",
+          "alias": "Waiting for token",
           "hide": false,
-          "interval": "",
-          "intervalFactor": 2,
-          "legendFormat": "Used",
+          "query": "SELECT sum(\"waiting_for_token\") / (sum(\"waiting_for_token\")+sum(\"processing_token\")) FROM \"dunedaq.dfmodules.datafloworchestratorinfo.Info\" WHERE \"partition_id\"= '$partition' AND $timeFilter GROUP BY time($__interval) fill(null)",
+          "rawQuery": true,
+          "refId": "D"
+        },
+        {
+          "alias": "Processing token",
+          "hide": false,
+          "query": "SELECT sum(\"processing_token\") / (sum(\"waiting_for_token\")+sum(\"processing_token\")) FROM \"dunedaq.dfmodules.datafloworchestratorinfo.Info\" WHERE \"partition_id\"= '$partition' AND $timeFilter GROUP BY time($__interval) fill(null)",
+          "rawQuery": true,
+          "refId": "E"
+        },
+        {
+          "alias": "Forwarding decision",
+          "hide": false,
+          "query": "SELECT sum(\"forwarding_decision\") / (sum(\"waiting_for_decision\")+sum(\"deciding_destination\") + sum(\"forwarding_decision\"))FROM \"dunedaq.dfmodules.datafloworchestratorinfo.Info\" WHERE \"partition_id\"= '$partition' AND $timeFilter GROUP BY time($__interval) fill(null)",
+          "rawQuery": true,
           "refId": "A"
         },
         {
-          "exemplar": true,
-          "expr": "sum(\n  max by (device) (\n    node_filesystem_avail_bytes{job=\"node\", instance=~\".*:.*\", fstype!=\"\"}\n  )\n)\n",
-          "format": "time_series",
+          "alias": "Assignment time",
           "hide": false,
-          "instant": false,
-          "interval": "",
-          "intervalFactor": 2,
-          "legendFormat": "Available",
+          "query": "SELECT sum(\"deciding_destination\") / (sum(\"waiting_for_decision\")+sum(\"deciding_destination\") + sum(\"forwarding_decision\")) FROM \"dunedaq.dfmodules.datafloworchestratorinfo.Info\" WHERE \"partition_id\"= '$partition' AND $timeFilter GROUP BY time($__interval) fill(null)",
+          "rawQuery": true,
           "refId": "B"
+        },
+        {
+          "alias": "Waiting for TD",
+          "hide": false,
+          "query": "SELECT sum(\"waiting_for_decision\") / (sum(\"waiting_for_decision\")+sum(\"deciding_destination\") + sum(\"forwarding_decision\")) FROM \"dunedaq.dfmodules.datafloworchestratorinfo.Info\" WHERE \"partition_id\"= '$partition' AND $timeFilter GROUP BY time($__interval) fill(null)",
+          "rawQuery": true,
+          "refId": "C"
         }
       ],
-      "title": "Disk occupancy",
+      "title": "DFO time ",
       "type": "timeseries"
     },
     {
-      "datasource": null,
+      "datasource": "${DS_INFLUXTEST}",
       "fieldConfig": {
         "defaults": {
           "color": {
             "mode": "palette-classic"
           },
           "custom": {
-            "axisLabel": "MBytes/s",
+            "axisLabel": "MiBytes/s",
             "axisPlacement": "auto",
             "barAlignment": 0,
             "drawStyle": "line",
@@ -1915,13 +1853,13 @@
               "viz": false
             },
             "lineInterpolation": "linear",
-            "lineWidth": 1,
+            "lineWidth": 2,
             "pointSize": 5,
             "scaleDistribution": {
               "type": "linear"
             },
-            "showPoints": "auto",
-            "spanNulls": false,
+            "showPoints": "never",
+            "spanNulls": true,
             "stacking": {
               "group": "A",
               "mode": "none"
@@ -1930,7 +1868,6 @@
               "mode": "off"
             }
           },
-          "decimals": 2,
           "mappings": [],
           "thresholds": {
             "mode": "absolute",
@@ -1945,49 +1882,75 @@
               }
             ]
           },
-          "unit": "sci"
+          "unit": "none"
         },
         "overrides": []
       },
       "gridPos": {
         "h": 7,
         "w": 6,
-        "x": 0,
-        "y": 19
+        "x": 6,
+        "y": 12
       },
-      "id": 36,
+      "id": 10,
+      "links": [],
       "options": {
         "legend": {
           "calcs": [],
-          "displayMode": "hidden",
+          "displayMode": "list",
           "placement": "bottom"
         },
         "tooltip": {
           "mode": "single"
         }
       },
+      "pluginVersion": "8.0.6",
       "targets": [
         {
-          "exemplar": true,
-          "expr": "rate(node_network_receive_bytes_total{job=\"node\", device!=\"lo\"}[1m])/1000000.",
-          "hide": false,
-          "instant": false,
-          "interval": "",
-          "legendFormat": "",
-          "refId": "A"
-        },
-        {
-          "exemplar": true,
-          "expr": "rate(node_network_transmit_bytes_total{job=\"node\", device!=\"lo\"}[1m])/1000000.",
-          "hide": false,
-          "instant": false,
-          "interval": "",
-          "legendFormat": "",
-          "refId": "B"
+          "alias": "$tag_source_id",
+          "groupBy": [],
+          "measurement": "dunedaq.dfmodules.datawriterinfo.Info",
+          "orderByTime": "ASC",
+          "policy": "default",
+          "query": "SELECT non_negative_derivative(distinct(\"bytes_output\"), 1s)  / 1048576 FROM \"dunedaq.dfmodules.datawriterinfo.Info\" WHERE (\"partition_id\" = '${partition}') AND $timeFilter GROUP BY time($__interval), \"source_id\"\nfill(null)",
+          "rawQuery": true,
+          "refId": "C",
+          "resultFormat": "time_series",
+          "select": [
+            [
+              {
+                "params": [
+                  "bytes_output"
+                ],
+                "type": "field"
+              }
+            ]
+          ],
+          "tags": [
+            {
+              "key": "source_id",
+              "operator": "=",
+              "value": "${partition}_dataflow.datawriter"
+            }
+          ]
         }
       ],
       "timeFrom": null,
-      "title": "Network I/O",
+      "timeShift": null,
+      "title": "Data Writers Information",
+      "transformations": [
+        {
+          "id": "renameByRegex",
+          "options": {
+            "regex": ".*\\.(.*)\\.(.*)",
+            "renamePattern": "$1 $2"
+          }
+        },
+        {
+          "id": "calculateField",
+          "options": {}
+        }
+      ],
       "type": "timeseries"
     },
     {
@@ -2046,7 +2009,7 @@
       "gridPos": {
         "h": 7,
         "w": 6,
-        "x": 6,
+        "x": 0,
         "y": 19
       },
       "id": 38,
@@ -2185,6 +2148,133 @@
         }
       ],
       "type": "timeseries"
+    },
+    {
+      "datasource": null,
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "drawStyle": "line",
+            "fillOpacity": 16,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 1,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "auto",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "bits"
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Used"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "semi-dark-orange",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Available"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "dark-green",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 7,
+        "w": 6,
+        "x": 6,
+        "y": 19
+      },
+      "id": 40,
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom"
+        },
+        "tooltip": {
+          "mode": "single"
+        }
+      },
+      "targets": [
+        {
+          "exemplar": true,
+          "expr": "sum ( \n  max by (device) (\n    node_filesystem_size_bytes{job=\"node\", instance=~\".*:.*\", fstype!=\"\"}\n  -\n    node_filesystem_avail_bytes{job=\"node\", instance=~\".*:.*\", fstype!=\"\"}\n  )\n)",
+          "format": "time_series",
+          "hide": false,
+          "interval": "",
+          "intervalFactor": 2,
+          "legendFormat": "Used",
+          "refId": "A"
+        },
+        {
+          "exemplar": true,
+          "expr": "sum(\n  max by (device) (\n    node_filesystem_avail_bytes{job=\"node\", instance=~\".*:.*\", fstype!=\"\"}\n  )\n)\n",
+          "format": "time_series",
+          "hide": false,
+          "instant": false,
+          "interval": "",
+          "intervalFactor": 2,
+          "legendFormat": "Available",
+          "refId": "B"
+        }
+      ],
+      "title": "Disk occupancy",
+      "type": "timeseries"
     }
   ],
   "refresh": "5s",
@@ -2258,7 +2348,7 @@
     ]
   },
   "time": {
-    "from": "now-15m",
+    "from": "now-30m",
     "to": "now"
   },
   "timepicker": {
@@ -2289,5 +2379,5 @@
   "timezone": "",
   "title": "DAQ overview",
   "uid": "k6xMNncnl",
-  "version": 6
+  "version": 10
 }

@@ -78,7 +78,7 @@
   "gnetId": null,
   "graphTooltip": 0,
   "id": null,
-  "iteration": 1646735005092,
+  "iteration": 1646748440250,
   "links": [
     {
       "asDropdown": true,
@@ -863,6 +863,7 @@
       "pluginVersion": "8.0.7",
       "targets": [
         {
+          "alias": "$tag_source_id",
           "expr": "",
           "format": "time_series",
           "groupBy": [],
@@ -870,7 +871,7 @@
           "measurement": "dunedaq.dfmodules.datawriterinfo.Info",
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "SELECT last(\"records_written\") FROM \"dunedaq.dfmodules.datawriterinfo.Info\" WHERE (\"partition_id\" = '${partition}' ) AND $timeFilter GROUP BY \"source_id\"",
+          "query": "SELECT last(\"records_written\") FROM \"dunedaq.dfmodules.datawriterinfo.Info\" WHERE (\"partition_id\" = '${partition}') AND $timeFilter GROUP BY \"source_id\" fill(null)",
           "rawQuery": true,
           "refId": "A",
           "resultFormat": "table",
@@ -896,13 +897,13 @@
       "title": "Written TRs",
       "transformations": [
         {
-          "id": "calculateField",
+          "id": "reduce",
           "options": {
-            "mode": "reduceRow",
-            "reduce": {
-              "reducer": "sum"
-            },
-            "replaceFields": true
+            "includeTimeField": false,
+            "mode": "reduceFields",
+            "reducers": [
+              "sum"
+            ]
           }
         }
       ],
@@ -2356,6 +2357,26 @@
         "skipUrlSync": false,
         "sort": 0,
         "type": "query"
+      },
+      {
+        "allValue": null,
+        "current": {},
+        "datasource": "${DS_INFLUXTEST}",
+        "definition": "SELECT last(\"runtime\") FROM \"dunedaq.rcif.runinfo.Info\" WHERE (\"partition_id\" = '${partition}') AND $timeFilter",
+        "description": null,
+        "error": null,
+        "hide": 2,
+        "includeAll": false,
+        "label": null,
+        "multi": false,
+        "name": "run_time",
+        "options": [],
+        "query": "SELECT last(\"runtime\") FROM \"dunedaq.rcif.runinfo.Info\" WHERE (\"partition_id\" = '${partition}') AND $timeFilter",
+        "refresh": 1,
+        "regex": "",
+        "skipUrlSync": false,
+        "sort": 0,
+        "type": "query"
       }
     ]
   },
@@ -2391,5 +2412,5 @@
   "timezone": "",
   "title": "DAQ overview",
   "uid": "ZQf3HyLnz",
-  "version": 3
+  "version": 5
 }

@@ -78,7 +78,7 @@
   "gnetId": null,
   "graphTooltip": 0,
   "id": null,
-  "iteration": 1646748440250,
+  "iteration": 1647079979998,
   "links": [
     {
       "asDropdown": true,
@@ -1179,7 +1179,7 @@
           "measurement": "dunedaq.dfmodules.datawriterinfo.Info",
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "SELECT non_negative_derivative(cumulative_sum(sum(\"new_records_received\")), 1s) FROM \"dunedaq.dfmodules.datawriterinfo.Info\" WHERE (\"partition_id\" = '${partition}') AND $timeFilter GROUP BY time($__interval) fill(null)",
+          "query": "SELECT non_negative_derivative(cumulative_sum(sum(\"tokens_received\")), 1s) FROM \"dunedaq.dfmodules.datafloworchestratorinfo.Info\" WHERE (\"partition_id\" = '${partition}') AND $timeFilter GROUP BY time($__interval) fill(null)",
           "rawQuery": true,
           "refId": "A",
           "resultFormat": "time_series",
@@ -2381,7 +2381,7 @@
     ]
   },
   "time": {
-    "from": "now-30m",
+    "from": "now-1h",
     "to": "now"
   },
   "timepicker": {
@@ -2412,5 +2412,5 @@
   "timezone": "",
   "title": "DAQ overview",
   "uid": "ZQf3HyLnz",
-  "version": 5
+  "version": 6
 }

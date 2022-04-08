@@ -78,7 +78,7 @@
   "gnetId": null,
   "graphTooltip": 0,
   "id": null,
-  "iteration": 1647079979998,
+  "iteration": 1649421176978,
   "links": [
     {
       "asDropdown": true,
@@ -1946,6 +1946,35 @@
               "value": "${partition}_dataflow.datawriter"
             }
           ]
+        },
+        {
+          "alias": "$tag_source_id",
+          "groupBy": [],
+          "hide": false,
+          "measurement": "dunedaq.dfmodules.datawriterinfo.Info",
+          "orderByTime": "ASC",
+          "policy": "default",
+          "query": "SELECT non_negative_derivative(distinct(\"bytes_output\"), 1s)  / 1048576 FROM \"dunedaq.dfmodules.tpstreamwriterinfo.Info\" WHERE (\"partition_id\" = '${partition}') AND $timeFilter GROUP BY time($__interval), \"source_id\"\nfill(null)",
+          "rawQuery": true,
+          "refId": "A",
+          "resultFormat": "time_series",
+          "select": [
+            [
+              {
+                "params": [
+                  "bytes_output"
+                ],
+                "type": "field"
+              }
+            ]
+          ],
+          "tags": [
+            {
+              "key": "source_id",
+              "operator": "=",
+              "value": "${partition}_dataflow.datawriter"
+            }
+          ]
         }
       ],
       "timeFrom": null,
@@ -2381,7 +2410,7 @@
     ]
   },
   "time": {
-    "from": "now-1h",
+    "from": "now-15m",
     "to": "now"
   },
   "timepicker": {
@@ -2412,5 +2441,5 @@
   "timezone": "",
   "title": "DAQ overview",
   "uid": "ZQf3HyLnz",
-  "version": 6
+  "version": 7
 }

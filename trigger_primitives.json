@@ -52,7 +52,7 @@
   "gnetId": null,
   "graphTooltip": 0,
   "id": null,
-  "iteration": 1635426382342,
+  "iteration": 1637073613324,
   "links": [],
   "panels": [
     {
@@ -64,9 +64,153 @@
         "x": 0,
         "y": 0
       },
-      "id": 44,
+      "id": 35,
       "panels": [],
-      "title": "Felix",
+      "title": "TP rates",
+      "type": "row"
+    },
+    {
+      "datasource": "${DS_INFLUXTEST}",
+      "description": "This should only contain the rates for TP DLHs",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisLabel": "KHz",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "drawStyle": "line",
+            "fillOpacity": 0,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "auto",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "none"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 7,
+        "w": 8,
+        "x": 0,
+        "y": 1
+      },
+      "id": 28,
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "right"
+        },
+        "tooltip": {
+          "mode": "single"
+        }
+      },
+      "targets": [
+        {
+          "alias": "$tag_source_id",
+          "groupBy": [
+            {
+              "params": [
+                "$__interval"
+              ],
+              "type": "time"
+            },
+            {
+              "params": [
+                "source_id"
+              ],
+              "type": "tag"
+            }
+          ],
+          "measurement": "dunedaq.readoutlibs.readoutinfo.ReadoutInfo",
+          "orderByTime": "ASC",
+          "policy": "default",
+          "query": "SELECT mean(\"rate_payloads_consumed\") FROM \"dunedaq.readoutlibs.readoutinfo.ReadoutInfo\" WHERE (\"partition_id\"='${partition}' AND \"source_id\" =~ /.*\\.tp_datahandler_\\d+/) AND $timeFilter GROUP BY time($__interval), \"source_id\"",
+          "rawQuery": true,
+          "refId": "A",
+          "resultFormat": "time_series",
+          "select": [
+            [
+              {
+                "params": [
+                  "rate_payloads_consumed"
+                ],
+                "type": "field"
+              },
+              {
+                "params": [],
+                "type": "mean"
+              }
+            ]
+          ],
+          "tags": [
+            {
+              "key": "source_id",
+              "operator": "=",
+              "value": "maroda_test_ruemu0.datahandler_0"
+            }
+          ]
+        }
+      ],
+      "title": "TP receiving rates",
+      "transformations": [
+        {
+          "id": "renameByRegex",
+          "options": {
+            "regex": ".*\\.(.*)\\.(.*)",
+            "renamePattern": "$1 $2"
+          }
+        }
+      ],
+      "type": "timeseries"
+    },
+    {
+      "collapsed": false,
+      "datasource": null,
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 8
+      },
+      "id": 33,
+      "panels": [],
+      "title": "Buffers",
       "type": "row"
     },
     {
@@ -78,7 +222,7 @@
             "mode": "palette-classic"
           },
           "custom": {
-            "axisLabel": "counters",
+            "axisLabel": "",
             "axisPlacement": "auto",
             "barAlignment": 0,
             "drawStyle": "line",
@@ -93,7 +237,8 @@
             "lineWidth": 1,
             "pointSize": 5,
             "scaleDistribution": {
-              "type": "linear"
+              "log": 10,
+              "type": "log"
             },
             "showPoints": "auto",
             "spanNulls": false,
@@ -123,152 +268,12 @@
         "overrides": []
       },
       "gridPos": {
-        "h": 10,
-        "w": 6,
+        "h": 7,
+        "w": 8,
         "x": 0,
-        "y": 1
+        "y": 9
       },
-      "id": 25,
-      "options": {
-        "legend": {
-          "calcs": [],
-          "displayMode": "list",
-          "placement": "right"
-        },
-        "tooltip": {
-          "mode": "single"
-        }
-      },
-      "targets": [
-        {
-          "alias": "Rate $tag_source_id",
-          "groupBy": [
-            {
-              "params": [
-                "$__interval"
-              ],
-              "type": "time"
-            },
-            {
-              "params": [
-                "source_id"
-              ],
-              "type": "tag"
-            }
-          ],
-          "hide": false,
-          "measurement": "dunedaq.flxlibs.felixcardreaderinfo.ELinkInfo",
-          "orderByTime": "ASC",
-          "policy": "default",
-          "query": "SELECT sum(\"num_chunks_processed\") FROM \"dunedaq.flxlibs.felixcardreaderinfo.ELinkInfo\" WHERE (\"source_id\" =~ /${partition}_.*/) AND $timeFilter GROUP BY time($__interval), \"source_id\"",
-          "rawQuery": true,
-          "refId": "C",
-          "resultFormat": "time_series",
-          "select": [
-            [
-              {
-                "params": [
-                  "num_chunks_processed"
-                ],
-                "type": "field"
-              },
-              {
-                "params": [],
-                "type": "sum"
-              },
-              {
-                "params": [],
-                "type": "cumulative_sum"
-              },
-              {
-                "params": [
-                  "1s"
-                ],
-                "type": "non_negative_derivative"
-              }
-            ]
-          ],
-          "tags": [
-            {
-              "key": "source_id",
-              "operator": "=",
-              "value": ":{USER}_test_ruflx0.flxcard_1.elink_0_1_1"
-            }
-          ]
-        }
-      ],
-      "title": "Felix counters - Chunks",
-      "transformations": [
-        {
-          "id": "renameByRegex",
-          "options": {
-            "regex": ".*_(.*)\\.(.*)\\.(.*)",
-            "renamePattern": "$1 $2 $3"
-          }
-        }
-      ],
-      "type": "timeseries"
-    },
-    {
-      "datasource": "${DS_INFLUXTEST}",
-      "description": "",
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "mode": "palette-classic"
-          },
-          "custom": {
-            "axisLabel": "",
-            "axisPlacement": "auto",
-            "barAlignment": 0,
-            "drawStyle": "line",
-            "fillOpacity": 0,
-            "gradientMode": "none",
-            "hideFrom": {
-              "legend": false,
-              "tooltip": false,
-              "viz": false
-            },
-            "lineInterpolation": "linear",
-            "lineWidth": 1,
-            "pointSize": 5,
-            "scaleDistribution": {
-              "type": "linear"
-            },
-            "showPoints": "auto",
-            "spanNulls": false,
-            "stacking": {
-              "group": "A",
-              "mode": "none"
-            },
-            "thresholdsStyle": {
-              "mode": "off"
-            }
-          },
-          "mappings": [],
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "green",
-                "value": null
-              },
-              {
-                "color": "red",
-                "value": 80
-              }
-            ]
-          }
-        },
-        "overrides": []
-      },
-      "gridPos": {
-        "h": 10,
-        "w": 6,
-        "x": 6,
-        "y": 1
-      },
-      "id": 50,
+      "id": 31,
       "options": {
         "legend": {
           "calcs": [],
@@ -297,34 +302,24 @@
             }
           ],
           "hide": false,
-          "measurement": "dunedaq.flxlibs.felixcardreaderinfo.ELinkInfo",
+          "measurement": "dunedaq.readoutlibs.readoutinfo.ReadoutInfo",
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "SELECT sum(\"num_chunks_processed_with_error\") FROM \"dunedaq.flxlibs.felixcardreaderinfo.ELinkInfo\" WHERE (\"source_id\" =~ /${partition}_.*/) AND $timeFilter GROUP BY time($__interval), \"source_id\" fill(null)",
+          "query": "SELECT mean(\"num_buffer_elements\") FROM \"dunedaq.readoutlibs.readoutinfo.ReadoutInfo\" WHERE (\"partition_id\"='${partition}' AND \"source_id\" =~ /.*\\.tp_datahandler_\\d+/) AND $timeFilter GROUP BY time($__interval), \"source_id\" fill(null)",
           "rawQuery": true,
-          "refId": "B",
+          "refId": "C",
           "resultFormat": "time_series",
           "select": [
             [
               {
                 "params": [
-                  "num_chunks_processed_with_error"
+                  "num_buffer_elements"
                 ],
                 "type": "field"
               },
               {
                 "params": [],
                 "type": "sum"
-              },
-              {
-                "params": [],
-                "type": "cumulative_sum"
-              },
-              {
-                "params": [
-                  "1s"
-                ],
-                "type": "non_negative_derivative"
               }
             ]
           ],
@@ -332,19 +327,23 @@
             {
               "key": "source_id",
               "operator": "=",
-              "value": "felix_test_ruflx0.flxcard_1.elink_0_1_2"
+              "value": "maroda_test_ruemu0.datahandler_1"
             }
           ]
         }
       ],
-      "title": "Felix counters - Chunks with errors",
+      "title": "Number of elements",
       "transformations": [
         {
           "id": "renameByRegex",
           "options": {
-            "regex": ".*_(.*)\\.(.*)\\.(.*)",
-            "renamePattern": "$1 $2 $3"
+            "regex": ".*\\.(.*)\\.(.*)",
+            "renamePattern": "$1 $2"
           }
+        },
+        {
+          "id": "calculateField",
+          "options": {}
         }
       ],
       "type": "timeseries"
@@ -358,7 +357,7 @@
             "mode": "palette-classic"
           },
           "custom": {
-            "axisLabel": "",
+            "axisLabel": "Hz",
             "axisPlacement": "auto",
             "barAlignment": 0,
             "drawStyle": "line",
@@ -403,17 +402,17 @@
         "overrides": []
       },
       "gridPos": {
-        "h": 10,
-        "w": 6,
-        "x": 12,
-        "y": 1
+        "h": 7,
+        "w": 8,
+        "x": 8,
+        "y": 9
       },
-      "id": 51,
+      "id": 38,
       "options": {
         "legend": {
           "calcs": [],
           "displayMode": "list",
-          "placement": "right"
+          "placement": "bottom"
         },
         "tooltip": {
           "mode": "single"
@@ -421,7 +420,7 @@
       },
       "targets": [
         {
-          "alias": "$tag_source_id",
+          "alias": "Cleanups",
           "groupBy": [
             {
               "params": [
@@ -431,24 +430,23 @@
             },
             {
               "params": [
-                "source_id"
+                "null"
               ],
-              "type": "tag"
+              "type": "fill"
             }
           ],
-          "hide": false,
-          "measurement": "dunedaq.flxlibs.felixcardreaderinfo.ELinkInfo",
+          "measurement": "dunedaq.readoutlibs.readoutinfo.RequestHandlerInfo",
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "SELECT sum(\"num_blocks_processed\") FROM \"dunedaq.flxlibs.felixcardreaderinfo.ELinkInfo\" WHERE (\"source_id\" =~ /${partition}_.*/) AND $timeFilter GROUP BY time($__interval), \"source_id\"",
+          "query": "SELECT non_negative_derivative(cumulative_sum(sum(\"num_buffer_cleanups\")), 1s) FROM \"dunedaq.readoutlibs.readoutinfo.RequestHandlerInfo\" WHERE (\"partition_id\"='${partition}' AND  \"source_id\" =~ /.*\\.tp_datahandler_\\d+/) AND $timeFilter GROUP BY time($__interval) fill(null)",
           "rawQuery": true,
-          "refId": "C",
+          "refId": "A",
           "resultFormat": "time_series",
           "select": [
             [
               {
                 "params": [
-                  "num_chunks_processed"
+                  "num_buffer_cleanups"
                 ],
                 "type": "field"
               },
@@ -472,96 +470,12 @@
             {
               "key": "source_id",
               "operator": "=",
-              "value": ":{USER}_test_ruflx0.flxcard_1.elink_0_1_1"
+              "value": "maroda_test_ruemu0.datahandler_1"
             }
           ]
-        }
-      ],
-      "title": "Felix counters - Blocks",
-      "transformations": [
-        {
-          "id": "renameByRegex",
-          "options": {
-            "regex": ".*_(.*)\\.(.*)\\.(.*)",
-            "renamePattern": "$1 $2 $3"
-          }
-        }
-      ],
-      "type": "timeseries"
-    },
-    {
-      "datasource": "${DS_INFLUXTEST}",
-      "description": "",
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "mode": "palette-classic"
-          },
-          "custom": {
-            "axisLabel": "",
-            "axisPlacement": "auto",
-            "barAlignment": 0,
-            "drawStyle": "line",
-            "fillOpacity": 0,
-            "gradientMode": "none",
-            "hideFrom": {
-              "legend": false,
-              "tooltip": false,
-              "viz": false
-            },
-            "lineInterpolation": "linear",
-            "lineWidth": 1,
-            "pointSize": 5,
-            "scaleDistribution": {
-              "type": "linear"
-            },
-            "showPoints": "auto",
-            "spanNulls": false,
-            "stacking": {
-              "group": "A",
-              "mode": "none"
-            },
-            "thresholdsStyle": {
-              "mode": "off"
-            }
-          },
-          "mappings": [],
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "green",
-                "value": null
-              },
-              {
-                "color": "red",
-                "value": 80
-              }
-            ]
-          }
         },
-        "overrides": []
-      },
-      "gridPos": {
-        "h": 10,
-        "w": 6,
-        "x": 18,
-        "y": 1
-      },
-      "id": 49,
-      "options": {
-        "legend": {
-          "calcs": [],
-          "displayMode": "list",
-          "placement": "right"
-        },
-        "tooltip": {
-          "mode": "single"
-        }
-      },
-      "targets": [
         {
-          "alias": "$tag_source_id",
+          "alias": "Overwritten",
           "groupBy": [
             {
               "params": [
@@ -577,10 +491,10 @@
             }
           ],
           "hide": false,
-          "measurement": "dunedaq.flxlibs.felixcardreaderinfo.ELinkInfo",
+          "measurement": "dunedaq.readoutlibs.readoutinfo.ReadoutInfo",
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "SELECT sum(\"num_blocks_processed_with_error\") FROM \"dunedaq.flxlibs.felixcardreaderinfo.ELinkInfo\" WHERE (\"source_id\" =~ /${partition}_.*/) AND $timeFilter GROUP BY time($__interval), \"source_id\" fill(null)",
+          "query": "SELECT non_negative_derivative(cumulative_sum(sum(\"num_payloads_overwritten\")), 1s) FROM \"dunedaq.readoutlibs.readoutinfo.ReadoutInfo\" WHERE (\"partition_id\"='${partition}' AND  \"source_id\" =~ /.*\\.tp_datahandler_\\d+/) AND $timeFilter GROUP BY time($__interval) fill(null)",
           "rawQuery": true,
           "refId": "B",
           "resultFormat": "time_series",
@@ -588,7 +502,7 @@
             [
               {
                 "params": [
-                  "num_chunks_processed_with_error"
+                  "num_payloads_overwritten"
                 ],
                 "type": "field"
               },
@@ -612,21 +526,178 @@
             {
               "key": "source_id",
               "operator": "=",
-              "value": "felix_test_ruflx0.flxcard_1.elink_0_1_2"
+              "value": "maroda_test_ruemu0.datahandler_1"
             }
           ]
         }
       ],
-      "title": "Felix counters - Blocks with errors",
-      "transformations": [
-        {
-          "id": "renameByRegex",
-          "options": {
-            "regex": ".*_(.*)\\.(.*)\\.(.*)",
-            "renamePattern": "$1 $2 $3"
+      "title": "TP Buffers - Total operational rates",
+      "type": "timeseries"
+    },
+    {
+      "datasource": "${DS_INFLUXTEST}",
+      "description": "",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "drawStyle": "line",
+            "fillOpacity": 0,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "auto",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
           }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 7,
+        "w": 8,
+        "x": 16,
+        "y": 9
+      },
+      "id": 40,
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom"
+        },
+        "tooltip": {
+          "mode": "single"
+        }
+      },
+      "targets": [
+        {
+          "alias": "Cleanups",
+          "groupBy": [
+            {
+              "params": [
+                "$__interval"
+              ],
+              "type": "time"
+            },
+            {
+              "params": [
+                "null"
+              ],
+              "type": "fill"
+            }
+          ],
+          "measurement": "dunedaq.readoutlibs.readoutinfo.RequestHandlerInfo",
+          "orderByTime": "ASC",
+          "policy": "default",
+          "query": "SELECT mean(\"num_buffer_cleanups\") FROM \"dunedaq.readoutlibs.readoutinfo.RequestHandlerInfo\" WHERE (\"source_id\" = '${partition}.${readout_app}.${readout_module}') AND $timeFilter GROUP BY time($__interval) fill(null)",
+          "rawQuery": true,
+          "refId": "A",
+          "resultFormat": "time_series",
+          "select": [
+            [
+              {
+                "params": [
+                  "num_buffer_cleanups"
+                ],
+                "type": "field"
+              },
+              {
+                "params": [],
+                "type": "sum"
+              }
+            ]
+          ],
+          "tags": [
+            {
+              "key": "source_id",
+              "operator": "=",
+              "value": "maroda_test_ruemu0.datahandler_1"
+            }
+          ]
+        },
+        {
+          "alias": "Overwritten",
+          "groupBy": [
+            {
+              "params": [
+                "$__interval"
+              ],
+              "type": "time"
+            },
+            {
+              "params": [
+                "null"
+              ],
+              "type": "fill"
+            }
+          ],
+          "hide": false,
+          "measurement": "dunedaq.readoutlibs.readoutinfo.ReadoutInfo",
+          "orderByTime": "ASC",
+          "policy": "default",
+          "query": "SELECT mean(\"num_payloads_overwritten\") FROM \"dunedaq.readoutlibs.readoutinfo.ReadoutInfo\" WHERE  (\"source_id\" = '${partition}.${readout_app}.${readout_module}')  AND $timeFilter GROUP BY time($__interval) fill(null)",
+          "rawQuery": true,
+          "refId": "B",
+          "resultFormat": "time_series",
+          "select": [
+            [
+              {
+                "params": [
+                  "num_payloads_overwritten"
+                ],
+                "type": "field"
+              },
+              {
+                "params": [],
+                "type": "sum"
+              }
+            ]
+          ],
+          "tags": [
+            {
+              "key": "source_id",
+              "operator": "=",
+              "value": "maroda_test_ruemu0.datahandler_1"
+            }
+          ]
         }
       ],
+      "title": "TP Buffers - Operational rates for ${readout_app} ${readout_module}",
       "type": "timeseries"
     }
   ],
@@ -634,7 +705,8 @@
   "schemaVersion": 30,
   "style": "dark",
   "tags": [
-    "Coldbox"
+    "Subsystem",
+    "v2.10.0"
   ],
   "templating": {
     "list": [
@@ -642,7 +714,7 @@
         "allValue": null,
         "current": {},
         "datasource": "${DS_INFLUXTEST}",
-        "definition": "SHOW SERIES FROM \"dunedaq.appfwk.appinfo.Info\"  where $timeFilter",
+        "definition": "SHOW TAG VALUES WITH KEY=\"partition_id\" where $timeFilter ",
         "description": null,
         "error": null,
         "hide": 0,
@@ -651,17 +723,57 @@
         "multi": false,
         "name": "partition",
         "options": [],
-        "query": "SHOW SERIES FROM \"dunedaq.appfwk.appinfo.Info\"  where $timeFilter",
+        "query": "SHOW TAG VALUES WITH KEY=\"partition_id\" where $timeFilter ",
         "refresh": 1,
-        "regex": "/.*source_id=(.*)_.*/",
+        "regex": "",
         "skipUrlSync": false,
-        "sort": 1,
+        "sort": 0,
+        "type": "query"
+      },
+      {
+        "allValue": null,
+        "current": {},
+        "datasource": "${DS_INFLUXTEST}",
+        "definition": "SHOW  TAG VALUES FROM \"dunedaq.readoutlibs.readoutinfo.RequestHandlerInfo\" WITH KEY=\"source_id\" WHERE $timeFilter AND \"partition_id\"='${partition}'",
+        "description": null,
+        "error": null,
+        "hide": 0,
+        "includeAll": false,
+        "label": null,
+        "multi": false,
+        "name": "readout_app",
+        "options": [],
+        "query": "SHOW  TAG VALUES FROM \"dunedaq.readoutlibs.readoutinfo.RequestHandlerInfo\" WITH KEY=\"source_id\" WHERE $timeFilter AND \"partition_id\"='${partition}'",
+        "refresh": 1,
+        "regex": ".*\\.(.*)\\.tp_datahandler_\\d+",
+        "skipUrlSync": false,
+        "sort": 0,
+        "type": "query"
+      },
+      {
+        "allValue": null,
+        "current": {},
+        "datasource": "${DS_INFLUXTEST}",
+        "definition": "SHOW  TAG VALUES FROM \"dunedaq.readoutlibs.readoutinfo.RequestHandlerInfo\" WITH KEY=\"source_id\" WHERE $timeFilter AND \"partition_id\"='${partition}'",
+        "description": null,
+        "error": null,
+        "hide": 0,
+        "includeAll": false,
+        "label": null,
+        "multi": false,
+        "name": "readout_module",
+        "options": [],
+        "query": "SHOW  TAG VALUES FROM \"dunedaq.readoutlibs.readoutinfo.RequestHandlerInfo\" WITH KEY=\"source_id\" WHERE $timeFilter AND \"partition_id\"='${partition}'",
+        "refresh": 1,
+        "regex": ".*\\.${readout_app}\\.(tp_datahandler_\\d+)",
+        "skipUrlSync": false,
+        "sort": 0,
         "type": "query"
       }
     ]
   },
   "time": {
-    "from": "now-2d",
+    "from": "now-15m",
     "to": "now"
   },
   "timepicker": {
@@ -690,7 +802,7 @@
     ]
   },
   "timezone": "",
-  "title": "Frontend",
-  "uid": "HBIpw-otyg",
-  "version": 5
+  "title": "Trigger Primitives",
+  "uid": "C6yDKy5nk",
+  "version": 2
 }

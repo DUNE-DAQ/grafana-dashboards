@@ -52,7 +52,7 @@
   "gnetId": null,
   "graphTooltip": 0,
   "id": null,
-  "iteration": 1635331478303,
+  "iteration": 1637076041601,
   "links": [],
   "panels": [
     {
@@ -157,10 +157,10 @@
               "type": "tag"
             }
           ],
-          "measurement": "dunedaq.readout.readoutinfo.ReadoutInfo",
+          "measurement": "dunedaq.readoutlibs.readoutinfo.ReadoutInfo",
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "SELECT mean(\"rate_payloads_consumed\") FROM \"dunedaq.readout.readoutinfo.ReadoutInfo\" WHERE (\"source_id\" =~ /${partition}_.*\\.datahandler_\\d+/) AND $timeFilter GROUP BY time($__interval), \"source_id\"",
+          "query": "SELECT mean(\"rate_payloads_consumed\") FROM \"dunedaq.readoutlibs.readoutinfo.ReadoutInfo\" WHERE (partition_id = '${partition}' AND \"source_id\" =~ /.*\\.datahandler_\\d+/) AND $timeFilter GROUP BY time($__interval), \"source_id\"",
           "rawQuery": true,
           "refId": "A",
           "resultFormat": "time_series",
@@ -192,7 +192,7 @@
         {
           "id": "renameByRegex",
           "options": {
-            "regex": ".*_(.*)\\.(.*)",
+            "regex": ".*\\.(.*)\\.(.*)",
             "renamePattern": "$1 $2"
           }
         }
@@ -294,10 +294,10 @@
             }
           ],
           "hide": false,
-          "measurement": "dunedaq.readout.readoutinfo.ReadoutInfo",
+          "measurement": "dunedaq.readoutlibs.readoutinfo.ReadoutInfo",
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "SELECT mean(\"num_buffer_elements\") FROM \"dunedaq.readout.readoutinfo.ReadoutInfo\" WHERE (\"source_id\" =~ /${partition}_.*\\.datahandler_\\d+/) AND $timeFilter GROUP BY time($__interval), \"source_id\" fill(null)",
+          "query": "SELECT mean(\"num_buffer_elements\") FROM \"dunedaq.readoutlibs.readoutinfo.ReadoutInfo\" WHERE (\"partition_id\"='${partition}' AND \"source_id\" =~ /.*\\.datahandler_\\d+/) AND $timeFilter GROUP BY time($__interval), \"source_id\" fill(null)",
           "rawQuery": true,
           "refId": "A",
           "resultFormat": "time_series",
@@ -340,7 +340,7 @@
         {
           "id": "renameByRegex",
           "options": {
-            "regex": ".*_(.*)\\.(.*)",
+            "regex": ".*\\.(.*)\\.(.*)",
             "renamePattern": "$1 $2"
           }
         }
@@ -436,10 +436,10 @@
             }
           ],
           "hide": false,
-          "measurement": "dunedaq.readout.readoutinfo.ReadoutInfo",
+          "measurement": "dunedaq.readoutlibs.readoutinfo.ReadoutInfo",
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "SELECT non_negative_derivative(cumulative_sum(sum(\"num_requests\")), 1s) FROM \"dunedaq.readout.readoutinfo.ReadoutInfo\" WHERE (\"source_id\" =~ /${partition}_.*\\.datahandler_\\d+/) AND $timeFilter GROUP BY time($__interval) fill(null)",
+          "query": "SELECT non_negative_derivative(cumulative_sum(sum(\"num_requests\")), 1s) FROM \"dunedaq.readoutlibs.readoutinfo.ReadoutInfo\" WHERE (\"partition_id\"='${partition}' AND \"source_id\" =~ /.*\\.datahandler_\\d+/) AND $timeFilter GROUP BY time($__interval) fill(null)",
           "rawQuery": true,
           "refId": "A",
           "resultFormat": "time_series",
@@ -492,10 +492,10 @@
             }
           ],
           "hide": false,
-          "measurement": "dunedaq.readout.readoutinfo.RequestHandlerInfo",
+          "measurement": "dunedaq.readoutlibs.readoutinfo.RequestHandlerInfo",
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "SELECT non_negative_derivative(cumulative_sum(sum(\"num_requests_found\")), 1s) FROM \"dunedaq.readout.readoutinfo.RequestHandlerInfo\" WHERE (\"source_id\" =~ /${partition}_.*\\.datahandler_\\d+/) AND $timeFilter GROUP BY time($__interval) fill(null)",
+          "query": "SELECT non_negative_derivative(cumulative_sum(sum(\"num_requests_found\")), 1s) FROM \"dunedaq.readoutlibs.readoutinfo.RequestHandlerInfo\" WHERE (\"partition_id\"='${partition}' AND \"source_id\" =~ /.*\\.datahandler_\\d+/) AND $timeFilter GROUP BY time($__interval) fill(null)",
           "rawQuery": true,
           "refId": "G",
           "resultFormat": "time_series",
@@ -548,10 +548,10 @@
             }
           ],
           "hide": false,
-          "measurement": "dunedaq.readout.readoutinfo.RequestHandlerInfo",
+          "measurement": "dunedaq.readoutlibs.readoutinfo.RequestHandlerInfo",
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "SELECT non_negative_derivative(cumulative_sum(sum(\"num_requests_delayed\")), 1s) FROM \"dunedaq.readout.readoutinfo.RequestHandlerInfo\" WHERE (\"source_id\" =~ /${partition}_.*\\.datahandler_\\d+/) AND $timeFilter GROUP BY time($__interval) fill(null)",
+          "query": "SELECT non_negative_derivative(cumulative_sum(sum(\"num_requests_delayed\")), 1s) FROM \"dunedaq.readoutlibs.readoutinfo.RequestHandlerInfo\" WHERE (\"partition_id\"='${partition}' AND \"source_id\" =~ /.*\\.datahandler_\\d+/) AND $timeFilter GROUP BY time($__interval) fill(null)",
           "rawQuery": true,
           "refId": "B",
           "resultFormat": "time_series",
@@ -604,10 +604,10 @@
             }
           ],
           "hide": false,
-          "measurement": "dunedaq.readout.readoutinfo.RequestHandlerInfo",
+          "measurement": "dunedaq.readoutlibs.readoutinfo.RequestHandlerInfo",
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "SELECT non_negative_derivative(cumulative_sum(sum(\"num_requests_bad\")), 1s) FROM \"dunedaq.readout.readoutinfo.RequestHandlerInfo\" WHERE (\"source_id\" =~ /${partition}_.*\\.datahandler_\\d+/) AND $timeFilter GROUP BY time($__interval) fill(null)",
+          "query": "SELECT non_negative_derivative(cumulative_sum(sum(\"num_requests_bad\")), 1s) FROM \"dunedaq.readoutlibs.readoutinfo.RequestHandlerInfo\" WHERE (\"partition_id\"='${partition}' AND \"source_id\" =~ /.*\\.datahandler_\\d+/) AND $timeFilter GROUP BY time($__interval) fill(null)",
           "rawQuery": true,
           "refId": "J",
           "resultFormat": "time_series",
@@ -660,10 +660,10 @@
             }
           ],
           "hide": false,
-          "measurement": "dunedaq.readout.readoutinfo.ReadoutInfo",
+          "measurement": "dunedaq.readoutlibs.readoutinfo.ReadoutInfo",
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "SELECT non_negative_derivative(cumulative_sum(sum(\"num_requests_old_window\")), 1s) FROM \"dunedaq.readout.readoutinfo.RequestHandlerInfo\" WHERE (\"source_id\" =~ /${partition}_.*\\.datahandler_\\d+/) AND $timeFilter GROUP BY time($__interval) fill(null)",
+          "query": "SELECT non_negative_derivative(cumulative_sum(sum(\"num_requests_old_window\")), 1s) FROM \"dunedaq.readoutlibs.readoutinfo.RequestHandlerInfo\" WHERE (\"partition_id\"='${partition}' AND \"source_id\" =~ /.*\\.datahandler_\\d+/) AND $timeFilter GROUP BY time($__interval) fill(null)",
           "rawQuery": true,
           "refId": "C",
           "resultFormat": "time_series",
@@ -716,10 +716,10 @@
             }
           ],
           "hide": false,
-          "measurement": "dunedaq.readout.readoutinfo.ReadoutInfo",
+          "measurement": "dunedaq.readoutlibs.readoutinfo.ReadoutInfo",
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "SELECT non_negative_derivative(cumulative_sum(sum(\"num_requests_timed_out\")), 1s) FROM \"dunedaq.readout.readoutinfo.RequestHandlerInfo\" WHERE (\"source_id\" =~ /${partition}_.*\\.datahandler_\\d+/) AND $timeFilter GROUP BY time($__interval) fill(null)",
+          "query": "SELECT non_negative_derivative(cumulative_sum(sum(\"num_requests_timed_out\")), 1s) FROM \"dunedaq.readoutlibs.readoutinfo.RequestHandlerInfo\" WHERE (\"partition_id\"='${partition}' AND \"source_id\" =~ /.*\\.datahandler_\\d+/) AND $timeFilter GROUP BY time($__interval) fill(null)",
           "rawQuery": true,
           "refId": "D",
           "resultFormat": "time_series",
@@ -772,10 +772,10 @@
             }
           ],
           "hide": false,
-          "measurement": "dunedaq.readout.readoutinfo.RequestHandlerInfo",
+          "measurement": "dunedaq.readoutlibs.readoutinfo.RequestHandlerInfo",
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "SELECT non_negative_derivative(cumulative_sum(sum(\"num_requests_uncategorized\")), 1s) FROM \"dunedaq.readout.readoutinfo.RequestHandlerInfo\" WHERE (\"source_id\" =~ /${partition}_.*\\.datahandler_\\d+/) AND $timeFilter GROUP BY time($__interval) fill(null)",
+          "query": "SELECT non_negative_derivative(cumulative_sum(sum(\"num_requests_uncategorized\")), 1s) FROM \"dunedaq.readoutlibs.readoutinfo.RequestHandlerInfo\" WHERE (\"partition_id\"='${partition}' AND \"source_id\" =~ /.*\\.datahandler_\\d+/) AND $timeFilter GROUP BY time($__interval) fill(null)",
           "rawQuery": true,
           "refId": "F",
           "resultFormat": "time_series",
@@ -906,10 +906,10 @@
             }
           ],
           "hide": false,
-          "measurement": "dunedaq.readout.readoutinfo.RawDataProcessorInfo",
+          "measurement": "dunedaq.readoutlibs.readoutinfo.RawDataProcessorInfo",
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "SELECT non_negative_derivative(cumulative_sum(sum(\"num_tps_sent\")), 1s) FROM \"dunedaq.readout.readoutinfo.RawDataProcessorInfo\" WHERE (\"source_id\" =~ /${partition}_.*\\.datahandler_\\d+/) AND $timeFilter GROUP BY time($__interval) fill(null)",
+          "query": "SELECT non_negative_derivative(cumulative_sum(sum(\"num_tps_sent\")), 1s) FROM \"dunedaq.readoutlibs.readoutinfo.RawDataProcessorInfo\" WHERE (\"partition_id\"='${partition}' AND \"source_id\" =~ /.*\\.datahandler_\\d+/) AND $timeFilter GROUP BY time($__interval) fill(null)",
           "rawQuery": true,
           "refId": "D",
           "resultFormat": "time_series",
@@ -962,10 +962,10 @@
             }
           ],
           "hide": false,
-          "measurement": "dunedaq.readout.readoutinfo.RawDataProcessorInfo",
+          "measurement": "dunedaq.readoutlibs.readoutinfo.RawDataProcessorInfo",
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "SELECT non_negative_derivative(cumulative_sum(sum(\"num_tpsets_sent\")), 1s) FROM \"dunedaq.readout.readoutinfo.RawDataProcessorInfo\" WHERE (\"source_id\" =~ /${partition}_.*\\.datahandler_\\d+/) AND $timeFilter GROUP BY time($__interval) fill(null)",
+          "query": "SELECT non_negative_derivative(cumulative_sum(sum(\"num_tpsets_sent\")), 1s) FROM \"dunedaq.readoutlibs.readoutinfo.RawDataProcessorInfo\" WHERE (\"partition_id\"='${partition}' AND \"source_id\" =~ /.*\\.datahandler_\\d+/) AND $timeFilter GROUP BY time($__interval) fill(null)",
           "rawQuery": true,
           "refId": "E",
           "resultFormat": "time_series",
@@ -1018,10 +1018,10 @@
             }
           ],
           "hide": false,
-          "measurement": "dunedaq.readout.readoutinfo.RawDataProcessorInfo",
+          "measurement": "dunedaq.readoutlibs.readoutinfo.RawDataProcessorInfo",
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "SELECT non_negative_derivative(cumulative_sum(sum(\"num_tps_dropped\")), 1s) FROM \"dunedaq.readout.readoutinfo.RawDataProcessorInfo\" WHERE (\"source_id\" =~ /${partition}_.*\\.datahandler_\\d+/) AND $timeFilter GROUP BY time($__interval) fill(null)",
+          "query": "SELECT non_negative_derivative(cumulative_sum(sum(\"num_tps_dropped\")), 1s) FROM \"dunedaq.readoutlibs.readoutinfo.RawDataProcessorInfo\" WHERE (\"partition_id\"='${partition}' AND \"source_id\" =~ /.*\\.datahandler_\\d+/) AND $timeFilter GROUP BY time($__interval) fill(null)",
           "rawQuery": true,
           "refId": "A",
           "resultFormat": "time_series",
@@ -1074,10 +1074,10 @@
             }
           ],
           "hide": false,
-          "measurement": "dunedaq.readout.readoutinfo.RawDataProcessorInfo",
+          "measurement": "dunedaq.readoutlibs.readoutinfo.RawDataProcessorInfo",
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "SELECT sum(\"rate_tp_hits\") FROM \"dunedaq.readout.readoutinfo.RawDataProcessorInfo\" WHERE (\"source_id\" =~ /${partition}_.*\\.datahandler_\\d+/) AND $timeFilter GROUP BY time($__interval) fill(null)",
+          "query": "SELECT sum(\"rate_tp_hits\") FROM \"dunedaq.readoutlibs.readoutinfo.RawDataProcessorInfo\" WHERE (\"partition_id\"='${partition}' AND \"source_id\" =~ /.*\\.datahandler_\\d+/) AND $timeFilter GROUP BY time($__interval) fill(null)",
           "rawQuery": true,
           "refId": "B",
           "resultFormat": "time_series",
@@ -1196,10 +1196,10 @@
               "type": "fill"
             }
           ],
-          "measurement": "dunedaq.readout.readoutinfo.RequestHandlerInfo",
+          "measurement": "dunedaq.readoutlibs.readoutinfo.RequestHandlerInfo",
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "SELECT non_negative_derivative(cumulative_sum(sum(\"num_buffer_cleanups\")), 1s) FROM \"dunedaq.readout.readoutinfo.RequestHandlerInfo\" WHERE (\"source_id\" =~ /${partition}_.*\\.datahandler_\\d+/) AND $timeFilter GROUP BY time($__interval) fill(null)",
+          "query": "SELECT non_negative_derivative(cumulative_sum(sum(\"num_buffer_cleanups\")), 1s) FROM \"dunedaq.readoutlibs.readoutinfo.RequestHandlerInfo\" WHERE (\"partition_id\"='${partition}' AND \"source_id\" =~ /.*\\.datahandler_\\d+/) AND $timeFilter GROUP BY time($__interval) fill(null)",
           "rawQuery": true,
           "refId": "A",
           "resultFormat": "time_series",
@@ -1252,10 +1252,10 @@
             }
           ],
           "hide": false,
-          "measurement": "dunedaq.readout.readoutinfo.ReadoutInfo",
+          "measurement": "dunedaq.readoutlibs.readoutinfo.ReadoutInfo",
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "SELECT non_negative_derivative(cumulative_sum(sum(\"num_payloads_overwritten\")), 1s) FROM \"dunedaq.readout.readoutinfo.ReadoutInfo\" WHERE (\"source_id\" =~ /${partition}_.*\\.datahandler_\\d+/) AND $timeFilter GROUP BY time($__interval) fill(null)",
+          "query": "SELECT non_negative_derivative(cumulative_sum(sum(\"num_payloads_overwritten\")), 1s) FROM \"dunedaq.readoutlibs.readoutinfo.ReadoutInfo\" WHERE (\"partition_id\"='${partition}' AND \"source_id\" =~ /.*\\.datahandler_\\d+/) AND $timeFilter GROUP BY time($__interval) fill(null)",
           "rawQuery": true,
           "refId": "B",
           "resultFormat": "time_series",
@@ -1383,10 +1383,10 @@
             }
           ],
           "hide": false,
-          "measurement": "dunedaq.readout.readoutinfo.RequestHandlerInfo",
+          "measurement": "dunedaq.readoutlibs.readoutinfo.RequestHandlerInfo",
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "SELECT sum(\"num_requests_waiting\") FROM \"dunedaq.readout.readoutinfo.RequestHandlerInfo\" WHERE (\"source_id\" =~ /${partition}_.*\\.datahandler_\\d+/) AND $timeFilter GROUP BY time($__interval), \"source_id\"",
+          "query": "SELECT sum(\"num_requests_waiting\") FROM \"dunedaq.readoutlibs.readoutinfo.RequestHandlerInfo\" WHERE (\"partition_id\"='${partition}' AND \"source_id\" =~ /.*\\.datahandler_\\d+/) AND $timeFilter GROUP BY time($__interval), \"source_id\"",
           "rawQuery": true,
           "refId": "E",
           "resultFormat": "time_series",
@@ -1428,7 +1428,7 @@
         {
           "id": "renameByRegex",
           "options": {
-            "regex": ".*_(.*)\\.(.*)",
+            "regex": ".*\\.(.*)\\.(.*)",
             "renamePattern": "$1 $2"
           }
         }
@@ -1446,7 +1446,7 @@
       },
       "id": 44,
       "panels": [],
-      "title": "Signle elements",
+      "title": "Single elements",
       "type": "row"
     },
     {
@@ -1540,10 +1540,10 @@
             }
           ],
           "hide": false,
-          "measurement": "dunedaq.readout.readoutinfo.RawDataProcessorInfo",
+          "measurement": "dunedaq.readoutlibs.readoutinfo.RawDataProcessorInfo",
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "SELECT non_negative_derivative(cumulative_sum(sum(\"num_tps_sent\")), 1s) FROM \"dunedaq.readout.readoutinfo.RawDataProcessorInfo\" WHERE (\"source_id\" = '${partition}_${readout_app}.${readout_module}') AND $timeFilter GROUP BY time($__interval) fill(null)",
+          "query": "SELECT non_negative_derivative(cumulative_sum(sum(\"num_tps_sent\")), 1s) FROM \"dunedaq.readoutlibs.readoutinfo.RawDataProcessorInfo\" WHERE (\"partition_id\"='${partition}' AND \"source_id\" = '${partition}.${readout_app}.${readout_module}') AND $timeFilter GROUP BY time($__interval) fill(null)",
           "rawQuery": true,
           "refId": "D",
           "resultFormat": "time_series",
@@ -1596,10 +1596,10 @@
             }
           ],
           "hide": false,
-          "measurement": "dunedaq.readout.readoutinfo.RawDataProcessorInfo",
+          "measurement": "dunedaq.readoutlibs.readoutinfo.RawDataProcessorInfo",
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "SELECT non_negative_derivative(cumulative_sum(sum(\"num_tpsets_sent\")), 1s) FROM \"dunedaq.readout.readoutinfo.RawDataProcessorInfo\" WHERE (\"source_id\" = '${partition}_${readout_app}.${readout_module}') AND $timeFilter GROUP BY time($__interval) fill(null)",
+          "query": "SELECT non_negative_derivative(cumulative_sum(sum(\"num_tpsets_sent\")), 1s) FROM \"dunedaq.readoutlibs.readoutinfo.RawDataProcessorInfo\" WHERE (\"partition_id\"='${partition}' AND \"source_id\" = '${partition}.${readout_app}.${readout_module}') AND $timeFilter GROUP BY time($__interval) fill(null)",
           "rawQuery": true,
           "refId": "E",
           "resultFormat": "time_series",
@@ -1652,10 +1652,10 @@
             }
           ],
           "hide": false,
-          "measurement": "dunedaq.readout.readoutinfo.RawDataProcessorInfo",
+          "measurement": "dunedaq.readoutlibs.readoutinfo.RawDataProcessorInfo",
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "SELECT non_negative_derivative(cumulative_sum(sum(\"num_tps_dropped\")), 1s) FROM \"dunedaq.readout.readoutinfo.RawDataProcessorInfo\" WHERE (\"source_id\" = '${partition}_${readout_app}.${readout_module}') AND $timeFilter GROUP BY time($__interval) fill(null)",
+          "query": "SELECT non_negative_derivative(cumulative_sum(sum(\"num_tps_dropped\")), 1s) FROM \"dunedaq.readoutlibs.readoutinfo.RawDataProcessorInfo\" WHERE (\"source_id\" = '${partition}.${readout_app}.${readout_module}') AND $timeFilter GROUP BY time($__interval) fill(null)",
           "rawQuery": true,
           "refId": "A",
           "resultFormat": "time_series",
@@ -1708,10 +1708,10 @@
             }
           ],
           "hide": false,
-          "measurement": "dunedaq.readout.readoutinfo.RawDataProcessorInfo",
+          "measurement": "dunedaq.readoutlibs.readoutinfo.RawDataProcessorInfo",
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "SELECT sum(\"rate_tp_hits\") FROM \"dunedaq.readout.readoutinfo.RawDataProcessorInfo\" WHERE  (\"source_id\" = '${partition}_${readout_app}.${readout_module}') AND $timeFilter GROUP BY time($__interval) fill(null)",
+          "query": "SELECT sum(\"rate_tp_hits\") FROM \"dunedaq.readoutlibs.readoutinfo.RawDataProcessorInfo\" WHERE  (\"source_id\" = '${partition}.${readout_app}.${readout_module}') AND $timeFilter GROUP BY time($__interval) fill(null)",
           "rawQuery": true,
           "refId": "B",
           "resultFormat": "time_series",
@@ -1752,7 +1752,7 @@
             "mode": "palette-classic"
           },
           "custom": {
-            "axisLabel": "",
+            "axisLabel": "Hz",
             "axisPlacement": "auto",
             "barAlignment": 0,
             "drawStyle": "line",
@@ -1830,10 +1830,10 @@
               "type": "fill"
             }
           ],
-          "measurement": "dunedaq.readout.readoutinfo.RequestHandlerInfo",
+          "measurement": "dunedaq.readoutlibs.readoutinfo.RequestHandlerInfo",
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "SELECT mean(\"num_buffer_cleanups\") FROM \"dunedaq.readout.readoutinfo.RequestHandlerInfo\" WHERE (\"source_id\" = '${partition}_${readout_app}.${readout_module}') AND $timeFilter GROUP BY time($__interval) fill(null)",
+          "query": "SELECT non_negative_derivative(cumulative_sum(sum(\"num_buffer_cleanups\")), 1s) FROM \"dunedaq.readoutlibs.readoutinfo.RequestHandlerInfo\" WHERE (\"source_id\" = '${partition}.${readout_app}.${readout_module}') AND $timeFilter GROUP BY time($__interval) fill(null)",
           "rawQuery": true,
           "refId": "A",
           "resultFormat": "time_series",
@@ -1876,10 +1876,10 @@
             }
           ],
           "hide": false,
-          "measurement": "dunedaq.readout.readoutinfo.ReadoutInfo",
+          "measurement": "dunedaq.readoutlibs.readoutinfo.ReadoutInfo",
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "SELECT mean(\"num_payloads_overwritten\") FROM \"dunedaq.readout.readoutinfo.ReadoutInfo\" WHERE  (\"source_id\" = '${partition}_${readout_app}.${readout_module}')  AND $timeFilter GROUP BY time($__interval) fill(null)",
+          "query": "SELECT non_negative_derivative(cumulative_sum(sum(\"num_payloads_overwritten\")), 1s) FROM \"dunedaq.readoutlibs.readoutinfo.ReadoutInfo\" WHERE  (\"source_id\" = '${partition}.${readout_app}.${readout_module}')  AND $timeFilter GROUP BY time($__interval) fill(null)",
           "rawQuery": true,
           "refId": "B",
           "resultFormat": "time_series",
@@ -1998,10 +1998,10 @@
             }
           ],
           "hide": false,
-          "measurement": "dunedaq.readout.readoutinfo.ReadoutInfo",
+          "measurement": "dunedaq.readoutlibs.readoutinfo.ReadoutInfo",
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "SELECT non_negative_derivative(cumulative_sum(sum(\"num_requests\")), 1s) FROM \"dunedaq.readout.readoutinfo.ReadoutInfo\" WHERE (\"source_id\" = '${partition}_${readout_app}.${readout_module}') AND $timeFilter GROUP BY time($__interval) fill(null)",
+          "query": "SELECT non_negative_derivative(cumulative_sum(sum(\"num_requests\")), 1s) FROM \"dunedaq.readoutlibs.readoutinfo.ReadoutInfo\" WHERE (\"source_id\" = '${partition}.${readout_app}.${readout_module}') AND $timeFilter GROUP BY time($__interval) fill(null)",
           "rawQuery": true,
           "refId": "A",
           "resultFormat": "time_series",
@@ -2054,10 +2054,10 @@
             }
           ],
           "hide": false,
-          "measurement": "dunedaq.readout.readoutinfo.RequestHandlerInfo",
+          "measurement": "dunedaq.readoutlibs.readoutinfo.RequestHandlerInfo",
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "SELECT non_negative_derivative(cumulative_sum(sum(\"num_requests_found\")), 1s) FROM \"dunedaq.readout.readoutinfo.RequestHandlerInfo\" WHERE (\"source_id\" = '${partition}_${readout_app}.${readout_module}') AND $timeFilter GROUP BY time($__interval) fill(null)",
+          "query": "SELECT non_negative_derivative(cumulative_sum(sum(\"num_requests_found\")), 1s) FROM \"dunedaq.readoutlibs.readoutinfo.RequestHandlerInfo\" WHERE (\"source_id\" = '${partition}.${readout_app}.${readout_module}') AND $timeFilter GROUP BY time($__interval) fill(null)",
           "rawQuery": true,
           "refId": "G",
           "resultFormat": "time_series",
@@ -2110,10 +2110,10 @@
             }
           ],
           "hide": false,
-          "measurement": "dunedaq.readout.readoutinfo.RequestHandlerInfo",
+          "measurement": "dunedaq.readoutlibs.readoutinfo.RequestHandlerInfo",
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "SELECT non_negative_derivative(cumulative_sum(sum(\"num_requests_delayed\")), 1s) FROM \"dunedaq.readout.readoutinfo.RequestHandlerInfo\" WHERE (\"source_id\" = '${partition}_${readout_app}.${readout_module}') AND $timeFilter GROUP BY time($__interval) fill(null)",
+          "query": "SELECT non_negative_derivative(cumulative_sum(sum(\"num_requests_delayed\")), 1s) FROM \"dunedaq.readoutlibs.readoutinfo.RequestHandlerInfo\" WHERE (\"source_id\" = '${partition}.${readout_app}.${readout_module}') AND $timeFilter GROUP BY time($__interval) fill(null)",
           "rawQuery": true,
           "refId": "B",
           "resultFormat": "time_series",
@@ -2166,10 +2166,10 @@
             }
           ],
           "hide": false,
-          "measurement": "dunedaq.readout.readoutinfo.RequestHandlerInfo",
+          "measurement": "dunedaq.readoutlibs.readoutinfo.RequestHandlerInfo",
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "SELECT non_negative_derivative(cumulative_sum(sum(\"num_requests_bad\")), 1s) FROM \"dunedaq.readout.readoutinfo.RequestHandlerInfo\" WHERE (\"source_id\" = '${partition}_${readout_app}.${readout_module}') AND $timeFilter GROUP BY time($__interval) fill(null)",
+          "query": "SELECT non_negative_derivative(cumulative_sum(sum(\"num_requests_bad\")), 1s) FROM \"dunedaq.readoutlibs.readoutinfo.RequestHandlerInfo\" WHERE (\"source_id\" = '${partition}.${readout_app}.${readout_module}') AND $timeFilter GROUP BY time($__interval) fill(null)",
           "rawQuery": true,
           "refId": "J",
           "resultFormat": "time_series",
@@ -2222,10 +2222,10 @@
             }
           ],
           "hide": false,
-          "measurement": "dunedaq.readout.readoutinfo.ReadoutInfo",
+          "measurement": "dunedaq.readoutlibs.readoutinfo.ReadoutInfo",
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "SELECT non_negative_derivative(cumulative_sum(sum(\"num_requests_old_window\")), 1s) FROM \"dunedaq.readout.readoutinfo.RequestHandlerInfo\" WHERE (\"source_id\" = '${partition}_${readout_app}.${readout_module}') AND $timeFilter GROUP BY time($__interval) fill(null)",
+          "query": "SELECT non_negative_derivative(cumulative_sum(sum(\"num_requests_old_window\")), 1s) FROM \"dunedaq.readoutlibs.readoutinfo.RequestHandlerInfo\" WHERE (\"source_id\" = '${partition}.${readout_app}.${readout_module}') AND $timeFilter GROUP BY time($__interval) fill(null)",
           "rawQuery": true,
           "refId": "C",
           "resultFormat": "time_series",
@@ -2278,10 +2278,10 @@
             }
           ],
           "hide": false,
-          "measurement": "dunedaq.readout.readoutinfo.ReadoutInfo",
+          "measurement": "dunedaq.readoutlibs.readoutinfo.ReadoutInfo",
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "SELECT non_negative_derivative(cumulative_sum(sum(\"num_requests_timed_out\")), 1s) FROM \"dunedaq.readout.readoutinfo.RequestHandlerInfo\" WHERE (\"source_id\" = '${partition}_${readout_app}.${readout_module}') AND $timeFilter GROUP BY time($__interval) fill(null)",
+          "query": "SELECT non_negative_derivative(cumulative_sum(sum(\"num_requests_timed_out\")), 1s) FROM \"dunedaq.readoutlibs.readoutinfo.RequestHandlerInfo\" WHERE (\"source_id\" = '${partition}.${readout_app}.${readout_module}') AND $timeFilter GROUP BY time($__interval) fill(null)",
           "rawQuery": true,
           "refId": "D",
           "resultFormat": "time_series",
@@ -2334,10 +2334,10 @@
             }
           ],
           "hide": false,
-          "measurement": "dunedaq.readout.readoutinfo.RequestHandlerInfo",
+          "measurement": "dunedaq.readoutlibs.readoutinfo.RequestHandlerInfo",
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "SELECT non_negative_derivative(cumulative_sum(sum(\"num_requests_uncategorized\")), 1s) FROM \"dunedaq.readout.readoutinfo.RequestHandlerInfo\" WHERE (\"source_id\" = '${partition}_${readout_app}.${readout_module}') AND $timeFilter GROUP BY time($__interval) fill(null)",
+          "query": "SELECT non_negative_derivative(cumulative_sum(sum(\"num_requests_uncategorized\")), 1s) FROM \"dunedaq.readoutlibs.readoutinfo.RequestHandlerInfo\" WHERE (\"source_id\" = '${partition}.${readout_app}.${readout_module}') AND $timeFilter GROUP BY time($__interval) fill(null)",
           "rawQuery": true,
           "refId": "F",
           "resultFormat": "time_series",
@@ -2382,7 +2382,8 @@
   "schemaVersion": 30,
   "style": "dark",
   "tags": [
-    "Coldbox"
+    "Subsystem",
+    "v2.10.0"
   ],
   "templating": {
     "list": [
@@ -2390,7 +2391,7 @@
         "allValue": null,
         "current": {},
         "datasource": "${DS_INFLUXTEST}",
-        "definition": "SHOW SERIES FROM \"dunedaq.appfwk.appinfo.Info\"  where $timeFilter",
+        "definition": "SHOW TAG VALUES WITH KEY=\"partition_id\" where $timeFilter",
         "description": null,
         "error": null,
         "hide": 0,
@@ -2399,9 +2400,9 @@
         "multi": false,
         "name": "partition",
         "options": [],
-        "query": "SHOW SERIES FROM \"dunedaq.appfwk.appinfo.Info\"  where $timeFilter",
+        "query": "SHOW TAG VALUES WITH KEY=\"partition_id\" where $timeFilter",
         "refresh": 1,
-        "regex": "/.*source_id=(.*)_.*/",
+        "regex": "",
         "skipUrlSync": false,
         "sort": 1,
         "type": "query"
@@ -2410,7 +2411,7 @@
         "allValue": null,
         "current": {},
         "datasource": "${DS_INFLUXTEST}",
-        "definition": "SHOW  SERIES  FROM \"dunedaq.readout.readoutinfo.RawDataProcessorInfo\" WHERE $timeFilter",
+        "definition": "SHOW  TAG VALUES  FROM \"dunedaq.readoutlibs.readoutinfo.RawDataProcessorInfo\" WITH KEY=\"source_id\" WHERE $timeFilter AND \"partition_id\"='${partition}'",
         "description": null,
         "error": null,
         "hide": 0,
@@ -2419,9 +2420,9 @@
         "multi": false,
         "name": "readout_app",
         "options": [],
-        "query": "SHOW  SERIES  FROM \"dunedaq.readout.readoutinfo.RawDataProcessorInfo\" WHERE $timeFilter",
+        "query": "SHOW  TAG VALUES  FROM \"dunedaq.readoutlibs.readoutinfo.RawDataProcessorInfo\" WITH KEY=\"source_id\" WHERE $timeFilter AND \"partition_id\"='${partition}'",
         "refresh": 1,
-        "regex": "/${partition}_(.*)\\..*/",
+        "regex": ".*\\.(.*)\\..*",
         "skipUrlSync": false,
         "sort": 1,
         "type": "query"
@@ -2430,7 +2431,7 @@
         "allValue": null,
         "current": {},
         "datasource": "${DS_INFLUXTEST}",
-        "definition": "SHOW  SERIES  FROM \"dunedaq.readout.readoutinfo.RawDataProcessorInfo\" WHERE $timeFilter",
+        "definition": "SHOW TAG VALUES FROM \"dunedaq.readoutlibs.readoutinfo.RawDataProcessorInfo\" WITH KEY=\"source_id\" WHERE $timeFilter AND \"partition_id\"='${partition}'",
         "description": null,
         "error": null,
         "hide": 0,
@@ -2439,9 +2440,9 @@
         "multi": false,
         "name": "readout_module",
         "options": [],
-        "query": "SHOW  SERIES  FROM \"dunedaq.readout.readoutinfo.RawDataProcessorInfo\" WHERE $timeFilter",
+        "query": "SHOW TAG VALUES FROM \"dunedaq.readoutlibs.readoutinfo.RawDataProcessorInfo\" WITH KEY=\"source_id\" WHERE $timeFilter AND \"partition_id\"='${partition}'",
         "refresh": 1,
-        "regex": "/${partition}_${readout_app}\\.(.*)/",
+        "regex": ".*\\.${readout_app}\\.(.*)",
         "skipUrlSync": false,
         "sort": 1,
         "type": "query"
@@ -2449,7 +2450,7 @@
     ]
   },
   "time": {
-    "from": "now-15m",
+    "from": "now-1h",
     "to": "now"
   },
   "timepicker": {
@@ -2479,6 +2480,6 @@
   },
   "timezone": "",
   "title": "Readout",
-  "uid": "HBIpw-dnz",
-  "version": 43
+  "uid": "BIHBty5nz",
+  "version": 2
 }

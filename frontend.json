@@ -24,6 +24,12 @@
     },
     {
       "type": "panel",
+      "id": "table",
+      "name": "Table",
+      "version": ""
+    },
+    {
+      "type": "panel",
       "id": "timeseries",
       "name": "Time series",
       "version": ""
@@ -52,7 +58,7 @@
   "gnetId": null,
   "graphTooltip": 0,
   "id": null,
-  "iteration": 1646907419532,
+  "iteration": 1650546050392,
   "links": [],
   "panels": [
     {
@@ -68,6 +74,286 @@
       "panels": [],
       "title": "Felix",
       "type": "row"
+    },
+    {
+      "datasource": "${DS_INFLUXTEST}",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "custom": {
+            "align": "auto",
+            "displayMode": "auto",
+            "filterable": true
+          },
+          "mappings": [
+            {
+              "options": {
+                "false": {
+                  "color": "dark-red",
+                  "index": 0
+                },
+                "true": {
+                  "color": "dark-green",
+                  "index": 1
+                }
+              },
+              "type": "value"
+            }
+          ],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "$1source_id"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 855
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "$1Time"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 164
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "link_id"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 77
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "enabled"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 218
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "aligned"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 96
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "source_id"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 1281
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "device_id"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 119
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Time"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 168
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "aligned"
+            },
+            "properties": [
+              {
+                "id": "custom.displayMode",
+                "value": "color-background-solid"
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 7,
+        "w": 23,
+        "x": 0,
+        "y": 1
+      },
+      "id": 53,
+      "options": {
+        "frameIndex": 0,
+        "showHeader": true,
+        "sortBy": [
+          {
+            "desc": true,
+            "displayName": "Time"
+          }
+        ]
+      },
+      "pluginVersion": "8.0.7",
+      "targets": [
+        {
+          "groupBy": [
+            {
+              "params": [
+                "$__interval"
+              ],
+              "type": "time"
+            },
+            {
+              "params": [
+                "null"
+              ],
+              "type": "fill"
+            }
+          ],
+          "measurement": "dunedaq.flxlibs.felixcardcontrollerinfo.LinkInfo",
+          "orderByTime": "ASC",
+          "policy": "default",
+          "query": "SELECT \"device_id\", \"link_id\", \"aligned\" FROM \"dunedaq.flxlibs.felixcardcontrollerinfo.LinkInfo\" WHERE (\"partition_id\" = '${partition}') AND $timeFilter AND \"enabled\"=true GROUP BY \"source_id\" ORDER BY DESC LIMIT 1\n",
+          "rawQuery": true,
+          "refId": "A",
+          "resultFormat": "table",
+          "select": [
+            [
+              {
+                "params": [
+                  "link_id"
+                ],
+                "type": "field"
+              },
+              {
+                "params": [],
+                "type": "last"
+              }
+            ]
+          ],
+          "tags": [
+            {
+              "key": "partition_id",
+              "operator": "=",
+              "value": "gio_test"
+            }
+          ]
+        },
+        {
+          "groupBy": [
+            {
+              "params": [
+                "$__interval"
+              ],
+              "type": "time"
+            },
+            {
+              "params": [
+                "null"
+              ],
+              "type": "fill"
+            }
+          ],
+          "hide": true,
+          "measurement": "dunedaq.flxlibs.felixcardcontrollerinfo.LinkInfo",
+          "orderByTime": "ASC",
+          "policy": "default",
+          "query": "SELECT \"link_id\", \"enabled\", \"aligned\" FROM \"dunedaq.flxlibs.felixcardcontrollerinfo.LinkInfo\" WHERE (\"partition_id\" = '${partition}') GROUP BY \"source_id\" ORDER BY DESC LIMIT 1\n",
+          "rawQuery": false,
+          "refId": "B",
+          "resultFormat": "table",
+          "select": [
+            [
+              {
+                "params": [
+                  "link_id"
+                ],
+                "type": "field"
+              },
+              {
+                "params": [],
+                "type": "last"
+              }
+            ]
+          ],
+          "tags": [
+            {
+              "key": "partition_id",
+              "operator": "=",
+              "value": "gio_test"
+            }
+          ]
+        }
+      ],
+      "title": "FELIXs Links status",
+      "transformations": [
+        {
+          "id": "organize",
+          "options": {
+            "excludeByName": {},
+            "indexByName": {
+              "Time": 4,
+              "aligned": 3,
+              "device_id": 1,
+              "link_id": 2,
+              "source_id": 0
+            },
+            "renameByName": {}
+          }
+        }
+      ],
+      "type": "table"
     },
     {
       "datasource": "${DS_INFLUXTEST}",
@@ -126,7 +412,7 @@
         "h": 10,
         "w": 11,
         "x": 0,
-        "y": 1
+        "y": 8
       },
       "id": 49,
       "options": {
@@ -266,7 +552,7 @@
         "h": 10,
         "w": 12,
         "x": 11,
-        "y": 1
+        "y": 8
       },
       "id": 51,
       "options": {
@@ -406,7 +692,7 @@
         "h": 9,
         "w": 11,
         "x": 0,
-        "y": 11
+        "y": 18
       },
       "id": 50,
       "options": {
@@ -658,7 +944,7 @@
         "h": 9,
         "w": 12,
         "x": 11,
-        "y": 11
+        "y": 18
       },
       "id": 25,
       "options": {
@@ -805,5 +1091,5 @@
   "timezone": "",
   "title": "Frontend",
   "uid": "hEaTOy57k",
-  "version": 4
+  "version": 5
 }

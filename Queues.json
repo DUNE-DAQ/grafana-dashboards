@@ -14,7 +14,7 @@
       "type": "grafana",
       "id": "grafana",
       "name": "Grafana",
-      "version": "8.0.6"
+      "version": "8.0.7"
     },
     {
       "type": "datasource",
@@ -46,7 +46,7 @@
   "gnetId": null,
   "graphTooltip": 0,
   "id": null,
-  "iteration": 1637678643177,
+  "iteration": 1652093317289,
   "links": [],
   "panels": [
     {
@@ -139,7 +139,7 @@
           "measurement": "dunedaq.appfwk.queueinfo.Info",
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "SELECT mean(\"number_of_elements\")/mean(\"capacity\")  * 100 FROM \"dunedaq.appfwk.queueinfo.Info\" WHERE (\"partition_id\" = '${partition}' AND \"source_id\"=~ /.*\\.${application}\\..*/) AND $timeFilter GROUP BY time($__interval), \"source_id\"",
+          "query": "SELECT mean(\"number_of_elements\")/mean(\"capacity\")  * 100 FROM \"dunedaq.iomanager.queueinfo.Info\" WHERE (\"partition_id\" = '${partition}' AND \"source_id\"=~ /[^.]+\\.${application}\\.[^+]/) AND $timeFilter GROUP BY time($__interval), \"source_id\"",
           "rawQuery": true,
           "refId": "C",
           "resultFormat": "time_series",
@@ -179,7 +179,7 @@
         {
           "id": "renameByRegex",
           "options": {
-            "regex": ".*\\..*\\.(.*)",
+            "regex": "[^.]+\\.[^.]+\\.([^.]+)",
             "renamePattern": "$1"
           }
         }
@@ -187,6 +187,7 @@
       "type": "timeseries"
     }
   ],
+  "refresh": "5s",
   "schemaVersion": 30,
   "style": "dark",
   "tags": [
@@ -219,7 +220,7 @@
         "allValue": null,
         "current": {},
         "datasource": "${DS_INFLUXTEST}",
-        "definition": "SHOW TAG VALUES FROM \"dunedaq.appfwk.queueinfo.Info\" WITH KEY=\"source_id\" WHERE \"partition_id\"='${partition}' AND $timeFilter",
+        "definition": "SHOW TAG VALUES FROM \"dunedaq.iomanager.queueinfo.Info\" WITH KEY=\"source_id\" WHERE \"partition_id\"='${partition}' AND $timeFilter",
         "description": null,
         "error": null,
         "hide": 0,
@@ -228,9 +229,9 @@
         "multi": true,
         "name": "application",
         "options": [],
-        "query": "SHOW TAG VALUES FROM \"dunedaq.appfwk.queueinfo.Info\" WITH KEY=\"source_id\" WHERE \"partition_id\"='${partition}' AND $timeFilter",
+        "query": "SHOW TAG VALUES FROM \"dunedaq.iomanager.queueinfo.Info\" WITH KEY=\"source_id\" WHERE \"partition_id\"='${partition}' AND $timeFilter",
         "refresh": 1,
-        "regex": ".*\\.(.*)\\..*",
+        "regex": "[^.]+\\.([^.]+)\\.[^.]+",
         "skipUrlSync": false,
         "sort": 0,
         "type": "query"
@@ -238,12 +239,12 @@
     ]
   },
   "time": {
-    "from": "now-7d",
+    "from": "now-15m",
     "to": "now"
   },
   "timepicker": {},
   "timezone": "",
   "title": "Queues",
-  "uid": "asdfvd3",
-  "version": 7
+  "uid": "asdfvd3d",
+  "version": 4
 }

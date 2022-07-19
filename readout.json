@@ -1,8 +1,8 @@
 {
   "__inputs": [
     {
-      "name": "DS_INFLUXTEST",
-      "label": "InfluxTest",
+      "name": "DS_INFLUXKAFKA",
+      "label": "InfluxKafka",
       "description": "",
       "type": "datasource",
       "pluginId": "influxdb",
@@ -14,7 +14,7 @@
       "type": "grafana",
       "id": "grafana",
       "name": "Grafana",
-      "version": "8.0.6"
+      "version": "8.0.7"
     },
     {
       "type": "datasource",
@@ -52,7 +52,7 @@
   "gnetId": null,
   "graphTooltip": 0,
   "id": null,
-  "iteration": 1637076041601,
+  "iteration": 1658222063553,
   "links": [],
   "panels": [
     {
@@ -70,7 +70,7 @@
       "type": "row"
     },
     {
-      "datasource": "${DS_INFLUXTEST}",
+      "datasource": "${DS_INFLUXKAFKA}",
       "description": "",
       "fieldConfig": {
         "defaults": {
@@ -200,7 +200,7 @@
       "type": "timeseries"
     },
     {
-      "datasource": "${DS_INFLUXTEST}",
+      "datasource": "${DS_INFLUXKAFKA}",
       "description": "",
       "fieldConfig": {
         "defaults": {
@@ -348,7 +348,7 @@
       "type": "timeseries"
     },
     {
-      "datasource": "${DS_INFLUXTEST}",
+      "datasource": "${DS_INFLUXKAFKA}",
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -816,7 +816,7 @@
       "type": "timeseries"
     },
     {
-      "datasource": "${DS_INFLUXTEST}",
+      "datasource": "${DS_INFLUXKAFKA}",
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -1110,7 +1110,7 @@
       "type": "timeseries"
     },
     {
-      "datasource": "${DS_INFLUXTEST}",
+      "datasource": "${DS_INFLUXKAFKA}",
       "description": "",
       "fieldConfig": {
         "defaults": {
@@ -1296,7 +1296,7 @@
       "type": "timeseries"
     },
     {
-      "datasource": "${DS_INFLUXTEST}",
+      "datasource": "${DS_INFLUXKAFKA}",
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -1450,7 +1450,7 @@
       "type": "row"
     },
     {
-      "datasource": "${DS_INFLUXTEST}",
+      "datasource": "${DS_INFLUXKAFKA}",
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -1744,7 +1744,7 @@
       "type": "timeseries"
     },
     {
-      "datasource": "${DS_INFLUXTEST}",
+      "datasource": "${DS_INFLUXKAFKA}",
       "description": "",
       "fieldConfig": {
         "defaults": {
@@ -1910,7 +1910,7 @@
       "type": "timeseries"
     },
     {
-      "datasource": "${DS_INFLUXTEST}",
+      "datasource": "${DS_INFLUXKAFKA}",
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -2390,7 +2390,7 @@
       {
         "allValue": null,
         "current": {},
-        "datasource": "${DS_INFLUXTEST}",
+        "datasource": "${DS_INFLUXKAFKA}",
         "definition": "SHOW TAG VALUES WITH KEY=\"partition_id\" where $timeFilter",
         "description": null,
         "error": null,
@@ -2410,8 +2410,8 @@
       {
         "allValue": null,
         "current": {},
-        "datasource": "${DS_INFLUXTEST}",
-        "definition": "SHOW  TAG VALUES  FROM \"dunedaq.readoutlibs.readoutinfo.RawDataProcessorInfo\" WITH KEY=\"source_id\" WHERE $timeFilter AND \"partition_id\"='${partition}'",
+        "datasource": "${DS_INFLUXKAFKA}",
+        "definition": "SHOW  TAG VALUES  FROM \"dunedaq.readoutlibs.readoutinfo.ReadoutInfo\" WITH KEY=\"source_id\" WHERE $timeFilter AND \"partition_id\"='${partition}'",
         "description": null,
         "error": null,
         "hide": 0,
@@ -2420,7 +2420,7 @@
         "multi": false,
         "name": "readout_app",
         "options": [],
-        "query": "SHOW  TAG VALUES  FROM \"dunedaq.readoutlibs.readoutinfo.RawDataProcessorInfo\" WITH KEY=\"source_id\" WHERE $timeFilter AND \"partition_id\"='${partition}'",
+        "query": "SHOW  TAG VALUES  FROM \"dunedaq.readoutlibs.readoutinfo.ReadoutInfo\" WITH KEY=\"source_id\" WHERE $timeFilter AND \"partition_id\"='${partition}'",
         "refresh": 1,
         "regex": ".*\\.(.*)\\..*",
         "skipUrlSync": false,
@@ -2430,8 +2430,8 @@
       {
         "allValue": null,
         "current": {},
-        "datasource": "${DS_INFLUXTEST}",
-        "definition": "SHOW TAG VALUES FROM \"dunedaq.readoutlibs.readoutinfo.RawDataProcessorInfo\" WITH KEY=\"source_id\" WHERE $timeFilter AND \"partition_id\"='${partition}'",
+        "datasource": "${DS_INFLUXKAFKA}",
+        "definition": "SHOW TAG VALUES FROM \"dunedaq.readoutlibs.readoutinfo.ReadoutInfo\" WITH KEY=\"source_id\" WHERE $timeFilter AND \"partition_id\"='${partition}'",
         "description": null,
         "error": null,
         "hide": 0,
@@ -2440,7 +2440,7 @@
         "multi": false,
         "name": "readout_module",
         "options": [],
-        "query": "SHOW TAG VALUES FROM \"dunedaq.readoutlibs.readoutinfo.RawDataProcessorInfo\" WITH KEY=\"source_id\" WHERE $timeFilter AND \"partition_id\"='${partition}'",
+        "query": "SHOW TAG VALUES FROM \"dunedaq.readoutlibs.readoutinfo.ReadoutInfo\" WITH KEY=\"source_id\" WHERE $timeFilter AND \"partition_id\"='${partition}'",
         "refresh": 1,
         "regex": ".*\\.${readout_app}\\.(.*)",
         "skipUrlSync": false,
@@ -2450,7 +2450,7 @@
     ]
   },
   "time": {
-    "from": "now-1h",
+    "from": "now-15m",
     "to": "now"
   },
   "timepicker": {
@@ -2480,6 +2480,6 @@
   },
   "timezone": "",
   "title": "Readout",
-  "uid": "BIHBty5nz",
-  "version": 2
+  "uid": "BIHBty5ne",
+  "version": 3
 }

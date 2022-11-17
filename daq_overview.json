@@ -78,7 +78,7 @@
   "gnetId": null,
   "graphTooltip": 0,
   "id": null,
-  "iteration": 1668685314402,
+  "iteration": 1668685921868,
   "links": [
     {
       "asDropdown": true,
@@ -1110,7 +1110,7 @@
           "measurement": "dunedaq.trigger.moduleleveltriggerinfo.Info",
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "SELECT non_negative_derivative(sum(\"td_total_count\"), 1s) FROM \"dunedaq.trigger.moduleleveltriggerinfo.Info\" WHERE (\"partition_id\" ='${partition}') AND $timeFilter GROUP BY time(500ms)",
+          "query": "SELECT non_negative_derivative(cumulative_sum(sum(\"new_td_total_count\")), 1s) FROM \"dunedaq.trigger.moduleleveltriggerinfo.Info\" WHERE (\"partition_id\" ='${partition}') AND $timeFilter GROUP BY time($__interval)",
           "rawQuery": true,
           "refId": "C",
           "resultFormat": "time_series",
@@ -1145,7 +1145,7 @@
           "measurement": "dunedaq.trigger.moduleleveltriggerinfo.Info",
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "SELECT non_negative_derivative(sum(\"td_sent_count\"), 1s) FROM \"dunedaq.trigger.moduleleveltriggerinfo.Info\" WHERE (\"partition_id\" = '${partition}') AND $timeFilter GROUP BY time(500ms)",
+          "query": "SELECT non_negative_derivative(cumulative_sum(sum(\"new_td_sent_count\")), 1s) FROM \"dunedaq.trigger.moduleleveltriggerinfo.Info\" WHERE (\"partition_id\" = '${partition}') AND $timeFilter GROUP BY time($__interval)",
           "rawQuery": true,
           "refId": "E",
           "resultFormat": "time_series",
@@ -2455,5 +2455,5 @@
   "timezone": "",
   "title": "DAQ overview",
   "uid": "ZQf3HyLnz6",
-  "version": 4
+  "version": 5
 }

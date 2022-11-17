@@ -78,7 +78,7 @@
   "gnetId": null,
   "graphTooltip": 0,
   "id": null,
-  "iteration": 1668685921868,
+  "iteration": 1668687299283,
   "links": [
     {
       "asDropdown": true,
@@ -624,7 +624,7 @@
       },
       "gridPos": {
         "h": 4,
-        "w": 4,
+        "w": 3,
         "x": 12,
         "y": 1
       },
@@ -683,6 +683,132 @@
       "type": "stat"
     },
     {
+      "datasource": "${DS_INFLUXKAFKA}",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [
+            {
+              "options": {
+                "0": {
+                  "color": "green",
+                  "index": 0,
+                  "text": "OK"
+                }
+              },
+              "type": "value"
+            },
+            {
+              "options": {
+                "match": "empty",
+                "result": {
+                  "index": 1,
+                  "text": "No Data"
+                }
+              },
+              "type": "special"
+            },
+            {
+              "options": {
+                "from": 1,
+                "result": {
+                  "color": "red",
+                  "index": 2,
+                  "text": "Inhibited"
+                },
+                "to": 100000000000
+              },
+              "type": "range"
+            }
+          ],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 4,
+        "w": 3,
+        "x": 15,
+        "y": 1
+      },
+      "id": 45,
+      "options": {
+        "colorMode": "background",
+        "graphMode": "none",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "text": {},
+        "textMode": "auto"
+      },
+      "pluginVersion": "8.0.7",
+      "targets": [
+        {
+          "groupBy": [],
+          "measurement": "dunedaq.appfwk.appinfo.Info",
+          "orderByTime": "ASC",
+          "policy": "default",
+          "query": "SELECT last(\"new_td_inhibited_count\"::integer) FROM \"dunedaq.trigger.moduleleveltriggerinfo.Info\" WHERE (\"partition_id\" = '${partition}') AND $timeFilter ",
+          "rawQuery": true,
+          "refId": "A",
+          "resultFormat": "time_series",
+          "select": [
+            [
+              {
+                "params": [
+                  "error"
+                ],
+                "type": "field"
+              }
+            ]
+          ],
+          "tags": [
+            {
+              "key": "source_id",
+              "operator": "=",
+              "value": "maroda_test_dataflow"
+            },
+            {
+              "condition": "OR",
+              "key": "source_id",
+              "operator": "=",
+              "value": "maroda_test_trigger"
+            }
+          ]
+        }
+      ],
+      "title": "Trigger Status",
+      "transformations": [
+        {
+          "id": "reduce",
+          "options": {
+            "includeTimeField": false,
+            "mode": "reduceFields",
+            "reducers": [
+              "lastNotNull"
+            ]
+          }
+        }
+      ],
+      "type": "stat"
+    },
+    {
       "cacheTimeout": null,
       "datasource": "${DS_INFLUXKAFKA}",
       "fieldConfig": {
@@ -727,8 +853,8 @@
       },
       "gridPos": {
         "h": 4,
-        "w": 4,
-        "x": 16,
+        "w": 3,
+        "x": 18,
         "y": 1
       },
       "id": 29,
@@ -853,8 +979,8 @@
       },
       "gridPos": {
         "h": 4,
-        "w": 4,
-        "x": 20,
+        "w": 3,
+        "x": 21,
         "y": 1
       },
       "id": 33,
@@ -2454,6 +2580,6 @@
   },
   "timezone": "",
   "title": "DAQ overview",
-  "uid": "ZQf3HyLnz6",
-  "version": 5
+  "uid": "nnvT07O4z",
+  "version": 4
 }

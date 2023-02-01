@@ -7,6 +7,14 @@
       "type": "datasource",
       "pluginId": "influxdb",
       "pluginName": "InfluxDB"
+    },
+    {
+      "name": "DS_ERS",
+      "label": "ERS",
+      "description": "",
+      "type": "datasource",
+      "pluginId": "postgres",
+      "pluginName": "PostgreSQL"
     }
   ],
   "__requires": [
@@ -29,6 +37,12 @@
       "version": "1.0.0"
     },
     {
+      "type": "datasource",
+      "id": "postgres",
+      "name": "PostgreSQL",
+      "version": "1.0.0"
+    },
+    {
       "type": "panel",
       "id": "stat",
       "name": "Stat",
@@ -38,6 +52,12 @@
       "type": "panel",
       "id": "state-timeline",
       "name": "State timeline",
+      "version": ""
+    },
+    {
+      "type": "panel",
+      "id": "table",
+      "name": "Table",
       "version": ""
     },
     {
@@ -64,9 +84,214 @@
   "gnetId": null,
   "graphTooltip": 0,
   "id": null,
-  "iteration": 1668685770792,
+  "iteration": 1670931556192,
   "links": [],
   "panels": [
+    {
+      "collapsed": true,
+      "datasource": null,
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 0
+      },
+      "id": 31,
+      "panels": [
+        {
+          "datasource": "${DS_ERS}",
+          "fieldConfig": {
+            "defaults": {
+              "color": {
+                "mode": "thresholds"
+              },
+              "custom": {
+                "align": "auto",
+                "displayMode": "color-text",
+                "filterable": true
+              },
+              "mappings": [
+                {
+                  "options": {
+                    "ERROR": {
+                      "color": "dark-orange",
+                      "index": 2,
+                      "text": "ERROR"
+                    },
+                    "FATAL": {
+                      "color": "dark-red",
+                      "index": 3,
+                      "text": "FATAL"
+                    },
+                    "INFO": {
+                      "color": "blue",
+                      "index": 0,
+                      "text": "INFO"
+                    },
+                    "WARNING": {
+                      "color": "yellow",
+                      "index": 1,
+                      "text": "WARNING"
+                    }
+                  },
+                  "type": "value"
+                }
+              ],
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {
+                    "color": "yellow",
+                    "value": null
+                  }
+                ]
+              }
+            },
+            "overrides": [
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "message"
+                },
+                "properties": [
+                  {
+                    "id": "custom.width",
+                    "value": 1533
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "severity"
+                },
+                "properties": [
+                  {
+                    "id": "custom.width",
+                    "value": 94
+                  },
+                  {
+                    "id": "custom.displayMode",
+                    "value": "color-background-solid"
+                  },
+                  {
+                    "id": "custom.width",
+                    "value": 1
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "application_name"
+                },
+                "properties": [
+                  {
+                    "id": "custom.width",
+                    "value": 219
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "host_name"
+                },
+                "properties": [
+                  {
+                    "id": "custom.width",
+                    "value": 217
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "time"
+                },
+                "properties": [
+                  {
+                    "id": "custom.width",
+                    "value": 213
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "issue_name"
+                },
+                "properties": [
+                  {
+                    "id": "custom.width",
+                    "value": 188
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "i"
+                },
+                "properties": [
+                  {
+                    "id": "custom.width",
+                    "value": 25
+                  }
+                ]
+              }
+            ]
+          },
+          "gridPos": {
+            "h": 17,
+            "w": 24,
+            "x": 0,
+            "y": 1
+          },
+          "id": 29,
+          "options": {
+            "showHeader": true,
+            "sortBy": []
+          },
+          "pluginVersion": "8.0.7",
+          "targets": [
+            {
+              "format": "table",
+              "group": [],
+              "metricColumn": "none",
+              "rawQuery": true,
+              "rawSql": "SELECT severity,time,application_name,message,issue_name,host_name\nFROM public.\"ErrorReports\"\nWHERE partition='${partition}' AND time >= ${__from} AND time <= ${__to}\nORDER BY -time\n",
+              "refId": "A",
+              "select": [
+                [
+                  {
+                    "params": [
+                      "chain"
+                    ],
+                    "type": "column"
+                  }
+                ]
+              ],
+              "table": "\"ErrorReports\"",
+              "timeColumn": "\"time\"",
+              "timeColumnType": "int8",
+              "where": [
+                {
+                  "name": "$__unixEpochFilter",
+                  "params": [],
+                  "type": "macro"
+                }
+              ]
+            }
+          ],
+          "title": "Message Reporting",
+          "transformations": [],
+          "type": "table"
+        }
+      ],
+      "title": "Logs",
+      "type": "row"
+    },
     {
       "collapsed": false,
       "datasource": null,
@@ -74,7 +299,7 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 0
+        "y": 1
       },
       "id": 12,
       "panels": [],
@@ -167,7 +392,7 @@
         "h": 18,
         "w": 12,
         "x": 0,
-        "y": 1
+        "y": 2
       },
       "id": 20,
       "options": {
@@ -195,8 +420,8 @@
           "measurement": "dunedaq.timing.timingfirmwareinfo.MasterMonitorData",
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "SELECT \"timestamp\" / 62500000 AS \"Timestamp\" FROM \"dunedaq.timing.timingfirmwareinfo.MasterMonitorData\" WHERE (\"partition_id\" = '${partition}') AND $timeFilter GROUP BY \"partition_id\"",
-          "rawQuery": false,
+          "query": "SELECT \"timestamp\" / 62500000 AS \"Timestamp\" FROM \"dunedaq.timing.timingfirmwareinfo.MasterMonitorData\" WHERE (\"partition_id\" =~ /^$partition$/) AND $timeFilter GROUP BY \"partition_id\"",
+          "rawQuery": true,
           "refId": "A",
           "resultFormat": "time_series",
           "select": [
@@ -249,7 +474,7 @@
           "measurement": "dunedaq.timing.timingfirmwareinfo.MasterMonitorData",
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "SELECT derivative(mean(\"timestamp\"), 1s) AS \"Timestamp change\" FROM \"dunedaq.timing.timingfirmwareinfo.MasterMonitorData\" WHERE $timeFilter GROUP BY time(1m), \"partition_id\"",
+          "query": "SELECT derivative(mean(\"timestamp\"), 1s) AS \"Timestamp change\" FROM \"dunedaq.timing.timingfirmwareinfo.MasterMonitorData\" WHERE (\"partition_id\" =~ /^$partition$/) AND time >= now() - 3h - 1m and time <= now() GROUP BY time(1m), \"partition_id\"",
           "rawQuery": false,
           "refId": "B",
           "resultFormat": "time_series",
@@ -325,24 +550,13 @@
                 }
               },
               "type": "special"
-            },
-            {
-              "options": {
-                "match": "null",
-                "result": {
-                  "color": "transparent",
-                  "index": 2,
-                  "text": "No data"
-                }
-              },
-              "type": "special"
             }
           ],
           "thresholds": {
             "mode": "absolute",
             "steps": [
               {
-                "color": "semi-dark-green",
+                "color": "green",
                 "value": null
               }
             ]
@@ -354,7 +568,7 @@
         "h": 11,
         "w": 12,
         "x": 12,
-        "y": 1
+        "y": 2
       },
       "id": 6,
       "interval": "10s",
@@ -362,24 +576,37 @@
       "options": {
         "alignValue": "left",
         "legend": {
-          "displayMode": "list",
+          "displayMode": "hidden",
           "placement": "bottom"
         },
         "mergeValues": true,
         "rowHeight": 0.9,
         "showValue": "auto",
         "tooltip": {
-          "mode": "single"
+          "mode": "none"
         }
       },
       "targets": [
         {
-          "groupBy": [],
+          "groupBy": [
+            {
+              "params": [
+                "$__interval"
+              ],
+              "type": "time"
+            },
+            {
+              "params": [
+                "null"
+              ],
+              "type": "fill"
+            }
+          ],
           "measurement": "dunedaq.timing.timinghardwareinfo.TimingPC059MonitorData",
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "SELECT\n  \"mmcm_ok\" AS \"MMCM OK\",\n  \"pll_ok\" AS \"PLL Locked\"\nFROM \"dunedaq.timing.timinghardwareinfo.TimingTLUMonitorData\",\"dunedaq.timing.timinghardwareinfo.TimingPC059MonitorData\",\"dunedaq.timing.timinghardwareinfo.TimingMIBMonitorData\",\"dunedaq.timing.timinghardwareinfo.TimingFIBMonitorData\" WHERE (\"partition_id\" = '${partition}') AND $timeFilter",
-          "rawQuery": true,
+          "query": "SELECT min(\"mmcm_ok\") AS \"MMCM OK\", min(\"pll_ok\") AS \"PLL Locked\" FROM \"dunedaq.timing.timinghardwareinfo.TimingPC059MonitorData\" WHERE (\"partition_id\" =~ /^$partition$/) AND $timeFilter GROUP BY time($__interval) fill(null)",
+          "rawQuery": false,
           "refId": "A",
           "resultFormat": "logs",
           "select": [
@@ -391,24 +618,53 @@
                 "type": "field"
               },
               {
+                "params": [],
+                "type": "min"
+              },
+              {
                 "params": [
                   "MMCM OK"
                 ],
                 "type": "alias"
               }
+            ],
+            [
+              {
+                "params": [
+                  "pll_ok"
+                ],
+                "type": "field"
+              },
+              {
+                "params": [],
+                "type": "min"
+              },
+              {
+                "params": [
+                  "PLL Locked"
+                ],
+                "type": "alias"
+              }
             ]
           ],
-          "tags": []
+          "tags": [
+            {
+              "key": "partition_id",
+              "operator": "=~",
+              "value": "/^$partition$/"
+            }
+          ]
         },
         {
           "hide": true,
-          "query": "SELECT\n  \"mmcm_sticky\" AS \"Previous Fault in MMCM\",\n  \"pll_sticky\" AS \"Previous error in PLL\"\nFROM \"dunedaq.timing.timinghardwareinfo.TimingTLUMonitorData\",\"dunedaq.timing.timinghardwareinfo.TimingPC059MonitorData\",\"dunedaq.timing.timinghardwareinfo.TimingMIBMonitorData\",\"dunedaq.timing.timinghardwareinfo.TimingFIBMonitorData\" WHERE (\"partition_id\" = '${partition}') AND $timeFilter",
+          "query": "SELECT\n  min(\"mmcm_sticky\") AS \"Previous Fault in MMCM\",\n  min(\"pll_sticky\") AS \"Previous error in PLL\"\nFROM \"dunedaq.timing.timinghardwareinfo.TimingTLUMonitorData\",\"dunedaq.timing.timinghardwareinfo.TimingPC059MonitorData\",\"dunedaq.timing.timinghardwareinfo.TimingMIBMonitorData\",\"dunedaq.timing.timinghardwareinfo.TimingFIBMonitorData\" WHERE (\"partition_id\" = '${partition}') AND $timeFilter GROUP BY time($__interval) fill(null)",
           "rawQuery": true,
           "refId": "B"
         }
       ],
       "timeFrom": null,
       "title": "Master information",
+      "transparent": true,
       "type": "state-timeline"
     },
     {
@@ -448,7 +704,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
+                "color": "rgb(127, 127, 127)",
                 "value": null
               }
             ]
@@ -460,7 +716,7 @@
         "h": 7,
         "w": 5,
         "x": 13,
-        "y": 12
+        "y": 13
       },
       "id": 26,
       "options": {
@@ -542,7 +798,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
+                "color": "rgb(128, 128, 128)",
                 "value": null
               }
             ]
@@ -554,7 +810,7 @@
         "h": 7,
         "w": 5,
         "x": 18,
-        "y": 12
+        "y": 13
       },
       "id": 27,
       "options": {
@@ -624,7 +880,7 @@
         "h": 12,
         "w": 12,
         "x": 0,
-        "y": 19
+        "y": 20
       },
       "id": 22,
       "options": {
@@ -758,7 +1014,7 @@
         "h": 12,
         "w": 12,
         "x": 12,
-        "y": 19
+        "y": 20
       },
       "id": 24,
       "options": {
@@ -860,7 +1116,7 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 31
+        "y": 32
       },
       "id": 8,
       "panels": [
@@ -1031,7 +1287,7 @@
               "measurement": "dunedaq.timing.timinghardwareinfo.TimingPC059MonitorData",
               "orderByTime": "ASC",
               "policy": "default",
-              "query": "SELECT\n  \"usfp_los\" AS \"Upstream SFP LOS\",\n  \"usfp_flt\" AS \"Upstream SFP fault\",\n  (\"sfp_los\"&1) AS \"SFP 0 LOS\",\n  (\"sfp_los\"&2)/2 AS \"SFP 1 LOS\",\n  (\"sfp_los\"&4)/4 AS \"SFP 2 LOS\",\n  (\"sfp_los\"&8)/8 AS \"SFP 3 LOS\",\n  (\"sfp_los\"&16)/16 AS \"SFP 4 LOS\",\n  (\"sfp_los\"&32)/32 AS \"SFP 5 LOS\",\n  (\"sfp_los\"&64)/64 AS \"SFP 6 LOS\",\n  (\"sfp_los\"&128)/128 AS \"SFP 7 LOS\"\nFROM \"dunedaq.timing.timinghardwareinfo.TimingPC059MonitorData\" WHERE (\"partition_id\" = '${partition}') AND $timeFilter",
+              "query": "SELECT\n  min(\"usfp_los\") AS \"Upstream SFP LOS\",\n  min(\"usfp_flt\") AS \"Upstream SFP fault\",\n  (min(\"sfp_los\")&1) AS \"SFP 0 LOS\",\n  (min(\"sfp_los\")&2)/2 AS \"SFP 1 LOS\",\n  (min(\"sfp_los\")&4)/4 AS \"SFP 2 LOS\",\n  (min(\"sfp_los\")&8)/8 AS \"SFP 3 LOS\",\n  (min(\"sfp_los\")&16)/16 AS \"SFP 4 LOS\",\n  (min(\"sfp_los\")&32)/32 AS \"SFP 5 LOS\",\n  (min(\"sfp_los\")&64)/64 AS \"SFP 6 LOS\",\n  (min(\"sfp_los\")&128)/128 AS \"SFP 7 LOS\"\nFROM \"dunedaq.timing.timinghardwareinfo.TimingPC059MonitorData\" WHERE (\"partition_id\" = '${partition}') AND $timeFilter GROUP BY time($__interval) fill(null)",
               "rawQuery": true,
               "refId": "A",
               "resultFormat": "logs",
@@ -1135,7 +1391,7 @@
               "measurement": "dunedaq.timing.timinghardwareinfo.TimingPC059MonitorData",
               "orderByTime": "ASC",
               "policy": "default",
-              "query": "SELECT \"sfp_flt\" AS \"SFP Fault\" FROM \"dunedaq.timing.timinghardwareinfo.TimingTLUMonitorData\" WHERE (\"partition_id\" = '${partition}') AND $timeFilter",
+              "query": "SELECT min(\"sfp_flt\") AS \"SFP Fault\" FROM \"dunedaq.timing.timinghardwareinfo.TimingTLUMonitorData\" WHERE (\"partition_id\" = '${partition}') AND $timeFilter GROUP BY time($__interval) fill(null)",
               "rawQuery": true,
               "refId": "A",
               "resultFormat": "logs",
@@ -1239,7 +1495,7 @@
               "measurement": "dunedaq.timing.timinghardwareinfo.TimingPC059MonitorData",
               "orderByTime": "ASC",
               "policy": "default",
-              "query": "SELECT\n  (\"sfp_0_flt\"::boolean ^ true) AS \"SFP 0 Fault\",\n  (\"sfp_0_los\"::boolean ^ true) AS \"SFP 0 LOS\",\n  (\"sfp_1_flt\"::boolean ^ true) AS \"SFP 1 Fault\",\n  (\"sfp_1_los\"::boolean ^ true) AS \"SFP 1 LOS\",\n  (\"sfp_2_flt\"::boolean ^ true) AS \"SFP 2 Fault\",\n  (\"sfp_2_los\"::boolean ^ true) AS \"SFP 2 LOS\"\nFROM \"dunedaq.timing.timinghardwareinfo.TimingPC059MonitorData\" WHERE (\"partition_id\" = '${partition}') AND $timeFilter",
+              "query": "SELECT\n  (min(\"sfp_0_flt\") ^ true) AS \"SFP 0 Fault\",\n  (min(\"sfp_0_los\") ^ true) AS \"SFP 0 LOS\",\n  (min(\"sfp_1_flt\") ^ true) AS \"SFP 1 Fault\",\n  (min(\"sfp_1_los\") ^ true) AS \"SFP 1 LOS\",\n  (min(\"sfp_2_flt\") ^ true) AS \"SFP 2 Fault\",\n  (min(\"sfp_2_los\") ^ true) AS \"SFP 2 LOS\"\nFROM \"dunedaq.timing.timinghardwareinfo.TimingPC059MonitorData\" WHERE (\"partition_id\" = '${partition}') AND $timeFilter GROUP BY time($__interval) fill(null)",
               "rawQuery": true,
               "refId": "A",
               "resultFormat": "time_series",

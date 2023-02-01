@@ -1,8 +1,8 @@
 {
   "__inputs": [
     {
-      "name": "DS_INFLUXKAFKA",
-      "label": "InfluxKafka",
+      "name": "DS_INFLUXTEST",
+      "label": "InfluxTest",
       "description": "",
       "type": "datasource",
       "pluginId": "influxdb",
@@ -38,12 +38,6 @@
         "hide": true,
         "iconColor": "rgba(0, 211, 255, 1)",
         "name": "Annotations & Alerts",
-        "target": {
-          "limit": 100,
-          "matchAny": false,
-          "tags": [],
-          "type": "dashboard"
-        },
         "type": "dashboard"
       }
     ]
@@ -52,84 +46,70 @@
   "gnetId": null,
   "graphTooltip": 0,
   "id": null,
-  "iteration": 1670931763512,
+  "iteration": 1653407234670,
   "links": [],
   "panels": [
     {
-      "collapsed": false,
-      "datasource": null,
+      "datasource": "${DS_INFLUXTEST}",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "drawStyle": "line",
+            "fillOpacity": 0,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "log": 10,
+              "type": "log"
+            },
+            "showPoints": "auto",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "binBps"
+        },
+        "overrides": []
+      },
       "gridPos": {
-        "h": 1,
-        "w": 24,
+        "h": 6,
+        "w": 6,
         "x": 0,
         "y": 0
       },
-      "id": 35,
-      "panels": [],
-      "title": "TP rates",
-      "type": "row"
-    },
-    {
-      "datasource": "${DS_INFLUXKAFKA}",
-      "description": "This should only contain the rates for TP DLHs",
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "mode": "palette-classic"
-          },
-          "custom": {
-            "axisLabel": "",
-            "axisPlacement": "auto",
-            "barAlignment": 0,
-            "drawStyle": "line",
-            "fillOpacity": 0,
-            "gradientMode": "none",
-            "hideFrom": {
-              "legend": false,
-              "tooltip": false,
-              "viz": false
-            },
-            "lineInterpolation": "linear",
-            "lineWidth": 1,
-            "pointSize": 5,
-            "scaleDistribution": {
-              "type": "linear"
-            },
-            "showPoints": "auto",
-            "spanNulls": false,
-            "stacking": {
-              "group": "A",
-              "mode": "none"
-            },
-            "thresholdsStyle": {
-              "mode": "off"
-            }
-          },
-          "mappings": [],
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "green",
-                "value": null
-              },
-              {
-                "color": "red",
-                "value": 80
-              }
-            ]
-          },
-          "unit": "hertz"
-        },
-        "overrides": []
-      },
-      "gridPos": {
-        "h": 7,
-        "w": 8,
-        "x": 0,
-        "y": 1
-      },
-      "id": 44,
+      "id": 8,
       "options": {
         "legend": {
           "calcs": [],
@@ -152,15 +132,15 @@
             },
             {
               "params": [
-                "source_id"
+                "null"
               ],
-              "type": "tag"
+              "type": "fill"
             }
           ],
-          "measurement": "dunedaq.readoutlibs.readoutinfo.ReadoutInfo",
+          "measurement": "dunedaq.networkmanager.nwmgrsentinfo.Info",
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "SELECT non_negative_derivative(cumulative_sum(sum(\"num_tps_sent\")), 1s) FROM \"dunedaq.readoutlibs.readoutinfo.RawDataProcessorInfo\" WHERE (\"partition_id\"='${partition}' AND \"source_id\" =~ /.*\\.tp_datahandler_\\d+/) AND $timeFilter GROUP BY time($__interval), \"source_id\"",
+          "query": "SELECT non_negative_derivative(cumulative_sum(sum(\"bytes\")), 1s) FROM \"dunedaq.ipm.senderinfo.Info\" WHERE (\"partition_id\" = '${partition}' ) AND $timeFilter GROUP BY time($__interval), \"source_id\" fill(null)",
           "rawQuery": true,
           "refId": "A",
           "resultFormat": "time_series",
@@ -168,40 +148,189 @@
             [
               {
                 "params": [
-                  "rate_payloads_consumed"
+                  "bytes"
                 ],
                 "type": "field"
               },
               {
                 "params": [],
-                "type": "mean"
+                "type": "sum"
+              },
+              {
+                "params": [],
+                "type": "cumulative_sum"
+              },
+              {
+                "params": [
+                  "1s"
+                ],
+                "type": "non_negative_derivative"
               }
             ]
           ],
           "tags": [
             {
-              "key": "source_id",
+              "key": "partition_id",
               "operator": "=",
-              "value": "maroda_test_ruemu0.datahandler_0"
+              "value": "maroda_test"
             }
           ]
         }
       ],
-      "title": "TP Sent rates",
+      "title": "Sent Bytes",
       "transformations": [
         {
           "id": "renameByRegex",
           "options": {
-            "regex": "[^.]+\\.([^.]+)\\.([^.]+)",
-            "renamePattern": "$1 $2"
+            "regex": "[^.]+\\.[^.]+\\.([^.]+)",
+            "renamePattern": "$1"
           }
         }
       ],
       "type": "timeseries"
     },
     {
-      "datasource": "${DS_INFLUXKAFKA}",
-      "description": "This should only contain the rates for TP DLHs",
+      "datasource": "${DS_INFLUXTEST}",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "drawStyle": "line",
+            "fillOpacity": 0,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "log": 10,
+              "type": "log"
+            },
+            "showPoints": "auto",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "binBps"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 6,
+        "w": 6,
+        "x": 6,
+        "y": 0
+      },
+      "id": 15,
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "right"
+        },
+        "tooltip": {
+          "mode": "single"
+        }
+      },
+      "targets": [
+        {
+          "alias": "$tag_source_id",
+          "groupBy": [
+            {
+              "params": [
+                "$__interval"
+              ],
+              "type": "time"
+            },
+            {
+              "params": [
+                "null"
+              ],
+              "type": "fill"
+            }
+          ],
+          "measurement": "dunedaq.networkmanager.nwmgrsentinfo.Info",
+          "orderByTime": "ASC",
+          "policy": "default",
+          "query": "SELECT non_negative_derivative(cumulative_sum(sum(\"bytes\")), 1s) FROM \"dunedaq.ipm.receiverinfo.Info\" WHERE (\"partition_id\" = '${partition}' ) AND $timeFilter GROUP BY time($__interval), \"source_id\" fill(null)",
+          "rawQuery": true,
+          "refId": "A",
+          "resultFormat": "time_series",
+          "select": [
+            [
+              {
+                "params": [
+                  "bytes"
+                ],
+                "type": "field"
+              },
+              {
+                "params": [],
+                "type": "sum"
+              },
+              {
+                "params": [],
+                "type": "cumulative_sum"
+              },
+              {
+                "params": [
+                  "1s"
+                ],
+                "type": "non_negative_derivative"
+              }
+            ]
+          ],
+          "tags": [
+            {
+              "key": "partition_id",
+              "operator": "=",
+              "value": "maroda_test"
+            }
+          ]
+        }
+      ],
+      "title": "Received Bytes",
+      "transformations": [
+        {
+          "id": "renameByRegex",
+          "options": {
+            "regex": "[^.]+\\.[^.]+\\.([^.]+)",
+            "renamePattern": "$1"
+          }
+        }
+      ],
+      "type": "timeseries"
+    },
+    {
+      "datasource": "${DS_INFLUXTEST}",
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -249,17 +378,17 @@
               }
             ]
           },
-          "unit": "hertz"
+          "unit": "percentunit"
         },
         "overrides": []
       },
       "gridPos": {
-        "h": 7,
-        "w": 8,
-        "x": 8,
-        "y": 1
+        "h": 6,
+        "w": 6,
+        "x": 12,
+        "y": 0
       },
-      "id": 46,
+      "id": 22,
       "options": {
         "legend": {
           "calcs": [],
@@ -272,7 +401,7 @@
       },
       "targets": [
         {
-          "alias": "$tag_source_id",
+          "alias": "Connections and topics",
           "groupBy": [
             {
               "params": [
@@ -282,16 +411,16 @@
             },
             {
               "params": [
-                "source_id"
+                "null"
               ],
-              "type": "tag"
+              "type": "fill"
             }
           ],
           "hide": false,
-          "measurement": "dunedaq.readoutlibs.readoutinfo.ReadoutInfo",
+          "measurement": "dunedaq.networkmanager.nwmgrsentinfo.Info",
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "SELECT sum(\"num_tps_dropped\")*1000 FROM \"dunedaq.readoutlibs.readoutinfo.RawDataProcessorInfo\" WHERE (\"partition_id\"='${partition}' AND \"source_id\" =~ /.*\\.tp_datahandler_\\d+/) AND $timeFilter GROUP BY time($__interval), \"source_id\"",
+          "query": "SELECT 2*(sum(\"received_bytes\") - sum(\"sent_bytes\"))/(sum(\"sent_bytes\")+sum(\"received_bytes\")) FROM \"dunedaq.networkmanager.connectioninfo.Info\" WHERE (\"partition_id\" = '${partition}' )  AND $timeFilter GROUP BY time($__interval)  fill(null)",
           "rawQuery": true,
           "refId": "C",
           "resultFormat": "time_series",
@@ -299,111 +428,36 @@
             [
               {
                 "params": [
-                  "rate_payloads_consumed"
+                  "bytes"
                 ],
                 "type": "field"
               },
               {
                 "params": [],
-                "type": "mean"
+                "type": "sum"
+              },
+              {
+                "params": [],
+                "type": "cumulative_sum"
+              },
+              {
+                "params": [
+                  "1s"
+                ],
+                "type": "non_negative_derivative"
               }
             ]
           ],
           "tags": [
             {
-              "key": "source_id",
+              "key": "partition_id",
               "operator": "=",
-              "value": "maroda_test_ruemu0.datahandler_0"
+              "value": "maroda_test"
             }
           ]
-        }
-      ],
-      "title": "TP hits rates",
-      "transformations": [
-        {
-          "id": "renameByRegex",
-          "options": {
-            "regex": "[^.]+\\.([^.]+)\\.([^.]+)",
-            "renamePattern": "$1 $2"
-          }
-        }
-      ],
-      "type": "timeseries"
-    },
-    {
-      "datasource": "${DS_INFLUXKAFKA}",
-      "description": "This should only contain the rates for TP DLHs",
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "mode": "palette-classic"
-          },
-          "custom": {
-            "axisLabel": "",
-            "axisPlacement": "auto",
-            "barAlignment": 0,
-            "drawStyle": "line",
-            "fillOpacity": 0,
-            "gradientMode": "none",
-            "hideFrom": {
-              "legend": false,
-              "tooltip": false,
-              "viz": false
-            },
-            "lineInterpolation": "linear",
-            "lineWidth": 1,
-            "pointSize": 5,
-            "scaleDistribution": {
-              "type": "linear"
-            },
-            "showPoints": "auto",
-            "spanNulls": false,
-            "stacking": {
-              "group": "A",
-              "mode": "none"
-            },
-            "thresholdsStyle": {
-              "mode": "off"
-            }
-          },
-          "mappings": [],
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "green",
-                "value": null
-              },
-              {
-                "color": "red",
-                "value": 80
-              }
-            ]
-          },
-          "unit": "hertz"
         },
-        "overrides": []
-      },
-      "gridPos": {
-        "h": 7,
-        "w": 8,
-        "x": 16,
-        "y": 1
-      },
-      "id": 48,
-      "options": {
-        "legend": {
-          "calcs": [],
-          "displayMode": "list",
-          "placement": "right"
-        },
-        "tooltip": {
-          "mode": "single"
-        }
-      },
-      "targets": [
         {
-          "alias": "$tag_source_id",
+          "alias": "Connection only",
           "groupBy": [
             {
               "params": [
@@ -413,15 +467,15 @@
             },
             {
               "params": [
-                "source_id"
+                "null"
               ],
-              "type": "tag"
+              "type": "fill"
             }
           ],
-          "measurement": "dunedaq.readoutlibs.readoutinfo.ReadoutInfo",
+          "measurement": "dunedaq.networkmanager.nwmgrsentinfo.Info",
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "SELECT non_negative_derivative(cumulative_sum(sum(\"num_tps_dropped\")), 1s) FROM \"dunedaq.readoutlibs.readoutinfo.RawDataProcessorInfo\" WHERE (\"partition_id\"='${partition}' AND \"source_id\" =~ /.*\\.tp_datahandler_\\d+/) AND $timeFilter GROUP BY time($__interval), \"source_id\"",
+          "query": "SELECT 2*(sum(\"received_bytes\") - sum(\"sent_bytes\"))/(sum(\"sent_bytes\") + sum(\"received_bytes\")) FROM \"dunedaq.networkmanager.connectioninfo.Info\" WHERE (\"partition_id\" = '${partition}' AND \"source_id\"=~/[^.]+\\.[^.]+\\.[^.]+\\.[^.]+/)  AND $timeFilter GROUP BY time($__interval)  fill(null)",
           "rawQuery": true,
           "refId": "A",
           "resultFormat": "time_series",
@@ -429,111 +483,36 @@
             [
               {
                 "params": [
-                  "rate_payloads_consumed"
+                  "bytes"
                 ],
                 "type": "field"
               },
               {
                 "params": [],
-                "type": "mean"
+                "type": "sum"
+              },
+              {
+                "params": [],
+                "type": "cumulative_sum"
+              },
+              {
+                "params": [
+                  "1s"
+                ],
+                "type": "non_negative_derivative"
               }
             ]
           ],
           "tags": [
             {
-              "key": "source_id",
+              "key": "partition_id",
               "operator": "=",
-              "value": "maroda_test_ruemu0.datahandler_0"
+              "value": "maroda_test"
             }
           ]
-        }
-      ],
-      "title": "TP dropped rates",
-      "transformations": [
-        {
-          "id": "renameByRegex",
-          "options": {
-            "regex": "[^.]+\\.([^.]+)\\.([^.]+)",
-            "renamePattern": "$1 $2"
-          }
-        }
-      ],
-      "type": "timeseries"
-    },
-    {
-      "datasource": "${DS_INFLUXKAFKA}",
-      "description": "This should only contain the rates for TP DLHs",
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "mode": "palette-classic"
-          },
-          "custom": {
-            "axisLabel": "KHz",
-            "axisPlacement": "auto",
-            "barAlignment": 0,
-            "drawStyle": "line",
-            "fillOpacity": 0,
-            "gradientMode": "none",
-            "hideFrom": {
-              "legend": false,
-              "tooltip": false,
-              "viz": false
-            },
-            "lineInterpolation": "linear",
-            "lineWidth": 1,
-            "pointSize": 5,
-            "scaleDistribution": {
-              "type": "linear"
-            },
-            "showPoints": "auto",
-            "spanNulls": false,
-            "stacking": {
-              "group": "A",
-              "mode": "none"
-            },
-            "thresholdsStyle": {
-              "mode": "off"
-            }
-          },
-          "mappings": [],
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "green",
-                "value": null
-              },
-              {
-                "color": "red",
-                "value": 80
-              }
-            ]
-          },
-          "unit": "none"
         },
-        "overrides": []
-      },
-      "gridPos": {
-        "h": 7,
-        "w": 8,
-        "x": 0,
-        "y": 8
-      },
-      "id": 28,
-      "options": {
-        "legend": {
-          "calcs": [],
-          "displayMode": "list",
-          "placement": "right"
-        },
-        "tooltip": {
-          "mode": "single"
-        }
-      },
-      "targets": [
         {
-          "alias": "$tag_source_id",
+          "alias": "Topics only",
           "groupBy": [
             {
               "params": [
@@ -543,172 +522,53 @@
             },
             {
               "params": [
-                "source_id"
+                "null"
               ],
-              "type": "tag"
+              "type": "fill"
             }
           ],
-          "measurement": "dunedaq.readoutlibs.readoutinfo.ReadoutInfo",
+          "hide": true,
+          "measurement": "dunedaq.networkmanager.nwmgrsentinfo.Info",
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "SELECT mean(\"rate_payloads_consumed\") FROM \"dunedaq.readoutlibs.readoutinfo.ReadoutInfo\" WHERE (\"partition_id\"='${partition}' AND \"source_id\" =~ /.*\\.tp_datahandler_\\d+/) AND $timeFilter GROUP BY time($__interval), \"source_id\"",
+          "query": "SELECT 2*(sum(\"received_bytes\") - sum(\"sent_bytes\"))/(sum(\"sent_bytes\") + sum(\"received_bytes\")) FROM \"dunedaq.networkmanager.connectioninfo.Info\" WHERE (\"partition_id\" = '${partition}' AND \"source_id\"=~/[^.]+\\.[^.]+\\.[^.]+/)  AND $timeFilter GROUP BY time($__interval)  fill(null)",
           "rawQuery": true,
-          "refId": "A",
+          "refId": "D",
           "resultFormat": "time_series",
           "select": [
             [
               {
                 "params": [
-                  "rate_payloads_consumed"
+                  "bytes"
                 ],
                 "type": "field"
               },
               {
                 "params": [],
-                "type": "mean"
-              }
-            ]
-          ],
-          "tags": [
-            {
-              "key": "source_id",
-              "operator": "=",
-              "value": "maroda_test_ruemu0.datahandler_0"
-            }
-          ]
-        }
-      ],
-      "title": "TP receiving rates",
-      "transformations": [
-        {
-          "id": "renameByRegex",
-          "options": {
-            "regex": ".*\\.(.*)\\.(.*)",
-            "renamePattern": "$1 $2"
-          }
-        }
-      ],
-      "type": "timeseries"
-    },
-    {
-      "datasource": "${DS_INFLUXKAFKA}",
-      "description": "This should only contain the rates for TP DLHs",
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "mode": "palette-classic"
-          },
-          "custom": {
-            "axisLabel": "",
-            "axisPlacement": "auto",
-            "barAlignment": 0,
-            "drawStyle": "line",
-            "fillOpacity": 0,
-            "gradientMode": "none",
-            "hideFrom": {
-              "legend": false,
-              "tooltip": false,
-              "viz": false
-            },
-            "lineInterpolation": "linear",
-            "lineWidth": 1,
-            "pointSize": 5,
-            "scaleDistribution": {
-              "type": "linear"
-            },
-            "showPoints": "auto",
-            "spanNulls": false,
-            "stacking": {
-              "group": "A",
-              "mode": "none"
-            },
-            "thresholdsStyle": {
-              "mode": "off"
-            }
-          },
-          "mappings": [],
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "green",
-                "value": null
+                "type": "sum"
               },
               {
-                "color": "red",
-                "value": 80
-              }
-            ]
-          },
-          "unit": "hertz"
-        },
-        "overrides": []
-      },
-      "gridPos": {
-        "h": 7,
-        "w": 8,
-        "x": 8,
-        "y": 8
-      },
-      "id": 42,
-      "options": {
-        "legend": {
-          "calcs": [],
-          "displayMode": "list",
-          "placement": "right"
-        },
-        "tooltip": {
-          "mode": "single"
-        }
-      },
-      "targets": [
-        {
-          "alias": "TPs Sent",
-          "groupBy": [
-            {
-              "params": [
-                "$__interval"
-              ],
-              "type": "time"
-            },
-            {
-              "params": [
-                "source_id"
-              ],
-              "type": "tag"
-            }
-          ],
-          "measurement": "dunedaq.readoutlibs.readoutinfo.ReadoutInfo",
-          "orderByTime": "ASC",
-          "policy": "default",
-          "query": "SELECT non_negative_derivative(cumulative_sum(sum(\"num_tps_sent\")), 1s) FROM \"dunedaq.readoutlibs.readoutinfo.RawDataProcessorInfo\" WHERE (\"partition_id\"='${partition}' AND \"source_id\" =~ /.*\\.tp_datahandler_\\d+/) AND $timeFilter GROUP BY time($__interval)",
-          "rawQuery": true,
-          "refId": "A",
-          "resultFormat": "time_series",
-          "select": [
-            [
+                "params": [],
+                "type": "cumulative_sum"
+              },
               {
                 "params": [
-                  "rate_payloads_consumed"
+                  "1s"
                 ],
-                "type": "field"
-              },
-              {
-                "params": [],
-                "type": "mean"
+                "type": "non_negative_derivative"
               }
             ]
           ],
           "tags": [
             {
-              "key": "source_id",
+              "key": "partition_id",
               "operator": "=",
-              "value": "maroda_test_ruemu0.datahandler_0"
+              "value": "maroda_test"
             }
           ]
         },
         {
-          "alias": "TP Hits",
+          "alias": "${connection}",
           "groupBy": [
             {
               "params": [
@@ -718,62 +578,16 @@
             },
             {
               "params": [
-                "source_id"
+                "null"
               ],
-              "type": "tag"
+              "type": "fill"
             }
           ],
           "hide": false,
-          "measurement": "dunedaq.readoutlibs.readoutinfo.ReadoutInfo",
+          "measurement": "dunedaq.networkmanager.nwmgrsentinfo.Info",
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "SELECT sum(\"num_tps_dropped\")*1000 FROM \"dunedaq.readoutlibs.readoutinfo.RawDataProcessorInfo\" WHERE (\"partition_id\"='${partition}' AND \"source_id\" =~ /.*\\.tp_datahandler_\\d+/) AND $timeFilter GROUP BY time($__interval)",
-          "rawQuery": true,
-          "refId": "C",
-          "resultFormat": "time_series",
-          "select": [
-            [
-              {
-                "params": [
-                  "rate_payloads_consumed"
-                ],
-                "type": "field"
-              },
-              {
-                "params": [],
-                "type": "mean"
-              }
-            ]
-          ],
-          "tags": [
-            {
-              "key": "source_id",
-              "operator": "=",
-              "value": "maroda_test_ruemu0.datahandler_0"
-            }
-          ]
-        },
-        {
-          "alias": "TPs dropped",
-          "groupBy": [
-            {
-              "params": [
-                "$__interval"
-              ],
-              "type": "time"
-            },
-            {
-              "params": [
-                "source_id"
-              ],
-              "type": "tag"
-            }
-          ],
-          "hide": false,
-          "measurement": "dunedaq.readoutlibs.readoutinfo.ReadoutInfo",
-          "orderByTime": "ASC",
-          "policy": "default",
-          "query": "SELECT non_negative_derivative(cumulative_sum(sum(\"num_tps_dropped\")), 1s) FROM \"dunedaq.readoutlibs.readoutinfo.RawDataProcessorInfo\" WHERE (\"partition_id\"='${partition}' AND \"source_id\" =~ /.*\\.tp_datahandler_\\d+/) AND $timeFilter GROUP BY time($__interval)",
+          "query": "SELECT 2*(sum(\"received_bytes\") - sum(\"sent_bytes\"))/(sum(\"sent_bytes\")+sum(\"received_bytes\")) FROM \"dunedaq.networkmanager.connectioninfo.Info\" WHERE (\"partition_id\" = '${partition}' AND \"source_id\"=~/[^.]+\\.[^.]+\\.[^.]+\\.${connection}/)  AND $timeFilter GROUP BY time($__interval)  fill(null)",
           "rawQuery": true,
           "refId": "B",
           "resultFormat": "time_series",
@@ -781,38 +595,863 @@
             [
               {
                 "params": [
-                  "rate_payloads_consumed"
+                  "bytes"
                 ],
                 "type": "field"
               },
               {
                 "params": [],
-                "type": "mean"
+                "type": "sum"
+              },
+              {
+                "params": [],
+                "type": "cumulative_sum"
+              },
+              {
+                "params": [
+                  "1s"
+                ],
+                "type": "non_negative_derivative"
               }
             ]
           ],
           "tags": [
             {
-              "key": "source_id",
+              "key": "partition_id",
               "operator": "=",
-              "value": "maroda_test_ruemu0.datahandler_0"
+              "value": "maroda_test"
             }
           ]
         }
       ],
-      "title": "Sending rates",
+      "title": "Relative byte discrepancy",
       "transformations": [],
       "type": "timeseries"
     },
     {
-      "datasource": "${DS_INFLUXKAFKA}",
+      "datasource": "${DS_INFLUXTEST}",
       "fieldConfig": {
         "defaults": {
           "color": {
             "mode": "palette-classic"
           },
           "custom": {
-            "axisLabel": "Hz",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "drawStyle": "line",
+            "fillOpacity": 0,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "log": 10,
+              "type": "log"
+            },
+            "showPoints": "auto",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "bytes"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 6,
+        "w": 6,
+        "x": 18,
+        "y": 0
+      },
+      "id": 32,
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "right"
+        },
+        "tooltip": {
+          "mode": "single"
+        }
+      },
+      "targets": [
+        {
+          "alias": "$tag_source_id",
+          "groupBy": [
+            {
+              "params": [
+                "$__interval"
+              ],
+              "type": "time"
+            },
+            {
+              "params": [
+                "null"
+              ],
+              "type": "fill"
+            }
+          ],
+          "measurement": "dunedaq.networkmanager.nwmgrsentinfo.Info",
+          "orderByTime": "ASC",
+          "policy": "default",
+          "query": "SELECT sum(\"bytes\") / sum(\"messages\") FROM \"dunedaq.ipm.senderinfo.Info\" WHERE (\"partition_id\" = '${partition}' ) AND \"messages\">0 AND $timeFilter GROUP BY time($__interval), \"source_id\" fill(null)",
+          "rawQuery": true,
+          "refId": "A",
+          "resultFormat": "time_series",
+          "select": [
+            [
+              {
+                "params": [
+                  "bytes"
+                ],
+                "type": "field"
+              },
+              {
+                "params": [],
+                "type": "sum"
+              },
+              {
+                "params": [],
+                "type": "cumulative_sum"
+              },
+              {
+                "params": [
+                  "1s"
+                ],
+                "type": "non_negative_derivative"
+              }
+            ]
+          ],
+          "tags": [
+            {
+              "key": "partition_id",
+              "operator": "=",
+              "value": "maroda_test"
+            }
+          ]
+        }
+      ],
+      "title": "Avergage message size - sender side",
+      "transformations": [
+        {
+          "id": "renameByRegex",
+          "options": {
+            "regex": "[^.]+\\.[^.]+\\.([^.]+)",
+            "renamePattern": "$1"
+          }
+        }
+      ],
+      "type": "timeseries"
+    },
+    {
+      "datasource": "${DS_INFLUXTEST}",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "drawStyle": "line",
+            "fillOpacity": 0,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "log": 10,
+              "type": "log"
+            },
+            "showPoints": "auto",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "hertz"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 6,
+        "w": 6,
+        "x": 0,
+        "y": 6
+      },
+      "id": 29,
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "right"
+        },
+        "tooltip": {
+          "mode": "single"
+        }
+      },
+      "targets": [
+        {
+          "alias": "$tag_source_id",
+          "groupBy": [
+            {
+              "params": [
+                "$__interval"
+              ],
+              "type": "time"
+            },
+            {
+              "params": [
+                "null"
+              ],
+              "type": "fill"
+            }
+          ],
+          "measurement": "dunedaq.networkmanager.nwmgrsentinfo.Info",
+          "orderByTime": "ASC",
+          "policy": "default",
+          "query": "SELECT non_negative_derivative(cumulative_sum(sum(\"messages\")), 1s) FROM \"dunedaq.ipm.senderinfo.Info\" WHERE (\"partition_id\" = '${partition}' ) AND $timeFilter GROUP BY time($__interval), \"source_id\" fill(null)",
+          "rawQuery": true,
+          "refId": "A",
+          "resultFormat": "time_series",
+          "select": [
+            [
+              {
+                "params": [
+                  "bytes"
+                ],
+                "type": "field"
+              },
+              {
+                "params": [],
+                "type": "sum"
+              },
+              {
+                "params": [],
+                "type": "cumulative_sum"
+              },
+              {
+                "params": [
+                  "1s"
+                ],
+                "type": "non_negative_derivative"
+              }
+            ]
+          ],
+          "tags": [
+            {
+              "key": "partition_id",
+              "operator": "=",
+              "value": "maroda_test"
+            }
+          ]
+        }
+      ],
+      "title": "Sent Messages",
+      "transformations": [
+        {
+          "id": "renameByRegex",
+          "options": {
+            "regex": "[^.]+\\.[^.]+\\.([^.]+)",
+            "renamePattern": "$1"
+          }
+        }
+      ],
+      "type": "timeseries"
+    },
+    {
+      "datasource": "${DS_INFLUXTEST}",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "drawStyle": "line",
+            "fillOpacity": 0,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "log": 10,
+              "type": "log"
+            },
+            "showPoints": "auto",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "hertz"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 6,
+        "w": 6,
+        "x": 6,
+        "y": 6
+      },
+      "id": 30,
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "right"
+        },
+        "tooltip": {
+          "mode": "single"
+        }
+      },
+      "targets": [
+        {
+          "alias": "$tag_source_id",
+          "groupBy": [
+            {
+              "params": [
+                "$__interval"
+              ],
+              "type": "time"
+            },
+            {
+              "params": [
+                "null"
+              ],
+              "type": "fill"
+            }
+          ],
+          "measurement": "dunedaq.networkmanager.nwmgrsentinfo.Info",
+          "orderByTime": "ASC",
+          "policy": "default",
+          "query": "SELECT non_negative_derivative(cumulative_sum(sum(\"messages\")), 1s) FROM \"dunedaq.ipm.receiverinfo.Info\" WHERE (\"partition_id\" = '${partition}' ) AND $timeFilter GROUP BY time($__interval), \"source_id\" fill(null)",
+          "rawQuery": true,
+          "refId": "A",
+          "resultFormat": "time_series",
+          "select": [
+            [
+              {
+                "params": [
+                  "bytes"
+                ],
+                "type": "field"
+              },
+              {
+                "params": [],
+                "type": "sum"
+              },
+              {
+                "params": [],
+                "type": "cumulative_sum"
+              },
+              {
+                "params": [
+                  "1s"
+                ],
+                "type": "non_negative_derivative"
+              }
+            ]
+          ],
+          "tags": [
+            {
+              "key": "partition_id",
+              "operator": "=",
+              "value": "maroda_test"
+            }
+          ]
+        }
+      ],
+      "title": "Received Messages",
+      "transformations": [
+        {
+          "id": "renameByRegex",
+          "options": {
+            "regex": "[^.]+\\.[^.]+\\.([^.]+)",
+            "renamePattern": "$1"
+          }
+        }
+      ],
+      "type": "timeseries"
+    },
+    {
+      "datasource": "${DS_INFLUXTEST}",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "drawStyle": "line",
+            "fillOpacity": 0,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "auto",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "percentunit"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 6,
+        "w": 6,
+        "x": 12,
+        "y": 6
+      },
+      "id": 31,
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "right"
+        },
+        "tooltip": {
+          "mode": "single"
+        }
+      },
+      "targets": [
+        {
+          "alias": "Connection and topics",
+          "groupBy": [
+            {
+              "params": [
+                "$__interval"
+              ],
+              "type": "time"
+            },
+            {
+              "params": [
+                "null"
+              ],
+              "type": "fill"
+            }
+          ],
+          "measurement": "dunedaq.networkmanager.nwmgrsentinfo.Info",
+          "orderByTime": "ASC",
+          "policy": "default",
+          "query": "SELECT 2*(sum(\"received_messages\") - sum(\"sent_messages\"))/(sum(\"sent_messages\")+sum(\"received_messages\")) FROM \"dunedaq.networkmanager.connectioninfo.Info\" WHERE (\"partition_id\" = '${partition}')  AND $timeFilter GROUP BY time($__interval)  fill(null)",
+          "rawQuery": true,
+          "refId": "A",
+          "resultFormat": "time_series",
+          "select": [
+            [
+              {
+                "params": [
+                  "bytes"
+                ],
+                "type": "field"
+              },
+              {
+                "params": [],
+                "type": "sum"
+              },
+              {
+                "params": [],
+                "type": "cumulative_sum"
+              },
+              {
+                "params": [
+                  "1s"
+                ],
+                "type": "non_negative_derivative"
+              }
+            ]
+          ],
+          "tags": [
+            {
+              "key": "partition_id",
+              "operator": "=",
+              "value": "maroda_test"
+            }
+          ]
+        },
+        {
+          "alias": "Connection only",
+          "groupBy": [
+            {
+              "params": [
+                "$__interval"
+              ],
+              "type": "time"
+            },
+            {
+              "params": [
+                "null"
+              ],
+              "type": "fill"
+            }
+          ],
+          "hide": false,
+          "measurement": "dunedaq.networkmanager.nwmgrsentinfo.Info",
+          "orderByTime": "ASC",
+          "policy": "default",
+          "query": "SELECT 2*(sum(\"received_messages\") - sum(\"sent_messages\"))/(sum(\"sent_messages\")+sum(\"received_messages\")) FROM \"dunedaq.networkmanager.connectioninfo.Info\" WHERE (\"partition_id\" = '${partition}' AND \"source_id\"=~/[^.]+\\.[^.]+\\.[^.]+\\.[^.]+/)  AND $timeFilter GROUP BY time($__interval)  fill(null)",
+          "rawQuery": true,
+          "refId": "C",
+          "resultFormat": "time_series",
+          "select": [
+            [
+              {
+                "params": [
+                  "bytes"
+                ],
+                "type": "field"
+              },
+              {
+                "params": [],
+                "type": "sum"
+              },
+              {
+                "params": [],
+                "type": "cumulative_sum"
+              },
+              {
+                "params": [
+                  "1s"
+                ],
+                "type": "non_negative_derivative"
+              }
+            ]
+          ],
+          "tags": [
+            {
+              "key": "partition_id",
+              "operator": "=",
+              "value": "maroda_test"
+            }
+          ]
+        },
+        {
+          "alias": "${connection}",
+          "groupBy": [
+            {
+              "params": [
+                "$__interval"
+              ],
+              "type": "time"
+            },
+            {
+              "params": [
+                "null"
+              ],
+              "type": "fill"
+            }
+          ],
+          "hide": false,
+          "measurement": "dunedaq.networkmanager.nwmgrsentinfo.Info",
+          "orderByTime": "ASC",
+          "policy": "default",
+          "query": "SELECT 2*(sum(\"received_messages\") - sum(\"sent_messages\"))/(sum(\"sent_messages\")+sum(\"received_messages\")) FROM \"dunedaq.networkmanager.connectioninfo.Info\" WHERE (\"partition_id\" = '${partition}' AND \"source_id\"=~/[^.]+\\.[^.]+\\.[^.]+\\.${connection}/)  AND $timeFilter GROUP BY time($__interval)  fill(null)",
+          "rawQuery": true,
+          "refId": "B",
+          "resultFormat": "time_series",
+          "select": [
+            [
+              {
+                "params": [
+                  "bytes"
+                ],
+                "type": "field"
+              },
+              {
+                "params": [],
+                "type": "sum"
+              },
+              {
+                "params": [],
+                "type": "cumulative_sum"
+              },
+              {
+                "params": [
+                  "1s"
+                ],
+                "type": "non_negative_derivative"
+              }
+            ]
+          ],
+          "tags": [
+            {
+              "key": "partition_id",
+              "operator": "=",
+              "value": "maroda_test"
+            }
+          ]
+        }
+      ],
+      "title": "Relative message discrepancy",
+      "transformations": [],
+      "type": "timeseries"
+    },
+    {
+      "datasource": "${DS_INFLUXTEST}",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "drawStyle": "line",
+            "fillOpacity": 0,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "log": 10,
+              "type": "log"
+            },
+            "showPoints": "auto",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "bytes"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 6,
+        "w": 6,
+        "x": 18,
+        "y": 6
+      },
+      "id": 33,
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "right"
+        },
+        "tooltip": {
+          "mode": "single"
+        }
+      },
+      "targets": [
+        {
+          "alias": "$tag_source_id",
+          "groupBy": [
+            {
+              "params": [
+                "$__interval"
+              ],
+              "type": "time"
+            },
+            {
+              "params": [
+                "null"
+              ],
+              "type": "fill"
+            }
+          ],
+          "measurement": "dunedaq.networkmanager.nwmgrsentinfo.Info",
+          "orderByTime": "ASC",
+          "policy": "default",
+          "query": "SELECT sum(\"bytes\") / sum(\"messages\") FROM \"dunedaq.ipm.receiverinfo.Info\" WHERE (\"partition_id\" = '${partition}' ) AND \"messages\" > 0 AND $timeFilter GROUP BY time($__interval), \"source_id\" fill(null)",
+          "rawQuery": true,
+          "refId": "A",
+          "resultFormat": "time_series",
+          "select": [
+            [
+              {
+                "params": [
+                  "bytes"
+                ],
+                "type": "field"
+              },
+              {
+                "params": [],
+                "type": "sum"
+              },
+              {
+                "params": [],
+                "type": "cumulative_sum"
+              },
+              {
+                "params": [
+                  "1s"
+                ],
+                "type": "non_negative_derivative"
+              }
+            ]
+          ],
+          "tags": [
+            {
+              "key": "partition_id",
+              "operator": "=",
+              "value": "maroda_test"
+            }
+          ]
+        }
+      ],
+      "title": "Avergage message size - received side",
+      "transformations": [
+        {
+          "id": "renameByRegex",
+          "options": {
+            "regex": "[^.]+\\.[^.]+\\.([^.]+)",
+            "renamePattern": "$1"
+          }
+        }
+      ],
+      "type": "timeseries"
+    },
+    {
+      "datasource": null,
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 12
+      },
+      "id": 47,
+      "title": "Application monitors - bytes",
+      "type": "row"
+    },
+    {
+      "datasource": "${DS_INFLUXTEST}",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisLabel": "",
             "axisPlacement": "auto",
             "barAlignment": 0,
             "drawStyle": "line",
@@ -825,12 +1464,12 @@
             },
             "lineInterpolation": "linear",
             "lineWidth": 2,
-            "pointSize": 5,
+            "pointSize": 3,
             "scaleDistribution": {
               "log": 10,
               "type": "log"
             },
-            "showPoints": "never",
+            "showPoints": "always",
             "spanNulls": true,
             "stacking": {
               "group": "A",
@@ -854,325 +1493,19 @@
               }
             ]
           },
-          "unit": "short"
+          "unit": "binBps"
         },
         "overrides": []
       },
       "gridPos": {
-        "h": 7,
-        "w": 8,
-        "x": 16,
-        "y": 8
+        "h": 6,
+        "w": 6,
+        "x": 0,
+        "y": 13
       },
-      "id": 50,
+      "id": 2,
       "links": [],
-      "options": {
-        "legend": {
-          "calcs": [],
-          "displayMode": "list",
-          "placement": "bottom"
-        },
-        "tooltip": {
-          "mode": "single"
-        }
-      },
-      "pluginVersion": "8.0.6",
-      "targets": [
-        {
-          "alias": "Sent TPG",
-          "groupBy": [
-            {
-              "params": [
-                "$__interval"
-              ],
-              "type": "time"
-            },
-            {
-              "params": [
-                "null"
-              ],
-              "type": "fill"
-            }
-          ],
-          "hide": false,
-          "measurement": "dunedaq.readoutlibs.readoutinfo.RawDataProcessorInfo",
-          "orderByTime": "ASC",
-          "policy": "default",
-          "query": "SELECT non_negative_derivative(cumulative_sum(sum(\"num_tps_sent\")), 1s) FROM \"dunedaq.readoutlibs.readoutinfo.RawDataProcessorInfo\" WHERE (\"partition_id\"='${partition}' AND \"source_id\" =~ /.*\\.datahandler_\\d+/) AND $timeFilter GROUP BY time($__interval) fill(null)",
-          "rawQuery": true,
-          "refId": "D",
-          "resultFormat": "time_series",
-          "select": [
-            [
-              {
-                "params": [
-                  "num_tps_sent"
-                ],
-                "type": "field"
-              },
-              {
-                "params": [],
-                "type": "sum"
-              },
-              {
-                "params": [],
-                "type": "cumulative_sum"
-              },
-              {
-                "params": [
-                  "1s"
-                ],
-                "type": "non_negative_derivative"
-              }
-            ]
-          ],
-          "tags": [
-            {
-              "key": "source_id",
-              "operator": "=",
-              "value": "maroda_test_ruemu0.datahandler_0"
-            }
-          ]
-        },
-        {
-          "alias": "Sent TPG Sets",
-          "groupBy": [
-            {
-              "params": [
-                "$__interval"
-              ],
-              "type": "time"
-            },
-            {
-              "params": [
-                "null"
-              ],
-              "type": "fill"
-            }
-          ],
-          "hide": false,
-          "measurement": "dunedaq.readoutlibs.readoutinfo.RawDataProcessorInfo",
-          "orderByTime": "ASC",
-          "policy": "default",
-          "query": "SELECT non_negative_derivative(cumulative_sum(sum(\"num_tpsets_sent\")), 1s) FROM \"dunedaq.readoutlibs.readoutinfo.RawDataProcessorInfo\" WHERE (\"partition_id\"='${partition}' AND \"source_id\" =~ /.*\\.datahandler_\\d+/) AND $timeFilter GROUP BY time($__interval) fill(null)",
-          "rawQuery": true,
-          "refId": "E",
-          "resultFormat": "time_series",
-          "select": [
-            [
-              {
-                "params": [
-                  "num_tps_sent"
-                ],
-                "type": "field"
-              },
-              {
-                "params": [],
-                "type": "sum"
-              },
-              {
-                "params": [],
-                "type": "cumulative_sum"
-              },
-              {
-                "params": [
-                  "1s"
-                ],
-                "type": "non_negative_derivative"
-              }
-            ]
-          ],
-          "tags": [
-            {
-              "key": "source_id",
-              "operator": "=",
-              "value": "maroda_test_ruemu0.datahandler_0"
-            }
-          ]
-        },
-        {
-          "alias": "Dropped TPG",
-          "groupBy": [
-            {
-              "params": [
-                "$__interval"
-              ],
-              "type": "time"
-            },
-            {
-              "params": [
-                "null"
-              ],
-              "type": "fill"
-            }
-          ],
-          "hide": false,
-          "measurement": "dunedaq.readoutlibs.readoutinfo.RawDataProcessorInfo",
-          "orderByTime": "ASC",
-          "policy": "default",
-          "query": "SELECT non_negative_derivative(cumulative_sum(sum(\"num_tps_dropped\")), 1s) FROM \"dunedaq.readoutlibs.readoutinfo.RawDataProcessorInfo\" WHERE (\"partition_id\"='${partition}' AND \"source_id\" =~ /.*\\.datahandler_\\d+/) AND $timeFilter GROUP BY time($__interval) fill(null)",
-          "rawQuery": true,
-          "refId": "A",
-          "resultFormat": "time_series",
-          "select": [
-            [
-              {
-                "params": [
-                  "num_tps_sent"
-                ],
-                "type": "field"
-              },
-              {
-                "params": [],
-                "type": "sum"
-              },
-              {
-                "params": [],
-                "type": "cumulative_sum"
-              },
-              {
-                "params": [
-                  "1s"
-                ],
-                "type": "non_negative_derivative"
-              }
-            ]
-          ],
-          "tags": [
-            {
-              "key": "source_id",
-              "operator": "=",
-              "value": "maroda_test_ruemu0.datahandler_0"
-            }
-          ]
-        },
-        {
-          "alias": "TPG Hit",
-          "groupBy": [
-            {
-              "params": [
-                "$__interval"
-              ],
-              "type": "time"
-            },
-            {
-              "params": [
-                "null"
-              ],
-              "type": "fill"
-            }
-          ],
-          "hide": false,
-          "measurement": "dunedaq.readoutlibs.readoutinfo.RawDataProcessorInfo",
-          "orderByTime": "ASC",
-          "policy": "default",
-          "query": "SELECT sum(\"rate_tp_hits\") FROM \"dunedaq.readoutlibs.readoutinfo.RawDataProcessorInfo\" WHERE (\"partition_id\"='${partition}' AND \"source_id\" =~ /.*\\.datahandler_\\d+/) AND $timeFilter GROUP BY time($__interval) fill(null)",
-          "rawQuery": true,
-          "refId": "B",
-          "resultFormat": "time_series",
-          "select": [
-            [
-              {
-                "params": [
-                  "rate_tp_hits"
-                ],
-                "type": "field"
-              },
-              {
-                "params": [],
-                "type": "sum"
-              }
-            ]
-          ],
-          "tags": [
-            {
-              "key": "source_id",
-              "operator": "=",
-              "value": "maroda_test_ruemu0.datahandler_0"
-            }
-          ]
-        }
-      ],
-      "timeFrom": null,
-      "timeShift": null,
-      "title": "Total software TPG rates",
-      "type": "timeseries"
-    },
-    {
-      "collapsed": false,
-      "datasource": null,
-      "gridPos": {
-        "h": 1,
-        "w": 24,
-        "x": 0,
-        "y": 15
-      },
-      "id": 33,
-      "panels": [],
-      "title": "Buffers",
-      "type": "row"
-    },
-    {
-      "datasource": "${DS_INFLUXKAFKA}",
-      "description": "",
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "mode": "palette-classic"
-          },
-          "custom": {
-            "axisLabel": "",
-            "axisPlacement": "auto",
-            "barAlignment": 0,
-            "drawStyle": "line",
-            "fillOpacity": 0,
-            "gradientMode": "none",
-            "hideFrom": {
-              "legend": false,
-              "tooltip": false,
-              "viz": false
-            },
-            "lineInterpolation": "linear",
-            "lineWidth": 1,
-            "pointSize": 5,
-            "scaleDistribution": {
-              "log": 10,
-              "type": "log"
-            },
-            "showPoints": "auto",
-            "spanNulls": false,
-            "stacking": {
-              "group": "A",
-              "mode": "none"
-            },
-            "thresholdsStyle": {
-              "mode": "off"
-            }
-          },
-          "mappings": [],
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "green",
-                "value": null
-              },
-              {
-                "color": "red",
-                "value": 80
-              }
-            ]
-          }
-        },
-        "overrides": []
-      },
-      "gridPos": {
-        "h": 7,
-        "w": 8,
-        "x": 0,
-        "y": 16
-      },
-      "id": 31,
+      "maxPerRow": 4,
       "options": {
         "legend": {
           "calcs": [],
@@ -1183,28 +1516,25 @@
           "mode": "single"
         }
       },
+      "pluginVersion": "8.0.6",
+      "repeat": "application",
+      "repeatDirection": "h",
       "targets": [
         {
-          "alias": "$tag_source_id",
+          "alias": "To $tag_source_id",
           "groupBy": [
             {
               "params": [
                 "$__interval"
               ],
               "type": "time"
-            },
-            {
-              "params": [
-                "null"
-              ],
-              "type": "fill"
             }
           ],
           "hide": false,
-          "measurement": "dunedaq.readoutlibs.readoutinfo.ReadoutInfo",
+          "measurement": "dunedaq.appfwk.queueinfo.Info",
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "SELECT mean(\"num_buffer_elements\") FROM \"dunedaq.readoutlibs.readoutinfo.ReadoutInfo\" WHERE (\"partition_id\"='${partition}' AND \"source_id\" =~ /.*\\.tp_datahandler_\\d+/) AND $timeFilter GROUP BY time($__interval), \"source_id\" fill(null)",
+          "query": "SELECT non_negative_derivative(cumulative_sum(sum(\"bytes\")), 1s) FROM \"dunedaq.ipm.senderinfo.Info\" WHERE (\"partition_id\" = '${partition}' AND \"source_id\"=~ /.*\\.${application}\\..*/ ) AND $timeFilter GROUP BY time($__interval), \"source_id\"",
           "rawQuery": true,
           "refId": "C",
           "resultFormat": "time_series",
@@ -1212,13 +1542,19 @@
             [
               {
                 "params": [
-                  "num_buffer_elements"
+                  "number_of_elements"
                 ],
                 "type": "field"
               },
               {
                 "params": [],
-                "type": "sum"
+                "type": "distinct"
+              },
+              {
+                "params": [
+                  " * 100"
+                ],
+                "type": "math"
               }
             ]
           ],
@@ -1226,118 +1562,25 @@
             {
               "key": "source_id",
               "operator": "=",
-              "value": "maroda_test_ruemu0.datahandler_1"
+              "value": "maroda_test_dataflow.trigger_record_q"
             }
           ]
-        }
-      ],
-      "title": "Number of elements",
-      "transformations": [
-        {
-          "id": "renameByRegex",
-          "options": {
-            "regex": ".*\\.(.*)\\.(.*)",
-            "renamePattern": "$1 $2"
-          }
         },
         {
-          "id": "calculateField",
-          "options": {}
-        }
-      ],
-      "type": "timeseries"
-    },
-    {
-      "datasource": "${DS_INFLUXKAFKA}",
-      "description": "",
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "mode": "palette-classic"
-          },
-          "custom": {
-            "axisLabel": "Hz",
-            "axisPlacement": "auto",
-            "barAlignment": 0,
-            "drawStyle": "line",
-            "fillOpacity": 0,
-            "gradientMode": "none",
-            "hideFrom": {
-              "legend": false,
-              "tooltip": false,
-              "viz": false
-            },
-            "lineInterpolation": "linear",
-            "lineWidth": 1,
-            "pointSize": 5,
-            "scaleDistribution": {
-              "type": "linear"
-            },
-            "showPoints": "auto",
-            "spanNulls": false,
-            "stacking": {
-              "group": "A",
-              "mode": "none"
-            },
-            "thresholdsStyle": {
-              "mode": "off"
-            }
-          },
-          "mappings": [],
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "green",
-                "value": null
-              },
-              {
-                "color": "red",
-                "value": 80
-              }
-            ]
-          }
-        },
-        "overrides": []
-      },
-      "gridPos": {
-        "h": 7,
-        "w": 8,
-        "x": 8,
-        "y": 16
-      },
-      "id": 38,
-      "options": {
-        "legend": {
-          "calcs": [],
-          "displayMode": "list",
-          "placement": "bottom"
-        },
-        "tooltip": {
-          "mode": "single"
-        }
-      },
-      "targets": [
-        {
-          "alias": "Cleanups",
+          "alias": "From $tag_source_id",
           "groupBy": [
             {
               "params": [
                 "$__interval"
               ],
               "type": "time"
-            },
-            {
-              "params": [
-                "null"
-              ],
-              "type": "fill"
             }
           ],
-          "measurement": "dunedaq.readoutlibs.readoutinfo.RequestHandlerInfo",
+          "hide": false,
+          "measurement": "dunedaq.appfwk.queueinfo.Info",
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "SELECT non_negative_derivative(cumulative_sum(sum(\"num_buffer_cleanups\")), 1s) FROM \"dunedaq.readoutlibs.readoutinfo.RequestHandlerInfo\" WHERE (\"partition_id\"='${partition}' AND  \"source_id\" =~ /.*\\.tp_datahandler_\\d+/) AND $timeFilter GROUP BY time($__interval) fill(null)",
+          "query": "SELECT non_negative_derivative(cumulative_sum(sum(\"bytes\")), 1s) FROM \"dunedaq.ipm.receiverinfo.Info\" WHERE (\"partition_id\" = '${partition}' AND \"source_id\"=~ /.*\\.${application}\\..*/ ) AND $timeFilter GROUP BY time($__interval), \"source_id\"",
           "rawQuery": true,
           "refId": "A",
           "resultFormat": "time_series",
@@ -1345,23 +1588,19 @@
             [
               {
                 "params": [
-                  "num_buffer_cleanups"
+                  "number_of_elements"
                 ],
                 "type": "field"
               },
               {
                 "params": [],
-                "type": "sum"
-              },
-              {
-                "params": [],
-                "type": "cumulative_sum"
+                "type": "distinct"
               },
               {
                 "params": [
-                  "1s"
+                  " * 100"
                 ],
-                "type": "non_negative_derivative"
+                "type": "math"
               }
             ]
           ],
@@ -1369,73 +1608,39 @@
             {
               "key": "source_id",
               "operator": "=",
-              "value": "maroda_test_ruemu0.datahandler_1"
-            }
-          ]
-        },
-        {
-          "alias": "Overwritten",
-          "groupBy": [
-            {
-              "params": [
-                "$__interval"
-              ],
-              "type": "time"
-            },
-            {
-              "params": [
-                "null"
-              ],
-              "type": "fill"
-            }
-          ],
-          "hide": false,
-          "measurement": "dunedaq.readoutlibs.readoutinfo.ReadoutInfo",
-          "orderByTime": "ASC",
-          "policy": "default",
-          "query": "SELECT non_negative_derivative(cumulative_sum(sum(\"num_payloads_overwritten\")), 1s) FROM \"dunedaq.readoutlibs.readoutinfo.ReadoutInfo\" WHERE (\"partition_id\"='${partition}' AND  \"source_id\" =~ /.*\\.tp_datahandler_\\d+/) AND $timeFilter GROUP BY time($__interval) fill(null)",
-          "rawQuery": true,
-          "refId": "B",
-          "resultFormat": "time_series",
-          "select": [
-            [
-              {
-                "params": [
-                  "num_payloads_overwritten"
-                ],
-                "type": "field"
-              },
-              {
-                "params": [],
-                "type": "sum"
-              },
-              {
-                "params": [],
-                "type": "cumulative_sum"
-              },
-              {
-                "params": [
-                  "1s"
-                ],
-                "type": "non_negative_derivative"
-              }
-            ]
-          ],
-          "tags": [
-            {
-              "key": "source_id",
-              "operator": "=",
-              "value": "maroda_test_ruemu0.datahandler_1"
+              "value": "maroda_test_dataflow.trigger_record_q"
             }
           ]
         }
       ],
-      "title": "TP Buffers - Total operational rates",
+      "timeFrom": null,
+      "timeShift": null,
+      "title": "${application} bytes",
+      "transformations": [
+        {
+          "id": "renameByRegex",
+          "options": {
+            "regex": "(.*) .*\\.([^.]+)",
+            "renamePattern": "$1 $2"
+          }
+        }
+      ],
       "type": "timeseries"
     },
     {
-      "datasource": "${DS_INFLUXKAFKA}",
-      "description": "",
+      "datasource": null,
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 25
+      },
+      "id": 38,
+      "title": "Application monitors - messages",
+      "type": "row"
+    },
+    {
+      "datasource": "${DS_INFLUXTEST}",
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -1454,13 +1659,14 @@
               "viz": false
             },
             "lineInterpolation": "linear",
-            "lineWidth": 1,
-            "pointSize": 5,
+            "lineWidth": 2,
+            "pointSize": 3,
             "scaleDistribution": {
-              "type": "linear"
+              "log": 10,
+              "type": "log"
             },
-            "showPoints": "auto",
-            "spanNulls": false,
+            "showPoints": "always",
+            "spanNulls": true,
             "stacking": {
               "group": "A",
               "mode": "none"
@@ -1482,48 +1688,95 @@
                 "value": 80
               }
             ]
-          }
+          },
+          "unit": "hertz"
         },
         "overrides": []
       },
       "gridPos": {
-        "h": 7,
-        "w": 8,
-        "x": 16,
-        "y": 16
+        "h": 6,
+        "w": 6,
+        "x": 0,
+        "y": 26
       },
-      "id": 40,
+      "id": 39,
+      "links": [],
+      "maxPerRow": 4,
       "options": {
         "legend": {
           "calcs": [],
           "displayMode": "list",
-          "placement": "bottom"
+          "placement": "right"
         },
         "tooltip": {
           "mode": "single"
         }
       },
+      "pluginVersion": "8.0.6",
+      "repeat": "application",
+      "repeatDirection": "h",
       "targets": [
         {
-          "alias": "Cleanups",
+          "alias": "To $tag_source_id",
           "groupBy": [
             {
               "params": [
                 "$__interval"
               ],
               "type": "time"
-            },
-            {
-              "params": [
-                "null"
-              ],
-              "type": "fill"
             }
           ],
-          "measurement": "dunedaq.readoutlibs.readoutinfo.RequestHandlerInfo",
+          "hide": false,
+          "measurement": "dunedaq.appfwk.queueinfo.Info",
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "SELECT mean(\"num_buffer_cleanups\") FROM \"dunedaq.readoutlibs.readoutinfo.RequestHandlerInfo\" WHERE (\"source_id\" = '${partition}.${readout_app}.${readout_module}') AND $timeFilter GROUP BY time($__interval) fill(null)",
+          "query": "SELECT non_negative_derivative(cumulative_sum(sum(\"messages\")), 1s) FROM \"dunedaq.ipm.senderinfo.Info\" WHERE (\"partition_id\" = '${partition}' AND \"source_id\"=~ /.*\\.${application}\\..*/ ) AND $timeFilter GROUP BY time($__interval), \"source_id\"",
+          "rawQuery": true,
+          "refId": "C",
+          "resultFormat": "time_series",
+          "select": [
+            [
+              {
+                "params": [
+                  "number_of_elements"
+                ],
+                "type": "field"
+              },
+              {
+                "params": [],
+                "type": "distinct"
+              },
+              {
+                "params": [
+                  " * 100"
+                ],
+                "type": "math"
+              }
+            ]
+          ],
+          "tags": [
+            {
+              "key": "source_id",
+              "operator": "=",
+              "value": "maroda_test_dataflow.trigger_record_q"
+            }
+          ]
+        },
+        {
+          "alias": "From $tag_source_id",
+          "groupBy": [
+            {
+              "params": [
+                "$__interval"
+              ],
+              "type": "time"
+            }
+          ],
+          "hide": false,
+          "measurement": "dunedaq.appfwk.queueinfo.Info",
+          "orderByTime": "ASC",
+          "policy": "default",
+          "query": "SELECT non_negative_derivative(cumulative_sum(sum(\"messages\")), 1s) FROM \"dunedaq.ipm.receiverinfo.Info\" WHERE (\"partition_id\" = '${partition}' AND \"source_id\"=~ /.*\\.${application}\\..*/ ) AND $timeFilter GROUP BY time($__interval), \"source_id\"",
           "rawQuery": true,
           "refId": "A",
           "resultFormat": "time_series",
@@ -1531,59 +1784,19 @@
             [
               {
                 "params": [
-                  "num_buffer_cleanups"
+                  "number_of_elements"
                 ],
                 "type": "field"
               },
               {
                 "params": [],
-                "type": "sum"
-              }
-            ]
-          ],
-          "tags": [
-            {
-              "key": "source_id",
-              "operator": "=",
-              "value": "maroda_test_ruemu0.datahandler_1"
-            }
-          ]
-        },
-        {
-          "alias": "Overwritten",
-          "groupBy": [
-            {
-              "params": [
-                "$__interval"
-              ],
-              "type": "time"
-            },
-            {
-              "params": [
-                "null"
-              ],
-              "type": "fill"
-            }
-          ],
-          "hide": false,
-          "measurement": "dunedaq.readoutlibs.readoutinfo.ReadoutInfo",
-          "orderByTime": "ASC",
-          "policy": "default",
-          "query": "SELECT mean(\"num_payloads_overwritten\") FROM \"dunedaq.readoutlibs.readoutinfo.ReadoutInfo\" WHERE  (\"source_id\" = '${partition}.${readout_app}.${readout_module}')  AND $timeFilter GROUP BY time($__interval) fill(null)",
-          "rawQuery": true,
-          "refId": "B",
-          "resultFormat": "time_series",
-          "select": [
-            [
+                "type": "distinct"
+              },
               {
                 "params": [
-                  "num_payloads_overwritten"
+                  " * 100"
                 ],
-                "type": "field"
-              },
-              {
-                "params": [],
-                "type": "sum"
+                "type": "math"
               }
             ]
           ],
@@ -1591,12 +1804,23 @@
             {
               "key": "source_id",
               "operator": "=",
-              "value": "maroda_test_ruemu0.datahandler_1"
+              "value": "maroda_test_dataflow.trigger_record_q"
             }
           ]
         }
       ],
-      "title": "TP Buffers - Operational rates for ${readout_app} ${readout_module}",
+      "timeFrom": null,
+      "timeShift": null,
+      "title": "${application} messages",
+      "transformations": [
+        {
+          "id": "renameByRegex",
+          "options": {
+            "regex": "(.*) .*\\.([^.]+)",
+            "renamePattern": "$1 $2"
+          }
+        }
+      ],
       "type": "timeseries"
     }
   ],
@@ -1604,16 +1828,16 @@
   "schemaVersion": 30,
   "style": "dark",
   "tags": [
-    "Subsystem",
-    "v3.2.1"
+    "v3.2.1",
+    "Subsystem"
   ],
   "templating": {
     "list": [
       {
         "allValue": null,
         "current": {},
-        "datasource": "${DS_INFLUXKAFKA}",
-        "definition": "SHOW TAG VALUES WITH KEY=\"partition_id\" where $timeFilter ",
+        "datasource": "${DS_INFLUXTEST}",
+        "definition": "SHOW TAG VALUES WITH KEY=\"partition_id\" WHERE $timeFilter",
         "description": null,
         "error": null,
         "hide": 0,
@@ -1622,8 +1846,8 @@
         "multi": false,
         "name": "partition",
         "options": [],
-        "query": "SHOW TAG VALUES WITH KEY=\"partition_id\" where $timeFilter ",
-        "refresh": 1,
+        "query": "SHOW TAG VALUES WITH KEY=\"partition_id\" WHERE $timeFilter",
+        "refresh": 2,
         "regex": "",
         "skipUrlSync": false,
         "sort": 0,
@@ -1632,19 +1856,19 @@
       {
         "allValue": null,
         "current": {},
-        "datasource": "${DS_INFLUXKAFKA}",
-        "definition": "SHOW  TAG VALUES FROM \"dunedaq.readoutlibs.readoutinfo.RequestHandlerInfo\" WITH KEY=\"source_id\" WHERE $timeFilter AND \"partition_id\"='${partition}'",
+        "datasource": "${DS_INFLUXTEST}",
+        "definition": "SHOW TAG VALUES FROM \"dunedaq.ipm.senderinfo.Info\",\"dunedaq.ipm.receiverinfo.Info\" WITH KEY=\"source_id\"  WHERE \"partition_id\"='$partition' AND $timeFilter",
         "description": null,
         "error": null,
         "hide": 0,
         "includeAll": false,
-        "label": null,
-        "multi": false,
-        "name": "readout_app",
+        "label": "Application name",
+        "multi": true,
+        "name": "application",
         "options": [],
-        "query": "SHOW  TAG VALUES FROM \"dunedaq.readoutlibs.readoutinfo.RequestHandlerInfo\" WITH KEY=\"source_id\" WHERE $timeFilter AND \"partition_id\"='${partition}'",
+        "query": "SHOW TAG VALUES FROM \"dunedaq.ipm.senderinfo.Info\",\"dunedaq.ipm.receiverinfo.Info\" WITH KEY=\"source_id\"  WHERE \"partition_id\"='$partition' AND $timeFilter",
         "refresh": 1,
-        "regex": ".*\\.(.*)\\.tp_datahandler_\\d+",
+        "regex": "[^.]+\\.([^.]+)\\..*",
         "skipUrlSync": false,
         "sort": 0,
         "type": "query"
@@ -1652,19 +1876,39 @@
       {
         "allValue": null,
         "current": {},
-        "datasource": "${DS_INFLUXKAFKA}",
-        "definition": "SHOW  TAG VALUES FROM \"dunedaq.readoutlibs.readoutinfo.RequestHandlerInfo\" WITH KEY=\"source_id\" WHERE $timeFilter AND \"partition_id\"='${partition}'",
-        "description": null,
+        "datasource": "${DS_INFLUXTEST}",
+        "definition": "SHOW TAG VALUES FROM \"dunedaq.ipm.senderinfo.Info\",\"dunedaq.ipm.receiverinfo.Info\" WITH KEY=\"source_id\"  WHERE \"partition_id\"='$partition' AND $timeFilter",
+        "description": "This selection removes the topics from the source ids, in this way we can setup alarms on the connections",
         "error": null,
         "hide": 0,
         "includeAll": false,
-        "label": null,
+        "label": "Connection name",
         "multi": false,
-        "name": "readout_module",
+        "name": "connection",
         "options": [],
-        "query": "SHOW  TAG VALUES FROM \"dunedaq.readoutlibs.readoutinfo.RequestHandlerInfo\" WITH KEY=\"source_id\" WHERE $timeFilter AND \"partition_id\"='${partition}'",
+        "query": "SHOW TAG VALUES FROM \"dunedaq.ipm.senderinfo.Info\",\"dunedaq.ipm.receiverinfo.Info\" WITH KEY=\"source_id\"  WHERE \"partition_id\"='$partition' AND $timeFilter",
         "refresh": 1,
-        "regex": ".*\\.${readout_app}\\.(tp_datahandler_\\d+)",
+        "regex": "[^.]+\\.[^.]+\\.[^.]+\\.([^.]+)$",
+        "skipUrlSync": false,
+        "sort": 0,
+        "type": "query"
+      },
+      {
+        "allValue": null,
+        "current": {},
+        "datasource": "${DS_INFLUXTEST}",
+        "definition": "SHOW TAG VALUES FROM \"dunedaq.ipm.senderinfo.Info\",\"dunedaq.ipm.receiverinfo.Info\" WITH KEY=\"source_id\"  WHERE \"partition_id\"='$partition' AND $timeFilter",
+        "description": "This selection removes the topics from the source ids, in this way we can setup alarms on the connections",
+        "error": null,
+        "hide": 0,
+        "includeAll": false,
+        "label": "Topic",
+        "multi": false,
+        "name": "topic",
+        "options": [],
+        "query": "SHOW TAG VALUES FROM \"dunedaq.ipm.senderinfo.Info\",\"dunedaq.ipm.receiverinfo.Info\" WITH KEY=\"source_id\"  WHERE \"partition_id\"='$partition' AND $timeFilter",
+        "refresh": 1,
+        "regex": "[^.]+\\.[^.]+\\.([^.]+)$",
         "skipUrlSync": false,
         "sort": 0,
         "type": "query"
@@ -1675,33 +1919,9 @@
     "from": "now-15m",
     "to": "now"
   },
-  "timepicker": {
-    "refresh_intervals": [
-      "5s",
-      "10s",
-      "30s",
-      "1m",
-      "5m",
-      "15m",
-      "30m",
-      "1h",
-      "2h",
-      "1d"
-    ],
-    "time_options": [
-      "5m",
-      "15m",
-      "1h",
-      "6h",
-      "12h",
-      "24h",
-      "2d",
-      "7d",
-      "30d"
-    ]
-  },
+  "timepicker": {},
   "timezone": "",
-  "title": "Trigger Primitives",
-  "uid": "C6yDKy5nkw3",
+  "title": "DUNE / Network Manager",
+  "uid": "a098ubsdd",
   "version": 4
 }

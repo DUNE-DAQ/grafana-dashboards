@@ -46,7 +46,7 @@
   "gnetId": null,
   "graphTooltip": 0,
   "id": null,
-  "iteration": 1677245437047,
+  "iteration": 1677684483470,
   "links": [],
   "panels": [
     {
@@ -590,6 +590,15 @@
         }
       ],
       "title": "TPChannelFilter receive",
+      "transformations": [
+        {
+          "id": "renameByRegex",
+          "options": {
+            "regex": "[^.]+\\.[^.]+\\.([^.]+)",
+            "renamePattern": "$1"
+          }
+        }
+      ],
       "type": "timeseries"
     },
     {
@@ -717,6 +726,15 @@
         }
       ],
       "title": "TPChannelFilter sent",
+      "transformations": [
+        {
+          "id": "renameByRegex",
+          "options": {
+            "regex": "[^.]+\\.[^.]+\\.([^.]+)",
+            "renamePattern": "$1"
+          }
+        }
+      ],
       "type": "timeseries"
     },
     {
@@ -779,7 +797,8 @@
                 "value": 80
               }
             ]
-          }
+          },
+          "unit": "hertz"
         },
         "overrides": []
       },
@@ -808,7 +827,7 @@
           "measurement": "dunedaq.trigger.faketpcreatorheartbeatmakerinfo.Info",
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "SELECT \"tpset_received_count\" FROM \"dunedaq.trigger.faketpcreatorheartbeatmakerinfo.Info\" WHERE (\"partition_id\" = '${partition}') AND $timeFilter GROUP BY \"source_id\"",
+          "query": "SELECT non_negative_derivative(last(\"tpset_received_count\"),1s) FROM \"dunedaq.trigger.faketpcreatorheartbeatmakerinfo.Info\" WHERE (\"partition_id\" = '${partition}') AND $timeFilter GROUP BY time($__interval), \"source_id\"",
           "rawQuery": true,
           "refId": "H",
           "resultFormat": "time_series",
@@ -897,7 +916,8 @@
                 "value": 80
               }
             ]
-          }
+          },
+          "unit": "hertz"
         },
         "overrides": []
       },
@@ -926,7 +946,7 @@
           "measurement": "dunedaq.trigger.faketpcreatorheartbeatmakerinfo.Info",
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "SELECT \"tpset_sent_count\" FROM \"dunedaq.trigger.faketpcreatorheartbeatmakerinfo.Info\" WHERE (\"partition_id\" = '${partition}') AND $timeFilter GROUP BY \"source_id\"",
+          "query": "SELECT non_negative_derivative(last(\"tpset_sent_count\"), 1s) FROM \"dunedaq.trigger.faketpcreatorheartbeatmakerinfo.Info\" WHERE (\"partition_id\" = '${partition}') AND $timeFilter GROUP BY time($__interval), \"source_id\"",
           "rawQuery": true,
           "refId": "H",
           "resultFormat": "time_series",
@@ -1015,13 +1035,14 @@
                 "value": 80
               }
             ]
-          }
+          },
+          "unit": "hertz"
         },
         "overrides": []
       },
       "gridPos": {
-        "h": 10,
-        "w": 24,
+        "h": 9,
+        "w": 7,
         "x": 0,
         "y": 29
       },
@@ -1038,13 +1059,116 @@
       },
       "targets": [
         {
+          "alias": "Received",
           "groupBy": [],
           "measurement": "dunedaq.trigger.triggerzipperinfo.Info",
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "SELECT \"n_received\", \"n_sent\", \"n_tardy\" FROM \"dunedaq.trigger.triggerzipperinfo.Info\" WHERE (\"partition_id\" = '${partition}' ) AND $timeFilter",
+          "query": "SELECT non_negative_derivative(last(\"n_received\"), 1s) FROM \"dunedaq.trigger.triggerzipperinfo.Info\" WHERE (\"partition_id\" = '${partition}' ) AND $timeFilter GROUP BY time($__interval)",
           "rawQuery": true,
           "refId": "A",
+          "resultFormat": "time_series",
+          "select": [
+            [
+              {
+                "params": [
+                  "n_received"
+                ],
+                "type": "field"
+              }
+            ],
+            [
+              {
+                "params": [
+                  "n_sent"
+                ],
+                "type": "field"
+              }
+            ],
+            [
+              {
+                "params": [
+                  "n_tardy"
+                ],
+                "type": "field"
+              }
+            ]
+          ],
+          "tags": [
+            {
+              "key": "partition_id",
+              "operator": "=",
+              "value": "np02-coldbox"
+            },
+            {
+              "condition": "AND",
+              "key": "source_id",
+              "operator": "=",
+              "value": "np02-coldbox.trigger.zip_4"
+            }
+          ]
+        },
+        {
+          "alias": "Sent",
+          "groupBy": [],
+          "hide": false,
+          "measurement": "dunedaq.trigger.triggerzipperinfo.Info",
+          "orderByTime": "ASC",
+          "policy": "default",
+          "query": "SELECT non_negative_derivative(last(\"n_sent\"), 1s) FROM \"dunedaq.trigger.triggerzipperinfo.Info\" WHERE (\"partition_id\" = '${partition}' ) AND $timeFilter GROUP BY time($__interval)",
+          "rawQuery": true,
+          "refId": "C",
+          "resultFormat": "time_series",
+          "select": [
+            [
+              {
+                "params": [
+                  "n_received"
+                ],
+                "type": "field"
+              }
+            ],
+            [
+              {
+                "params": [
+                  "n_sent"
+                ],
+                "type": "field"
+              }
+            ],
+            [
+              {
+                "params": [
+                  "n_tardy"
+                ],
+                "type": "field"
+              }
+            ]
+          ],
+          "tags": [
+            {
+              "key": "partition_id",
+              "operator": "=",
+              "value": "np02-coldbox"
+            },
+            {
+              "condition": "AND",
+              "key": "source_id",
+              "operator": "=",
+              "value": "np02-coldbox.trigger.zip_4"
+            }
+          ]
+        },
+        {
+          "alias": "Tardy",
+          "groupBy": [],
+          "hide": false,
+          "measurement": "dunedaq.trigger.triggerzipperinfo.Info",
+          "orderByTime": "ASC",
+          "policy": "default",
+          "query": "SELECT non_negative_derivative(last(\"n_tardy\"), 1s) FROM \"dunedaq.trigger.triggerzipperinfo.Info\" WHERE (\"partition_id\" = '${partition}' ) AND $timeFilter GROUP BY time($__interval)",
+          "rawQuery": true,
+          "refId": "D",
           "resultFormat": "time_series",
           "select": [
             [
@@ -1138,15 +1262,16 @@
                 "value": 80
               }
             ]
-          }
+          },
+          "unit": "hertz"
         },
         "overrides": []
       },
       "gridPos": {
-        "h": 10,
-        "w": 24,
-        "x": 0,
-        "y": 39
+        "h": 9,
+        "w": 9,
+        "x": 7,
+        "y": 29
       },
       "id": 15,
       "options": {
@@ -1161,13 +1286,57 @@
       },
       "targets": [
         {
+          "alias": "Received",
           "groupBy": [],
           "measurement": "dunedaq.trigger.triggergenericmakerinfo.Info",
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "SELECT \"received_count\", \"sent_count\" FROM \"dunedaq.trigger.triggergenericmakerinfo.Info\" WHERE (\"partition_id\" = '${partition}' ) AND $timeFilter",
+          "query": "SELECT non_negative_derivative(last(\"received_count\"), 1s) FROM \"dunedaq.trigger.triggergenericmakerinfo.Info\" WHERE (\"partition_id\" = '${partition}' ) AND $timeFilter GROUP BY time($__interval)",
           "rawQuery": true,
           "refId": "A",
+          "resultFormat": "time_series",
+          "select": [
+            [
+              {
+                "params": [
+                  "received_count"
+                ],
+                "type": "field"
+              }
+            ],
+            [
+              {
+                "params": [
+                  "sent_count"
+                ],
+                "type": "field"
+              }
+            ]
+          ],
+          "tags": [
+            {
+              "key": "partition_id",
+              "operator": "=",
+              "value": "np02-coldbox"
+            },
+            {
+              "condition": "AND",
+              "key": "source_id",
+              "operator": "=",
+              "value": "np02-coldbox.trigger.tam_4"
+            }
+          ]
+        },
+        {
+          "alias": "Sent",
+          "groupBy": [],
+          "hide": false,
+          "measurement": "dunedaq.trigger.triggergenericmakerinfo.Info",
+          "orderByTime": "ASC",
+          "policy": "default",
+          "query": "SELECT non_negative_derivative(last(\"sent_count\"), 1s) FROM \"dunedaq.trigger.triggergenericmakerinfo.Info\" WHERE (\"partition_id\" = '${partition}' ) AND $timeFilter GROUP BY time($__interval)",
+          "rawQuery": true,
+          "refId": "C",
           "resultFormat": "time_series",
           "select": [
             [
@@ -1253,15 +1422,16 @@
                 "value": 80
               }
             ]
-          }
+          },
+          "unit": "hertz"
         },
         "overrides": []
       },
       "gridPos": {
-        "h": 10,
-        "w": 24,
-        "x": 0,
-        "y": 49
+        "h": 9,
+        "w": 8,
+        "x": 16,
+        "y": 29
       },
       "id": 16,
       "options": {
@@ -1276,13 +1446,57 @@
       },
       "targets": [
         {
+          "alias": "Received",
           "groupBy": [],
           "measurement": "dunedaq.trigger.triggergenericmakerinfo.Info",
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "SELECT \"received_count\", \"sent_count\" FROM \"dunedaq.trigger.triggergenericmakerinfo.Info\" WHERE (\"partition_id\" = '${partition}' ) AND $timeFilter",
+          "query": "SELECT non_negative_derivative(last(\"received_count\"),1s) FROM \"dunedaq.trigger.triggergenericmakerinfo.Info\" WHERE (\"partition_id\" = '${partition}' ) AND $timeFilter GROUP BY time($__interval)",
           "rawQuery": true,
           "refId": "A",
+          "resultFormat": "time_series",
+          "select": [
+            [
+              {
+                "params": [
+                  "received_count"
+                ],
+                "type": "field"
+              }
+            ],
+            [
+              {
+                "params": [
+                  "sent_count"
+                ],
+                "type": "field"
+              }
+            ]
+          ],
+          "tags": [
+            {
+              "key": "partition_id",
+              "operator": "=",
+              "value": "np02-coldbox"
+            },
+            {
+              "condition": "AND",
+              "key": "source_id",
+              "operator": "=",
+              "value": "np02-coldbox.trigger.tcm"
+            }
+          ]
+        },
+        {
+          "alias": "Sent",
+          "groupBy": [],
+          "hide": false,
+          "measurement": "dunedaq.trigger.triggergenericmakerinfo.Info",
+          "orderByTime": "ASC",
+          "policy": "default",
+          "query": "SELECT non_negative_derivative(last(\"sent_count\"),1s) FROM \"dunedaq.trigger.triggergenericmakerinfo.Info\" WHERE (\"partition_id\" = '${partition}' ) AND $timeFilter GROUP BY time($__interval)",
+          "rawQuery": true,
+          "refId": "C",
           "resultFormat": "time_series",
           "select": [
             [
@@ -1353,12 +1567,12 @@
     ]
   },
   "time": {
-    "from": "now-10d",
+    "from": "now-3h",
     "to": "now"
   },
   "timepicker": {},
   "timezone": "",
   "title": "Trigger Flow",
   "uid": "2Ffor0j7zg",
-  "version": 11
+  "version": 14
 }

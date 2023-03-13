@@ -78,7 +78,7 @@
   "gnetId": null,
   "graphTooltip": 0,
   "id": null,
-  "iteration": 1668687299283,
+  "iteration": 1678708893861,
   "links": [
     {
       "asDropdown": true,
@@ -2471,7 +2471,7 @@
         "allValue": null,
         "current": {},
         "datasource": "${DS_INFLUXKAFKA}",
-        "definition": "SHOW TAG VALUES WITH KEY=\"partition_id\" WHERE $timeFilter",
+        "definition": "SELECT \"partition_id\" FROM (SELECT \"state\",\"partition_id\" FROM \"dunedaq.appfwk.appinfo.Info\" WHERE $timeFilter)",
         "description": null,
         "error": null,
         "hide": 0,
@@ -2480,7 +2480,7 @@
         "multi": false,
         "name": "partition",
         "options": [],
-        "query": "SHOW TAG VALUES WITH KEY=\"partition_id\" WHERE $timeFilter",
+        "query": "SELECT \"partition_id\" FROM (SELECT \"state\",\"partition_id\" FROM \"dunedaq.appfwk.appinfo.Info\" WHERE $timeFilter)",
         "refresh": 2,
         "regex": "",
         "skipUrlSync": false,
@@ -2579,7 +2579,7 @@
     ]
   },
   "timezone": "",
-  "title": "DUNE / DAQ overview",
+  "title": "DAQ overview",
   "uid": "nnvT07O4z",
-  "version": 4
+  "version": 6
 }

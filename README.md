@@ -11,11 +11,41 @@ This repository collects graphana dashboards created to support DAQ operations a
 
 ## Helm
 
-To build a helm chart of this repo for kubernetes:
+### Release Process
 
-* Ensure the `Chart.yaml` has the correct `appVersion`.  It should match the version tagged in the repo
+* Ensure the `Chart.yaml` has the correct `appVersion`.
+  * It should match the version tagged in the repo
 * Increment the `version` of the chart in `Chart.yaml`
-* Run `helm package .`
-* Deploy the new package with `helm`
+  * It should be fine for this to match the the `appVersion`.
 
-If your grafana instance is set to import `ConfigMap` entries with `grafana_dashboard == 1`, restarting grafana should refresh the dashboards.
+### Grafana
+The [official grafana helm chart](https://artifacthub.io/packages/helm/grafana/grafana) will need the following values set:
+
+```yaml
+---
+sidecar:
+  dashboards:
+    enabled: true
+    provider:
+      foldersFromFilesStructure: true
+    label: grafana_dashboard
+    labelValue: 1
+networkPolicy:
+  enabled: true
+```
+
+This can be done with a `helm -n monitoring install grafana grafana/grafana -f values.yaml` and veified with `helm -n monitoring get values grafana`
+
+### Helm Deployment Process
+
+This repo can be packaged as a chart via `helm package .`
+
+The resulting helm chart can be installed via : `helm -n monitoring install dune-grafana-dashboards /path/to/package`.
+
+If you want a non-default folder you will need to set an override value of:
+
+```yaml
+---
+dashboards:
+  folder: my_folder_name
+```

@@ -11,6 +11,7 @@ metadata:
 {{ include "dune-grafana-dashboards.labels" $ | indent 4 }}
 {{ $.Values.labels | toYaml | indent 4 }}
   annotations:
+    k8s-sidecar-target-directory: {{ $.Values.dashboards.basedir }}/{{ $.Values.dashboards.folder }}
 {{ $.Values.annotations | toYaml | indent 4 }}
 data:
   {{ $dashboardName }}.json: |-

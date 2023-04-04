@@ -1,0 +1,343 @@
+{
+  "__inputs": [
+    {
+      "name": "DS_ERS",
+      "label": "ERS",
+      "description": "",
+      "type": "datasource",
+      "pluginId": "postgres",
+      "pluginName": "PostgreSQL"
+    }
+  ],
+  "__requires": [
+    {
+      "type": "grafana",
+      "id": "grafana",
+      "name": "Grafana",
+      "version": "8.0.7"
+    },
+    {
+      "type": "datasource",
+      "id": "postgres",
+      "name": "PostgreSQL",
+      "version": "1.0.0"
+    },
+    {
+      "type": "panel",
+      "id": "table",
+      "name": "Table",
+      "version": ""
+    }
+  ],
+  "annotations": {
+    "list": [
+      {
+        "builtIn": 1,
+        "datasource": "-- Grafana --",
+        "enable": true,
+        "hide": true,
+        "iconColor": "rgba(0, 211, 255, 1)",
+        "name": "Annotations & Alerts",
+        "type": "dashboard"
+      }
+    ]
+  },
+  "editable": true,
+  "gnetId": null,
+  "graphTooltip": 0,
+  "id": null,
+  "iteration": 1680623358084,
+  "links": [],
+  "panels": [
+    {
+      "datasource": "${DS_ERS}",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "custom": {
+            "align": "auto",
+            "displayMode": "auto"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "time"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 180
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "severity"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 125
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "application_name"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 197
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "message"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 983
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "issue_name"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 205
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "host_name"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 141
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 21,
+        "w": 24,
+        "x": 0,
+        "y": 0
+      },
+      "id": 2,
+      "options": {
+        "showHeader": true,
+        "sortBy": [
+          {
+            "desc": true,
+            "displayName": "time"
+          }
+        ]
+      },
+      "pluginVersion": "8.0.7",
+      "targets": [
+        {
+          "format": "table",
+          "group": [],
+          "metricColumn": "none",
+          "rawQuery": true,
+          "rawSql": "SELECT severity,time,application_name,message,issue_name,host_name\nFROM public.\"ErrorReports\"\nWHERE partition='${partition}' AND time >= ${__from} AND time <= ${__to} AND severity in ([[severity]]) AND issue_name ~ '[[issue_regex]]' AND application_name in ([[application_in]]) AND application_name not in ([[application_out]]) AND host_name in ([[host]])   \nORDER BY -time\n",
+          "refId": "A",
+          "select": [
+            [
+              {
+                "params": [
+                  "value"
+                ],
+                "type": "column"
+              }
+            ]
+          ],
+          "timeColumn": "time",
+          "where": [
+            {
+              "name": "$__timeFilter",
+              "params": [],
+              "type": "macro"
+            }
+          ]
+        }
+      ],
+      "title": "ERS Messages",
+      "type": "table"
+    }
+  ],
+  "schemaVersion": 30,
+  "style": "dark",
+  "tags": [
+    "v4.0.0",
+    "Subsystem"
+  ],
+  "templating": {
+    "list": [
+      {
+        "allValue": null,
+        "current": {},
+        "datasource": "${DS_ERS}",
+        "definition": "SELECT partition\nFROM public.\"ErrorReports\"\nWHERE time >= ${__from} AND time <= ${__to}\nORDER BY -time\n",
+        "description": null,
+        "error": null,
+        "hide": 0,
+        "includeAll": false,
+        "label": "Partition name",
+        "multi": false,
+        "name": "partition",
+        "options": [],
+        "query": "SELECT partition\nFROM public.\"ErrorReports\"\nWHERE time >= ${__from} AND time <= ${__to}\nORDER BY -time\n",
+        "refresh": 2,
+        "regex": "",
+        "skipUrlSync": false,
+        "sort": 0,
+        "type": "query"
+      },
+      {
+        "allValue": null,
+        "current": {},
+        "datasource": "${DS_ERS}",
+        "definition": "SELECT severity\nFROM public.\"ErrorReports\"\nWHERE time >= ${__from} AND time <= ${__to} AND partition='${partition}'\nORDER BY -time\n",
+        "description": null,
+        "error": null,
+        "hide": 0,
+        "includeAll": false,
+        "label": "Severity",
+        "multi": true,
+        "name": "severity",
+        "options": [],
+        "query": "SELECT severity\nFROM public.\"ErrorReports\"\nWHERE time >= ${__from} AND time <= ${__to} AND partition='${partition}'\nORDER BY -time\n",
+        "refresh": 2,
+        "regex": "",
+        "skipUrlSync": false,
+        "sort": 0,
+        "type": "query"
+      },
+      {
+        "allValue": null,
+        "current": {},
+        "datasource": "${DS_ERS}",
+        "definition": "SELECT application_name\nFROM public.\"ErrorReports\"\nWHERE time >= ${__from} AND time <= ${__to} AND partition='${partition}'\nORDER BY -time\n",
+        "description": null,
+        "error": null,
+        "hide": 0,
+        "includeAll": false,
+        "label": "Application in",
+        "multi": true,
+        "name": "application_in",
+        "options": [],
+        "query": "SELECT application_name\nFROM public.\"ErrorReports\"\nWHERE time >= ${__from} AND time <= ${__to} AND partition='${partition}'\nORDER BY -time\n",
+        "refresh": 2,
+        "regex": "",
+        "skipUrlSync": false,
+        "sort": 0,
+        "type": "query"
+      },
+      {
+        "allValue": null,
+        "current": {},
+        "datasource": "${DS_ERS}",
+        "definition": "SELECT application_name\nFROM public.\"ErrorReports\"\nWHERE time >= ${__from} AND time <= ${__to} AND partition='${partition}'\nORDER BY -time\n",
+        "description": null,
+        "error": null,
+        "hide": 0,
+        "includeAll": false,
+        "label": "Application out",
+        "multi": true,
+        "name": "application_out",
+        "options": [],
+        "query": "SELECT application_name\nFROM public.\"ErrorReports\"\nWHERE time >= ${__from} AND time <= ${__to} AND partition='${partition}'\nORDER BY -time\n",
+        "refresh": 2,
+        "regex": "",
+        "skipUrlSync": false,
+        "sort": 0,
+        "type": "query"
+      },
+      {
+        "current": {
+          "selected": true,
+          "text": ".*",
+          "value": ".*"
+        },
+        "description": null,
+        "error": null,
+        "hide": 0,
+        "label": "Issue Regex",
+        "name": "issue_regex",
+        "options": [
+          {
+            "selected": true,
+            "text": ".*",
+            "value": ".*"
+          }
+        ],
+        "query": ".*",
+        "skipUrlSync": false,
+        "type": "textbox"
+      },
+      {
+        "allValue": null,
+        "current": {},
+        "datasource": "${DS_ERS}",
+        "definition": "SELECT host_name\nFROM public.\"ErrorReports\"\nWHERE time >= ${__from} AND time <= ${__to} AND partition='${partition}'\nORDER BY -time\n",
+        "description": null,
+        "error": null,
+        "hide": 0,
+        "includeAll": false,
+        "label": "Host",
+        "multi": true,
+        "name": "host",
+        "options": [],
+        "query": "SELECT host_name\nFROM public.\"ErrorReports\"\nWHERE time >= ${__from} AND time <= ${__to} AND partition='${partition}'\nORDER BY -time\n",
+        "refresh": 2,
+        "regex": "",
+        "skipUrlSync": false,
+        "sort": 0,
+        "type": "query"
+      }
+    ]
+  },
+  "time": {
+    "from": "now-15m",
+    "to": "now"
+  },
+  "timepicker": {},
+  "timezone": "",
+  "title": "ERS",
+  "uid": "-xpoyqB4z",
+  "version": 33
+}

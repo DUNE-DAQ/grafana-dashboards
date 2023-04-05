@@ -16,7 +16,7 @@
   "gnetId": null,
   "graphTooltip": 0,
   "id": 165,
-  "iteration": 1680703079839,
+  "iteration": 1680707624193,
   "links": [],
   "panels": [
     {
@@ -143,7 +143,7 @@
           "group": [],
           "metricColumn": "none",
           "rawQuery": true,
-          "rawSql": "SELECT severity,time,application_name,message,issue_name,host_name\nFROM public.\"ErrorReports\"\nWHERE partition='${partition}' AND time >= ${__from} AND time <= ${__to} AND severity in ([[severity]]) AND issue_name ~ '[[issue_regex]]' AND application_name in ([[application_in]]) AND application_name not in ([[application_out]]) AND host_name in ([[host]])   \nORDER BY -time\n",
+          "rawSql": "SELECT severity,time,application_name,message,issue_name,host_name\nFROM public.\"ErrorReports\"\nWHERE partition='${partition}' AND time >= ${__from} AND time <= ${__to} AND severity in ([[severity]]) AND issue_name in ([[issue_full_name]]) AND application_name in ([[application_in]]) AND application_name not in ([[application_out]]) AND host_name in ([[host]]) AND message ~ '[[message_regex]]'   \nORDER BY -time\n",
           "refId": "A",
           "select": [
             [
@@ -169,6 +169,7 @@
       "type": "table"
     }
   ],
+  "refresh": false,
   "schemaVersion": 30,
   "style": "dark",
   "tags": [
@@ -181,8 +182,8 @@
         "allValue": null,
         "current": {
           "selected": false,
-          "text": "np02-coldbox-timing-tlu",
-          "value": "np02-coldbox-timing-tlu"
+          "text": "mroda",
+          "value": "mroda"
         },
         "datasource": "ERS",
         "definition": "SELECT partition\nFROM public.\"ErrorReports\"\nWHERE time >= ${__from} AND time <= ${__to}\nORDER BY -time\n",
@@ -204,10 +205,17 @@
       {
         "allValue": null,
         "current": {
-          "isNone": true,
           "selected": false,
-          "text": "None",
-          "value": ""
+          "text": [
+            "INFO",
+            "WARNING",
+            "ERROR"
+          ],
+          "value": [
+            "INFO",
+            "WARNING",
+            "ERROR"
+          ]
         },
         "datasource": "ERS",
         "definition": "SELECT severity\nFROM public.\"ErrorReports\"\nWHERE time >= ${__from} AND time <= ${__to} AND partition='${partition}'\nORDER BY -time\n",
@@ -229,10 +237,17 @@
       {
         "allValue": null,
         "current": {
-          "isNone": true,
           "selected": false,
-          "text": "None",
-          "value": ""
+          "text": [
+            "trigger",
+            "fakehsi",
+            "rulocalhost0"
+          ],
+          "value": [
+            "trigger",
+            "fakehsi",
+            "rulocalhost0"
+          ]
         },
         "datasource": "ERS",
         "definition": "SELECT application_name\nFROM public.\"ErrorReports\"\nWHERE time >= ${__from} AND time <= ${__to} AND partition='${partition}'\nORDER BY -time\n",
@@ -240,7 +255,7 @@
         "error": null,
         "hide": 0,
         "includeAll": false,
-        "label": "Application in",
+        "label": "Application included",
         "multi": true,
         "name": "application_in",
         "options": [],
@@ -254,10 +269,13 @@
       {
         "allValue": null,
         "current": {
-          "isNone": true,
           "selected": false,
-          "text": "None",
-          "value": ""
+          "text": [
+            "trigger"
+          ],
+          "value": [
+            "trigger"
+          ]
         },
         "datasource": "ERS",
         "definition": "SELECT application_name\nFROM public.\"ErrorReports\"\nWHERE time >= ${__from} AND time <= ${__to} AND partition='${partition}'\nORDER BY -time\n",
@@ -265,7 +283,7 @@
         "error": null,
         "hide": 0,
         "includeAll": false,
-        "label": "Application out",
+        "label": "Application excluded",
         "multi": true,
         "name": "application_out",
         "options": [],
@@ -285,8 +303,8 @@
         "description": null,
         "error": null,
         "hide": 0,
-        "label": "Issue Regex",
-        "name": "issue_regex",
+        "label": "Message Regex",
+        "name": "message_regex",
         "options": [
           {
             "selected": true,
@@ -301,10 +319,59 @@
       {
         "allValue": null,
         "current": {
-          "isNone": true,
+          "selected": true,
+          "text": [
+            "trigger::TriggerEndOfRun",
+            "hsilibs::ProgressUpdate",
+            "trigger::TriggerPaused",
+            "trigger::TriggerActive",
+            "trigger::TriggerStartOfRun",
+            "readoutlibs::VerboseRequestTimedOut",
+            "trigger::TriggerInhibited",
+            "iomanager::QueueTimeoutExpired",
+            "readoutlibs::CannotWriteToQueue",
+            "iomanager::TimeoutExpired"
+          ],
+          "value": [
+            "trigger::TriggerEndOfRun",
+            "hsilibs::ProgressUpdate",
+            "trigger::TriggerPaused",
+            "trigger::TriggerActive",
+            "trigger::TriggerStartOfRun",
+            "readoutlibs::VerboseRequestTimedOut",
+            "trigger::TriggerInhibited",
+            "iomanager::QueueTimeoutExpired",
+            "readoutlibs::CannotWriteToQueue",
+            "iomanager::TimeoutExpired"
+          ]
+        },
+        "datasource": "ERS",
+        "definition": "SELECT issue_name\nFROM public.\"ErrorReports\"\nWHERE time >= ${__from} AND time <= ${__to} AND partition='${partition}' \nORDER BY -time\n",
+        "description": null,
+        "error": null,
+        "hide": 0,
+        "includeAll": false,
+        "label": "Issue",
+        "multi": true,
+        "name": "issue_full_name",
+        "options": [],
+        "query": "SELECT issue_name\nFROM public.\"ErrorReports\"\nWHERE time >= ${__from} AND time <= ${__to} AND partition='${partition}' \nORDER BY -time\n",
+        "refresh": 2,
+        "regex": "",
+        "skipUrlSync": false,
+        "sort": 0,
+        "type": "query"
+      },
+      {
+        "allValue": null,
+        "current": {
           "selected": false,
-          "text": "None",
-          "value": ""
+          "text": [
+            "np04-srv-016"
+          ],
+          "value": [
+            "np04-srv-016"
+          ]
         },
         "datasource": "ERS",
         "definition": "SELECT host_name\nFROM public.\"ErrorReports\"\nWHERE time >= ${__from} AND time <= ${__to} AND partition='${partition}'\nORDER BY -time\n",
@@ -326,12 +393,12 @@
     ]
   },
   "time": {
-    "from": "now-24h",
+    "from": "now-2d",
     "to": "now"
   },
   "timepicker": {},
   "timezone": "",
   "title": "ERS",
   "uid": "-xpoyqB4zd",
-  "version": 1
+  "version": 16
 }

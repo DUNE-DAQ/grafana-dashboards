@@ -1,34 +1,4 @@
 {
-  "__inputs": [
-    {
-      "name": "DS_ERS",
-      "label": "ERS",
-      "description": "",
-      "type": "datasource",
-      "pluginId": "postgres",
-      "pluginName": "PostgreSQL"
-    }
-  ],
-  "__requires": [
-    {
-      "type": "grafana",
-      "id": "grafana",
-      "name": "Grafana",
-      "version": "8.0.7"
-    },
-    {
-      "type": "datasource",
-      "id": "postgres",
-      "name": "PostgreSQL",
-      "version": "1.0.0"
-    },
-    {
-      "type": "panel",
-      "id": "table",
-      "name": "Table",
-      "version": ""
-    }
-  ],
   "annotations": {
     "list": [
       {
@@ -45,12 +15,12 @@
   "editable": true,
   "gnetId": null,
   "graphTooltip": 0,
-  "id": null,
-  "iteration": 1680623358084,
+  "id": 165,
+  "iteration": 1680707624193,
   "links": [],
   "panels": [
     {
-      "datasource": "${DS_ERS}",
+      "datasource": "ERS",
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -173,7 +143,7 @@
           "group": [],
           "metricColumn": "none",
           "rawQuery": true,
-          "rawSql": "SELECT severity,time,application_name,message,issue_name,host_name\nFROM public.\"ErrorReports\"\nWHERE partition='${partition}' AND time >= ${__from} AND time <= ${__to} AND severity in ([[severity]]) AND issue_name ~ '[[issue_regex]]' AND application_name in ([[application_in]]) AND application_name not in ([[application_out]]) AND host_name in ([[host]])   \nORDER BY -time\n",
+          "rawSql": "SELECT severity,time,application_name,message,issue_name,host_name\nFROM public.\"ErrorReports\"\nWHERE partition='${partition}' AND time >= ${__from} AND time <= ${__to} AND severity in ([[severity]]) AND issue_name in ([[issue_full_name]]) AND application_name in ([[application_in]]) AND application_name not in ([[application_out]]) AND host_name in ([[host]]) AND message ~ '[[message_regex]]'   \nORDER BY -time\n",
           "refId": "A",
           "select": [
             [
@@ -199,6 +169,7 @@
       "type": "table"
     }
   ],
+  "refresh": false,
   "schemaVersion": 30,
   "style": "dark",
   "tags": [
@@ -209,8 +180,12 @@
     "list": [
       {
         "allValue": null,
-        "current": {},
-        "datasource": "${DS_ERS}",
+        "current": {
+          "selected": false,
+          "text": "mroda",
+          "value": "mroda"
+        },
+        "datasource": "ERS",
         "definition": "SELECT partition\nFROM public.\"ErrorReports\"\nWHERE time >= ${__from} AND time <= ${__to}\nORDER BY -time\n",
         "description": null,
         "error": null,
@@ -229,8 +204,20 @@
       },
       {
         "allValue": null,
-        "current": {},
-        "datasource": "${DS_ERS}",
+        "current": {
+          "selected": false,
+          "text": [
+            "INFO",
+            "WARNING",
+            "ERROR"
+          ],
+          "value": [
+            "INFO",
+            "WARNING",
+            "ERROR"
+          ]
+        },
+        "datasource": "ERS",
         "definition": "SELECT severity\nFROM public.\"ErrorReports\"\nWHERE time >= ${__from} AND time <= ${__to} AND partition='${partition}'\nORDER BY -time\n",
         "description": null,
         "error": null,
@@ -249,14 +236,26 @@
       },
       {
         "allValue": null,
-        "current": {},
-        "datasource": "${DS_ERS}",
+        "current": {
+          "selected": false,
+          "text": [
+            "trigger",
+            "fakehsi",
+            "rulocalhost0"
+          ],
+          "value": [
+            "trigger",
+            "fakehsi",
+            "rulocalhost0"
+          ]
+        },
+        "datasource": "ERS",
         "definition": "SELECT application_name\nFROM public.\"ErrorReports\"\nWHERE time >= ${__from} AND time <= ${__to} AND partition='${partition}'\nORDER BY -time\n",
         "description": null,
         "error": null,
         "hide": 0,
         "includeAll": false,
-        "label": "Application in",
+        "label": "Application included",
         "multi": true,
         "name": "application_in",
         "options": [],
@@ -269,14 +268,22 @@
       },
       {
         "allValue": null,
-        "current": {},
-        "datasource": "${DS_ERS}",
+        "current": {
+          "selected": false,
+          "text": [
+            "trigger"
+          ],
+          "value": [
+            "trigger"
+          ]
+        },
+        "datasource": "ERS",
         "definition": "SELECT application_name\nFROM public.\"ErrorReports\"\nWHERE time >= ${__from} AND time <= ${__to} AND partition='${partition}'\nORDER BY -time\n",
         "description": null,
         "error": null,
         "hide": 0,
         "includeAll": false,
-        "label": "Application out",
+        "label": "Application excluded",
         "multi": true,
         "name": "application_out",
         "options": [],
@@ -296,8 +303,8 @@
         "description": null,
         "error": null,
         "hide": 0,
-        "label": "Issue Regex",
-        "name": "issue_regex",
+        "label": "Message Regex",
+        "name": "message_regex",
         "options": [
           {
             "selected": true,
@@ -311,8 +318,62 @@
       },
       {
         "allValue": null,
-        "current": {},
-        "datasource": "${DS_ERS}",
+        "current": {
+          "selected": true,
+          "text": [
+            "trigger::TriggerEndOfRun",
+            "hsilibs::ProgressUpdate",
+            "trigger::TriggerPaused",
+            "trigger::TriggerActive",
+            "trigger::TriggerStartOfRun",
+            "readoutlibs::VerboseRequestTimedOut",
+            "trigger::TriggerInhibited",
+            "iomanager::QueueTimeoutExpired",
+            "readoutlibs::CannotWriteToQueue",
+            "iomanager::TimeoutExpired"
+          ],
+          "value": [
+            "trigger::TriggerEndOfRun",
+            "hsilibs::ProgressUpdate",
+            "trigger::TriggerPaused",
+            "trigger::TriggerActive",
+            "trigger::TriggerStartOfRun",
+            "readoutlibs::VerboseRequestTimedOut",
+            "trigger::TriggerInhibited",
+            "iomanager::QueueTimeoutExpired",
+            "readoutlibs::CannotWriteToQueue",
+            "iomanager::TimeoutExpired"
+          ]
+        },
+        "datasource": "ERS",
+        "definition": "SELECT issue_name\nFROM public.\"ErrorReports\"\nWHERE time >= ${__from} AND time <= ${__to} AND partition='${partition}' \nORDER BY -time\n",
+        "description": null,
+        "error": null,
+        "hide": 0,
+        "includeAll": false,
+        "label": "Issue",
+        "multi": true,
+        "name": "issue_full_name",
+        "options": [],
+        "query": "SELECT issue_name\nFROM public.\"ErrorReports\"\nWHERE time >= ${__from} AND time <= ${__to} AND partition='${partition}' \nORDER BY -time\n",
+        "refresh": 2,
+        "regex": "",
+        "skipUrlSync": false,
+        "sort": 0,
+        "type": "query"
+      },
+      {
+        "allValue": null,
+        "current": {
+          "selected": false,
+          "text": [
+            "np04-srv-016"
+          ],
+          "value": [
+            "np04-srv-016"
+          ]
+        },
+        "datasource": "ERS",
         "definition": "SELECT host_name\nFROM public.\"ErrorReports\"\nWHERE time >= ${__from} AND time <= ${__to} AND partition='${partition}'\nORDER BY -time\n",
         "description": null,
         "error": null,
@@ -332,12 +393,12 @@
     ]
   },
   "time": {
-    "from": "now-15m",
+    "from": "now-2d",
     "to": "now"
   },
   "timepicker": {},
   "timezone": "",
   "title": "ERS",
-  "uid": "-xpoyqB4z",
-  "version": 33
+  "uid": "-xpoyqB4zd",
+  "version": 16
 }

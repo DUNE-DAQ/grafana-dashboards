@@ -1,60 +1,4 @@
 {
-  "__inputs": [
-    {
-      "name": "DS_INFLUXKAFKA",
-      "label": "InfluxKafka",
-      "description": "",
-      "type": "datasource",
-      "pluginId": "influxdb",
-      "pluginName": "InfluxDB"
-    },
-    {
-      "name": "DS_ERS",
-      "label": "ERS",
-      "description": "",
-      "type": "datasource",
-      "pluginId": "postgres",
-      "pluginName": "PostgreSQL"
-    }
-  ],
-  "__requires": [
-    {
-      "type": "grafana",
-      "id": "grafana",
-      "name": "Grafana",
-      "version": "8.0.7"
-    },
-    {
-      "type": "datasource",
-      "id": "influxdb",
-      "name": "InfluxDB",
-      "version": "1.0.0"
-    },
-    {
-      "type": "datasource",
-      "id": "postgres",
-      "name": "PostgreSQL",
-      "version": "1.0.0"
-    },
-    {
-      "type": "panel",
-      "id": "stat",
-      "name": "Stat",
-      "version": ""
-    },
-    {
-      "type": "panel",
-      "id": "table",
-      "name": "Table",
-      "version": ""
-    },
-    {
-      "type": "panel",
-      "id": "timeseries",
-      "name": "Time series",
-      "version": ""
-    }
-  ],
   "annotations": {
     "list": [
       {
@@ -77,8 +21,8 @@
   "editable": true,
   "gnetId": null,
   "graphTooltip": 0,
-  "id": null,
-  "iteration": 1680622747775,
+  "id": 175,
+  "iteration": 1680702258814,
   "links": [
     {
       "asDropdown": true,
@@ -154,7 +98,7 @@
     },
     {
       "cacheTimeout": null,
-      "datasource": "${DS_INFLUXKAFKA}",
+      "datasource": "InfluxKafka",
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -264,7 +208,7 @@
     },
     {
       "cacheTimeout": null,
-      "datasource": "${DS_INFLUXKAFKA}",
+      "datasource": "InfluxKafka",
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -386,7 +330,7 @@
       "type": "stat"
     },
     {
-      "datasource": "${DS_INFLUXKAFKA}",
+      "datasource": "InfluxKafka",
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -496,7 +440,7 @@
     },
     {
       "cacheTimeout": null,
-      "datasource": "${DS_INFLUXKAFKA}",
+      "datasource": "InfluxKafka",
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -592,7 +536,7 @@
     },
     {
       "cacheTimeout": null,
-      "datasource": "${DS_INFLUXKAFKA}",
+      "datasource": "InfluxKafka",
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -683,7 +627,7 @@
       "type": "stat"
     },
     {
-      "datasource": "${DS_INFLUXKAFKA}",
+      "datasource": "InfluxKafka",
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -810,7 +754,7 @@
     },
     {
       "cacheTimeout": null,
-      "datasource": "${DS_INFLUXKAFKA}",
+      "datasource": "InfluxKafka",
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -936,7 +880,7 @@
     },
     {
       "cacheTimeout": null,
-      "datasource": "${DS_INFLUXKAFKA}",
+      "datasource": "InfluxKafka",
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -1050,7 +994,7 @@
       "type": "stat"
     },
     {
-      "datasource": "${DS_INFLUXKAFKA}",
+      "datasource": "InfluxKafka",
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -1610,7 +1554,7 @@
       "type": "timeseries"
     },
     {
-      "datasource": "${DS_ERS}",
+      "datasource": "ERS",
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -1800,7 +1744,7 @@
       "type": "table"
     },
     {
-      "datasource": "${DS_INFLUXKAFKA}",
+      "datasource": "InfluxKafka",
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -1987,7 +1931,7 @@
       "type": "timeseries"
     },
     {
-      "datasource": "${DS_INFLUXKAFKA}",
+      "datasource": "InfluxKafka",
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -2136,7 +2080,7 @@
       "type": "timeseries"
     },
     {
-      "datasource": "${DS_INFLUXKAFKA}",
+      "datasource": "InfluxKafka",
       "description": "",
       "fieldConfig": {
         "defaults": {
@@ -2469,8 +2413,12 @@
     "list": [
       {
         "allValue": null,
-        "current": {},
-        "datasource": "${DS_INFLUXKAFKA}",
+        "current": {
+          "selected": false,
+          "text": "np02-coldbox-timing-tlu",
+          "value": "np02-coldbox-timing-tlu"
+        },
+        "datasource": "InfluxKafka",
         "definition": "SELECT \"partition_id\" FROM (SELECT \"state\",\"partition_id\" FROM \"dunedaq.appfwk.appinfo.Info\" WHERE $timeFilter)",
         "description": null,
         "error": null,
@@ -2489,8 +2437,13 @@
       },
       {
         "allValue": null,
-        "current": {},
-        "datasource": "${DS_INFLUXKAFKA}",
+        "current": {
+          "isNone": true,
+          "selected": false,
+          "text": "None",
+          "value": ""
+        },
+        "datasource": "InfluxKafka",
         "definition": "SHOW SERIES WHERE \"partition_id\"='${partition}' AND $timeFilter",
         "description": null,
         "error": null,
@@ -2509,8 +2462,13 @@
       },
       {
         "allValue": null,
-        "current": {},
-        "datasource": "${DS_INFLUXKAFKA}",
+        "current": {
+          "isNone": true,
+          "selected": false,
+          "text": "None",
+          "value": ""
+        },
+        "datasource": "InfluxKafka",
         "definition": "SHOW FIELD KEYS FROM \"dunedaq.timinglibs.${hsi_series}.Info\"",
         "description": null,
         "error": null,
@@ -2529,8 +2487,12 @@
       },
       {
         "allValue": null,
-        "current": {},
-        "datasource": "${DS_INFLUXKAFKA}",
+        "current": {
+          "selected": false,
+          "text": "517953",
+          "value": "517953"
+        },
+        "datasource": "InfluxKafka",
         "definition": "SELECT last(\"runtime\") FROM \"dunedaq.rcif.runinfo.Info\" WHERE (\"partition_id\" = '${partition}') AND $timeFilter",
         "description": null,
         "error": null,
@@ -2550,7 +2512,7 @@
     ]
   },
   "time": {
-    "from": "now-15m",
+    "from": "now-24h",
     "to": "now"
   },
   "timepicker": {
@@ -2580,6 +2542,6 @@
   },
   "timezone": "",
   "title": "DAQ overview",
-  "uid": "nnvT07O4z",
-  "version": 7
+  "uid": "46s_xKL4k",
+  "version": 1
 }

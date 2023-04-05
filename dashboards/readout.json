@@ -1,34 +1,4 @@
 {
-  "__inputs": [
-    {
-      "name": "DS_INFLUXKAFKA",
-      "label": "InfluxKafka",
-      "description": "",
-      "type": "datasource",
-      "pluginId": "influxdb",
-      "pluginName": "InfluxDB"
-    }
-  ],
-  "__requires": [
-    {
-      "type": "grafana",
-      "id": "grafana",
-      "name": "Grafana",
-      "version": "8.0.7"
-    },
-    {
-      "type": "datasource",
-      "id": "influxdb",
-      "name": "InfluxDB",
-      "version": "1.0.0"
-    },
-    {
-      "type": "panel",
-      "id": "timeseries",
-      "name": "Time series",
-      "version": ""
-    }
-  ],
   "annotations": {
     "list": [
       {
@@ -51,8 +21,8 @@
   "editable": true,
   "gnetId": null,
   "graphTooltip": 0,
-  "id": null,
-  "iteration": 1670931744076,
+  "id": 170,
+  "iteration": 1680703156474,
   "links": [],
   "panels": [
     {
@@ -70,7 +40,7 @@
       "type": "row"
     },
     {
-      "datasource": "${DS_INFLUXKAFKA}",
+      "datasource": "InfluxKafka",
       "description": "",
       "fieldConfig": {
         "defaults": {
@@ -200,7 +170,7 @@
       "type": "timeseries"
     },
     {
-      "datasource": "${DS_INFLUXKAFKA}",
+      "datasource": "InfluxKafka",
       "description": "",
       "fieldConfig": {
         "defaults": {
@@ -348,7 +318,7 @@
       "type": "timeseries"
     },
     {
-      "datasource": "${DS_INFLUXKAFKA}",
+      "datasource": "InfluxKafka",
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -816,7 +786,7 @@
       "type": "timeseries"
     },
     {
-      "datasource": "${DS_INFLUXKAFKA}",
+      "datasource": "InfluxKafka",
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -1128,7 +1098,7 @@
       "type": "timeseries"
     },
     {
-      "datasource": "${DS_INFLUXKAFKA}",
+      "datasource": "InfluxKafka",
       "description": "",
       "fieldConfig": {
         "defaults": {
@@ -1314,7 +1284,7 @@
       "type": "timeseries"
     },
     {
-      "datasource": "${DS_INFLUXKAFKA}",
+      "datasource": "InfluxKafka",
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -1468,7 +1438,7 @@
       "type": "row"
     },
     {
-      "datasource": "${DS_INFLUXKAFKA}",
+      "datasource": "InfluxKafka",
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -1762,7 +1732,7 @@
       "type": "timeseries"
     },
     {
-      "datasource": "${DS_INFLUXKAFKA}",
+      "datasource": "InfluxKafka",
       "description": "",
       "fieldConfig": {
         "defaults": {
@@ -1928,7 +1898,7 @@
       "type": "timeseries"
     },
     {
-      "datasource": "${DS_INFLUXKAFKA}",
+      "datasource": "InfluxKafka",
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -2407,8 +2377,12 @@
     "list": [
       {
         "allValue": null,
-        "current": {},
-        "datasource": "${DS_INFLUXKAFKA}",
+        "current": {
+          "selected": false,
+          "text": "np02-coldbox-timing-tlu",
+          "value": "np02-coldbox-timing-tlu"
+        },
+        "datasource": "InfluxKafka",
         "definition": "SHOW TAG VALUES WITH KEY=\"partition_id\" where $timeFilter",
         "description": null,
         "error": null,
@@ -2427,8 +2401,13 @@
       },
       {
         "allValue": null,
-        "current": {},
-        "datasource": "${DS_INFLUXKAFKA}",
+        "current": {
+          "isNone": true,
+          "selected": false,
+          "text": "None",
+          "value": ""
+        },
+        "datasource": "InfluxKafka",
         "definition": "SHOW  TAG VALUES  FROM \"dunedaq.readoutlibs.readoutinfo.RawDataProcessorInfo\" WITH KEY=\"source_id\" WHERE $timeFilter AND \"partition_id\"='${partition}'",
         "description": null,
         "error": null,
@@ -2447,8 +2426,13 @@
       },
       {
         "allValue": null,
-        "current": {},
-        "datasource": "${DS_INFLUXKAFKA}",
+        "current": {
+          "isNone": true,
+          "selected": false,
+          "text": "None",
+          "value": ""
+        },
+        "datasource": "InfluxKafka",
         "definition": "SHOW TAG VALUES FROM \"dunedaq.readoutlibs.readoutinfo.RawDataProcessorInfo\" WITH KEY=\"source_id\" WHERE $timeFilter AND \"partition_id\"='${partition}'",
         "description": null,
         "error": null,
@@ -2468,7 +2452,7 @@
     ]
   },
   "time": {
-    "from": "now-15m",
+    "from": "now-24h",
     "to": "now"
   },
   "timepicker": {
@@ -2498,6 +2482,6 @@
   },
   "timezone": "",
   "title": "Readout",
-  "uid": "WoqIhnOVk",
-  "version": 5
+  "uid": "WoqIhnOV",
+  "version": 1
 }

@@ -22,7 +22,7 @@
   "gnetId": null,
   "graphTooltip": 0,
   "id": 174,
-  "iteration": 1680703201003,
+  "iteration": 1683036844679,
   "links": [],
   "panels": [
     {
@@ -1262,52 +1262,6 @@
               "value": "maroda_test_ruemu0.datahandler_0"
             }
           ]
-        },
-        {
-          "alias": "TPG Hit",
-          "groupBy": [
-            {
-              "params": [
-                "$__interval"
-              ],
-              "type": "time"
-            },
-            {
-              "params": [
-                "null"
-              ],
-              "type": "fill"
-            }
-          ],
-          "hide": false,
-          "measurement": "dunedaq.readoutlibs.readoutinfo.RawDataProcessorInfo",
-          "orderByTime": "ASC",
-          "policy": "default",
-          "query": "SELECT sum(\"rate_tp_hits\") FROM \"dunedaq.readoutlibs.readoutinfo.RawDataProcessorInfo\" WHERE (\"partition_id\"='${partition}' AND \"source_id\" =~ /.*\\.datahandler_\\d+/) AND $timeFilter GROUP BY time($__interval) fill(null)",
-          "rawQuery": true,
-          "refId": "B",
-          "resultFormat": "time_series",
-          "select": [
-            [
-              {
-                "params": [
-                  "rate_tp_hits"
-                ],
-                "type": "field"
-              },
-              {
-                "params": [],
-                "type": "sum"
-              }
-            ]
-          ],
-          "tags": [
-            {
-              "key": "source_id",
-              "operator": "=",
-              "value": "maroda_test_ruemu0.datahandler_0"
-            }
-          ]
         }
       ],
       "timeFrom": null,
@@ -1830,8 +1784,8 @@
         "allValue": null,
         "current": {
           "selected": false,
-          "text": "np02-coldbox-timing-tlu",
-          "value": "np02-coldbox-timing-tlu"
+          "text": "np02coldbox-trigger",
+          "value": "np02coldbox-trigger"
         },
         "datasource": "InfluxKafka",
         "definition": "SHOW TAG VALUES WITH KEY=\"partition_id\" where $timeFilter ",
@@ -1853,10 +1807,9 @@
       {
         "allValue": null,
         "current": {
-          "isNone": true,
           "selected": false,
-          "text": "None",
-          "value": ""
+          "text": "runp04srv0260",
+          "value": "runp04srv0260"
         },
         "datasource": "InfluxKafka",
         "definition": "SHOW  TAG VALUES FROM \"dunedaq.readoutlibs.readoutinfo.RequestHandlerInfo\" WITH KEY=\"source_id\" WHERE $timeFilter AND \"partition_id\"='${partition}'",
@@ -1878,10 +1831,9 @@
       {
         "allValue": null,
         "current": {
-          "isNone": true,
           "selected": false,
-          "text": "None",
-          "value": ""
+          "text": "tp_datahandler_14",
+          "value": "tp_datahandler_14"
         },
         "datasource": "InfluxKafka",
         "definition": "SHOW  TAG VALUES FROM \"dunedaq.readoutlibs.readoutinfo.RequestHandlerInfo\" WITH KEY=\"source_id\" WHERE $timeFilter AND \"partition_id\"='${partition}'",
@@ -1903,7 +1855,7 @@
     ]
   },
   "time": {
-    "from": "now-24h",
+    "from": "now-15m",
     "to": "now"
   },
   "timepicker": {
@@ -1934,5 +1886,5 @@
   "timezone": "",
   "title": "Trigger Primitives",
   "uid": "C6yDKy5nkw",
-  "version": 1
+  "version": 2
 }

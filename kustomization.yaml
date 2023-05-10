@@ -1,0 +1,40 @@
+# Global options
+generatorOptions:
+  disableNameSuffixHash: true
+  labels:
+    grafana_dashboard: "1"
+commonAnnotations:
+  grafana_folder: "DUNE"
+#namespace: monitoring
+
+
+# Generate a ConfigMap for each dashboard
+configMapGenerator:
+- name: dune-daq-dqm:
+  files: [ dashboards/DQM.json ]
+- name: dune-daq-ers:
+  files: [ dashboards/ERS.json ]
+- name: dune-daq-network-manager:
+  files: [ dashboards/NetworkManager.json ]
+- name: dune-daq-queues:
+  files: [ dashboards/Queues.json ]
+- name: dune-daq-trigger-flow:
+  files: [ dashboards/TriggerFlow.json ]
+- name: dune-daq-applications:
+  files: [ dashboards/applications.json ]
+- name: dune-daq-daq-overview:
+  files: [ dashboards/daq_overview.json ]
+- name: dune-daq-dataflow:
+  files: [ dashboards/dataflow.json ]
+- name: dune-daq-frontend:
+  files: [ dashboards/frontend.json ]
+- name: dune-daq-kafka:
+  files: [ dashboards/kafka.json ]
+- name: dune-daq-readout:
+  files: [ dashboards/readout.json ]
+- name: dune-daq-timing:
+  files: [ dashboards/timing.json ]
+- name: dune-daq-trigger-and-hsi:
+  files: [ dashboards/trigger_and_HSI.json ]
+- name: dune-daq-trigger-primitives:
+  files: [ dashboards/trigger_primitives.json ]

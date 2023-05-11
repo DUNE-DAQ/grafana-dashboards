@@ -31,7 +31,7 @@
       "id": 31,
       "panels": [
         {
-          "datasource": "ERS",
+          "datasource": "${postgresql}",
           "fieldConfig": {
             "defaults": {
               "color": {
@@ -239,7 +239,7 @@
       "type": "row"
     },
     {
-      "datasource": "InfluxKafka",
+      "datasource": "${influxdb}",
       "description": "Displays timestamp data.\n\nThe left axis indicates the current timestamp value in seconds from the UNIX epoch. The actual timestamp value is 62,500,000 times this number.\n\nThe right axis indicates the average change between two successive timestamps over one minute. This should be 62,500,000 from the 62.5MHz frequency.",
       "fieldConfig": {
         "defaults": {
@@ -449,7 +449,7 @@
       "type": "timeseries"
     },
     {
-      "datasource": "InfluxKafka",
+      "datasource": "${influxdb}",
       "description": "Displays the status of the MMCM and PLL over time.\n\nNote the PLL is expected to be \"Bad\" unless an upstream device is connected.",
       "fieldConfig": {
         "defaults": {
@@ -600,7 +600,7 @@
       "type": "state-timeline"
     },
     {
-      "datasource": "InfluxKafka",
+      "datasource": "${influxdb}",
       "description": "Displays the \"pll_sticky\" flag: This goes low if the device has a PLL (Phase-Locked Loop) fault, and remains low until the next reset.\n\nCurrently expected to always be low, since this flag will be set as low after the reset before the PLL becomes ready.",
       "fieldConfig": {
         "defaults": {
@@ -694,7 +694,7 @@
       "type": "stat"
     },
     {
-      "datasource": "InfluxKafka",
+      "datasource": "${influxdb}",
       "description": "Displays the \"mmcm_sticky\" flag. This flag will go low if a fault is detected in the MMCM (Mixed-Mode Clock Manager), and remain low until the device is reset.\n\nCurrently expected to always be low, since this flag will be set as low after the reset before the MMCM becomes ready.",
       "fieldConfig": {
         "defaults": {
@@ -788,7 +788,7 @@
       "type": "stat"
     },
     {
-      "datasource": "InfluxKafka",
+      "datasource": "${influxdb}",
       "description": "Counts of commands in the TMC.\n - Reset commands: Number of requests sent to reset the master.\n - Status commands: Number of requests sent to get the status of the master.\n - Timestamp set commands: Number of requests sent to set the timestamp in the master device.\n - Delay set commands: Number of requests sent to set the delay of a connected endpoint device.\n - Generic commands: Number of commands requests (i.e. echo).",
       "fieldConfig": {
         "defaults": {
@@ -922,7 +922,7 @@
       "type": "bargauge"
     },
     {
-      "datasource": "InfluxKafka",
+      "datasource": "${influxdb}",
       "description": "Counts of commands in the THI.\n - Received commands: Number of command requests received by the THI.\n - Accepted commands: Number of commands received by THI which are recognised.\n - Rejected commands: Number of commands received by THI which are not recognised.\n - Failed commands: Number of commands accepted by THI which fail in execution.",
       "fieldConfig": {
         "defaults": {
@@ -1053,7 +1053,7 @@
       "id": 8,
       "panels": [
         {
-          "datasource": "InfluxKafka",
+          "datasource": "${influxdb}",
           "description": "Only active is the master is a pc059 board.\n\nIndicates which mux (0-7) is selected.",
           "fieldConfig": {
             "defaults": {
@@ -1129,7 +1129,7 @@
           "type": "stat"
         },
         {
-          "datasource": "InfluxKafka",
+          "datasource": "${influxdb}",
           "description": "Only active if the master is a pc059 board.\n\nIndicates the SFP statuses of the upstream and downstream SFPs.\n\nNote LOS (Loss Of Signal) is expected to be \"Bad\" if no SFP is connected.",
           "fieldConfig": {
             "defaults": {
@@ -1246,7 +1246,7 @@
           "type": "state-timeline"
         },
         {
-          "datasource": "InfluxKafka",
+          "datasource": "${influxdb}",
           "description": "Only active is the master is a TLU.\n\nIndicates the status of the SFP of a TLU device.",
           "fieldConfig": {
             "defaults": {
@@ -1350,7 +1350,7 @@
           "type": "state-timeline"
         },
         {
-          "datasource": "InfluxKafka",
+          "datasource": "${influxdb}",
           "description": "Only active if the master is a MIB.\n\nIndicates the statuses of the SFPs on the MIB.\n\nNote LOS (Loss Of Signal) is expected to be \"Bad\" if there is not SFP attached.",
           "fieldConfig": {
             "defaults": {
@@ -1504,7 +1504,7 @@
           "text": "np02-coldbox-timing-tlu",
           "value": "np02-coldbox-timing-tlu"
         },
-        "datasource": "InfluxKafka",
+        "datasource": "${influxdb}",
         "definition": "SHOW TAG VALUES FROM \"dunedaq.timinglibs.timinghardwaremanagerpdiinfo.Info\" WITH KEY=\"partition_id\" WHERE $timeFilter",
         "description": "Which timing partition to view",
         "error": null,

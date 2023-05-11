@@ -20,7 +20,7 @@
   "links": [],
   "panels": [
     {
-      "datasource": "ERS",
+      "datasource": "${postgresql}",
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -203,7 +203,7 @@
           "text": "mroda",
           "value": "mroda"
         },
-        "datasource": "ERS",
+        "datasource": "${postgresql}",
         "definition": "SELECT partition\nFROM public.\"ErrorReports\"\nWHERE time >= ${__from} AND time <= ${__to}\nORDER BY -time\n",
         "description": null,
         "error": null,
@@ -235,7 +235,7 @@
             "ERROR"
           ]
         },
-        "datasource": "ERS",
+        "datasource": "${postgresql}",
         "definition": "SELECT severity\nFROM public.\"ErrorReports\"\nWHERE time >= ${__from} AND time <= ${__to} AND partition='${partition}'\nORDER BY -time\n",
         "description": null,
         "error": null,
@@ -267,7 +267,7 @@
             "rulocalhost0"
           ]
         },
-        "datasource": "ERS",
+        "datasource": "${postgresql}",
         "definition": "SELECT application_name\nFROM public.\"ErrorReports\"\nWHERE time >= ${__from} AND time <= ${__to} AND partition='${partition}'\nORDER BY -time\n",
         "description": null,
         "error": null,
@@ -295,7 +295,7 @@
             "trigger"
           ]
         },
-        "datasource": "ERS",
+        "datasource": "${postgresql}",
         "definition": "SELECT application_name\nFROM public.\"ErrorReports\"\nWHERE time >= ${__from} AND time <= ${__to} AND partition='${partition}'\nORDER BY -time\n",
         "description": null,
         "error": null,
@@ -363,7 +363,7 @@
             "iomanager::TimeoutExpired"
           ]
         },
-        "datasource": "ERS",
+        "datasource": "${postgresql}",
         "definition": "SELECT issue_name\nFROM public.\"ErrorReports\"\nWHERE time >= ${__from} AND time <= ${__to} AND partition='${partition}' \nORDER BY -time\n",
         "description": null,
         "error": null,
@@ -391,7 +391,7 @@
             "np04-srv-016"
           ]
         },
-        "datasource": "ERS",
+        "datasource": "${postgresql}",
         "definition": "SELECT host_name\nFROM public.\"ErrorReports\"\nWHERE time >= ${__from} AND time <= ${__to} AND partition='${partition}'\nORDER BY -time\n",
         "description": null,
         "error": null,

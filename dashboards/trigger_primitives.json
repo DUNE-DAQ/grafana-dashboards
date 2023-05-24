@@ -405,7 +405,7 @@
           ]
         }
       ],
-      "title": "TP Producers - TP hit rates",
+      "title": "Producers - TP hit rates",
       "transformations": [
         {
           "id": "renameByRegex",
@@ -535,7 +535,7 @@
           ]
         }
       ],
-      "title": "TP Producers - TP Sent rates",
+      "title": "Producers - TP Sent rates",
       "transformations": [
         {
           "id": "renameByRegex",
@@ -665,7 +665,7 @@
           ]
         }
       ],
-      "title": "TP receiving rates",
+      "title": "Handlers - TP receiving rates",
       "transformations": [
         {
           "id": "renameByRegex",
@@ -795,7 +795,7 @@
           ]
         }
       ],
-      "title": "TP dropped rates",
+      "title": "Producers - TP dropped rates",
       "transformations": [
         {
           "id": "renameByRegex",
@@ -994,6 +994,13 @@
           ]
         },
         {
+          "alias": "Received TP",
+          "hide": true,
+          "query": "SELECT sum(\"rate_payloads_consumed\")*1000 FROM \"dunedaq.readoutlibs.readoutinfo.ReadoutInfo\" WHERE (\"partition_id\"='${partition}' AND \"source_id\" =~ /.*\\.tp_datahandler_\\d+/) AND $timeFilter GROUP BY time($__interval), \"source_id\"",
+          "rawQuery": true,
+          "refId": "B"
+        },
+        {
           "alias": "Dropped TP",
           "groupBy": [
             {
@@ -1052,7 +1059,7 @@
       ],
       "timeFrom": null,
       "timeShift": null,
-      "title": "Total TP rates",
+      "title": "Handlers - Total rates",
       "type": "timeseries"
     },
     {
@@ -1188,7 +1195,7 @@
       ],
       "timeFrom": null,
       "timeShift": null,
-      "title": "Send TP rate",
+      "title": "Handlers - Sent TP rate",
       "transformations": [
         {
           "id": "renameByRegex",
@@ -1333,7 +1340,7 @@
       ],
       "timeFrom": null,
       "timeShift": null,
-      "title": "Send TP Set rate",
+      "title": "Handlers - Sent TP Set rate",
       "transformations": [
         {
           "id": "renameByRegex",
@@ -1477,7 +1484,7 @@
       ],
       "timeFrom": null,
       "timeShift": null,
-      "title": "Dropped TP rate",
+      "title": "Handlers - Dropped TP rate",
       "transformations": [
         {
           "id": "renameByRegex",
@@ -2095,7 +2102,7 @@
     ]
   },
   "time": {
-    "from": "now-30m",
+    "from": "now-3h",
     "to": "now"
   },
   "timepicker": {
@@ -2126,5 +2133,5 @@
   "timezone": "",
   "title": "Trigger Primitives",
   "uid": "C6yDKy5nkws",
-  "version": 9
+  "version": 13
 }

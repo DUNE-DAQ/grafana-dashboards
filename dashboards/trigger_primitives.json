@@ -22,7 +22,7 @@
   "gnetId": null,
   "graphTooltip": 0,
   "id": 236,
-  "iteration": 1684931108442,
+  "iteration": 1685528188511,
   "links": [],
   "panels": [
     {
@@ -1055,11 +1055,76 @@
               "value": "maroda_test_ruemu0.datahandler_0"
             }
           ]
+        },
+        {
+          "alias": "$tag_source_id",
+          "groupBy": [
+            {
+              "params": [
+                "$__interval"
+              ],
+              "type": "time"
+            },
+            {
+              "params": [
+                "null"
+              ],
+              "type": "fill"
+            }
+          ],
+          "hide": false,
+          "measurement": "dunedaq.readoutlibs.readoutinfo.RawDataProcessorInfo",
+          "orderByTime": "ASC",
+          "policy": "default",
+          "query": "SELECT non_negative_derivative(cumulative_sum(sum(\"num_heartbeats\")), 1s) FROM \"dunedaq.readoutlibs.readoutinfo.RawDataProcessorInfo\" WHERE (\"partition_id\"='${partition}' AND \"source_id\" =~ /.*\\.tp_datahandler_\\d+/) AND $timeFilter GROUP BY time($__interval), \"source_id\" fill(null) ",
+          "rawQuery": true,
+          "refId": "C",
+          "resultFormat": "time_series",
+          "select": [
+            [
+              {
+                "params": [
+                  "num_heartbeats"
+                ],
+                "type": "field"
+              },
+              {
+                "params": [],
+                "type": "sum"
+              },
+              {
+                "params": [],
+                "type": "cumulative_sum"
+              },
+              {
+                "params": [
+                  "1s"
+                ],
+                "type": "non_negative_derivative"
+              }
+            ]
+          ],
+          "tags": [
+            {
+              "key": "source_id",
+              "operator": "=",
+              "value": "maroda_test_ruemu0.datahandler_0"
+            }
+          ]
         }
       ],
       "timeFrom": null,
       "timeShift": null,
       "title": "Handlers - Total rates",
+      "transformations": [
+        {
+          "id": "renameByRegex",
+          "options": {
+            "regex": "[^.]+\\.([^.]+)\\.([^.]+)",
+            "renamePattern": "Heartbeat $1 $2"
+          }
+        }
+      ],
       "type": "timeseries"
     },
     {
@@ -1998,7 +2063,7 @@
       "type": "timeseries"
     }
   ],
-  "refresh": "5s",
+  "refresh": false,
   "schemaVersion": 30,
   "style": "dark",
   "tags": [
@@ -2102,8 +2167,8 @@
     ]
   },
   "time": {
-    "from": "now-3h",
-    "to": "now"
+    "from": "2023-05-31T08:48:20.940Z",
+    "to": "2023-05-31T08:53:12.799Z"
   },
   "timepicker": {
     "refresh_intervals": [
@@ -2133,5 +2198,5 @@
   "timezone": "",
   "title": "Trigger Primitives",
   "uid": "C6yDKy5nkws",
-  "version": 13
+  "version": 15
 }

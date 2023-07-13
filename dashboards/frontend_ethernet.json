@@ -22,7 +22,7 @@
   "gnetId": null,
   "graphTooltip": 0,
   "id": 247,
-  "iteration": 1688313516517,
+  "iteration": 1689255648128,
   "links": [],
   "panels": [
     {
@@ -103,6 +103,15 @@
         }
       ],
       "title": "Received total packets",
+      "transformations": [
+        {
+          "id": "renameByRegex",
+          "options": {
+            "regex": "[^.]+\\.([^.]+)\\.[^.]+\\.([^.]+)",
+            "renamePattern": "$1 $2"
+          }
+        }
+      ],
       "type": "timeseries"
     },
     {
@@ -184,6 +193,15 @@
         }
       ],
       "title": "Packet rates",
+      "transformations": [
+        {
+          "id": "renameByRegex",
+          "options": {
+            "regex": "[^.]+\\.([^.]+)\\.[^.]+\\.([^.]+)",
+            "renamePattern": "$1 $2"
+          }
+        }
+      ],
       "type": "timeseries"
     },
     {
@@ -265,6 +283,15 @@
         }
       ],
       "title": "Byte rates",
+      "transformations": [
+        {
+          "id": "renameByRegex",
+          "options": {
+            "regex": "[^.]+\\.([^.]+)\\.[^.]+\\.([^.]+)",
+            "renamePattern": "$1 $2"
+          }
+        }
+      ],
       "type": "timeseries"
     },
     {
@@ -345,6 +372,15 @@
         }
       ],
       "title": "Max Bad TS devation",
+      "transformations": [
+        {
+          "id": "renameByRegex",
+          "options": {
+            "regex": "[^.]+\\.([^.]+)\\.[^.]+\\.([^.]+)",
+            "renamePattern": "$1 $2"
+          }
+        }
+      ],
       "type": "timeseries"
     },
     {
@@ -426,6 +462,15 @@
         }
       ],
       "title": "Bad TS packet rate",
+      "transformations": [
+        {
+          "id": "renameByRegex",
+          "options": {
+            "regex": "[^.]+\\.([^.]+)\\.[^.]+\\.([^.]+)",
+            "renamePattern": "$1 $2"
+          }
+        }
+      ],
       "type": "timeseries"
     },
     {
@@ -507,6 +552,15 @@
         }
       ],
       "title": "Bad size packet rate",
+      "transformations": [
+        {
+          "id": "renameByRegex",
+          "options": {
+            "regex": "[^.]+\\.([^.]+)\\.[^.]+\\.([^.]+)",
+            "renamePattern": "$1 $2"
+          }
+        }
+      ],
       "type": "timeseries"
     },
     {
@@ -587,6 +641,15 @@
         }
       ],
       "title": "Max Bad Seq ID deviation",
+      "transformations": [
+        {
+          "id": "renameByRegex",
+          "options": {
+            "regex": "[^.]+\\.([^.]+)\\.[^.]+\\.([^.]+)",
+            "renamePattern": "$1 $2"
+          }
+        }
+      ],
       "type": "timeseries"
     },
     {
@@ -668,6 +731,15 @@
         }
       ],
       "title": "Bad Sequence ID packet rate",
+      "transformations": [
+        {
+          "id": "renameByRegex",
+          "options": {
+            "regex": "[^.]+\\.([^.]+)\\.[^.]+\\.([^.]+)",
+            "renamePattern": "$1 $2"
+          }
+        }
+      ],
       "type": "timeseries"
     },
     {
@@ -749,6 +821,15 @@
         }
       ],
       "title": "Max packet size",
+      "transformations": [
+        {
+          "id": "renameByRegex",
+          "options": {
+            "regex": "[^.]+\\.([^.]+)\\.[^.]+\\.([^.]+)",
+            "renamePattern": "$1 $2"
+          }
+        }
+      ],
       "type": "timeseries"
     },
     {
@@ -830,6 +911,15 @@
         }
       ],
       "title": "Min packet size",
+      "transformations": [
+        {
+          "id": "renameByRegex",
+          "options": {
+            "regex": "[^.]+\\.([^.]+)\\.[^.]+\\.([^.]+)",
+            "renamePattern": "$1 $2"
+          }
+        }
+      ],
       "type": "timeseries"
     }
   ],
@@ -866,8 +956,8 @@
         "allValue": null,
         "current": {
           "selected": false,
-          "text": "apa4-eth-nightly",
-          "value": "apa4-eth-nightly"
+          "text": "wes-test",
+          "value": "wes-test"
         },
         "datasource": "${influxdb}",
         "definition": "SHOW TAG VALUES WITH KEY=\"partition_id\" where $timeFilter",
@@ -889,8 +979,8 @@
     ]
   },
   "time": {
-    "from": "2023-06-30T12:23:09.568Z",
-    "to": "2023-06-30T14:08:02.005Z"
+    "from": "now-6h",
+    "to": "now"
   },
   "timepicker": {
     "refresh_intervals": [
@@ -920,5 +1010,5 @@
   "timezone": "",
   "title": "Frontend Ethernet",
   "uid": "hEaTOy57sa",
-  "version": 12
+  "version": 13
 }

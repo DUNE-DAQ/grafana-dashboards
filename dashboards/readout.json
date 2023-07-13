@@ -21,8 +21,8 @@
   "editable": true,
   "gnetId": null,
   "graphTooltip": 0,
-  "id": 170,
-  "iteration": 1684924405427,
+  "id": 232,
+  "iteration": 1689254943598,
   "links": [],
   "panels": [
     {
@@ -2619,10 +2619,12 @@
     "list": [
       {
         "current": {
-          "selected": true,
+          "selected": false,
           "text": "InfluxKafka",
           "value": "InfluxKafka"
         },
+        "description": null,
+        "error": null,
         "hide": 2,
         "includeAll": false,
         "label": "InfluxDB",
@@ -2638,9 +2640,9 @@
       {
         "allValue": null,
         "current": {
-          "selected": false,
-          "text": "giotest",
-          "value": "giotest"
+          "selected": true,
+          "text": "np04hddev",
+          "value": "np04hddev"
         },
         "datasource": "${influxdb}",
         "definition": "SHOW TAG VALUES WITH KEY=\"partition_id\" where $timeFilter",
@@ -2662,12 +2664,12 @@
       {
         "allValue": null,
         "current": {
-          "selected": false,
-          "text": "runp04srv0280",
-          "value": "runp04srv0280"
+          "selected": true,
+          "text": "runp04srv028flx1",
+          "value": "runp04srv028flx1"
         },
         "datasource": "${influxdb}",
-        "definition": "SHOW  TAG VALUES  FROM \"dunedaq.readoutlibs.readoutinfo.RawDataProcessorInfo\" WITH KEY=\"source_id\" WHERE $timeFilter AND \"partition_id\"='${partition}'",
+        "definition": "SELECT \"source_id\" FROM (SELECT \"num_buffer_cleanups\",\"source_id\" FROM \"dunedaq.readoutlibs.readoutinfo.RequestHandlerInfo\" WHERE $timeFilter AND \"partition_id\"='${partition}' )",
         "description": null,
         "error": null,
         "hide": 0,
@@ -2676,8 +2678,8 @@
         "multi": false,
         "name": "readout_app",
         "options": [],
-        "query": "SHOW  TAG VALUES  FROM \"dunedaq.readoutlibs.readoutinfo.RawDataProcessorInfo\" WITH KEY=\"source_id\" WHERE $timeFilter AND \"partition_id\"='${partition}'",
-        "refresh": 1,
+        "query": "SELECT \"source_id\" FROM (SELECT \"num_buffer_cleanups\",\"source_id\" FROM \"dunedaq.readoutlibs.readoutinfo.RequestHandlerInfo\" WHERE $timeFilter AND \"partition_id\"='${partition}' )",
+        "refresh": 2,
         "regex": ".*\\.(.*)\\..*",
         "skipUrlSync": false,
         "sort": 1,
@@ -2686,12 +2688,12 @@
       {
         "allValue": null,
         "current": {
-          "selected": false,
-          "text": "datahandler_0",
-          "value": "datahandler_0"
+          "selected": true,
+          "text": "datahandler_13",
+          "value": "datahandler_13"
         },
         "datasource": "${influxdb}",
-        "definition": "SHOW TAG VALUES FROM \"dunedaq.readoutlibs.readoutinfo.RawDataProcessorInfo\" WITH KEY=\"source_id\" WHERE $timeFilter AND \"partition_id\"='${partition}'",
+        "definition": "SELECT \"source_id\" FROM (SELECT \"num_buffer_cleanups\",\"source_id\" FROM \"dunedaq.readoutlibs.readoutinfo.RequestHandlerInfo\" WHERE $timeFilter AND \"partition_id\"='${partition}' )",
         "description": null,
         "error": null,
         "hide": 0,
@@ -2700,7 +2702,7 @@
         "multi": false,
         "name": "readout_module",
         "options": [],
-        "query": "SHOW TAG VALUES FROM \"dunedaq.readoutlibs.readoutinfo.RawDataProcessorInfo\" WITH KEY=\"source_id\" WHERE $timeFilter AND \"partition_id\"='${partition}'",
+        "query": "SELECT \"source_id\" FROM (SELECT \"num_buffer_cleanups\",\"source_id\" FROM \"dunedaq.readoutlibs.readoutinfo.RequestHandlerInfo\" WHERE $timeFilter AND \"partition_id\"='${partition}' )",
         "refresh": 1,
         "regex": ".*\\.${readout_app}\\.(.*)",
         "skipUrlSync": false,
@@ -2710,7 +2712,7 @@
     ]
   },
   "time": {
-    "from": "now-24h",
+    "from": "now-3h",
     "to": "now"
   },
   "timepicker": {
@@ -2740,6 +2742,6 @@
   },
   "timezone": "",
   "title": "Readout",
-  "uid": "WoqIhnOV",
-  "version": 1
+  "uid": "WoqIhnO",
+  "version": 10
 }

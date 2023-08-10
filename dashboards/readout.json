@@ -22,7 +22,7 @@
   "gnetId": null,
   "graphTooltip": 0,
   "id": 232,
-  "iteration": 1689254943598,
+  "iteration": 1691660082939,
   "links": [],
   "panels": [
     {
@@ -1641,7 +1641,7 @@
           "hide": false,
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "SELECT spread(\"last_daq_timestamp\") FROM \"dunedaq.readoutlibs.readoutinfo.ReadoutInfo\" WHERE (partition_id = '${partition}' AND \"source_id\" =~ /.*\\.datahandler_\\d+/) AND  $timeFilter AND \"last_daq_timestamp\" > 0  GROUP BY time($__interval) fill(null)\n",
+          "query": "SELECT spread(*) FROM (SELECT last(\"last_daq_timestamp\") FROM \"dunedaq.readoutlibs.readoutinfo.ReadoutInfo\" WHERE (partition_id = '${partition}' AND \"source_id\" =~ /.*\\.datahandler_\\d+/) AND  $timeFilter AND \"last_daq_timestamp\" > 0  GROUP BY time($__interval), \"source_id\" fill(null)  ) GROUP BY time($__interval) fill(null) \n",
           "rawQuery": true,
           "refId": "B",
           "resultFormat": "time_series",
@@ -2640,7 +2640,7 @@
       {
         "allValue": null,
         "current": {
-          "selected": true,
+          "selected": false,
           "text": "np04hddev",
           "value": "np04hddev"
         },
@@ -2665,8 +2665,8 @@
         "allValue": null,
         "current": {
           "selected": true,
-          "text": "runp04srv028flx1",
-          "value": "runp04srv028flx1"
+          "text": "runp04srv029eth0",
+          "value": "runp04srv029eth0"
         },
         "datasource": "${influxdb}",
         "definition": "SELECT \"source_id\" FROM (SELECT \"num_buffer_cleanups\",\"source_id\" FROM \"dunedaq.readoutlibs.readoutinfo.RequestHandlerInfo\" WHERE $timeFilter AND \"partition_id\"='${partition}' )",
@@ -2688,9 +2688,9 @@
       {
         "allValue": null,
         "current": {
-          "selected": true,
-          "text": "datahandler_13",
-          "value": "datahandler_13"
+          "selected": false,
+          "text": "datahandler_200",
+          "value": "datahandler_200"
         },
         "datasource": "${influxdb}",
         "definition": "SELECT \"source_id\" FROM (SELECT \"num_buffer_cleanups\",\"source_id\" FROM \"dunedaq.readoutlibs.readoutinfo.RequestHandlerInfo\" WHERE $timeFilter AND \"partition_id\"='${partition}' )",
@@ -2712,7 +2712,7 @@
     ]
   },
   "time": {
-    "from": "now-3h",
+    "from": "now-24h",
     "to": "now"
   },
   "timepicker": {
@@ -2743,5 +2743,5 @@
   "timezone": "",
   "title": "Readout",
   "uid": "WoqIhnO",
-  "version": 10
+  "version": 16
 }

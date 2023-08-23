@@ -1579,7 +1579,7 @@
       },
       "gridPos": {
         "h": 7,
-        "w": 6,
+        "w": 24,
         "x": 0,
         "y": 15
       },
@@ -1709,7 +1709,7 @@
         "h": 7,
         "w": 8,
         "x": 0,
-        "y": 22
+        "y": 36
       },
       "id": 49,
       "options": {
@@ -1797,7 +1797,7 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 29
+        "y": 43
       },
       "id": 44,
       "panels": [],
@@ -1875,7 +1875,7 @@
         "h": 7,
         "w": 8,
         "x": 0,
-        "y": 30
+        "y": 44
       },
       "id": 42,
       "links": [],
@@ -2184,7 +2184,7 @@
         "h": 7,
         "w": 8,
         "x": 8,
-        "y": 30
+        "y": 44
       },
       "id": 38,
       "options": {
@@ -2362,7 +2362,7 @@
         "h": 7,
         "w": 8,
         "x": 16,
-        "y": 30
+        "y": 44
       },
       "id": 47,
       "options": {
@@ -2797,7 +2797,7 @@
       "type": "timeseries"
     }
   ],
-  "refresh": false,
+  "refresh": "5s",
   "schemaVersion": 38,
   "style": "dark",
   "tags": [
@@ -2827,8 +2827,8 @@
       {
         "current": {
           "selected": false,
-          "text": "np04hddev",
-          "value": "np04hddev"
+          "text": "thea-apa1",
+          "value": "thea-apa1"
         },
         "datasource": {
           "type": "influxdb",
@@ -2851,8 +2851,8 @@
       {
         "current": {
           "selected": false,
-          "text": "runp04srv029eth0",
-          "value": "runp04srv029eth0"
+          "text": "fakehsi",
+          "value": "fakehsi"
         },
         "datasource": {
           "type": "influxdb",
@@ -2875,8 +2875,8 @@
       {
         "current": {
           "selected": false,
-          "text": "datahandler_200",
-          "value": "datahandler_200"
+          "text": "hsi_datahandler",
+          "value": "hsi_datahandler"
         },
         "datasource": {
           "type": "influxdb",
@@ -2909,7 +2909,7 @@
         },
         "definition": "SELECT \"source_id\" FROM (SELECT \"last_daq_timestamp\",\"source_id\" FROM \"dunedaq.readoutlibs.readoutinfo.ReadoutInfo\" WHERE $timeFilter AND \"partition_id\"='${partition}' AND \"last_daq_timestamp\" > 0)",
         "description": "variable to generate timestamp spread",
-        "hide": 0,
+        "hide": 2,
         "includeAll": true,
         "label": "Timestamp spread apps",
         "multi": true,
@@ -2925,8 +2925,8 @@
     ]
   },
   "time": {
-    "from": "2023-08-10T10:05:22.245Z",
-    "to": "2023-08-10T14:05:22.245Z"
+    "from": "now-15m",
+    "to": "now"
   },
   "timepicker": {
     "refresh_intervals": [
@@ -2956,6 +2956,6 @@
   "timezone": "",
   "title": "Readout",
   "uid": "v4_2_0-readout",
-  "version": 21,
+  "version": 22,
   "weekStart": ""
 }

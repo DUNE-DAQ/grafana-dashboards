@@ -3,7 +3,10 @@
     "list": [
       {
         "builtIn": 1,
-        "datasource": "-- Grafana --",
+        "datasource": {
+          "type": "datasource",
+          "uid": "grafana"
+        },
         "enable": true,
         "hide": true,
         "iconColor": "rgba(0, 211, 255, 1)",
@@ -19,28 +22,16 @@
     ]
   },
   "editable": true,
-  "gnetId": null,
+  "fiscalYearStartMonth": 0,
   "graphTooltip": 0,
-  "id": 166,
-  "iteration": 1680703108893,
+  "id": 6,
   "links": [],
+  "liveNow": false,
   "panels": [
     {
-      "collapsed": false,
-      "datasource": null,
-      "gridPos": {
-        "h": 1,
-        "w": 24,
-        "x": 0,
-        "y": 0
+      "datasource": {
+        "uid": "${influxdb}"
       },
-      "id": 44,
-      "panels": [],
-      "title": "Felix",
-      "type": "row"
-    },
-    {
-      "datasource": "${influxdb}",
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -48,8 +39,11 @@
           },
           "custom": {
             "align": "auto",
-            "displayMode": "auto",
-            "filterable": true
+            "cellOptions": {
+              "type": "auto"
+            },
+            "filterable": true,
+            "inspect": false
           },
           "mappings": [
             {
@@ -184,8 +178,11 @@
             },
             "properties": [
               {
-                "id": "custom.displayMode",
-                "value": "color-background-solid"
+                "id": "custom.cellOptions",
+                "value": {
+                  "mode": "basic",
+                  "type": "color-background"
+                }
               }
             ]
           }
@@ -193,12 +190,21 @@
       },
       "gridPos": {
         "h": 7,
-        "w": 23,
+        "w": 24,
         "x": 0,
-        "y": 1
+        "y": 0
       },
       "id": 53,
       "options": {
+        "cellHeight": "sm",
+        "footer": {
+          "countRows": false,
+          "fields": "",
+          "reducer": [
+            "sum"
+          ],
+          "show": false
+        },
         "frameIndex": 0,
         "showHeader": true,
         "sortBy": [
@@ -208,9 +214,12 @@
           }
         ]
       },
-      "pluginVersion": "8.0.7",
+      "pluginVersion": "10.1.4",
       "targets": [
         {
+          "datasource": {
+            "uid": "${influxdb}"
+          },
           "groupBy": [
             {
               "params": [
@@ -255,6 +264,9 @@
           ]
         },
         {
+          "datasource": {
+            "uid": "${influxdb}"
+          },
           "groupBy": [
             {
               "params": [
@@ -320,7 +332,9 @@
       "type": "table"
     },
     {
-      "datasource": "${influxdb}",
+      "datasource": {
+        "uid": "${influxdb}"
+      },
       "description": "",
       "fieldConfig": {
         "defaults": {
@@ -328,6 +342,8 @@
             "mode": "palette-classic"
           },
           "custom": {
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
             "axisLabel": "",
             "axisPlacement": "auto",
             "barAlignment": 0,
@@ -339,6 +355,7 @@
               "tooltip": false,
               "viz": false
             },
+            "insertNulls": false,
             "lineInterpolation": "linear",
             "lineWidth": 1,
             "pointSize": 5,
@@ -374,24 +391,29 @@
       },
       "gridPos": {
         "h": 10,
-        "w": 11,
+        "w": 12,
         "x": 0,
-        "y": 8
+        "y": 7
       },
       "id": 49,
       "options": {
         "legend": {
           "calcs": [],
           "displayMode": "list",
-          "placement": "right"
+          "placement": "right",
+          "showLegend": true
         },
         "tooltip": {
-          "mode": "single"
+          "mode": "single",
+          "sort": "none"
         }
       },
       "targets": [
         {
           "alias": "$tag_source_id",
+          "datasource": {
+            "uid": "${influxdb}"
+          },
           "groupBy": [
             {
               "params": [
@@ -460,7 +482,9 @@
       "type": "timeseries"
     },
     {
-      "datasource": "${influxdb}",
+      "datasource": {
+        "uid": "${influxdb}"
+      },
       "description": "",
       "fieldConfig": {
         "defaults": {
@@ -468,6 +492,8 @@
             "mode": "palette-classic"
           },
           "custom": {
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
             "axisLabel": "",
             "axisPlacement": "auto",
             "barAlignment": 0,
@@ -479,6 +505,7 @@
               "tooltip": false,
               "viz": false
             },
+            "insertNulls": false,
             "lineInterpolation": "linear",
             "lineWidth": 1,
             "pointSize": 5,
@@ -515,23 +542,28 @@
       "gridPos": {
         "h": 10,
         "w": 12,
-        "x": 11,
-        "y": 8
+        "x": 12,
+        "y": 7
       },
       "id": 51,
       "options": {
         "legend": {
           "calcs": [],
           "displayMode": "list",
-          "placement": "right"
+          "placement": "right",
+          "showLegend": true
         },
         "tooltip": {
-          "mode": "single"
+          "mode": "single",
+          "sort": "none"
         }
       },
       "targets": [
         {
           "alias": "$tag_source_id",
+          "datasource": {
+            "uid": "${influxdb}"
+          },
           "groupBy": [
             {
               "params": [
@@ -600,7 +632,9 @@
       "type": "timeseries"
     },
     {
-      "datasource": "${influxdb}",
+      "datasource": {
+        "uid": "${influxdb}"
+      },
       "description": "",
       "fieldConfig": {
         "defaults": {
@@ -608,6 +642,8 @@
             "mode": "palette-classic"
           },
           "custom": {
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
             "axisLabel": "",
             "axisPlacement": "auto",
             "barAlignment": 0,
@@ -619,6 +655,7 @@
               "tooltip": false,
               "viz": false
             },
+            "insertNulls": false,
             "lineInterpolation": "linear",
             "lineWidth": 1,
             "pointSize": 5,
@@ -654,24 +691,29 @@
       },
       "gridPos": {
         "h": 9,
-        "w": 11,
+        "w": 12,
         "x": 0,
-        "y": 18
+        "y": 17
       },
       "id": 50,
       "options": {
         "legend": {
           "calcs": [],
           "displayMode": "list",
-          "placement": "right"
+          "placement": "right",
+          "showLegend": true
         },
         "tooltip": {
-          "mode": "single"
+          "mode": "single",
+          "sort": "none"
         }
       },
       "targets": [
         {
           "alias": "generic $tag_source_id",
+          "datasource": {
+            "uid": "${influxdb}"
+          },
           "groupBy": [
             {
               "params": [
@@ -728,6 +770,9 @@
         },
         {
           "alias": "crc $tag_source_id",
+          "datasource": {
+            "uid": "${influxdb}"
+          },
           "groupBy": [
             {
               "params": [
@@ -784,6 +829,9 @@
         },
         {
           "alias": "trunc $tag_source_id",
+          "datasource": {
+            "uid": "${influxdb}"
+          },
           "groupBy": [
             {
               "params": [
@@ -852,7 +900,9 @@
       "type": "timeseries"
     },
     {
-      "datasource": "${influxdb}",
+      "datasource": {
+        "uid": "${influxdb}"
+      },
       "description": "",
       "fieldConfig": {
         "defaults": {
@@ -860,6 +910,8 @@
             "mode": "palette-classic"
           },
           "custom": {
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
             "axisLabel": "counters",
             "axisPlacement": "auto",
             "barAlignment": 0,
@@ -871,6 +923,7 @@
               "tooltip": false,
               "viz": false
             },
+            "insertNulls": false,
             "lineInterpolation": "linear",
             "lineWidth": 1,
             "pointSize": 5,
@@ -907,23 +960,28 @@
       "gridPos": {
         "h": 9,
         "w": 12,
-        "x": 11,
-        "y": 18
+        "x": 12,
+        "y": 17
       },
       "id": 25,
       "options": {
         "legend": {
           "calcs": [],
           "displayMode": "list",
-          "placement": "right"
+          "placement": "right",
+          "showLegend": true
         },
         "tooltip": {
-          "mode": "single"
+          "mode": "single",
+          "sort": "none"
         }
       },
       "targets": [
         {
           "alias": "$tag_source_id",
+          "datasource": {
+            "uid": "${influxdb}"
+          },
           "groupBy": [
             {
               "params": [
@@ -993,7 +1051,7 @@
     }
   ],
   "refresh": "5s",
-  "schemaVersion": 30,
+  "schemaVersion": 38,
   "style": "dark",
   "tags": [
     "Subsystem",
@@ -1003,9 +1061,9 @@
     "list": [
       {
         "current": {
-          "selected": true,
-          "text": "InfluxKafka",
-          "value": "InfluxKafka"
+          "selected": false,
+          "text": "KluInflux",
+          "value": "ffedc550-6555-4a16-a113-aabf2b980c30"
         },
         "hide": 2,
         "includeAll": false,
@@ -1020,16 +1078,15 @@
         "type": "datasource"
       },
       {
-        "allValue": null,
         "current": {
           "selected": false,
-          "text": "np02-coldbox-timing-tlu",
-          "value": "np02-coldbox-timing-tlu"
+          "text": "np04hddev",
+          "value": "np04hddev"
         },
-        "datasource": "${influxdb}",
+        "datasource": {
+          "uid": "${influxdb}"
+        },
         "definition": "SHOW TAG VALUES WITH KEY=\"partition_id\" where $timeFilter",
-        "description": null,
-        "error": null,
         "hide": 0,
         "includeAll": false,
         "label": "Partition name",
@@ -1046,7 +1103,7 @@
     ]
   },
   "time": {
-    "from": "now-24h",
+    "from": "now-6h",
     "to": "now"
   },
   "timepicker": {
@@ -1075,7 +1132,8 @@
     ]
   },
   "timezone": "",
-  "title": "Frontend",
+  "title": "Frontend Felix",
   "uid": "hEaTOy57",
-  "version": 1
+  "version": 3,
+  "weekStart": ""
 }

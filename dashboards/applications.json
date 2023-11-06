@@ -3,7 +3,10 @@
     "list": [
       {
         "builtIn": 1,
-        "datasource": "-- Grafana --",
+        "datasource": {
+          "type": "datasource",
+          "uid": "grafana"
+        },
         "enable": true,
         "hide": true,
         "iconColor": "rgba(0, 211, 255, 1)",
@@ -14,13 +17,16 @@
   },
   "description": "",
   "editable": true,
-  "gnetId": null,
+  "fiscalYearStartMonth": 0,
   "graphTooltip": 0,
-  "id": 162,
+  "id": 42,
   "links": [],
+  "liveNow": false,
   "panels": [
     {
-      "datasource": "${influxdb}",
+      "datasource": {
+        "uid": "${influxdb}"
+      },
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -28,7 +34,10 @@
           },
           "custom": {
             "align": "auto",
-            "displayMode": "auto"
+            "cellOptions": {
+              "type": "auto"
+            },
+            "inspect": false
           },
           "mappings": [],
           "thresholds": {
@@ -55,6 +64,15 @@
       },
       "id": 2,
       "options": {
+        "cellHeight": "sm",
+        "footer": {
+          "countRows": false,
+          "fields": "",
+          "reducer": [
+            "sum"
+          ],
+          "show": false
+        },
         "frameIndex": 0,
         "showHeader": true,
         "sortBy": [
@@ -64,9 +82,12 @@
           }
         ]
       },
-      "pluginVersion": "8.0.7",
+      "pluginVersion": "10.1.4",
       "targets": [
         {
+          "datasource": {
+            "uid": "${influxdb}"
+          },
           "groupBy": [
             {
               "params": [
@@ -112,19 +133,19 @@
     }
   ],
   "refresh": "5s",
-  "schemaVersion": 30,
+  "schemaVersion": 38,
   "style": "dark",
   "tags": [
-    "v4.2.0",
+    "v4.3.0",
     "Global"
   ],
   "templating": {
     "list": [
       {
         "current": {
-          "selected": true,
-          "text": "InfluxKafka",
-          "value": "InfluxKafka"
+          "selected": false,
+          "text": "KluInflux",
+          "value": "ffedc550-6555-4a16-a113-aabf2b980c30"
         },
         "hide": 2,
         "includeAll": false,
@@ -138,7 +159,7 @@
         "skipUrlSync": false,
         "type": "datasource"
       }
-   ]
+    ]
   },
   "time": {
     "from": "now-24h",
@@ -147,6 +168,7 @@
   "timepicker": {},
   "timezone": "",
   "title": "Applications",
-  "uid": "0DaesrNVy",
-  "version": 2
+  "uid": "v4_3_0-applications",
+  "version": 1,
+  "weekStart": ""
 }

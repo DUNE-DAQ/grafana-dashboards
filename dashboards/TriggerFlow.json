@@ -3,7 +3,10 @@
     "list": [
       {
         "builtIn": 1,
-        "datasource": "-- Grafana --",
+        "datasource": {
+          "type": "datasource",
+          "uid": "grafana"
+        },
         "enable": true,
         "hide": true,
         "iconColor": "rgba(0, 211, 255, 1)",
@@ -13,20 +16,24 @@
     ]
   },
   "editable": true,
-  "gnetId": null,
+  "fiscalYearStartMonth": 0,
   "graphTooltip": 0,
-  "id": 173,
-  "iteration": 1680703186540,
+  "id": 53,
   "links": [],
+  "liveNow": false,
   "panels": [
     {
-      "datasource": "${influxdb}",
+      "datasource": {
+        "uid": "${influxdb}"
+      },
       "fieldConfig": {
         "defaults": {
           "color": {
             "mode": "palette-classic"
           },
           "custom": {
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
             "axisLabel": "Rate",
             "axisPlacement": "auto",
             "barAlignment": 0,
@@ -38,6 +45,7 @@
               "tooltip": false,
               "viz": false
             },
+            "insertNulls": false,
             "lineInterpolation": "stepBefore",
             "lineWidth": 1,
             "pointSize": 5,
@@ -99,15 +107,20 @@
         "legend": {
           "calcs": [],
           "displayMode": "list",
-          "placement": "right"
+          "placement": "right",
+          "showLegend": true
         },
         "tooltip": {
-          "mode": "multi"
+          "mode": "multi",
+          "sort": "none"
         }
       },
       "targets": [
         {
           "alias": "Total TD rate",
+          "datasource": {
+            "uid": "${influxdb}"
+          },
           "groupBy": [
             {
               "params": [
@@ -159,6 +172,9 @@
         },
         {
           "alias": "TC Received Count",
+          "datasource": {
+            "uid": "${influxdb}"
+          },
           "groupBy": [
             {
               "params": [
@@ -211,6 +227,9 @@
         },
         {
           "alias": "Sent TD rate",
+          "datasource": {
+            "uid": "${influxdb}"
+          },
           "groupBy": [
             {
               "params": [
@@ -263,6 +282,9 @@
         },
         {
           "alias": "Inhibited TD rate",
+          "datasource": {
+            "uid": "${influxdb}"
+          },
           "groupBy": [
             {
               "params": [
@@ -315,6 +337,9 @@
         },
         {
           "alias": "TD Paused rate",
+          "datasource": {
+            "uid": "${influxdb}"
+          },
           "groupBy": [
             {
               "params": [
@@ -367,6 +392,9 @@
         },
         {
           "alias": "Error rate",
+          "datasource": {
+            "uid": "${influxdb}"
+          },
           "groupBy": [
             {
               "params": [
@@ -423,7 +451,10 @@
     },
     {
       "collapsed": false,
-      "datasource": null,
+      "datasource": {
+        "type": "datasource",
+        "uid": "grafana"
+      },
       "gridPos": {
         "h": 1,
         "w": 24,
@@ -432,17 +463,30 @@
       },
       "id": 8,
       "panels": [],
+      "targets": [
+        {
+          "datasource": {
+            "type": "datasource",
+            "uid": "grafana"
+          },
+          "refId": "A"
+        }
+      ],
       "title": "Row title",
       "type": "row"
     },
     {
-      "datasource": "${influxdb}",
+      "datasource": {
+        "uid": "${influxdb}"
+      },
       "fieldConfig": {
         "defaults": {
           "color": {
             "mode": "palette-classic"
           },
           "custom": {
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
             "axisLabel": "Rates",
             "axisPlacement": "auto",
             "barAlignment": 0,
@@ -454,6 +498,7 @@
               "tooltip": false,
               "viz": false
             },
+            "insertNulls": false,
             "lineInterpolation": "stepBefore",
             "lineWidth": 1,
             "pointSize": 5,
@@ -499,15 +544,20 @@
         "legend": {
           "calcs": [],
           "displayMode": "table",
-          "placement": "right"
+          "placement": "right",
+          "showLegend": true
         },
         "tooltip": {
-          "mode": "multi"
+          "mode": "multi",
+          "sort": "none"
         }
       },
       "targets": [
         {
           "alias": "$tag_source_id",
+          "datasource": {
+            "uid": "${influxdb}"
+          },
           "groupBy": [
             {
               "params": [
@@ -572,13 +622,17 @@
       "type": "timeseries"
     },
     {
-      "datasource": "${influxdb}",
+      "datasource": {
+        "uid": "${influxdb}"
+      },
       "fieldConfig": {
         "defaults": {
           "color": {
             "mode": "palette-classic"
           },
           "custom": {
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
             "axisLabel": "Rates",
             "axisPlacement": "auto",
             "barAlignment": 0,
@@ -590,6 +644,7 @@
               "tooltip": false,
               "viz": false
             },
+            "insertNulls": false,
             "lineInterpolation": "stepBefore",
             "lineWidth": 1,
             "pointSize": 5,
@@ -635,15 +690,20 @@
         "legend": {
           "calcs": [],
           "displayMode": "table",
-          "placement": "right"
+          "placement": "right",
+          "showLegend": true
         },
         "tooltip": {
-          "mode": "multi"
+          "mode": "multi",
+          "sort": "none"
         }
       },
       "targets": [
         {
           "alias": "$tag_source_id",
+          "datasource": {
+            "uid": "${influxdb}"
+          },
           "groupBy": [
             {
               "params": [
@@ -708,7 +768,10 @@
       "type": "timeseries"
     },
     {
-      "datasource": null,
+      "datasource": {
+        "type": "datasource",
+        "uid": "grafana"
+      },
       "gridPos": {
         "h": 1,
         "w": 24,
@@ -716,17 +779,30 @@
         "y": 20
       },
       "id": 6,
+      "targets": [
+        {
+          "datasource": {
+            "type": "datasource",
+            "uid": "grafana"
+          },
+          "refId": "A"
+        }
+      ],
       "title": "Row title",
       "type": "row"
     },
     {
-      "datasource": "${influxdb}",
+      "datasource": {
+        "uid": "${influxdb}"
+      },
       "fieldConfig": {
         "defaults": {
           "color": {
             "mode": "palette-classic"
           },
           "custom": {
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
             "axisLabel": "",
             "axisPlacement": "auto",
             "barAlignment": 0,
@@ -738,6 +814,7 @@
               "tooltip": false,
               "viz": false
             },
+            "insertNulls": false,
             "lineInterpolation": "stepBefore",
             "lineWidth": 1,
             "pointSize": 5,
@@ -783,15 +860,20 @@
         "legend": {
           "calcs": [],
           "displayMode": "table",
-          "placement": "right"
+          "placement": "right",
+          "showLegend": true
         },
         "tooltip": {
-          "mode": "multi"
+          "mode": "multi",
+          "sort": "none"
         }
       },
       "targets": [
         {
           "alias": "$tag_source_id",
+          "datasource": {
+            "uid": "${influxdb}"
+          },
           "groupBy": [],
           "hide": false,
           "measurement": "dunedaq.trigger.faketpcreatorheartbeatmakerinfo.Info",
@@ -839,13 +921,17 @@
       "type": "timeseries"
     },
     {
-      "datasource": "${influxdb}",
+      "datasource": {
+        "uid": "${influxdb}"
+      },
       "fieldConfig": {
         "defaults": {
           "color": {
             "mode": "palette-classic"
           },
           "custom": {
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
             "axisLabel": "",
             "axisPlacement": "auto",
             "barAlignment": 0,
@@ -857,6 +943,7 @@
               "tooltip": false,
               "viz": false
             },
+            "insertNulls": false,
             "lineInterpolation": "stepBefore",
             "lineWidth": 1,
             "pointSize": 5,
@@ -902,15 +989,20 @@
         "legend": {
           "calcs": [],
           "displayMode": "table",
-          "placement": "right"
+          "placement": "right",
+          "showLegend": true
         },
         "tooltip": {
-          "mode": "multi"
+          "mode": "multi",
+          "sort": "none"
         }
       },
       "targets": [
         {
           "alias": "$tag_source_id",
+          "datasource": {
+            "uid": "${influxdb}"
+          },
           "groupBy": [],
           "hide": false,
           "measurement": "dunedaq.trigger.faketpcreatorheartbeatmakerinfo.Info",
@@ -958,7 +1050,9 @@
       "type": "timeseries"
     },
     {
-      "datasource": "${influxdb}",
+      "datasource": {
+        "uid": "${influxdb}"
+      },
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -997,8 +1091,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
-                "value": null
+                "color": "green"
               },
               {
                 "color": "red",
@@ -1021,7 +1114,8 @@
         "legend": {
           "calcs": [],
           "displayMode": "list",
-          "placement": "bottom"
+          "placement": "bottom",
+          "showLegend": true
         },
         "tooltip": {
           "mode": "multi"
@@ -1030,6 +1124,9 @@
       "targets": [
         {
           "alias": "Received",
+          "datasource": {
+            "uid": "${influxdb}"
+          },
           "groupBy": [],
           "measurement": "dunedaq.trigger.triggerzipperinfo.Info",
           "orderByTime": "ASC",
@@ -1080,6 +1177,9 @@
         },
         {
           "alias": "Sent",
+          "datasource": {
+            "uid": "${influxdb}"
+          },
           "groupBy": [],
           "hide": false,
           "measurement": "dunedaq.trigger.triggerzipperinfo.Info",
@@ -1131,6 +1231,9 @@
         },
         {
           "alias": "Tardy",
+          "datasource": {
+            "uid": "${influxdb}"
+          },
           "groupBy": [],
           "hide": false,
           "measurement": "dunedaq.trigger.triggerzipperinfo.Info",
@@ -1185,7 +1288,9 @@
       "type": "timeseries"
     },
     {
-      "datasource": "${influxdb}",
+      "datasource": {
+        "uid": "${influxdb}"
+      },
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -1224,8 +1329,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
-                "value": null
+                "color": "green"
               },
               {
                 "color": "red",
@@ -1248,7 +1352,8 @@
         "legend": {
           "calcs": [],
           "displayMode": "list",
-          "placement": "bottom"
+          "placement": "bottom",
+          "showLegend": true
         },
         "tooltip": {
           "mode": "multi"
@@ -1257,6 +1362,9 @@
       "targets": [
         {
           "alias": "Received",
+          "datasource": {
+            "uid": "${influxdb}"
+          },
           "groupBy": [],
           "measurement": "dunedaq.trigger.triggergenericmakerinfo.Info",
           "orderByTime": "ASC",
@@ -1299,6 +1407,9 @@
         },
         {
           "alias": "Sent",
+          "datasource": {
+            "uid": "${influxdb}"
+          },
           "groupBy": [],
           "hide": false,
           "measurement": "dunedaq.trigger.triggergenericmakerinfo.Info",
@@ -1345,7 +1456,9 @@
       "type": "timeseries"
     },
     {
-      "datasource": "${influxdb}",
+      "datasource": {
+        "uid": "${influxdb}"
+      },
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -1384,8 +1497,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
-                "value": null
+                "color": "green"
               },
               {
                 "color": "red",
@@ -1408,7 +1520,8 @@
         "legend": {
           "calcs": [],
           "displayMode": "list",
-          "placement": "bottom"
+          "placement": "bottom",
+          "showLegend": true
         },
         "tooltip": {
           "mode": "multi"
@@ -1417,6 +1530,9 @@
       "targets": [
         {
           "alias": "Received",
+          "datasource": {
+            "uid": "${influxdb}"
+          },
           "groupBy": [],
           "measurement": "dunedaq.trigger.triggergenericmakerinfo.Info",
           "orderByTime": "ASC",
@@ -1459,6 +1575,9 @@
         },
         {
           "alias": "Sent",
+          "datasource": {
+            "uid": "${influxdb}"
+          },
           "groupBy": [],
           "hide": false,
           "measurement": "dunedaq.trigger.triggergenericmakerinfo.Info",
@@ -1506,19 +1625,19 @@
     }
   ],
   "refresh": "5s",
-  "schemaVersion": 30,
+  "schemaVersion": 38,
   "style": "dark",
   "tags": [
-    "v4.2.0",
+    "v4.3.0",
     "Subsystem"
   ],
   "templating": {
     "list": [
       {
         "current": {
-          "selected": true,
-          "text": "InfluxKafka",
-          "value": "InfluxKafka"
+          "selected": false,
+          "text": "KluInflux",
+          "value": "ffedc550-6555-4a16-a113-aabf2b980c30"
         },
         "hide": 2,
         "includeAll": false,
@@ -1533,16 +1652,15 @@
         "type": "datasource"
       },
       {
-        "allValue": null,
         "current": {
           "selected": false,
-          "text": "np02-coldbox-timing-tlu",
-          "value": "np02-coldbox-timing-tlu"
+          "text": "aabedabu-test",
+          "value": "aabedabu-test"
         },
-        "datasource": "${influxdb}",
+        "datasource": {
+          "uid": "${influxdb}"
+        },
         "definition": "SHOW TAG VALUES WITH KEY=\"partition_id\" where $timeFilter",
-        "description": null,
-        "error": null,
         "hide": 0,
         "includeAll": false,
         "label": "Partition name",
@@ -1565,6 +1683,7 @@
   "timepicker": {},
   "timezone": "",
   "title": "Trigger Flow",
-  "uid": "2Ffor0j7",
-  "version": 1
+  "uid": "v4_3_0-trigger_flow",
+  "version": 1,
+  "weekStart": ""
 }

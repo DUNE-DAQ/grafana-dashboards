@@ -3,7 +3,10 @@
     "list": [
       {
         "builtIn": 1,
-        "datasource": "-- Grafana --",
+        "datasource": {
+          "type": "datasource",
+          "uid": "grafana"
+        },
         "enable": true,
         "hide": true,
         "iconColor": "rgba(0, 211, 255, 1)",
@@ -19,14 +22,16 @@
     ]
   },
   "editable": true,
-  "gnetId": null,
+  "fiscalYearStartMonth": 0,
   "graphTooltip": 0,
-  "id": 172,
-  "iteration": 1680703173054,
+  "id": 52,
   "links": [],
+  "liveNow": false,
   "panels": [
     {
-      "datasource": "${influxdb}",
+      "datasource": {
+        "uid": "${influxdb}"
+      },
       "description": "Only available for real HSI",
       "fieldConfig": {
         "defaults": {
@@ -34,6 +39,8 @@
             "mode": "palette-classic"
           },
           "custom": {
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
             "axisLabel": "",
             "axisPlacement": "auto",
             "barAlignment": 0,
@@ -45,6 +52,7 @@
               "tooltip": false,
               "viz": false
             },
+            "insertNulls": false,
             "lineInterpolation": "linear",
             "lineWidth": 1,
             "pointSize": 5,
@@ -91,16 +99,21 @@
         "legend": {
           "calcs": [],
           "displayMode": "list",
-          "placement": "bottom"
+          "placement": "bottom",
+          "showLegend": true
         },
         "tooltip": {
-          "mode": "single"
+          "mode": "single",
+          "sort": "none"
         }
       },
       "pluginVersion": "8.0.6",
       "targets": [
         {
           "alias": "Average buffer occupancy",
+          "datasource": {
+            "uid": "${influxdb}"
+          },
           "expr": "",
           "format": "time_series",
           "groupBy": [],
@@ -131,13 +144,13 @@
           ]
         }
       ],
-      "timeFrom": null,
-      "timeShift": null,
       "title": "HSI Average Buffer Occupancy",
       "type": "timeseries"
     },
     {
-      "datasource": "${influxdb}",
+      "datasource": {
+        "uid": "${influxdb}"
+      },
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -183,10 +196,13 @@
         "text": {},
         "textMode": "auto"
       },
-      "pluginVersion": "8.0.7",
+      "pluginVersion": "10.1.4",
       "targets": [
         {
           "alias": "",
+          "datasource": {
+            "uid": "${influxdb}"
+          },
           "groupBy": [],
           "measurement": "dunedaq.timinglibs.hsireadoutinfo.Info",
           "orderByTime": "ASC",
@@ -254,13 +270,17 @@
         "noDataState": "no_data",
         "notifications": []
       },
-      "datasource": "${influxdb}",
+      "datasource": {
+        "uid": "${influxdb}"
+      },
       "fieldConfig": {
         "defaults": {
           "color": {
             "mode": "palette-classic"
           },
           "custom": {
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
             "axisLabel": "",
             "axisPlacement": "auto",
             "axisSoftMax": 2,
@@ -273,6 +293,7 @@
               "tooltip": false,
               "viz": false
             },
+            "insertNulls": false,
             "lineInterpolation": "linear",
             "lineWidth": 1,
             "pointSize": 6,
@@ -316,17 +337,22 @@
       "options": {
         "legend": {
           "calcs": [],
-          "displayMode": "hidden",
-          "placement": "bottom"
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": false
         },
         "tooltip": {
-          "mode": "single"
+          "mode": "single",
+          "sort": "none"
         }
       },
       "pluginVersion": "8.0.6",
       "targets": [
         {
           "alias": "",
+          "datasource": {
+            "uid": "${influxdb}"
+          },
           "groupBy": [],
           "measurement": "dunedaq.timinglibs.hsireadoutinfo.Info",
           "orderByTime": "ASC",
@@ -366,7 +392,9 @@
       "type": "timeseries"
     },
     {
-      "datasource": "${influxdb}",
+      "datasource": {
+        "uid": "${influxdb}"
+      },
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -394,6 +422,8 @@
       "id": 25,
       "options": {
         "displayMode": "gradient",
+        "minVizHeight": 10,
+        "minVizWidth": 0,
         "orientation": "horizontal",
         "reduceOptions": {
           "calcs": [
@@ -403,12 +433,16 @@
           "values": false
         },
         "showUnfilled": true,
-        "text": {}
+        "text": {},
+        "valueMode": "color"
       },
-      "pluginVersion": "8.0.7",
+      "pluginVersion": "10.1.4",
       "targets": [
         {
           "alias": "HSI events sent counter",
+          "datasource": {
+            "uid": "${influxdb}"
+          },
           "groupBy": [],
           "hide": false,
           "measurement": "dunedaq.timinglibs.hsireadoutinfo.Info",
@@ -438,6 +472,9 @@
         },
         {
           "alias": "HSI events ${field} counter",
+          "datasource": {
+            "uid": "${influxdb}"
+          },
           "groupBy": [],
           "hide": false,
           "measurement": "dunedaq.timinglibs.hsireadoutinfo.Info",
@@ -463,7 +500,9 @@
       "type": "bargauge"
     },
     {
-      "datasource": "${influxdb}",
+      "datasource": {
+        "uid": "${influxdb}"
+      },
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -509,9 +548,12 @@
         "text": {},
         "textMode": "auto"
       },
-      "pluginVersion": "8.0.7",
+      "pluginVersion": "10.1.4",
       "targets": [
         {
+          "datasource": {
+            "uid": "${influxdb}"
+          },
           "groupBy": [],
           "measurement": "dunedaq.timinglibs.hsireadoutinfo.Info",
           "orderByTime": "ASC",
@@ -543,7 +585,9 @@
       "type": "stat"
     },
     {
-      "datasource": "${influxdb}",
+      "datasource": {
+        "uid": "${influxdb}"
+      },
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -589,9 +633,12 @@
         "text": {},
         "textMode": "auto"
       },
-      "pluginVersion": "8.0.7",
+      "pluginVersion": "10.1.4",
       "targets": [
         {
+          "datasource": {
+            "uid": "${influxdb}"
+          },
           "groupBy": [],
           "measurement": "dunedaq.timinglibs.hsireadoutinfo.Info",
           "orderByTime": "ASC",
@@ -623,13 +670,17 @@
       "type": "stat"
     },
     {
-      "datasource": "${influxdb}",
+      "datasource": {
+        "uid": "${influxdb}"
+      },
       "fieldConfig": {
         "defaults": {
           "color": {
             "mode": "palette-classic"
           },
           "custom": {
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
             "axisLabel": "Hz",
             "axisPlacement": "auto",
             "barAlignment": 0,
@@ -641,6 +692,7 @@
               "tooltip": false,
               "viz": false
             },
+            "insertNulls": false,
             "lineInterpolation": "linear",
             "lineWidth": 2,
             "pointSize": 5,
@@ -809,16 +861,21 @@
         "legend": {
           "calcs": [],
           "displayMode": "list",
-          "placement": "bottom"
+          "placement": "bottom",
+          "showLegend": true
         },
         "tooltip": {
-          "mode": "single"
+          "mode": "single",
+          "sort": "none"
         }
       },
       "pluginVersion": "8.0.6",
       "targets": [
         {
           "alias": "Generated triggers",
+          "datasource": {
+            "uid": "${influxdb}"
+          },
           "groupBy": [],
           "hide": false,
           "measurement": "dunedaq.trigger.moduleleveltriggerinfo.Info",
@@ -854,6 +911,9 @@
         },
         {
           "alias": "Sent triggers",
+          "datasource": {
+            "uid": "${influxdb}"
+          },
           "groupBy": [],
           "hide": false,
           "measurement": "dunedaq.trigger.moduleleveltriggerinfo.Info",
@@ -889,6 +949,9 @@
         },
         {
           "alias": "Paused triggers",
+          "datasource": {
+            "uid": "${influxdb}"
+          },
           "groupBy": [],
           "hide": false,
           "measurement": "dunedaq.trigger.moduleleveltriggerinfo.Info",
@@ -924,6 +987,9 @@
         },
         {
           "alias": "Inhibited triggers",
+          "datasource": {
+            "uid": "${influxdb}"
+          },
           "groupBy": [],
           "hide": false,
           "measurement": "dunedaq.trigger.moduleleveltriggerinfo.Info",
@@ -958,20 +1024,22 @@
           ]
         }
       ],
-      "timeFrom": null,
-      "timeShift": null,
       "title": "Trigger Rate",
       "transformations": [],
       "type": "timeseries"
     },
     {
-      "datasource": "${influxdb}",
+      "datasource": {
+        "uid": "${influxdb}"
+      },
       "fieldConfig": {
         "defaults": {
           "color": {
             "mode": "palette-classic"
           },
           "custom": {
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
             "axisLabel": "",
             "axisPlacement": "auto",
             "barAlignment": 0,
@@ -983,6 +1051,7 @@
               "tooltip": false,
               "viz": false
             },
+            "insertNulls": false,
             "lineInterpolation": "linear",
             "lineWidth": 2,
             "pointSize": 5,
@@ -1151,16 +1220,21 @@
         "legend": {
           "calcs": [],
           "displayMode": "list",
-          "placement": "bottom"
+          "placement": "bottom",
+          "showLegend": true
         },
         "tooltip": {
-          "mode": "single"
+          "mode": "single",
+          "sort": "none"
         }
       },
       "pluginVersion": "8.0.6",
       "targets": [
         {
           "alias": "$tag_source_id",
+          "datasource": {
+            "uid": "${influxdb}"
+          },
           "groupBy": [
             {
               "params": [
@@ -1200,8 +1274,6 @@
           "tags": []
         }
       ],
-      "timeFrom": null,
-      "timeShift": null,
       "title": "Estimated Trigger capacity",
       "transformations": [
         {
@@ -1226,13 +1298,17 @@
       "type": "timeseries"
     },
     {
-      "datasource": "${influxdb}",
+      "datasource": {
+        "uid": "${influxdb}"
+      },
       "fieldConfig": {
         "defaults": {
           "color": {
             "mode": "palette-classic"
           },
           "custom": {
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
             "axisLabel": "Hz",
             "axisPlacement": "auto",
             "barAlignment": 0,
@@ -1244,6 +1320,7 @@
               "tooltip": false,
               "viz": false
             },
+            "insertNulls": false,
             "lineInterpolation": "linear",
             "lineWidth": 2,
             "pointSize": 5,
@@ -1397,16 +1474,21 @@
         "legend": {
           "calcs": [],
           "displayMode": "list",
-          "placement": "bottom"
+          "placement": "bottom",
+          "showLegend": true
         },
         "tooltip": {
-          "mode": "single"
+          "mode": "single",
+          "sort": "none"
         }
       },
       "pluginVersion": "8.0.6",
       "targets": [
         {
           "alias": "${field} HSI triggers",
+          "datasource": {
+            "uid": "${influxdb}"
+          },
           "groupBy": [
             {
               "params": [
@@ -1459,6 +1541,9 @@
         },
         {
           "alias": "Sent HSI triggers",
+          "datasource": {
+            "uid": "${influxdb}"
+          },
           "groupBy": [
             {
               "params": [
@@ -1510,15 +1595,13 @@
           ]
         }
       ],
-      "timeFrom": null,
-      "timeShift": null,
       "title": "HSI Rate",
       "transformations": [],
       "type": "timeseries"
     }
   ],
   "refresh": "5s",
-  "schemaVersion": 30,
+  "schemaVersion": 38,
   "style": "dark",
   "tags": [
     "Subsystem",
@@ -1528,9 +1611,9 @@
     "list": [
       {
         "current": {
-          "selected": true,
-          "text": "InfluxKafka",
-          "value": "InfluxKafka"
+          "selected": false,
+          "text": "KluInflux",
+          "value": "ffedc550-6555-4a16-a113-aabf2b980c30"
         },
         "hide": 2,
         "includeAll": false,
@@ -1545,16 +1628,15 @@
         "type": "datasource"
       },
       {
-        "allValue": null,
         "current": {
           "selected": false,
-          "text": "np02-coldbox-timing-tlu",
-          "value": "np02-coldbox-timing-tlu"
+          "text": "aabedabu-test",
+          "value": "aabedabu-test"
         },
-        "datasource": "${influxdb}",
+        "datasource": {
+          "uid": "${influxdb}"
+        },
         "definition": "SHOW TAG VALUES WITH KEY=\"partition_id\" WHERE $timeFilter",
-        "description": null,
-        "error": null,
         "hide": 0,
         "includeAll": false,
         "label": "Partition name",
@@ -1569,20 +1651,18 @@
         "type": "query"
       },
       {
-        "allValue": null,
         "current": {
           "isNone": true,
           "selected": false,
           "text": "None",
           "value": ""
         },
-        "datasource": "${influxdb}",
+        "datasource": {
+          "uid": "${influxdb}"
+        },
         "definition": "SHOW SERIES WHERE \"partition_id\"='${partition}' AND $timeFilter",
-        "description": null,
-        "error": null,
         "hide": 2,
         "includeAll": false,
-        "label": null,
         "multi": false,
         "name": "series",
         "options": [],
@@ -1594,20 +1674,18 @@
         "type": "query"
       },
       {
-        "allValue": null,
         "current": {
           "isNone": true,
           "selected": false,
           "text": "None",
           "value": ""
         },
-        "datasource": "${influxdb}",
+        "datasource": {
+          "uid": "${influxdb}"
+        },
         "definition": "SHOW FIELD KEYS FROM \"dunedaq.timinglibs.${series}.Info\"",
-        "description": null,
-        "error": null,
         "hide": 2,
         "includeAll": false,
-        "label": null,
         "multi": false,
         "name": "field",
         "options": [],
@@ -1619,17 +1697,15 @@
         "type": "query"
       },
       {
-        "allValue": null,
         "current": {
-          "isNone": true,
           "selected": false,
-          "text": "None",
-          "value": ""
+          "text": "trigger",
+          "value": "trigger"
         },
-        "datasource": "${influxdb}",
+        "datasource": {
+          "uid": "${influxdb}"
+        },
         "definition": "SHOW TAG VALUES FROM \"dunedaq.trigger.moduleleveltriggerinfo.Info\" WITH KEY=\"source_id\" WHERE \"partition_id\"='${partition}' AND $timeFilter",
-        "description": null,
-        "error": null,
         "hide": 0,
         "includeAll": false,
         "label": "Trigger App",
@@ -1676,6 +1752,7 @@
   },
   "timezone": "",
   "title": "Trigger and HSI",
-  "uid": "U_8ZF",
-  "version": 1
+  "uid": "v4_3_0-trigger_and_HSI",
+  "version": 1,
+  "weekStart": ""
 }

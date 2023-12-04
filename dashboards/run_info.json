@@ -25,7 +25,7 @@
     {
       "datasource": {
         "type": "influxdb",
-        "uid": "ffedc550-6555-4a16-a113-aabf2b980c30"
+        "uid": "${influxdb}"
       },
       "fieldConfig": {
         "defaults": {
@@ -84,7 +84,7 @@
           "alias": "$tag_partition_id",
           "datasource": {
             "type": "influxdb",
-            "uid": "ffedc550-6555-4a16-a113-aabf2b980c30"
+            "uid": "${influxdb}"
           },
           "query": "SELECT \"runno\" FROM \"dunedaq.rcif.runinfo.Info\" WHERE ($timeFilter AND runno > 0) GROUP BY \"partition_id\"",
           "rawQuery": true,
@@ -106,16 +106,35 @@
     "v4.3.0"
   ],
   "templating": {
-    "list": []
+    "list": [
+      {
+        "current": {
+          "selected": false,
+          "text": "KluInflux",
+          "value": "ffedc550-6555-4a16-a113-aabf2b980c30"
+        },
+        "hide": 2,
+        "includeAll": false,
+        "label": "InfluxDB",
+        "multi": false,
+        "name": "influxdb",
+        "options": [],
+        "query": "influxdb",
+        "refresh": 1,
+        "regex": "",
+        "skipUrlSync": false,
+        "type": "datasource"
+      }
+    ]
   },
   "time": {
-    "from": "now-24h",
+    "from": "now-7d",
     "to": "now"
   },
   "timepicker": {},
   "timezone": "",
   "title": "Run Info",
   "uid": "cdb9aa46-3360-4895-8a74-dcf0822408c5",
-  "version": 9,
+  "version": 10,
   "weekStart": ""
 }

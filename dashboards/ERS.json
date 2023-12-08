@@ -18,12 +18,13 @@
   "editable": true,
   "fiscalYearStartMonth": 0,
   "graphTooltip": 0,
-  "id": 44,
+  "id": 67,
   "links": [],
   "liveNow": false,
   "panels": [
     {
       "datasource": {
+        "type": "postgres",
         "uid": "${postgresql}"
       },
       "fieldConfig": {
@@ -159,11 +160,12 @@
           "datasource": {
             "uid": "${postgresql}"
           },
+          "editorMode": "code",
           "format": "table",
           "group": [],
           "metricColumn": "none",
           "rawQuery": true,
-          "rawSql": "SELECT severity,time,application_name,message,issue_name,host_name\nFROM public.\"ErrorReports\"\nWHERE partition='${partition}' AND time >= ${__from} AND time <= ${__to} AND severity in ([[severity]]) AND issue_name in ([[issue_full_name]]) AND application_name in ([[application_in]]) AND application_name not in ([[application_out]]) AND host_name in ([[host]]) AND message ~ '[[message_regex]]'   \nORDER BY -time\n",
+          "rawSql": "SELECT severity,time/1000000 as time,application_name,message,issue_name,host_name\nFROM \"ERSstream\"\nWHERE session='${partition}' AND time/1000000 >= ${__from} AND time/1000000 <= ${__to} AND severity in ([[severity]]) AND issue_name in ([[issue_full_name]]) AND application_name in ([[application_in]]) AND application_name not in ([[application_out]]) AND host_name in ([[host]]) AND message ~ '[[message_regex]]'   \nORDER BY -time\n",
           "refId": "A",
           "select": [
             [
@@ -175,6 +177,23 @@
               }
             ]
           ],
+          "sql": {
+            "columns": [
+              {
+                "parameters": [],
+                "type": "function"
+              }
+            ],
+            "groupBy": [
+              {
+                "property": {
+                  "type": "string"
+                },
+                "type": "groupBy"
+              }
+            ],
+            "limit": 50
+          },
           "timeColumn": "time",
           "where": [
             {
@@ -193,7 +212,7 @@
   "schemaVersion": 38,
   "style": "dark",
   "tags": [
-    "v4.3.0",
+    "v5.0.0",
     "Subsystem"
   ],
   "templating": {
@@ -219,8 +238,8 @@
       {
         "current": {
           "selected": false,
-          "text": "schhibra-test",
-          "value": "schhibra-test"
+          "text": "coldbbox-timing-tlu",
+          "value": "coldbbox-timing-tlu"
         },
         "datasource": {
           "uid": "${postgresql}"
@@ -243,12 +262,10 @@
         "current": {
           "selected": true,
           "text": [
-            "INFO",
             "WARNING",
             "ERROR"
           ],
           "value": [
-            "INFO",
             "WARNING",
             "ERROR"
           ]
@@ -273,16 +290,8 @@
       {
         "current": {
           "selected": false,
-          "text": [
-            "trigger",
-            "fakehsi",
-            "rulocalhost0"
-          ],
-          "value": [
-            "trigger",
-            "fakehsi",
-            "rulocalhost0"
-          ]
+          "text": "thi",
+          "value": "thi"
         },
         "datasource": {
           "uid": "${postgresql}"
@@ -303,13 +312,9 @@
       },
       {
         "current": {
-          "selected": true,
-          "text": [
-            "trigger"
-          ],
-          "value": [
-            "trigger"
-          ]
+          "selected": false,
+          "text": "thi",
+          "value": "thi"
         },
         "datasource": {
           "uid": "${postgresql}"
@@ -350,31 +355,9 @@
       },
       {
         "current": {
-          "selected": true,
-          "text": [
-            "trigger::TriggerEndOfRun",
-            "hsilibs::ProgressUpdate",
-            "trigger::TriggerPaused",
-            "trigger::TriggerActive",
-            "trigger::TriggerStartOfRun",
-            "readoutlibs::VerboseRequestTimedOut",
-            "trigger::TriggerInhibited",
-            "iomanager::QueueTimeoutExpired",
-            "readoutlibs::CannotWriteToQueue",
-            "iomanager::TimeoutExpired"
-          ],
-          "value": [
-            "trigger::TriggerEndOfRun",
-            "hsilibs::ProgressUpdate",
-            "trigger::TriggerPaused",
-            "trigger::TriggerActive",
-            "trigger::TriggerStartOfRun",
-            "readoutlibs::VerboseRequestTimedOut",
-            "trigger::TriggerInhibited",
-            "iomanager::QueueTimeoutExpired",
-            "readoutlibs::CannotWriteToQueue",
-            "iomanager::TimeoutExpired"
-          ]
+          "selected": false,
+          "text": "timinglibs::FailedToCollectOpMonInfo",
+          "value": "timinglibs::FailedToCollectOpMonInfo"
         },
         "datasource": {
           "uid": "${postgresql}"
@@ -396,12 +379,8 @@
       {
         "current": {
           "selected": false,
-          "text": [
-            "np04-srv-016"
-          ],
-          "value": [
-            "np04-srv-016"
-          ]
+          "text": "np04-srv-012",
+          "value": "np04-srv-012"
         },
         "datasource": {
           "uid": "${postgresql}"
@@ -429,7 +408,7 @@
   "timepicker": {},
   "timezone": "",
   "title": "ERS",
-  "uid": "v4_3_0-ers",
-  "version": 1,
+  "uid": "v5_0_0-ers",
+  "version": 2,
   "weekStart": ""
 }

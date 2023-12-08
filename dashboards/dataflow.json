@@ -3,7 +3,10 @@
     "list": [
       {
         "builtIn": 1,
-        "datasource": "-- Grafana --",
+        "datasource": {
+          "type": "datasource",
+          "uid": "grafana"
+        },
         "enable": true,
         "hide": true,
         "iconColor": "rgba(0, 211, 255, 1)",
@@ -20,15 +23,18 @@
   },
   "description": "Dataflow dashboard",
   "editable": true,
-  "gnetId": null,
+  "fiscalYearStartMonth": 0,
   "graphTooltip": 0,
-  "id": 163,
-  "iteration": 1680703039437,
+  "id": 66,
   "links": [],
+  "liveNow": false,
   "panels": [
     {
       "collapsed": false,
-      "datasource": null,
+      "datasource": {
+        "type": "datasource",
+        "uid": "grafana"
+      },
       "gridPos": {
         "h": 1,
         "w": 24,
@@ -37,17 +43,30 @@
       },
       "id": 27,
       "panels": [],
+      "targets": [
+        {
+          "datasource": {
+            "type": "datasource",
+            "uid": "grafana"
+          },
+          "refId": "A"
+        }
+      ],
       "title": "Partition flow",
       "type": "row"
     },
     {
-      "datasource": "${influxdb}",
+      "datasource": {
+        "uid": "${influxdb}"
+      },
       "fieldConfig": {
         "defaults": {
           "color": {
             "mode": "palette-classic"
           },
           "custom": {
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
             "axisLabel": "",
             "axisPlacement": "auto",
             "barAlignment": 0,
@@ -59,6 +78,7 @@
               "tooltip": false,
               "viz": false
             },
+            "insertNulls": false,
             "lineInterpolation": "linear",
             "lineWidth": 1,
             "pointSize": 5,
@@ -181,15 +201,20 @@
         "legend": {
           "calcs": [],
           "displayMode": "list",
-          "placement": "bottom"
+          "placement": "bottom",
+          "showLegend": true
         },
         "tooltip": {
-          "mode": "single"
+          "mode": "single",
+          "sort": "none"
         }
       },
       "targets": [
         {
           "alias": "Waiting for token",
+          "datasource": {
+            "uid": "${influxdb}"
+          },
           "hide": false,
           "query": "SELECT sum(\"waiting_for_token\") / (sum(\"waiting_for_token\")+sum(\"processing_token\")) FROM \"dunedaq.dfmodules.datafloworchestratorinfo.Info\" WHERE \"partition_id\"= '$partition' AND $timeFilter GROUP BY time($__interval) fill(null)",
           "rawQuery": true,
@@ -197,6 +222,9 @@
         },
         {
           "alias": "Processing token",
+          "datasource": {
+            "uid": "${influxdb}"
+          },
           "hide": false,
           "query": "SELECT sum(\"processing_token\") / (sum(\"waiting_for_token\")+sum(\"processing_token\")) FROM \"dunedaq.dfmodules.datafloworchestratorinfo.Info\" WHERE \"partition_id\"= '$partition' AND $timeFilter GROUP BY time($__interval) fill(null)",
           "rawQuery": true,
@@ -204,6 +232,9 @@
         },
         {
           "alias": "Forwarding decision",
+          "datasource": {
+            "uid": "${influxdb}"
+          },
           "hide": false,
           "query": "SELECT sum(\"forwarding_decision\") / (sum(\"waiting_for_decision\")+sum(\"deciding_destination\") + sum(\"forwarding_decision\"))FROM \"dunedaq.dfmodules.datafloworchestratorinfo.Info\" WHERE \"partition_id\"= '$partition' AND $timeFilter GROUP BY time($__interval) fill(null)",
           "rawQuery": true,
@@ -211,6 +242,9 @@
         },
         {
           "alias": "Assignment time",
+          "datasource": {
+            "uid": "${influxdb}"
+          },
           "hide": false,
           "query": "SELECT sum(\"deciding_destination\") / (sum(\"waiting_for_decision\")+sum(\"deciding_destination\") + sum(\"forwarding_decision\")) FROM \"dunedaq.dfmodules.datafloworchestratorinfo.Info\" WHERE \"partition_id\"= '$partition' AND $timeFilter GROUP BY time($__interval) fill(null)",
           "rawQuery": true,
@@ -218,6 +252,9 @@
         },
         {
           "alias": "Waiting for TD",
+          "datasource": {
+            "uid": "${influxdb}"
+          },
           "hide": false,
           "query": "SELECT sum(\"waiting_for_decision\") / (sum(\"waiting_for_decision\")+sum(\"deciding_destination\") + sum(\"forwarding_decision\")) FROM \"dunedaq.dfmodules.datafloworchestratorinfo.Info\" WHERE \"partition_id\"= '$partition' AND $timeFilter GROUP BY time($__interval) fill(null)",
           "rawQuery": true,
@@ -228,13 +265,17 @@
       "type": "timeseries"
     },
     {
-      "datasource": "${influxdb}",
+      "datasource": {
+        "uid": "${influxdb}"
+      },
       "fieldConfig": {
         "defaults": {
           "color": {
             "mode": "palette-classic"
           },
           "custom": {
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
             "axisLabel": "Hz",
             "axisPlacement": "auto",
             "barAlignment": 0,
@@ -246,6 +287,7 @@
               "tooltip": false,
               "viz": false
             },
+            "insertNulls": false,
             "lineInterpolation": "linear",
             "lineWidth": 2,
             "pointSize": 4,
@@ -339,16 +381,21 @@
         "legend": {
           "calcs": [],
           "displayMode": "list",
-          "placement": "bottom"
+          "placement": "bottom",
+          "showLegend": true
         },
         "tooltip": {
-          "mode": "single"
+          "mode": "single",
+          "sort": "none"
         }
       },
       "pluginVersion": "8.0.6",
       "targets": [
         {
           "alias": "DFO received decisions",
+          "datasource": {
+            "uid": "${influxdb}"
+          },
           "groupBy": [
             {
               "params": [
@@ -401,6 +448,9 @@
         },
         {
           "alias": "DFO sent decisions",
+          "datasource": {
+            "uid": "${influxdb}"
+          },
           "groupBy": [
             {
               "params": [
@@ -453,6 +503,9 @@
         },
         {
           "alias": "Trigger record output",
+          "datasource": {
+            "uid": "${influxdb}"
+          },
           "groupBy": [
             {
               "params": [
@@ -505,6 +558,9 @@
         },
         {
           "alias": "DF recevied Trigger decisions",
+          "datasource": {
+            "uid": "${influxdb}"
+          },
           "groupBy": [
             {
               "params": [
@@ -557,6 +613,9 @@
         },
         {
           "alias": "Generated Data requests",
+          "datasource": {
+            "uid": "${influxdb}"
+          },
           "groupBy": [
             {
               "params": [
@@ -609,6 +668,9 @@
         },
         {
           "alias": "Generated Trigger Records",
+          "datasource": {
+            "uid": "${influxdb}"
+          },
           "groupBy": [
             {
               "params": [
@@ -660,19 +722,21 @@
           ]
         }
       ],
-      "timeFrom": null,
-      "timeShift": null,
       "title": "Input / Output",
       "type": "timeseries"
     },
     {
-      "datasource": "${influxdb}",
+      "datasource": {
+        "uid": "${influxdb}"
+      },
       "fieldConfig": {
         "defaults": {
           "color": {
             "mode": "palette-classic"
           },
           "custom": {
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
             "axisLabel": "clock ticks",
             "axisPlacement": "auto",
             "barAlignment": 0,
@@ -684,6 +748,7 @@
               "tooltip": false,
               "viz": false
             },
+            "insertNulls": false,
             "lineInterpolation": "linear",
             "lineWidth": 2,
             "pointSize": 4,
@@ -746,16 +811,21 @@
         "legend": {
           "calcs": [],
           "displayMode": "list",
-          "placement": "bottom"
+          "placement": "bottom",
+          "showLegend": true
         },
         "tooltip": {
-          "mode": "single"
+          "mode": "single",
+          "sort": "none"
         }
       },
       "pluginVersion": "8.0.6",
       "targets": [
         {
           "alias": "Data Request width",
+          "datasource": {
+            "uid": "${influxdb}"
+          },
           "groupBy": [
             {
               "params": [
@@ -802,6 +872,9 @@
         },
         {
           "alias": "Trigger decision width",
+          "datasource": {
+            "uid": "${influxdb}"
+          },
           "groupBy": [
             {
               "params": [
@@ -847,14 +920,14 @@
           ]
         }
       ],
-      "timeFrom": null,
-      "timeShift": null,
       "title": "TDs statistics",
       "transformations": [],
       "type": "timeseries"
     },
     {
-      "datasource": "${influxdb}",
+      "datasource": {
+        "uid": "${influxdb}"
+      },
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -886,6 +959,8 @@
       "id": 33,
       "options": {
         "displayMode": "gradient",
+        "minVizHeight": 10,
+        "minVizWidth": 0,
         "orientation": "horizontal",
         "reduceOptions": {
           "calcs": [
@@ -895,12 +970,16 @@
           "values": false
         },
         "showUnfilled": true,
-        "text": {}
+        "text": {},
+        "valueMode": "color"
       },
-      "pluginVersion": "8.0.7",
+      "pluginVersion": "10.1.4",
       "targets": [
         {
           "alias": "Pending Trigger decisions",
+          "datasource": {
+            "uid": "${influxdb}"
+          },
           "groupBy": [
             {
               "params": [
@@ -947,6 +1026,9 @@
         },
         {
           "alias": "Pending fragments",
+          "datasource": {
+            "uid": "${influxdb}"
+          },
           "groupBy": [
             {
               "params": [
@@ -992,6 +1074,9 @@
         },
         {
           "alias": "Received Frgments",
+          "datasource": {
+            "uid": "${influxdb}"
+          },
           "groupBy": [
             {
               "params": [
@@ -1041,13 +1126,17 @@
       "type": "bargauge"
     },
     {
-      "datasource": "${influxdb}",
+      "datasource": {
+        "uid": "${influxdb}"
+      },
       "fieldConfig": {
         "defaults": {
           "color": {
             "mode": "palette-classic"
           },
           "custom": {
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
             "axisLabel": "",
             "axisPlacement": "auto",
             "barAlignment": 0,
@@ -1059,6 +1148,7 @@
               "tooltip": false,
               "viz": false
             },
+            "insertNulls": false,
             "lineInterpolation": "linear",
             "lineWidth": 2,
             "pointSize": 4,
@@ -1121,16 +1211,21 @@
         "legend": {
           "calcs": [],
           "displayMode": "list",
-          "placement": "bottom"
+          "placement": "bottom",
+          "showLegend": true
         },
         "tooltip": {
-          "mode": "single"
+          "mode": "single",
+          "sort": "none"
         }
       },
       "pluginVersion": "8.0.6",
       "targets": [
         {
           "alias": "$tag_source_id",
+          "datasource": {
+            "uid": "${influxdb}"
+          },
           "groupBy": [
             {
               "params": [
@@ -1177,6 +1272,9 @@
         },
         {
           "alias": "Partition average",
+          "datasource": {
+            "uid": "${influxdb}"
+          },
           "groupBy": [
             {
               "params": [
@@ -1223,6 +1321,9 @@
         },
         {
           "alias": "Partition average",
+          "datasource": {
+            "uid": "${influxdb}"
+          },
           "groupBy": [
             {
               "params": [
@@ -1268,8 +1369,6 @@
           ]
         }
       ],
-      "timeFrom": null,
-      "timeShift": null,
       "title": "TD Time to complete",
       "transformations": [
         {
@@ -1283,7 +1382,9 @@
       "type": "timeseries"
     },
     {
-      "datasource": "${influxdb}",
+      "datasource": {
+        "uid": "${influxdb}"
+      },
       "description": "Data will not be visualised if no TRs are in making at the time of querying. This is likely to happen in a condition of low trigger rate. So, no worries if it happens. ",
       "fieldConfig": {
         "defaults": {
@@ -1291,6 +1392,8 @@
             "mode": "palette-classic"
           },
           "custom": {
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
             "axisLabel": "",
             "axisPlacement": "auto",
             "barAlignment": 0,
@@ -1302,6 +1405,7 @@
               "tooltip": false,
               "viz": false
             },
+            "insertNulls": false,
             "lineInterpolation": "linear",
             "lineWidth": 1,
             "pointSize": 5,
@@ -1347,15 +1451,20 @@
         "legend": {
           "calcs": [],
           "displayMode": "list",
-          "placement": "bottom"
+          "placement": "bottom",
+          "showLegend": true
         },
         "tooltip": {
-          "mode": "single"
+          "mode": "single",
+          "sort": "none"
         }
       },
       "targets": [
         {
           "alias": "Minimum",
+          "datasource": {
+            "uid": "${influxdb}"
+          },
           "groupBy": [
             {
               "params": [
@@ -1401,6 +1510,9 @@
         },
         {
           "alias": "Maximum",
+          "datasource": {
+            "uid": "${influxdb}"
+          },
           "groupBy": [
             {
               "params": [
@@ -1447,6 +1559,9 @@
         },
         {
           "alias": "$tag_source_id",
+          "datasource": {
+            "uid": "${influxdb}"
+          },
           "groupBy": [
             {
               "params": [
@@ -1499,6 +1614,9 @@
         },
         {
           "alias": "Partition average",
+          "datasource": {
+            "uid": "${influxdb}"
+          },
           "groupBy": [
             {
               "params": [
@@ -1563,13 +1681,17 @@
       "type": "timeseries"
     },
     {
-      "datasource": "${influxdb}",
+      "datasource": {
+        "uid": "${influxdb}"
+      },
       "fieldConfig": {
         "defaults": {
           "color": {
             "mode": "palette-classic"
           },
           "custom": {
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
             "axisLabel": "",
             "axisPlacement": "auto",
             "barAlignment": 0,
@@ -1581,6 +1703,7 @@
               "tooltip": false,
               "viz": false
             },
+            "insertNulls": false,
             "lineInterpolation": "linear",
             "lineWidth": 2,
             "pointSize": 4,
@@ -1643,16 +1766,21 @@
         "legend": {
           "calcs": [],
           "displayMode": "list",
-          "placement": "bottom"
+          "placement": "bottom",
+          "showLegend": true
         },
         "tooltip": {
-          "mode": "single"
+          "mode": "single",
+          "sort": "none"
         }
       },
       "pluginVersion": "8.0.6",
       "targets": [
         {
           "alias": "$tag_source_id",
+          "datasource": {
+            "uid": "${influxdb}"
+          },
           "groupBy": [
             {
               "params": [
@@ -1699,6 +1827,9 @@
         },
         {
           "alias": "Parition Average",
+          "datasource": {
+            "uid": "${influxdb}"
+          },
           "groupBy": [
             {
               "params": [
@@ -1744,8 +1875,6 @@
           ]
         }
       ],
-      "timeFrom": null,
-      "timeShift": null,
       "title": "TR Writing time",
       "transformations": [
         {
@@ -1759,7 +1888,10 @@
       "type": "timeseries"
     },
     {
-      "datasource": null,
+      "datasource": {
+        "type": "datasource",
+        "uid": "grafana"
+      },
       "gridPos": {
         "h": 1,
         "w": 24,
@@ -1767,17 +1899,30 @@
         "y": 15
       },
       "id": 23,
+      "targets": [
+        {
+          "datasource": {
+            "type": "datasource",
+            "uid": "grafana"
+          },
+          "refId": "A"
+        }
+      ],
       "title": "${application} TRB: ${TRBInstance}",
       "type": "row"
     },
     {
-      "datasource": "${influxdb}",
+      "datasource": {
+        "uid": "${influxdb}"
+      },
       "fieldConfig": {
         "defaults": {
           "color": {
             "mode": "palette-classic"
           },
           "custom": {
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
             "axisLabel": "Hz",
             "axisPlacement": "auto",
             "barAlignment": 0,
@@ -1789,6 +1934,7 @@
               "tooltip": false,
               "viz": false
             },
+            "insertNulls": false,
             "lineInterpolation": "linear",
             "lineWidth": 2,
             "pointSize": 4,
@@ -1836,16 +1982,21 @@
         "legend": {
           "calcs": [],
           "displayMode": "list",
-          "placement": "bottom"
+          "placement": "bottom",
+          "showLegend": true
         },
         "tooltip": {
-          "mode": "single"
+          "mode": "single",
+          "sort": "none"
         }
       },
       "pluginVersion": "8.0.6",
       "targets": [
         {
           "alias": "Loops",
+          "datasource": {
+            "uid": "${influxdb}"
+          },
           "expr": "",
           "format": "time_series",
           "groupBy": [
@@ -1894,6 +2045,9 @@
         },
         {
           "alias": "Sleeps",
+          "datasource": {
+            "uid": "${influxdb}"
+          },
           "expr": "",
           "format": "time_series",
           "groupBy": [
@@ -1941,19 +2095,21 @@
           ]
         }
       ],
-      "timeFrom": null,
-      "timeShift": null,
       "title": "Event Builder Activity",
       "type": "timeseries"
     },
     {
-      "datasource": "${influxdb}",
+      "datasource": {
+        "uid": "${influxdb}"
+      },
       "fieldConfig": {
         "defaults": {
           "color": {
             "mode": "palette-classic"
           },
           "custom": {
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
             "axisLabel": "",
             "axisPlacement": "auto",
             "barAlignment": 0,
@@ -1965,6 +2121,7 @@
               "tooltip": false,
               "viz": false
             },
+            "insertNulls": false,
             "lineInterpolation": "linear",
             "lineWidth": 2,
             "pointSize": 4,
@@ -2057,16 +2214,21 @@
         "legend": {
           "calcs": [],
           "displayMode": "list",
-          "placement": "bottom"
+          "placement": "bottom",
+          "showLegend": true
         },
         "tooltip": {
-          "mode": "single"
+          "mode": "single",
+          "sort": "none"
         }
       },
       "pluginVersion": "8.0.6",
       "targets": [
         {
           "alias": "Pending fragments",
+          "datasource": {
+            "uid": "${influxdb}"
+          },
           "groupBy": [
             {
               "params": [
@@ -2113,6 +2275,9 @@
         },
         {
           "alias": "Received fragments",
+          "datasource": {
+            "uid": "${influxdb}"
+          },
           "groupBy": [
             {
               "params": [
@@ -2159,6 +2324,9 @@
         },
         {
           "alias": "Pending TRs",
+          "datasource": {
+            "uid": "${influxdb}"
+          },
           "groupBy": [
             {
               "params": [
@@ -2204,19 +2372,21 @@
           ]
         }
       ],
-      "timeFrom": null,
-      "timeShift": null,
       "title": "Trigger Building Status",
       "type": "timeseries"
     },
     {
-      "datasource": "${influxdb}",
+      "datasource": {
+        "uid": "${influxdb}"
+      },
       "fieldConfig": {
         "defaults": {
           "color": {
             "mode": "palette-classic"
           },
           "custom": {
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
             "axisLabel": "",
             "axisPlacement": "auto",
             "barAlignment": 0,
@@ -2228,6 +2398,7 @@
               "tooltip": false,
               "viz": false
             },
+            "insertNulls": false,
             "lineInterpolation": "linear",
             "lineWidth": 2,
             "pointSize": 4,
@@ -2274,16 +2445,21 @@
         "legend": {
           "calcs": [],
           "displayMode": "list",
-          "placement": "bottom"
+          "placement": "bottom",
+          "showLegend": true
         },
         "tooltip": {
-          "mode": "single"
+          "mode": "single",
+          "sort": "none"
         }
       },
       "pluginVersion": "8.0.6",
       "targets": [
         {
           "alias": "Lost fragments",
+          "datasource": {
+            "uid": "${influxdb}"
+          },
           "expr": "",
           "format": "time_series",
           "groupBy": [
@@ -2332,6 +2508,9 @@
         },
         {
           "alias": "Unexpected fragments",
+          "datasource": {
+            "uid": "${influxdb}"
+          },
           "groupBy": [
             {
               "params": [
@@ -2378,6 +2557,9 @@
         },
         {
           "alias": "Invalid requests",
+          "datasource": {
+            "uid": "${influxdb}"
+          },
           "expr": "",
           "format": "time_series",
           "groupBy": [
@@ -2426,6 +2608,9 @@
         },
         {
           "alias": "Duplicated TD",
+          "datasource": {
+            "uid": "${influxdb}"
+          },
           "groupBy": [
             {
               "params": [
@@ -2472,6 +2657,9 @@
         },
         {
           "alias": "Timed out TR",
+          "datasource": {
+            "uid": "${influxdb}"
+          },
           "groupBy": [
             {
               "params": [
@@ -2518,6 +2706,9 @@
         },
         {
           "alias": "Unexpected TDs",
+          "datasource": {
+            "uid": "${influxdb}"
+          },
           "groupBy": [
             {
               "params": [
@@ -2564,6 +2755,9 @@
         },
         {
           "alias": "Abandoned TRs",
+          "datasource": {
+            "uid": "${influxdb}"
+          },
           "groupBy": [
             {
               "params": [
@@ -2605,19 +2799,21 @@
           ]
         }
       ],
-      "timeFrom": null,
-      "timeShift": null,
       "title": "Event Builder Errors",
       "type": "timeseries"
     },
     {
-      "datasource": "${influxdb}",
+      "datasource": {
+        "uid": "${influxdb}"
+      },
       "fieldConfig": {
         "defaults": {
           "color": {
             "mode": "palette-classic"
           },
           "custom": {
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
             "axisLabel": "milliseconds",
             "axisPlacement": "auto",
             "barAlignment": 0,
@@ -2629,6 +2825,7 @@
               "tooltip": false,
               "viz": false
             },
+            "insertNulls": false,
             "lineInterpolation": "linear",
             "lineWidth": 2,
             "pointSize": 4,
@@ -2691,16 +2888,21 @@
         "legend": {
           "calcs": [],
           "displayMode": "list",
-          "placement": "bottom"
+          "placement": "bottom",
+          "showLegend": true
         },
         "tooltip": {
-          "mode": "single"
+          "mode": "single",
+          "sort": "none"
         }
       },
       "pluginVersion": "8.0.6",
       "targets": [
         {
           "alias": "Time for the TRB",
+          "datasource": {
+            "uid": "${influxdb}"
+          },
           "groupBy": [
             {
               "params": [
@@ -2746,8 +2948,6 @@
           ]
         }
       ],
-      "timeFrom": null,
-      "timeShift": null,
       "title": "Event Builders Information",
       "transformations": [
         {
@@ -2762,19 +2962,19 @@
     }
   ],
   "refresh": "5s",
-  "schemaVersion": 30,
+  "schemaVersion": 38,
   "style": "dark",
   "tags": [
     "Subsystem",
-    "v4.3.0"
+    "v5.0.0"
   ],
   "templating": {
     "list": [
       {
         "current": {
-          "selected": true,
-          "text": "InfluxKafka",
-          "value": "InfluxKafka"
+          "selected": false,
+          "text": "KluInflux",
+          "value": "ffedc550-6555-4a16-a113-aabf2b980c30"
         },
         "hide": 2,
         "includeAll": false,
@@ -2789,16 +2989,15 @@
         "type": "datasource"
       },
       {
-        "allValue": null,
         "current": {
           "selected": false,
-          "text": "np02-coldbox-timing-tlu",
-          "value": "np02-coldbox-timing-tlu"
+          "text": "2apa-daphne-titavare",
+          "value": "2apa-daphne-titavare"
         },
-        "datasource": "${influxdb}",
+        "datasource": {
+          "uid": "${influxdb}"
+        },
         "definition": "SHOW TAG VALUES WITH KEY=\"partition_id\" where $timeFilter",
-        "description": null,
-        "error": null,
         "hide": 0,
         "includeAll": false,
         "label": "Partition name",
@@ -2813,17 +3012,15 @@
         "type": "query"
       },
       {
-        "allValue": null,
         "current": {
-          "isNone": true,
           "selected": false,
-          "text": "None",
-          "value": ""
+          "text": "dataflow0",
+          "value": "dataflow0"
         },
-        "datasource": "${influxdb}",
+        "datasource": {
+          "uid": "${influxdb}"
+        },
         "definition": "SHOW TAG VALUES FROM \"dunedaq.dfmodules.triggerrecordbuilderinfo.Info\" WITH KEY=\"source_id\" WHERE $timeFilter AND \"partition_id\"='${partition}'",
-        "description": null,
-        "error": null,
         "hide": 0,
         "includeAll": false,
         "label": "Application name",
@@ -2838,17 +3035,16 @@
         "type": "query"
       },
       {
-        "allValue": null,
         "current": {
-          "isNone": true,
           "selected": false,
-          "text": "None",
-          "value": ""
+          "text": "trb",
+          "value": "trb"
         },
-        "datasource": "${influxdb}",
+        "datasource": {
+          "uid": "${influxdb}"
+        },
         "definition": "SHOW TAG VALUES FROM \"dunedaq.dfmodules.triggerrecordbuilderinfo.Info\" WITH KEY=\"source_id\" WHERE $timeFilter AND \"partition_id\"='${partition}'",
         "description": "name of the ",
-        "error": null,
         "hide": 0,
         "includeAll": false,
         "label": "TRB name",
@@ -2895,6 +3091,7 @@
   },
   "timezone": "",
   "title": "Dataflow",
-  "uid": "ynqDHncnds",
-  "version": 1
+  "uid": "v5_0_0-dataflow",
+  "version": 1,
+  "weekStart": ""
 }

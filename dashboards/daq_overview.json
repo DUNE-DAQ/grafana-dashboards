@@ -24,7 +24,7 @@
   "editable": true,
   "fiscalYearStartMonth": 0,
   "graphTooltip": 0,
-  "id": 41,
+  "id": 63,
   "links": [
     {
       "asDropdown": true,
@@ -33,7 +33,7 @@
       "keepTime": true,
       "tags": [
         "Subsystem",
-        "v4.3.0"
+        "v5.0.0"
       ],
       "targetBlank": true,
       "title": "Subsystems",
@@ -48,7 +48,7 @@
       "keepTime": true,
       "tags": [
         "Global",
-        "v4.3.0"
+        "v5.0.0"
       ],
       "targetBlank": true,
       "title": "Global",
@@ -1698,6 +1698,7 @@
     },
     {
       "datasource": {
+        "type": "postgres",
         "uid": "${postgresql}"
       },
       "fieldConfig": {
@@ -1759,7 +1760,7 @@
             "properties": [
               {
                 "id": "custom.width",
-                "value": 407
+                "value": 345
               }
             ]
           },
@@ -1818,7 +1819,7 @@
             "properties": [
               {
                 "id": "custom.width",
-                "value": 152
+                "value": 231
               }
             ]
           },
@@ -1874,11 +1875,12 @@
           "datasource": {
             "uid": "${postgresql}"
           },
+          "editorMode": "code",
           "format": "table",
           "group": [],
           "metricColumn": "none",
           "rawQuery": true,
-          "rawSql": "SELECT severity,time,application_name,message,issue_name,host_name\nFROM public.\"ErrorReports\"\nWHERE partition='${partition}' AND time >= ${__from} AND time <= ${__to}\nORDER BY -time\n",
+          "rawSql": "SELECT severity,time/1000000 as time,application_name,message,issue_name,host_name\nFROM \"ERSstream\"\nWHERE session='${partition}' AND time/1000000 >= ${__from} AND time/1000000 <= ${__to}\nORDER BY -time\n",
           "refId": "A",
           "select": [
             [
@@ -1890,6 +1892,23 @@
               }
             ]
           ],
+          "sql": {
+            "columns": [
+              {
+                "parameters": [],
+                "type": "function"
+              }
+            ],
+            "groupBy": [
+              {
+                "property": {
+                  "type": "string"
+                },
+                "type": "groupBy"
+              }
+            ],
+            "limit": 50
+          },
           "table": "\"ErrorReports\"",
           "timeColumn": "\"time\"",
           "timeColumnType": "int8",
@@ -2582,7 +2601,7 @@
   "schemaVersion": 38,
   "style": "dark",
   "tags": [
-    "v4.3.0"
+    "v5.0.0"
   ],
   "templating": {
     "list": [
@@ -2625,8 +2644,8 @@
       {
         "current": {
           "selected": false,
-          "text": "np02-timing-fanout-2",
-          "value": "np02-timing-fanout-2"
+          "text": "maroda",
+          "value": "maroda"
         },
         "datasource": {
           "uid": "${influxdb}"
@@ -2694,8 +2713,8 @@
       {
         "current": {
           "selected": false,
-          "text": "1032011",
-          "value": "1032011"
+          "text": "940",
+          "value": "940"
         },
         "datasource": {
           "uid": "${influxdb}"
@@ -2746,7 +2765,7 @@
   },
   "timezone": "",
   "title": "DAQ overview",
-  "uid": "v4_3_0-overview",
-  "version": 1,
+  "uid": "sdfgsg",
+  "version": 4,
   "weekStart": ""
 }

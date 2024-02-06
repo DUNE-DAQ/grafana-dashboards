@@ -125,6 +125,7 @@
     },
     {
       "datasource": {
+        "type": "influxdb",
         "uid": "${influxdb}"
       },
       "fieldConfig": {
@@ -137,7 +138,9 @@
               "options": {
                 "match": "null",
                 "result": {
-                  "text": "N/A"
+                  "color": "dark-red",
+                  "index": 0,
+                  "text": "SHUTDOWN"
                 }
               },
               "type": "special"
@@ -176,9 +179,10 @@
           "values": false
         },
         "text": {},
-        "textMode": "auto"
+        "textMode": "auto",
+        "wideLayout": true
       },
-      "pluginVersion": "10.1.4",
+      "pluginVersion": "10.2.2",
       "targets": [
         {
           "alias": "",
@@ -192,7 +196,7 @@
           "measurement": "dunedaq.appfwk.appinfo.Info",
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "SELECT \"state\" FROM \"dunedaq.appfwk.appinfo.Info\" WHERE (\"partition_id\" = '${partition}') AND $timeFilter",
+          "query": "SELECT \"state\" FROM \"dunedaq.appfwk.appinfo.Info\" WHERE (\"partition_id\" = '${partition}') AND time > now() - 75s",
           "rawQuery": true,
           "refId": "A",
           "resultFormat": "table",
@@ -300,9 +304,10 @@
           "values": false
         },
         "text": {},
-        "textMode": "auto"
+        "textMode": "auto",
+        "wideLayout": true
       },
-      "pluginVersion": "10.1.4",
+      "pluginVersion": "10.2.2",
       "targets": [
         {
           "datasource": {
@@ -420,9 +425,10 @@
           "values": false
         },
         "text": {},
-        "textMode": "auto"
+        "textMode": "auto",
+        "wideLayout": true
       },
-      "pluginVersion": "10.1.4",
+      "pluginVersion": "10.2.2",
       "targets": [
         {
           "datasource": {
@@ -532,9 +538,10 @@
           "values": false
         },
         "text": {},
-        "textMode": "auto"
+        "textMode": "auto",
+        "wideLayout": true
       },
-      "pluginVersion": "10.1.4",
+      "pluginVersion": "10.2.2",
       "targets": [
         {
           "datasource": {
@@ -628,9 +635,10 @@
           "values": false
         },
         "text": {},
-        "textMode": "auto"
+        "textMode": "auto",
+        "wideLayout": true
       },
-      "pluginVersion": "10.1.4",
+      "pluginVersion": "10.2.2",
       "targets": [
         {
           "datasource": {
@@ -745,9 +753,10 @@
           "values": false
         },
         "text": {},
-        "textMode": "auto"
+        "textMode": "auto",
+        "wideLayout": true
       },
-      "pluginVersion": "10.1.4",
+      "pluginVersion": "10.2.2",
       "targets": [
         {
           "datasource": {
@@ -865,9 +874,10 @@
           "values": false
         },
         "text": {},
-        "textMode": "auto"
+        "textMode": "auto",
+        "wideLayout": true
       },
-      "pluginVersion": "10.1.4",
+      "pluginVersion": "10.2.2",
       "targets": [
         {
           "datasource": {
@@ -994,9 +1004,10 @@
           "values": false
         },
         "text": {},
-        "textMode": "auto"
+        "textMode": "auto",
+        "wideLayout": true
       },
-      "pluginVersion": "10.1.4",
+      "pluginVersion": "10.2.2",
       "targets": [
         {
           "alias": "$tag_source_id",
@@ -1058,6 +1069,7 @@
             "mode": "palette-classic"
           },
           "custom": {
+            "axisBorderShow": false,
             "axisCenteredZero": false,
             "axisColorMode": "text",
             "axisLabel": "Hz",
@@ -1546,6 +1558,7 @@
             "mode": "palette-classic"
           },
           "custom": {
+            "axisBorderShow": false,
             "axisCenteredZero": false,
             "axisColorMode": "text",
             "axisLabel": "MiBytes/s",
@@ -1869,7 +1882,7 @@
         "showHeader": true,
         "sortBy": []
       },
-      "pluginVersion": "10.1.4",
+      "pluginVersion": "10.2.2",
       "targets": [
         {
           "datasource": {
@@ -1935,6 +1948,7 @@
             "mode": "palette-classic"
           },
           "custom": {
+            "axisBorderShow": false,
             "axisCenteredZero": false,
             "axisColorMode": "text",
             "axisLabel": "",
@@ -2145,6 +2159,7 @@
             "mode": "palette-classic"
           },
           "custom": {
+            "axisBorderShow": false,
             "axisCenteredZero": false,
             "axisColorMode": "text",
             "axisLabel": "MBytes/s",
@@ -2255,6 +2270,7 @@
             "mode": "palette-classic"
           },
           "custom": {
+            "axisBorderShow": false,
             "axisCenteredZero": false,
             "axisColorMode": "text",
             "axisLabel": "",
@@ -2464,6 +2480,7 @@
             "mode": "palette-classic"
           },
           "custom": {
+            "axisBorderShow": false,
             "axisCenteredZero": false,
             "axisColorMode": "text",
             "axisLabel": "",
@@ -2599,7 +2616,6 @@
   ],
   "refresh": "10s",
   "schemaVersion": 38,
-  "style": "dark",
   "tags": [
     "v5.0.0"
   ],
@@ -2644,8 +2660,8 @@
       {
         "current": {
           "selected": false,
-          "text": "maroda",
-          "value": "maroda"
+          "text": "mman-apa1",
+          "value": "mman-apa1"
         },
         "datasource": {
           "uid": "${influxdb}"
@@ -2713,8 +2729,8 @@
       {
         "current": {
           "selected": false,
-          "text": "940",
-          "value": "940"
+          "text": "0",
+          "value": "0"
         },
         "datasource": {
           "uid": "${influxdb}"
@@ -2766,6 +2782,6 @@
   "timezone": "",
   "title": "DAQ overview",
   "uid": "v5_0_0-overview",
-  "version": 1,
+  "version": 2,
   "weekStart": ""
 }

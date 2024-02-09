@@ -369,6 +369,7 @@
     },
     {
       "datasource": {
+        "type": "influxdb",
         "uid": "${influxdb}"
       },
       "fieldConfig": {
@@ -380,12 +381,12 @@
             {
               "options": {
                 "false": {
-                  "color": "green",
+                  "color": "semi-dark-green",
                   "index": 1,
-                  "text": "OK"
+                  "text": "NO ERRORS"
                 },
                 "true": {
-                  "color": "red",
+                  "color": "dark-red",
                   "index": 0,
                   "text": "ERROR"
                 }
@@ -421,7 +422,7 @@
           "calcs": [
             "lastNotNull"
           ],
-          "fields": "",
+          "fields": "/^dunedaq\\.appfwk\\.appinfo\\.Info\\.error$/",
           "values": false
         },
         "text": {},
@@ -468,18 +469,7 @@
         }
       ],
       "title": "App Fwk Error State",
-      "transformations": [
-        {
-          "id": "reduce",
-          "options": {
-            "includeTimeField": false,
-            "mode": "reduceFields",
-            "reducers": [
-              "lastNotNull"
-            ]
-          }
-        }
-      ],
+      "transformations": [],
       "type": "stat"
     },
     {
@@ -2660,8 +2650,8 @@
       {
         "current": {
           "selected": false,
-          "text": "mman-apa1",
-          "value": "mman-apa1"
+          "text": "np04hd",
+          "value": "np04hd"
         },
         "datasource": {
           "uid": "${influxdb}"
@@ -2782,6 +2772,6 @@
   "timezone": "",
   "title": "DAQ overview",
   "uid": "v5_0_0-overview",
-  "version": 2,
+  "version": 4,
   "weekStart": ""
 }

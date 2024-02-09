@@ -131,6 +131,79 @@
       "fieldConfig": {
         "defaults": {
           "color": {
+            "mode": "continuous-RdYlGr"
+          },
+          "custom": {
+            "fillOpacity": 75,
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": 30000,
+            "lineWidth": 0,
+            "spanNulls": false
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 2,
+        "w": 24,
+        "x": 0,
+        "y": 1
+      },
+      "id": 46,
+      "options": {
+        "alignValue": "center",
+        "legend": {
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "mergeValues": true,
+        "rowHeight": 0.9,
+        "showValue": "auto",
+        "tooltip": {
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "targets": [
+        {
+          "alias": "$partition",
+          "datasource": {
+            "type": "influxdb",
+            "uid": "${influxdb}"
+          },
+          "hide": false,
+          "query": "SELECT \"runno\" FROM \"dunedaq.rcif.runinfo.Info\" WHERE (\"partition_id\" = '${partition}' AND \"runno\" > 0) AND $timeFilter",
+          "rawQuery": true,
+          "refId": "A",
+          "resultFormat": "time_series"
+        }
+      ],
+      "transformations": [],
+      "type": "state-timeline"
+    },
+    {
+      "datasource": {
+        "type": "influxdb",
+        "uid": "${influxdb}"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
             "mode": "thresholds"
           },
           "mappings": [
@@ -163,7 +236,7 @@
         "h": 4,
         "w": 3,
         "x": 0,
-        "y": 1
+        "y": 3
       },
       "id": 25,
       "links": [],
@@ -288,7 +361,7 @@
         "h": 4,
         "w": 3,
         "x": 3,
-        "y": 1
+        "y": 3
       },
       "id": 34,
       "links": [],
@@ -410,7 +483,7 @@
         "h": 4,
         "w": 3,
         "x": 6,
-        "y": 1
+        "y": 3
       },
       "id": 27,
       "options": {
@@ -510,7 +583,7 @@
         "h": 4,
         "w": 3,
         "x": 9,
-        "y": 1
+        "y": 3
       },
       "id": 28,
       "links": [],
@@ -609,7 +682,7 @@
         "h": 4,
         "w": 3,
         "x": 12,
-        "y": 1
+        "y": 3
       },
       "id": 32,
       "links": [],
@@ -727,7 +800,7 @@
         "h": 4,
         "w": 3,
         "x": 15,
-        "y": 1
+        "y": 3
       },
       "id": 45,
       "options": {
@@ -848,7 +921,7 @@
         "h": 4,
         "w": 3,
         "x": 18,
-        "y": 1
+        "y": 3
       },
       "id": 29,
       "links": [],
@@ -978,7 +1051,7 @@
         "h": 4,
         "w": 3,
         "x": 21,
-        "y": 1
+        "y": 3
       },
       "id": 33,
       "links": [],
@@ -1219,7 +1292,7 @@
         "h": 7,
         "w": 6,
         "x": 0,
-        "y": 5
+        "y": 7
       },
       "id": 2,
       "links": [],
@@ -1601,7 +1674,7 @@
         "h": 7,
         "w": 6,
         "x": 6,
-        "y": 5
+        "y": 7
       },
       "id": 10,
       "links": [],
@@ -1856,7 +1929,7 @@
         "h": 21,
         "w": 12,
         "x": 12,
-        "y": 5
+        "y": 7
       },
       "id": 15,
       "options": {
@@ -2068,7 +2141,7 @@
         "h": 7,
         "w": 6,
         "x": 0,
-        "y": 12
+        "y": 14
       },
       "id": 44,
       "options": {
@@ -2203,7 +2276,7 @@
         "h": 7,
         "w": 6,
         "x": 6,
-        "y": 12
+        "y": 14
       },
       "id": 36,
       "options": {
@@ -2312,7 +2385,7 @@
         "h": 7,
         "w": 6,
         "x": 0,
-        "y": 19
+        "y": 21
       },
       "id": 38,
       "options": {
@@ -2554,7 +2627,7 @@
         "h": 7,
         "w": 6,
         "x": 6,
-        "y": 19
+        "y": 21
       },
       "id": 40,
       "options": {
@@ -2772,6 +2845,6 @@
   "timezone": "",
   "title": "DAQ overview",
   "uid": "v5_0_0-overview",
-  "version": 4,
+  "version": 8,
   "weekStart": ""
 }

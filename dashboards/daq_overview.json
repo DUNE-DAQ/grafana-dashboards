@@ -1613,6 +1613,7 @@
     },
     {
       "datasource": {
+        "type": "influxdb",
         "uid": "${influxdb}"
       },
       "fieldConfig": {
@@ -1666,7 +1667,7 @@
               }
             ]
           },
-          "unit": "none"
+          "unit": "binBps"
         },
         "overrides": []
       },
@@ -1698,12 +1699,13 @@
             "uid": "${influxdb}"
           },
           "groupBy": [],
+          "hide": false,
           "measurement": "dunedaq.dfmodules.datawriterinfo.Info",
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "SELECT non_negative_derivative(distinct(\"bytes_output\"), 1s)  / 1048576 FROM \"dunedaq.dfmodules.datawriterinfo.Info\" WHERE (\"partition_id\" = '${partition}') AND $timeFilter GROUP BY time($__interval), \"source_id\"\nfill(null)",
+          "query": "SELECT non_negative_derivative(cumulative_sum(sum(\"new_bytes_output\")), 1s)  FROM \"dunedaq.dfmodules.datawriterinfo.Info\" WHERE (\"partition_id\" = '${partition}') AND $timeFilter GROUP BY time($__interval), \"source_id\"\nfill(null)",
           "rawQuery": true,
-          "refId": "C",
+          "refId": "B",
           "resultFormat": "time_series",
           "select": [
             [
@@ -1733,9 +1735,40 @@
           "measurement": "dunedaq.dfmodules.datawriterinfo.Info",
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "SELECT non_negative_derivative(cumulative_sum(sum(\"bytes_output\")), 1s)  / 1048576 FROM \"dunedaq.dfmodules.tpstreamwriterinfo.Info\" WHERE (\"partition_id\" = '${partition}') AND $timeFilter GROUP BY time($__interval), \"source_id\"\nfill(null)",
+          "query": "SELECT non_negative_derivative(cumulative_sum(sum(\"bytes_output\")), 1s)  FROM \"dunedaq.dfmodules.tpstreamwriterinfo.Info\" WHERE (\"partition_id\" = '${partition}') AND $timeFilter GROUP BY time($__interval), \"source_id\"\nfill(null)",
           "rawQuery": true,
           "refId": "A",
+          "resultFormat": "time_series",
+          "select": [
+            [
+              {
+                "params": [
+                  "bytes_output"
+                ],
+                "type": "field"
+              }
+            ]
+          ],
+          "tags": [
+            {
+              "key": "source_id",
+              "operator": "=",
+              "value": "${partition}_dataflow.datawriter"
+            }
+          ]
+        },
+        {
+          "alias": "Total",
+          "datasource": {
+            "uid": "${influxdb}"
+          },
+          "groupBy": [],
+          "measurement": "dunedaq.dfmodules.datawriterinfo.Info",
+          "orderByTime": "ASC",
+          "policy": "default",
+          "query": "SELECT non_negative_derivative(cumulative_sum(sum(\"new_bytes_output\")), 1s)  FROM (SELECT \"bytes_output\" AS \"new_bytes_output\" FROM \"dunedaq.dfmodules.tpstreamwriterinfo.Info\" WHERE (\"partition_id\" = '${partition}') AND $timeFilter ),\"dunedaq.dfmodules.datawriterinfo.Info\" WHERE (\"partition_id\" = '${partition}') AND $timeFilter GROUP BY time($__interval)\nfill(null)",
+          "rawQuery": true,
+          "refId": "C",
           "resultFormat": "time_series",
           "select": [
             [
@@ -1764,10 +1797,6 @@
             "regex": ".*\\.(.*)\\.(.*)",
             "renamePattern": "$1 $2"
           }
-        },
-        {
-          "id": "calculateField",
-          "options": {}
         }
       ],
       "type": "timeseries"
@@ -2723,8 +2752,8 @@
       {
         "current": {
           "selected": false,
-          "text": "np04hd",
-          "value": "np04hd"
+          "text": "np02-coldbox-timing-tlu",
+          "value": "np02-coldbox-timing-tlu"
         },
         "datasource": {
           "uid": "${influxdb}"
@@ -2792,8 +2821,8 @@
       {
         "current": {
           "selected": false,
-          "text": "0",
-          "value": "0"
+          "text": "618014",
+          "value": "618014"
         },
         "datasource": {
           "uid": "${influxdb}"
@@ -2845,6 +2874,6 @@
   "timezone": "",
   "title": "DAQ overview",
   "uid": "v5_0_0-overview",
-  "version": 8,
+  "version": 10,
   "weekStart": ""
 }

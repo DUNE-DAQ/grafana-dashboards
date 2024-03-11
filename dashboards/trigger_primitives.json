@@ -1390,6 +1390,7 @@
     },
     {
       "datasource": {
+        "type": "influxdb",
         "uid": "${influxdb}"
       },
       "fieldConfig": {
@@ -1493,7 +1494,7 @@
           "measurement": "dunedaq.readoutlibs.readoutinfo.RawDataProcessorInfo",
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "SELECT non_negative_derivative(cumulative_sum(sum(\"num_tps_sent\")), 1s) FROM \"dunedaq.readoutlibs.readoutinfo.RawDataProcessorInfo\" WHERE (\"partition_id\"='${partition}' AND \"source_id\" =~ /.*\\.tp_datahandler_\\d+/) AND $timeFilter GROUP BY time($__interval), \"source_id\" fill(null)",
+          "query": "SELECT non_negative_derivative(cumulative_sum(sum(\"num_tps_sent\")), 1s) FROM \"dunedaq.readoutlibs.readoutinfo.RawDataProcessorInfo\" WHERE (\"partition_id\"='${partition}' AND  \"source_id\" =~ /[^.]+\\.tphandler-\\d+/) AND $timeFilter GROUP BY time($__interval), \"source_id\" fill(null)",
           "rawQuery": true,
           "refId": "D",
           "resultFormat": "time_series",
@@ -2817,7 +2818,7 @@
               "measurement": "dunedaq.readoutlibs.readoutinfo.ReadoutInfo",
               "orderByTime": "ASC",
               "policy": "default",
-              "query": "SELECT non_negative_derivative(cumulative_sum(sum(\"num_tps_send_failed\")), 1s) FROM \"dunedaq.readoutlibs.readoutinfo.RawDataProcessorInfo\" WHERE (\"partition_id\"='${partition}' AND \"source_id\" =~ /.*\\.tp_datahandler_\\d+/) AND $timeFilter GROUP BY time($__interval), \"source_id\"",
+              "query": "SELECT non_negative_derivative(cumulative_sum(sum(\"num_tps_send_failed\")), 1s) FROM \"dunedaq.readoutlibs.readoutinfo.RawDataProcessorInfo\" WHERE (\"partition_id\"='${partition}' AND \"source_id\" =~ /[^.]+\\.tphandler-\\d+/) AND $timeFilter GROUP BY time($__interval), \"source_id\"",
               "rawQuery": true,
               "refId": "A",
               "resultFormat": "time_series",
@@ -4034,9 +4035,9 @@
       },
       {
         "current": {
-          "selected": true,
-          "text": "runp02srv003eth0",
-          "value": "runp02srv003eth0"
+          "selected": false,
+          "text": "ru-CRP4",
+          "value": "ru-CRP4"
         },
         "datasource": {
           "uid": "${influxdb}"
@@ -4110,6 +4111,6 @@
   "timezone": "",
   "title": "Trigger Primitives",
   "uid": "v5_0_0-trigger_primitives",
-  "version": 25,
+  "version": 28,
   "weekStart": ""
 }

@@ -24,7 +24,7 @@
   "editable": true,
   "fiscalYearStartMonth": 0,
   "graphTooltip": 0,
-  "id": 93,
+  "id": 109,
   "links": [],
   "liveNow": false,
   "panels": [
@@ -1533,7 +1533,7 @@
       "type": "timeseries"
     },
     {
-      "collapsed": true,
+      "collapsed": false,
       "gridPos": {
         "h": 1,
         "w": 24,
@@ -1541,317 +1541,319 @@
         "y": 15
       },
       "id": 68,
-      "panels": [
-        {
-          "datasource": {
-            "type": "influxdb",
-            "uid": "${influxdb}"
-          },
-          "fieldConfig": {
-            "defaults": {
-              "color": {
-                "mode": "palette-classic"
-              },
-              "custom": {
-                "axisBorderShow": false,
-                "axisCenteredZero": false,
-                "axisColorMode": "text",
-                "axisLabel": "clock ticks",
-                "axisPlacement": "auto",
-                "barAlignment": 0,
-                "drawStyle": "line",
-                "fillOpacity": 0,
-                "gradientMode": "none",
-                "hideFrom": {
-                  "legend": false,
-                  "tooltip": false,
-                  "viz": false
-                },
-                "insertNulls": false,
-                "lineInterpolation": "linear",
-                "lineWidth": 1,
-                "pointSize": 5,
-                "scaleDistribution": {
-                  "type": "linear"
-                },
-                "showPoints": "auto",
-                "spanNulls": false,
-                "stacking": {
-                  "group": "A",
-                  "mode": "none"
-                },
-                "thresholdsStyle": {
-                  "mode": "off"
-                }
-              },
-              "mappings": [],
-              "thresholds": {
-                "mode": "absolute",
-                "steps": [
-                  {
-                    "color": "green"
-                  },
-                  {
-                    "color": "#EAB839",
-                    "value": 80
-                  }
-                ]
-              }
-            },
-            "overrides": []
-          },
-          "gridPos": {
-            "h": 7,
-            "w": 8,
-            "x": 0,
-            "y": 16
-          },
-          "id": 51,
-          "maxPerRow": 4,
-          "options": {
-            "legend": {
-              "calcs": [],
-              "displayMode": "list",
-              "placement": "bottom",
-              "showLegend": false
-            },
-            "tooltip": {
-              "mode": "multi",
-              "sort": "none"
-            }
-          },
-          "repeat": "timestamp_app",
-          "repeatDirection": "v",
-          "targets": [
-            {
-              "datasource": {
-                "type": "influxdb",
-                "uid": "${influxdb}"
-              },
-              "query": "SELECT spread(\"last_daq_timestamp\") FROM \"dunedaq.readoutlibs.readoutinfo.ReadoutInfo\" WHERE (partition_id = '${partition}' AND \"source_id\" =~ /.*\\.${timestamp_app}\\..*/) AND  $timeFilter AND \"last_daq_timestamp\" > 0  GROUP BY time(500ms) fill(null)",
-              "rawQuery": true,
-              "refId": "A",
-              "resultFormat": "time_series"
-            }
-          ],
-          "title": "Last timestamp spread for ${timestamp_app}",
-          "type": "timeseries"
-        },
-        {
-          "datasource": {
-            "type": "influxdb",
-            "uid": "${influxdb}"
-          },
-          "description": "",
-          "fieldConfig": {
-            "defaults": {
-              "color": {
-                "mode": "palette-classic"
-              },
-              "custom": {
-                "axisBorderShow": false,
-                "axisCenteredZero": false,
-                "axisColorMode": "text",
-                "axisLabel": "62.5 MHz ticks",
-                "axisPlacement": "auto",
-                "barAlignment": 0,
-                "drawStyle": "line",
-                "fillOpacity": 0,
-                "gradientMode": "none",
-                "hideFrom": {
-                  "legend": false,
-                  "tooltip": false,
-                  "viz": false
-                },
-                "insertNulls": false,
-                "lineInterpolation": "linear",
-                "lineWidth": 1,
-                "pointSize": 5,
-                "scaleDistribution": {
-                  "type": "linear"
-                },
-                "showPoints": "auto",
-                "spanNulls": false,
-                "stacking": {
-                  "group": "A",
-                  "mode": "none"
-                },
-                "thresholdsStyle": {
-                  "mode": "off"
-                }
-              },
-              "mappings": [],
-              "thresholds": {
-                "mode": "absolute",
-                "steps": [
-                  {
-                    "color": "green"
-                  },
-                  {
-                    "color": "red",
-                    "value": 80
-                  }
-                ]
-              },
-              "unit": "none"
-            },
-            "overrides": []
-          },
-          "gridPos": {
-            "h": 7,
-            "w": 8,
-            "x": 8,
-            "y": 16
-          },
-          "id": 49,
-          "options": {
-            "legend": {
-              "calcs": [],
-              "displayMode": "list",
-              "placement": "bottom",
-              "showLegend": true
-            },
-            "tooltip": {
-              "mode": "multi",
-              "sort": "none"
-            }
-          },
-          "repeat": "timestamp_app",
-          "repeatDirection": "v",
-          "targets": [
-            {
-              "alias": "$tag_source_id",
-              "datasource": {
-                "type": "influxdb",
-                "uid": "${influxdb}"
-              },
-              "query": "SELECT last(\"last_daq_timestamp\") FROM \"dunedaq.readoutlibs.readoutinfo.ReadoutInfo\" WHERE (partition_id = '${partition}' AND \"source_id\" =~ /[^.]+\\.${timestamp_app}\\.datahandler_\\d+/) AND \"last_daq_timestamp\">0 AND $timeFilter GROUP BY time($__interval), \"source_id\" ",
-              "rawQuery": true,
-              "refId": "A",
-              "resultFormat": "time_series"
-            }
-          ],
-          "title": "Last DAQ Timestamp for ${timestamp_app} (no zeros)",
-          "transformations": [
-            {
-              "id": "renameByRegex",
-              "options": {
-                "regex": ".*\\..*\\.(.*)",
-                "renamePattern": "$1 "
-              }
-            }
-          ],
-          "type": "timeseries"
-        },
-        {
-          "datasource": {
-            "type": "influxdb",
-            "uid": "${influxdb}"
-          },
-          "description": "",
-          "fieldConfig": {
-            "defaults": {
-              "color": {
-                "mode": "palette-classic"
-              },
-              "custom": {
-                "axisBorderShow": false,
-                "axisCenteredZero": false,
-                "axisColorMode": "text",
-                "axisLabel": "62.5 MHz ticks",
-                "axisPlacement": "auto",
-                "barAlignment": 0,
-                "drawStyle": "line",
-                "fillOpacity": 0,
-                "gradientMode": "none",
-                "hideFrom": {
-                  "legend": false,
-                  "tooltip": false,
-                  "viz": false
-                },
-                "insertNulls": false,
-                "lineInterpolation": "linear",
-                "lineWidth": 1,
-                "pointSize": 5,
-                "scaleDistribution": {
-                  "type": "linear"
-                },
-                "showPoints": "auto",
-                "spanNulls": false,
-                "stacking": {
-                  "group": "A",
-                  "mode": "none"
-                },
-                "thresholdsStyle": {
-                  "mode": "off"
-                }
-              },
-              "mappings": [],
-              "thresholds": {
-                "mode": "absolute",
-                "steps": [
-                  {
-                    "color": "green"
-                  },
-                  {
-                    "color": "red",
-                    "value": 80
-                  }
-                ]
-              },
-              "unit": "none"
-            },
-            "overrides": []
-          },
-          "gridPos": {
-            "h": 7,
-            "w": 8,
-            "x": 16,
-            "y": 16
-          },
-          "id": 52,
-          "options": {
-            "legend": {
-              "calcs": [],
-              "displayMode": "list",
-              "placement": "bottom",
-              "showLegend": true
-            },
-            "tooltip": {
-              "mode": "multi",
-              "sort": "none"
-            }
-          },
-          "repeat": "timestamp_app",
-          "repeatDirection": "v",
-          "targets": [
-            {
-              "alias": "$tag_source_id",
-              "datasource": {
-                "type": "influxdb",
-                "uid": "${influxdb}"
-              },
-              "query": "SELECT last(\"last_daq_timestamp\") FROM \"dunedaq.readoutlibs.readoutinfo.ReadoutInfo\" WHERE (partition_id = '${partition}' AND \"source_id\" =~ /[^.]+\\.${timestamp_app}\\.datahandler_\\d+/) AND $timeFilter GROUP BY time($__interval), \"source_id\" ",
-              "rawQuery": true,
-              "refId": "A",
-              "resultFormat": "time_series"
-            }
-          ],
-          "title": "Last DAQ Timestamp for ${timestamp_app}",
-          "transformations": [
-            {
-              "id": "renameByRegex",
-              "options": {
-                "regex": ".*\\..*\\.(.*)",
-                "renamePattern": "$1 "
-              }
-            }
-          ],
-          "type": "timeseries"
-        }
-      ],
+      "panels": [],
       "title": "Timestamps",
       "type": "row"
+    },
+    {
+      "datasource": {
+        "type": "influxdb",
+        "uid": "${influxdb}"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "clock ticks",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "drawStyle": "line",
+            "fillOpacity": 0,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "auto",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "#EAB839",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 7,
+        "w": 8,
+        "x": 0,
+        "y": 16
+      },
+      "id": 51,
+      "maxPerRow": 4,
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": false
+        },
+        "tooltip": {
+          "mode": "multi",
+          "sort": "none"
+        }
+      },
+      "repeat": "timestamp_app",
+      "repeatDirection": "v",
+      "targets": [
+        {
+          "datasource": {
+            "type": "influxdb",
+            "uid": "${influxdb}"
+          },
+          "query": "SELECT spread(\"last_daq_timestamp\") FROM \"dunedaq.readoutlibs.readoutinfo.ReadoutInfo\" WHERE (partition_id = '${partition}' AND \"source_id\" =~ /.*\\.${timestamp_app}\\..*/) AND  $timeFilter AND \"last_daq_timestamp\" > 0  GROUP BY time(500ms) fill(null)",
+          "rawQuery": true,
+          "refId": "A",
+          "resultFormat": "time_series"
+        }
+      ],
+      "title": "Last timestamp spread for ${timestamp_app}",
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "influxdb",
+        "uid": "${influxdb}"
+      },
+      "description": "",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "62.5 MHz ticks",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "drawStyle": "line",
+            "fillOpacity": 0,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "auto",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "none"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 7,
+        "w": 8,
+        "x": 8,
+        "y": 16
+      },
+      "id": 49,
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "tooltip": {
+          "mode": "multi",
+          "sort": "none"
+        }
+      },
+      "repeat": "timestamp_app",
+      "repeatDirection": "v",
+      "targets": [
+        {
+          "alias": "$tag_source_id",
+          "datasource": {
+            "type": "influxdb",
+            "uid": "${influxdb}"
+          },
+          "query": "SELECT last(\"last_daq_timestamp\") FROM \"dunedaq.readoutlibs.readoutinfo.ReadoutInfo\" WHERE (partition_id = '${partition}' AND \"source_id\" =~ /[^.]+\\.${timestamp_app}\\.datahandler_\\d+/) AND \"last_daq_timestamp\">0 AND $timeFilter GROUP BY time($__interval), \"source_id\" ",
+          "rawQuery": true,
+          "refId": "A",
+          "resultFormat": "time_series"
+        }
+      ],
+      "title": "Last DAQ Timestamp for ${timestamp_app} (no zeros)",
+      "transformations": [
+        {
+          "id": "renameByRegex",
+          "options": {
+            "regex": ".*\\..*\\.(.*)",
+            "renamePattern": "$1 "
+          }
+        }
+      ],
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "influxdb",
+        "uid": "${influxdb}"
+      },
+      "description": "",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "62.5 MHz ticks",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "drawStyle": "line",
+            "fillOpacity": 0,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "auto",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "none"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 7,
+        "w": 8,
+        "x": 16,
+        "y": 16
+      },
+      "id": 52,
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "tooltip": {
+          "mode": "multi",
+          "sort": "none"
+        }
+      },
+      "repeat": "timestamp_app",
+      "repeatDirection": "v",
+      "targets": [
+        {
+          "alias": "$tag_source_id",
+          "datasource": {
+            "type": "influxdb",
+            "uid": "${influxdb}"
+          },
+          "query": "SELECT last(\"last_daq_timestamp\") FROM \"dunedaq.readoutlibs.readoutinfo.ReadoutInfo\" WHERE (partition_id = '${partition}' AND \"source_id\" =~ /[^.]+\\.${timestamp_app}\\.datahandler_\\d+/) AND $timeFilter GROUP BY time($__interval), \"source_id\" ",
+          "rawQuery": true,
+          "refId": "A",
+          "resultFormat": "time_series"
+        }
+      ],
+      "title": "Last DAQ Timestamp for ${timestamp_app}",
+      "transformations": [
+        {
+          "id": "renameByRegex",
+          "options": {
+            "regex": ".*\\..*\\.(.*)",
+            "renamePattern": "$1 "
+          }
+        }
+      ],
+      "type": "timeseries"
     },
     {
       "collapsed": true,
@@ -1863,7 +1865,7 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 16
+        "y": 51
       },
       "id": 44,
       "panels": [
@@ -1915,7 +1917,8 @@
                 "mode": "absolute",
                 "steps": [
                   {
-                    "color": "green"
+                    "color": "green",
+                    "value": null
                   },
                   {
                     "color": "red",
@@ -1931,7 +1934,7 @@
             "h": 7,
             "w": 8,
             "x": 0,
-            "y": 3
+            "y": 52
           },
           "id": 42,
           "links": [],
@@ -2226,7 +2229,8 @@
                 "mode": "absolute",
                 "steps": [
                   {
-                    "color": "green"
+                    "color": "green",
+                    "value": null
                   },
                   {
                     "color": "red",
@@ -2241,7 +2245,7 @@
             "h": 7,
             "w": 8,
             "x": 8,
-            "y": 3
+            "y": 52
           },
           "id": 38,
           "options": {
@@ -2405,7 +2409,8 @@
                 "mode": "absolute",
                 "steps": [
                   {
-                    "color": "green"
+                    "color": "green",
+                    "value": null
                   },
                   {
                     "color": "red",
@@ -2420,7 +2425,7 @@
             "h": 7,
             "w": 8,
             "x": 16,
-            "y": 3
+            "y": 52
           },
           "id": 47,
           "options": {
@@ -2920,10 +2925,9 @@
       },
       {
         "current": {
-          "isNone": true,
           "selected": false,
-          "text": "None",
-          "value": ""
+          "text": "ctbhsi",
+          "value": "ctbhsi"
         },
         "datasource": {
           "type": "influxdb",
@@ -2945,10 +2949,9 @@
       },
       {
         "current": {
-          "isNone": true,
           "selected": false,
-          "text": "None",
-          "value": ""
+          "text": "ctb_llt_datahandler",
+          "value": "ctb_llt_datahandler"
         },
         "datasource": {
           "type": "influxdb",
@@ -2979,7 +2982,7 @@
           "type": "influxdb",
           "uid": "${influxdb}"
         },
-        "definition": "SELECT \"source_id\" FROM (SELECT \"last_daq_timestamp\",\"source_id\" FROM \"dunedaq.readoutlibs.readoutinfo.ReadoutInfo\" WHERE $timeFilter AND \"partition_id\"='${partition}' AND \"last_daq_timestamp\" > 0)",
+        "definition": "SELECT \"source_id\" FROM (SELECT \"last_daq_timestamp\",\"source_id\" FROM \"dunedaq.readoutlibs.readoutinfo.ReadoutInfo\" WHERE $timeFilter AND \"partition_id\"='${partition}')",
         "description": "variable to generate timestamp spread",
         "hide": 2,
         "includeAll": true,
@@ -2987,7 +2990,7 @@
         "multi": true,
         "name": "timestamp_app",
         "options": [],
-        "query": "SELECT \"source_id\" FROM (SELECT \"last_daq_timestamp\",\"source_id\" FROM \"dunedaq.readoutlibs.readoutinfo.ReadoutInfo\" WHERE $timeFilter AND \"partition_id\"='${partition}' AND \"last_daq_timestamp\" > 0)",
+        "query": "SELECT \"source_id\" FROM (SELECT \"last_daq_timestamp\",\"source_id\" FROM \"dunedaq.readoutlibs.readoutinfo.ReadoutInfo\" WHERE $timeFilter AND \"partition_id\"='${partition}')",
         "refresh": 2,
         "regex": "[^.]+\\.([^.]+)\\.[^.]+",
         "skipUrlSync": false,

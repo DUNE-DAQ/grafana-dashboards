@@ -24,7 +24,7 @@
   "editable": true,
   "fiscalYearStartMonth": 0,
   "graphTooltip": 0,
-  "id": 64,
+  "id": 101,
   "links": [
     {
       "asDropdown": true,
@@ -1763,10 +1763,11 @@
             "uid": "${influxdb}"
           },
           "groupBy": [],
+          "hide": true,
           "measurement": "dunedaq.dfmodules.datawriterinfo.Info",
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "SELECT non_negative_derivative(cumulative_sum(sum(\"new_bytes_output\")), 1s)  FROM (SELECT \"bytes_output\" AS \"new_bytes_output\" FROM \"dunedaq.dfmodules.tpstreamwriterinfo.Info\" WHERE (\"partition_id\" = '${partition}') AND $timeFilter ),\"dunedaq.dfmodules.datawriterinfo.Info\" WHERE (\"partition_id\" = '${partition}') AND $timeFilter GROUP BY time($__interval)\nfill(null)",
+          "query": "SELECT non_negative_derivative(cumulative_sum(sum(\"dw\")), 1s) + non_negative_derivative(cumulative_sum(sum(\"tp\")), 1s)\nFROM  (SELECT \"new_bytes_output\" AS \"dw\",\"partition_id\" FROM \"dunedaq.dfmodules.datawriterinfo.Info\"),(SELECT \"bytes_output\" AS \"tp\",\"partition_id\" FROM \"dunedaq.dfmodules.tpstreamwriterinfo.Info\" ) \nWHERE (\"partition_id\" = '${partition}') AND $timeFilter GROUP BY time($__interval) fill(null)\n",
           "rawQuery": true,
           "refId": "C",
           "resultFormat": "time_series",
@@ -2398,8 +2399,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
-                "value": null
+                "color": "green"
               },
               {
                 "color": "red",
@@ -2608,8 +2608,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
-                "value": null
+                "color": "green"
               },
               {
                 "color": "red",
@@ -2752,8 +2751,8 @@
       {
         "current": {
           "selected": false,
-          "text": "np02-coldbox-timing-tlu",
-          "value": "np02-coldbox-timing-tlu"
+          "text": "np04hd",
+          "value": "np04hd"
         },
         "datasource": {
           "uid": "${influxdb}"
@@ -2821,8 +2820,8 @@
       {
         "current": {
           "selected": false,
-          "text": "618014",
-          "value": "618014"
+          "text": "88775",
+          "value": "88775"
         },
         "datasource": {
           "uid": "${influxdb}"
@@ -2874,6 +2873,6 @@
   "timezone": "",
   "title": "DAQ overview",
   "uid": "v4_4_0-overview",
-  "version": 10,
+  "version": 16,
   "weekStart": ""
 }

@@ -18,10 +18,23 @@
   "editable": true,
   "fiscalYearStartMonth": 0,
   "graphTooltip": 0,
-  "id": 53,
+  "id": 77,
   "links": [],
   "liveNow": false,
   "panels": [
+    {
+      "collapsed": false,
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 0
+      },
+      "id": 29,
+      "panels": [],
+      "title": "Global",
+      "type": "row"
+    },
     {
       "datasource": {
         "type": "influxdb",
@@ -60,7 +73,7 @@
         "h": 3,
         "w": 24,
         "x": 0,
-        "y": 0
+        "y": 1
       },
       "id": 17,
       "options": {
@@ -107,6 +120,7 @@
             "mode": "palette-classic"
           },
           "custom": {
+            "axisBorderShow": false,
             "axisCenteredZero": false,
             "axisColorMode": "text",
             "axisLabel": "Rate",
@@ -172,10 +186,10 @@
         ]
       },
       "gridPos": {
-        "h": 11,
+        "h": 8,
         "w": 24,
         "x": 0,
-        "y": 3
+        "y": 4
       },
       "id": 2,
       "options": {
@@ -526,43 +540,33 @@
     },
     {
       "collapsed": false,
-      "datasource": {
-        "type": "datasource",
-        "uid": "grafana"
-      },
       "gridPos": {
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 14
+        "y": 12
       },
-      "id": 8,
+      "id": 18,
       "panels": [],
-      "targets": [
-        {
-          "datasource": {
-            "type": "datasource",
-            "uid": "grafana"
-          },
-          "refId": "A"
-        }
-      ],
-      "title": "Filters",
+      "title": "Trigger applications",
       "type": "row"
     },
     {
       "datasource": {
+        "type": "influxdb",
         "uid": "${influxdb}"
       },
+      "description": "",
       "fieldConfig": {
         "defaults": {
           "color": {
             "mode": "palette-classic"
           },
           "custom": {
+            "axisBorderShow": false,
             "axisCenteredZero": false,
             "axisColorMode": "text",
-            "axisLabel": "Rates",
+            "axisLabel": "KHz",
             "axisPlacement": "auto",
             "barAlignment": 0,
             "drawStyle": "line",
@@ -574,7 +578,7 @@
               "viz": false
             },
             "insertNulls": false,
-            "lineInterpolation": "stepBefore",
+            "lineInterpolation": "linear",
             "lineWidth": 1,
             "pointSize": 5,
             "scaleDistribution": {
@@ -604,334 +608,17 @@
               }
             ]
           },
-          "unit": "hertz"
+          "unit": "none"
         },
         "overrides": []
       },
       "gridPos": {
-        "h": 8,
-        "w": 12,
+        "h": 7,
+        "w": 8,
         "x": 0,
-        "y": 15
+        "y": 13
       },
-      "id": 4,
-      "options": {
-        "legend": {
-          "calcs": [],
-          "displayMode": "table",
-          "placement": "right",
-          "showLegend": true
-        },
-        "tooltip": {
-          "mode": "multi",
-          "sort": "none"
-        }
-      },
-      "targets": [
-        {
-          "alias": "$tag_source_id",
-          "datasource": {
-            "uid": "${influxdb}"
-          },
-          "groupBy": [
-            {
-              "params": [
-                "$interval"
-              ],
-              "type": "time"
-            }
-          ],
-          "hide": false,
-          "measurement": "dunedaq.trigger.tpchannelfilterinfo.Info",
-          "orderByTime": "ASC",
-          "policy": "default",
-          "query": "SELECT non_negative_derivative(last(\"received_count\"), 1s) FROM \"dunedaq.trigger.tpchannelfilterinfo.Info\" WHERE (\"partition_id\" = '${partition}') AND $timeFilter GROUP BY time($__interval), \"source_id\" fill(null) ",
-          "rawQuery": true,
-          "refId": "H",
-          "resultFormat": "time_series",
-          "select": [
-            [
-              {
-                "params": [
-                  "received_count"
-                ],
-                "type": "field"
-              },
-              {
-                "params": [],
-                "type": "last"
-              },
-              {
-                "params": [
-                  "1s"
-                ],
-                "type": "non_negative_derivative"
-              }
-            ]
-          ],
-          "tags": [
-            {
-              "key": "partition_id",
-              "operator": "=",
-              "value": "np02-coldbox"
-            },
-            {
-              "condition": "AND",
-              "key": "source_id",
-              "operator": "=",
-              "value": "np02-coldbox.trigger.channelfilter_ru0_link0"
-            }
-          ]
-        }
-      ],
-      "title": "TPChannelFilter receive",
-      "transformations": [
-        {
-          "id": "renameByRegex",
-          "options": {
-            "regex": "[^.]+\\.[^.]+\\.([^.]+)",
-            "renamePattern": "$1"
-          }
-        }
-      ],
-      "type": "timeseries"
-    },
-    {
-      "datasource": {
-        "uid": "${influxdb}"
-      },
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "mode": "palette-classic"
-          },
-          "custom": {
-            "axisCenteredZero": false,
-            "axisColorMode": "text",
-            "axisLabel": "Rates",
-            "axisPlacement": "auto",
-            "barAlignment": 0,
-            "drawStyle": "line",
-            "fillOpacity": 0,
-            "gradientMode": "none",
-            "hideFrom": {
-              "legend": false,
-              "tooltip": false,
-              "viz": false
-            },
-            "insertNulls": false,
-            "lineInterpolation": "stepBefore",
-            "lineWidth": 1,
-            "pointSize": 5,
-            "scaleDistribution": {
-              "type": "linear"
-            },
-            "showPoints": "auto",
-            "spanNulls": false,
-            "stacking": {
-              "group": "A",
-              "mode": "none"
-            },
-            "thresholdsStyle": {
-              "mode": "off"
-            }
-          },
-          "mappings": [],
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "green",
-                "value": null
-              },
-              {
-                "color": "red",
-                "value": 80
-              }
-            ]
-          },
-          "unit": "hertz"
-        },
-        "overrides": []
-      },
-      "gridPos": {
-        "h": 8,
-        "w": 12,
-        "x": 12,
-        "y": 15
-      },
-      "id": 10,
-      "options": {
-        "legend": {
-          "calcs": [],
-          "displayMode": "table",
-          "placement": "right",
-          "showLegend": true
-        },
-        "tooltip": {
-          "mode": "multi",
-          "sort": "none"
-        }
-      },
-      "targets": [
-        {
-          "alias": "$tag_source_id",
-          "datasource": {
-            "uid": "${influxdb}"
-          },
-          "groupBy": [
-            {
-              "params": [
-                "$interval"
-              ],
-              "type": "time"
-            }
-          ],
-          "hide": false,
-          "measurement": "dunedaq.trigger.tpchannelfilterinfo.Info",
-          "orderByTime": "ASC",
-          "policy": "default",
-          "query": "SELECT non_negative_derivative(last(\"sent_count\"), 1s) FROM \"dunedaq.trigger.tpchannelfilterinfo.Info\" WHERE (\"partition_id\" = '${partition}') AND $timeFilter GROUP BY time($__interval), \"source_id\" fill(null)",
-          "rawQuery": true,
-          "refId": "H",
-          "resultFormat": "time_series",
-          "select": [
-            [
-              {
-                "params": [
-                  "sent_count"
-                ],
-                "type": "field"
-              },
-              {
-                "params": [],
-                "type": "last"
-              },
-              {
-                "params": [
-                  "1s"
-                ],
-                "type": "non_negative_derivative"
-              }
-            ]
-          ],
-          "tags": [
-            {
-              "key": "partition_id",
-              "operator": "=",
-              "value": "np02-coldbox"
-            },
-            {
-              "condition": "AND",
-              "key": "source_id",
-              "operator": "=",
-              "value": "np02-coldbox.trigger.channelfilter_ru0_link6"
-            }
-          ]
-        }
-      ],
-      "title": "TPChannelFilter sent",
-      "transformations": [
-        {
-          "id": "renameByRegex",
-          "options": {
-            "regex": "[^.]+\\.[^.]+\\.([^.]+)",
-            "renamePattern": "$1"
-          }
-        }
-      ],
-      "type": "timeseries"
-    },
-    {
-      "collapsed": false,
-      "datasource": {
-        "type": "datasource",
-        "uid": "grafana"
-      },
-      "gridPos": {
-        "h": 1,
-        "w": 24,
-        "x": 0,
-        "y": 23
-      },
-      "id": 6,
-      "panels": [],
-      "targets": [
-        {
-          "datasource": {
-            "type": "datasource",
-            "uid": "grafana"
-          },
-          "refId": "A"
-        }
-      ],
-      "title": "TAs/TCs",
-      "type": "row"
-    },
-    {
-      "datasource": {
-        "uid": "${influxdb}"
-      },
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "mode": "palette-classic"
-          },
-          "custom": {
-            "axisCenteredZero": false,
-            "axisColorMode": "text",
-            "axisLabel": "",
-            "axisPlacement": "auto",
-            "barAlignment": 0,
-            "drawStyle": "line",
-            "fillOpacity": 0,
-            "gradientMode": "none",
-            "hideFrom": {
-              "legend": false,
-              "tooltip": false,
-              "viz": false
-            },
-            "insertNulls": false,
-            "lineInterpolation": "stepAfter",
-            "lineWidth": 1,
-            "pointSize": 5,
-            "scaleDistribution": {
-              "type": "linear"
-            },
-            "showPoints": "auto",
-            "spanNulls": false,
-            "stacking": {
-              "group": "A",
-              "mode": "none"
-            },
-            "thresholdsStyle": {
-              "mode": "off"
-            }
-          },
-          "mappings": [],
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "green"
-              },
-              {
-                "color": "red",
-                "value": 80
-              }
-            ]
-          },
-          "unit": "hertz"
-        },
-        "overrides": []
-      },
-      "gridPos": {
-        "h": 9,
-        "w": 7,
-        "x": 0,
-        "y": 24
-      },
-      "id": 14,
+      "id": 19,
       "options": {
         "legend": {
           "calcs": [],
@@ -946,15 +633,28 @@
       },
       "targets": [
         {
-          "alias": "Received",
+          "alias": "$tag_source_id",
           "datasource": {
             "uid": "${influxdb}"
           },
-          "groupBy": [],
-          "measurement": "dunedaq.trigger.triggerzipperinfo.Info",
+          "groupBy": [
+            {
+              "params": [
+                "$__interval"
+              ],
+              "type": "time"
+            },
+            {
+              "params": [
+                "source_id"
+              ],
+              "type": "tag"
+            }
+          ],
+          "measurement": "dunedaq.readoutlibs.readoutinfo.ReadoutInfo",
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "SELECT non_negative_derivative(last(\"n_received\"), 1s) FROM \"dunedaq.trigger.triggerzipperinfo.Info\" WHERE (\"partition_id\" = '${partition}' ) AND $timeFilter GROUP BY time($__interval)",
+          "query": "SELECT mean(\"rate_payloads_consumed\") FROM \"dunedaq.readoutlibs.readoutinfo.ReadoutInfo\" WHERE (partition_id = '${partition}' AND \"source_id\" =~ /[^.]+\\.tahandler\\d+/ ) AND $timeFilter GROUP BY time($__interval), \"source_id\"",
           "rawQuery": true,
           "refId": "A",
           "resultFormat": "time_series",
@@ -962,53 +662,538 @@
             [
               {
                 "params": [
-                  "n_received"
+                  "rate_payloads_consumed"
                 ],
                 "type": "field"
-              }
-            ],
-            [
+              },
               {
-                "params": [
-                  "n_sent"
-                ],
-                "type": "field"
-              }
-            ],
-            [
-              {
-                "params": [
-                  "n_tardy"
-                ],
-                "type": "field"
+                "params": [],
+                "type": "mean"
               }
             ]
           ],
           "tags": [
             {
-              "key": "partition_id",
-              "operator": "=",
-              "value": "np02-coldbox"
-            },
-            {
-              "condition": "AND",
               "key": "source_id",
               "operator": "=",
-              "value": "np02-coldbox.trigger.zip_4"
+              "value": "maroda_test_ruemu0.datahandler_0"
+            }
+          ]
+        }
+      ],
+      "title": "Frontend receiving rates",
+      "transformations": [
+        {
+          "id": "renameByRegex",
+          "options": {
+            "regex": ".*\\.(.*)\\.(.*)",
+            "renamePattern": "$1 $2"
+          }
+        }
+      ],
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "influxdb",
+        "uid": "${influxdb}"
+      },
+      "description": "",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "drawStyle": "line",
+            "fillOpacity": 0,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "log": 10,
+              "type": "log"
+            },
+            "showPoints": "auto",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 7,
+        "w": 8,
+        "x": 8,
+        "y": 13
+      },
+      "id": 20,
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "tooltip": {
+          "mode": "multi",
+          "sort": "none"
+        }
+      },
+      "targets": [
+        {
+          "alias": "$tag_source_id",
+          "datasource": {
+            "uid": "${influxdb}"
+          },
+          "groupBy": [
+            {
+              "params": [
+                "$__interval"
+              ],
+              "type": "time"
+            },
+            {
+              "params": [
+                "source_id"
+              ],
+              "type": "tag"
+            },
+            {
+              "params": [
+                "null"
+              ],
+              "type": "fill"
+            }
+          ],
+          "hide": false,
+          "measurement": "dunedaq.readoutlibs.readoutinfo.ReadoutInfo",
+          "orderByTime": "ASC",
+          "policy": "default",
+          "query": "SELECT mean(\"num_buffer_elements\") FROM \"dunedaq.readoutlibs.readoutinfo.ReadoutInfo\" WHERE (\"partition_id\"='${partition}' AND \"source_id\" =~ /[^.]+\\.tahandler\\d+/ ) AND $timeFilter GROUP BY time($__interval), \"source_id\" fill(null)",
+          "rawQuery": true,
+          "refId": "A",
+          "resultFormat": "time_series",
+          "select": [
+            [
+              {
+                "params": [
+                  "num_buffer_elements"
+                ],
+                "type": "field"
+              },
+              {
+                "params": [],
+                "type": "mean"
+              }
+            ]
+          ],
+          "tags": [
+            {
+              "key": "source_id",
+              "operator": "=",
+              "value": "maroda_test_ruemu0.datahandler_1"
+            }
+          ]
+        }
+      ],
+      "title": "Buffers - Number of elements",
+      "transformations": [
+        {
+          "id": "calculateField",
+          "options": {
+            "mode": "reduceRow",
+            "reduce": {
+              "include": [],
+              "reducer": "sum"
+            },
+            "replaceFields": false
+          }
+        },
+        {
+          "id": "renameByRegex",
+          "options": {
+            "regex": ".*\\.(.*)\\.(.*)",
+            "renamePattern": "$1 $2"
+          }
+        }
+      ],
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "influxdb",
+        "uid": "${influxdb}"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "Hz",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "drawStyle": "line",
+            "fillOpacity": 13,
+            "gradientMode": "opacity",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "log": 10,
+              "type": "log"
+            },
+            "showPoints": "auto",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 7,
+        "w": 8,
+        "x": 16,
+        "y": 13
+      },
+      "id": 21,
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "tooltip": {
+          "mode": "multi",
+          "sort": "none"
+        }
+      },
+      "pluginVersion": "8.0.6",
+      "targets": [
+        {
+          "alias": "Total ",
+          "datasource": {
+            "uid": "${influxdb}"
+          },
+          "groupBy": [
+            {
+              "params": [
+                "$__interval"
+              ],
+              "type": "time"
+            },
+            {
+              "params": [
+                "null"
+              ],
+              "type": "fill"
+            }
+          ],
+          "hide": false,
+          "measurement": "dunedaq.readoutlibs.readoutinfo.ReadoutInfo",
+          "orderByTime": "ASC",
+          "policy": "default",
+          "query": "SELECT non_negative_derivative(cumulative_sum(sum(\"num_requests\")), 1s) FROM \"dunedaq.readoutlibs.readoutinfo.ReadoutInfo\" WHERE (\"partition_id\"='${partition}' AND \"source_id\" =~ /[^.]+\\.tahandler\\d+/ ) AND $timeFilter GROUP BY time($__interval) fill(null)",
+          "rawQuery": true,
+          "refId": "A",
+          "resultFormat": "time_series",
+          "select": [
+            [
+              {
+                "params": [
+                  "num_requests"
+                ],
+                "type": "field"
+              },
+              {
+                "params": [],
+                "type": "sum"
+              },
+              {
+                "params": [],
+                "type": "cumulative_sum"
+              },
+              {
+                "params": [
+                  "1s"
+                ],
+                "type": "non_negative_derivative"
+              }
+            ]
+          ],
+          "tags": [
+            {
+              "key": "source_id",
+              "operator": "=",
+              "value": "maroda_test_ruemu0.datahandler_0"
             }
           ]
         },
         {
-          "alias": "Sent",
+          "alias": "Found",
           "datasource": {
             "uid": "${influxdb}"
           },
-          "groupBy": [],
+          "groupBy": [
+            {
+              "params": [
+                "$__interval"
+              ],
+              "type": "time"
+            },
+            {
+              "params": [
+                "null"
+              ],
+              "type": "fill"
+            }
+          ],
           "hide": false,
-          "measurement": "dunedaq.trigger.triggerzipperinfo.Info",
+          "measurement": "dunedaq.readoutlibs.readoutinfo.RequestHandlerInfo",
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "SELECT non_negative_derivative(last(\"n_sent\"), 1s) FROM \"dunedaq.trigger.triggerzipperinfo.Info\" WHERE (\"partition_id\" = '${partition}' ) AND $timeFilter GROUP BY time($__interval)",
+          "query": "SELECT non_negative_derivative(cumulative_sum(sum(\"num_requests_found\")), 1s) FROM \"dunedaq.readoutlibs.readoutinfo.RequestHandlerInfo\" WHERE (\"partition_id\"='${partition}' AND \"source_id\" =~ /.*\\.tahandler\\d+/) AND $timeFilter GROUP BY time($__interval) fill(null)",
+          "rawQuery": true,
+          "refId": "G",
+          "resultFormat": "time_series",
+          "select": [
+            [
+              {
+                "params": [
+                  "num_requests_found"
+                ],
+                "type": "field"
+              },
+              {
+                "params": [],
+                "type": "sum"
+              },
+              {
+                "params": [],
+                "type": "cumulative_sum"
+              },
+              {
+                "params": [
+                  "1s"
+                ],
+                "type": "non_negative_derivative"
+              }
+            ]
+          ],
+          "tags": [
+            {
+              "key": "source_id",
+              "operator": "=",
+              "value": "maroda_test_ruemu0.datahandler_0"
+            }
+          ]
+        },
+        {
+          "alias": "Delayed ",
+          "datasource": {
+            "uid": "${influxdb}"
+          },
+          "groupBy": [
+            {
+              "params": [
+                "$__interval"
+              ],
+              "type": "time"
+            },
+            {
+              "params": [
+                "null"
+              ],
+              "type": "fill"
+            }
+          ],
+          "hide": false,
+          "measurement": "dunedaq.readoutlibs.readoutinfo.RequestHandlerInfo",
+          "orderByTime": "ASC",
+          "policy": "default",
+          "query": "SELECT non_negative_derivative(cumulative_sum(sum(\"num_requests_delayed\")), 1s) FROM \"dunedaq.readoutlibs.readoutinfo.RequestHandlerInfo\" WHERE (\"partition_id\"='${partition}' AND \"source_id\" =~ /.*\\.tahandler\\d+/) AND $timeFilter GROUP BY time($__interval) fill(null)",
+          "rawQuery": true,
+          "refId": "B",
+          "resultFormat": "time_series",
+          "select": [
+            [
+              {
+                "params": [
+                  "num_requests_delayed"
+                ],
+                "type": "field"
+              },
+              {
+                "params": [],
+                "type": "sum"
+              },
+              {
+                "params": [],
+                "type": "cumulative_sum"
+              },
+              {
+                "params": [
+                  "1s"
+                ],
+                "type": "non_negative_derivative"
+              }
+            ]
+          ],
+          "tags": [
+            {
+              "key": "source_id",
+              "operator": "=",
+              "value": "maroda_test_ruemu0.datahandler_0"
+            }
+          ]
+        },
+        {
+          "alias": "Bad ",
+          "datasource": {
+            "uid": "${influxdb}"
+          },
+          "groupBy": [
+            {
+              "params": [
+                "$__interval"
+              ],
+              "type": "time"
+            },
+            {
+              "params": [
+                "null"
+              ],
+              "type": "fill"
+            }
+          ],
+          "hide": false,
+          "measurement": "dunedaq.readoutlibs.readoutinfo.RequestHandlerInfo",
+          "orderByTime": "ASC",
+          "policy": "default",
+          "query": "SELECT non_negative_derivative(cumulative_sum(sum(\"num_requests_bad\")), 1s) FROM \"dunedaq.readoutlibs.readoutinfo.RequestHandlerInfo\" WHERE (\"partition_id\"='${partition}' AND \"source_id\" =~ /.*\\.tahandler\\d+/) AND $timeFilter GROUP BY time($__interval) fill(null)",
+          "rawQuery": true,
+          "refId": "J",
+          "resultFormat": "time_series",
+          "select": [
+            [
+              {
+                "params": [
+                  "num_requests_bad"
+                ],
+                "type": "field"
+              },
+              {
+                "params": [],
+                "type": "sum"
+              },
+              {
+                "params": [],
+                "type": "cumulative_sum"
+              },
+              {
+                "params": [
+                  "1s"
+                ],
+                "type": "non_negative_derivative"
+              }
+            ]
+          ],
+          "tags": [
+            {
+              "key": "source_id",
+              "operator": "=",
+              "value": "maroda_test_ruemu0.datahandler_0"
+            }
+          ]
+        },
+        {
+          "alias": "Old window",
+          "datasource": {
+            "uid": "${influxdb}"
+          },
+          "groupBy": [
+            {
+              "params": [
+                "$__interval"
+              ],
+              "type": "time"
+            },
+            {
+              "params": [
+                "null"
+              ],
+              "type": "fill"
+            }
+          ],
+          "hide": false,
+          "measurement": "dunedaq.readoutlibs.readoutinfo.ReadoutInfo",
+          "orderByTime": "ASC",
+          "policy": "default",
+          "query": "SELECT non_negative_derivative(cumulative_sum(sum(\"num_requests_old_window\")), 1s) FROM \"dunedaq.readoutlibs.readoutinfo.RequestHandlerInfo\" WHERE (\"partition_id\"='${partition}' AND \"source_id\" =~ /.*\\.tahandler\\d+/) AND $timeFilter GROUP BY time($__interval) fill(null)",
           "rawQuery": true,
           "refId": "C",
           "resultFormat": "time_series",
@@ -1016,53 +1201,58 @@
             [
               {
                 "params": [
-                  "n_received"
+                  "num_requests"
                 ],
                 "type": "field"
-              }
-            ],
-            [
+              },
+              {
+                "params": [],
+                "type": "sum"
+              },
+              {
+                "params": [],
+                "type": "cumulative_sum"
+              },
               {
                 "params": [
-                  "n_sent"
+                  "1s"
                 ],
-                "type": "field"
-              }
-            ],
-            [
-              {
-                "params": [
-                  "n_tardy"
-                ],
-                "type": "field"
+                "type": "non_negative_derivative"
               }
             ]
           ],
           "tags": [
             {
-              "key": "partition_id",
-              "operator": "=",
-              "value": "np02-coldbox"
-            },
-            {
-              "condition": "AND",
               "key": "source_id",
               "operator": "=",
-              "value": "np02-coldbox.trigger.zip_4"
+              "value": "maroda_test_ruemu0.datahandler_0"
             }
           ]
         },
         {
-          "alias": "Tardy",
+          "alias": "Timing out ",
           "datasource": {
             "uid": "${influxdb}"
           },
-          "groupBy": [],
+          "groupBy": [
+            {
+              "params": [
+                "$__interval"
+              ],
+              "type": "time"
+            },
+            {
+              "params": [
+                "null"
+              ],
+              "type": "fill"
+            }
+          ],
           "hide": false,
-          "measurement": "dunedaq.trigger.triggerzipperinfo.Info",
+          "measurement": "dunedaq.readoutlibs.readoutinfo.ReadoutInfo",
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "SELECT non_negative_derivative(last(\"n_tardy\"), 1s) FROM \"dunedaq.trigger.triggerzipperinfo.Info\" WHERE (\"partition_id\" = '${partition}' ) AND $timeFilter GROUP BY time($__interval)",
+          "query": "SELECT non_negative_derivative(cumulative_sum(sum(\"num_requests_timed_out\")), 1s) FROM \"dunedaq.readoutlibs.readoutinfo.RequestHandlerInfo\" WHERE (\"partition_id\"='${partition}' AND \"source_id\" =~ /.*\\.tahandler\\d+/) AND $timeFilter GROUP BY time($__interval) fill(null)",
           "rawQuery": true,
           "refId": "D",
           "resultFormat": "time_series",
@@ -1070,217 +1260,95 @@
             [
               {
                 "params": [
-                  "n_received"
+                  "num_requests"
                 ],
                 "type": "field"
-              }
-            ],
-            [
-              {
-                "params": [
-                  "n_sent"
-                ],
-                "type": "field"
-              }
-            ],
-            [
-              {
-                "params": [
-                  "n_tardy"
-                ],
-                "type": "field"
-              }
-            ]
-          ],
-          "tags": [
-            {
-              "key": "partition_id",
-              "operator": "=",
-              "value": "np02-coldbox"
-            },
-            {
-              "condition": "AND",
-              "key": "source_id",
-              "operator": "=",
-              "value": "np02-coldbox.trigger.zip_4"
-            }
-          ]
-        }
-      ],
-      "title": "TP Zipper",
-      "type": "timeseries"
-    },
-    {
-      "datasource": {
-        "type": "influxdb",
-        "uid": "${influxdb}"
-      },
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "mode": "palette-classic"
-          },
-          "custom": {
-            "axisCenteredZero": false,
-            "axisColorMode": "text",
-            "axisLabel": "",
-            "axisPlacement": "auto",
-            "barAlignment": 0,
-            "drawStyle": "line",
-            "fillOpacity": 0,
-            "gradientMode": "none",
-            "hideFrom": {
-              "legend": false,
-              "tooltip": false,
-              "viz": false
-            },
-            "insertNulls": false,
-            "lineInterpolation": "stepAfter",
-            "lineWidth": 1,
-            "pointSize": 5,
-            "scaleDistribution": {
-              "type": "linear"
-            },
-            "showPoints": "auto",
-            "spanNulls": false,
-            "stacking": {
-              "group": "A",
-              "mode": "none"
-            },
-            "thresholdsStyle": {
-              "mode": "off"
-            }
-          },
-          "mappings": [],
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "green"
               },
               {
-                "color": "red",
-                "value": 80
-              }
-            ]
-          },
-          "unit": "hertz"
-        },
-        "overrides": []
-      },
-      "gridPos": {
-        "h": 9,
-        "w": 9,
-        "x": 7,
-        "y": 24
-      },
-      "id": 15,
-      "options": {
-        "legend": {
-          "calcs": [],
-          "displayMode": "list",
-          "placement": "bottom",
-          "showLegend": true
-        },
-        "tooltip": {
-          "mode": "multi",
-          "sort": "none"
-        }
-      },
-      "targets": [
-        {
-          "alias": "",
-          "datasource": {
-            "uid": "${influxdb}"
-          },
-          "groupBy": [],
-          "measurement": "dunedaq.trigger.triggergenericmakerinfo.Info",
-          "orderByTime": "ASC",
-          "policy": "default",
-          "query": "SELECT non_negative_derivative(last(\"received_count\"), 1s) FROM \"dunedaq.trigger.triggergenericmakerinfo.Info\" WHERE (\"partition_id\" = '${partition}'  AND \"source_id\" =~ /.*\\.tam_\\d+/) AND $timeFilter GROUP BY time($__interval), \"source_id\"",
-          "rawQuery": true,
-          "refId": "A",
-          "resultFormat": "time_series",
-          "select": [
-            [
+                "params": [],
+                "type": "sum"
+              },
+              {
+                "params": [],
+                "type": "cumulative_sum"
+              },
               {
                 "params": [
-                  "received_count"
+                  "1s"
                 ],
-                "type": "field"
-              }
-            ],
-            [
-              {
-                "params": [
-                  "sent_count"
-                ],
-                "type": "field"
+                "type": "non_negative_derivative"
               }
             ]
           ],
           "tags": [
             {
-              "key": "partition_id",
-              "operator": "=",
-              "value": "np02-coldbox"
-            },
-            {
-              "condition": "AND",
               "key": "source_id",
               "operator": "=",
-              "value": "np02-coldbox.trigger.tam_4"
+              "value": "maroda_test_ruemu0.datahandler_0"
             }
           ]
         },
         {
-          "alias": "",
+          "alias": "Uncategorized",
           "datasource": {
             "uid": "${influxdb}"
           },
-          "groupBy": [],
+          "groupBy": [
+            {
+              "params": [
+                "$__interval"
+              ],
+              "type": "time"
+            },
+            {
+              "params": [
+                "null"
+              ],
+              "type": "fill"
+            }
+          ],
           "hide": false,
-          "measurement": "dunedaq.trigger.triggergenericmakerinfo.Info",
+          "measurement": "dunedaq.readoutlibs.readoutinfo.RequestHandlerInfo",
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "SELECT non_negative_derivative(last(\"sent_count\"), 1s) FROM \"dunedaq.trigger.triggergenericmakerinfo.Info\" WHERE (\"partition_id\" = '${partition}'  AND \"source_id\" =~ /.*\\.tam_\\d+/) AND $timeFilter GROUP BY time($__interval), \"source_id\"",
+          "query": "SELECT non_negative_derivative(cumulative_sum(sum(\"num_requests_uncategorized\")), 1s) FROM \"dunedaq.readoutlibs.readoutinfo.RequestHandlerInfo\" WHERE (\"partition_id\"='${partition}' AND \"source_id\" =~ /.*\\.tahandler\\d+/) AND $timeFilter GROUP BY time($__interval) fill(null)",
           "rawQuery": true,
-          "refId": "C",
+          "refId": "F",
           "resultFormat": "time_series",
           "select": [
             [
               {
                 "params": [
-                  "received_count"
+                  "num_requests_uncategorized"
                 ],
                 "type": "field"
-              }
-            ],
-            [
+              },
+              {
+                "params": [],
+                "type": "sum"
+              },
+              {
+                "params": [],
+                "type": "cumulative_sum"
+              },
               {
                 "params": [
-                  "sent_count"
+                  "1s"
                 ],
-                "type": "field"
+                "type": "non_negative_derivative"
               }
             ]
           ],
           "tags": [
             {
-              "key": "partition_id",
-              "operator": "=",
-              "value": "np02-coldbox"
-            },
-            {
-              "condition": "AND",
               "key": "source_id",
               "operator": "=",
-              "value": "np02-coldbox.trigger.tam_4"
+              "value": "maroda_test_ruemu0.datahandler_0"
             }
           ]
         }
       ],
-      "title": "TAM",
+      "title": "Request rates",
       "type": "timeseries"
     },
     {
@@ -1294,6 +1362,7 @@
             "mode": "palette-classic"
           },
           "custom": {
+            "axisBorderShow": false,
             "axisCenteredZero": false,
             "axisColorMode": "text",
             "axisLabel": "",
@@ -1308,14 +1377,14 @@
               "viz": false
             },
             "insertNulls": false,
-            "lineInterpolation": "stepAfter",
-            "lineWidth": 1,
+            "lineInterpolation": "linear",
+            "lineWidth": 2,
             "pointSize": 5,
             "scaleDistribution": {
               "type": "linear"
             },
-            "showPoints": "auto",
-            "spanNulls": false,
+            "showPoints": "never",
+            "spanNulls": true,
             "stacking": {
               "group": "A",
               "mode": "none"
@@ -1329,7 +1398,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green"
+                "color": "green",
+                "value": null
               },
               {
                 "color": "red",
@@ -1337,17 +1407,18 @@
               }
             ]
           },
-          "unit": "hertz"
+          "unit": "µs"
         },
         "overrides": []
       },
       "gridPos": {
-        "h": 9,
+        "h": 7,
         "w": 8,
-        "x": 16,
-        "y": 24
+        "x": 0,
+        "y": 20
       },
-      "id": 16,
+      "id": 22,
+      "links": [],
       "options": {
         "legend": {
           "calcs": [],
@@ -1360,225 +1431,252 @@
           "sort": "none"
         }
       },
+      "pluginVersion": "8.0.6",
       "targets": [
         {
-          "alias": "",
+          "alias": "Partition average",
           "datasource": {
             "uid": "${influxdb}"
           },
-          "groupBy": [],
-          "measurement": "dunedaq.trigger.triggergenericmakerinfo.Info",
-          "orderByTime": "ASC",
-          "policy": "default",
-          "query": "SELECT non_negative_derivative(last(\"received_count\"),1s) FROM \"dunedaq.trigger.triggergenericmakerinfo.Info\" WHERE (\"partition_id\" = '${partition}'  AND \"source_id\" =~ /.*\\.tcm_\\d+/) AND $timeFilter GROUP BY time($__interval), \"source_id\"",
-          "rawQuery": true,
-          "refId": "A",
-          "resultFormat": "time_series",
-          "select": [
-            [
-              {
-                "params": [
-                  "received_count"
-                ],
-                "type": "field"
-              }
-            ],
-            [
-              {
-                "params": [
-                  "sent_count"
-                ],
-                "type": "field"
-              }
-            ]
-          ],
-          "tags": [
+          "groupBy": [
             {
-              "key": "partition_id",
-              "operator": "=",
-              "value": "np02-coldbox"
+              "params": [
+                "$__interval"
+              ],
+              "type": "time"
             },
             {
-              "condition": "AND",
-              "key": "source_id",
-              "operator": "=",
-              "value": "np02-coldbox.trigger.tcm"
+              "params": [
+                "null"
+              ],
+              "type": "fill"
             }
-          ]
-        },
-        {
-          "alias": "",
-          "datasource": {
-            "uid": "${influxdb}"
-          },
-          "groupBy": [],
+          ],
           "hide": false,
-          "measurement": "dunedaq.trigger.triggergenericmakerinfo.Info",
+          "measurement": "dunedaq.readoutlibs.readoutinfo.RawDataProcessorInfo",
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "SELECT non_negative_derivative(last(\"sent_count\"),1s) FROM \"dunedaq.trigger.triggergenericmakerinfo.Info\" WHERE (\"partition_id\" = '${partition}'  AND \"source_id\" =~ /.*\\.tcm_\\d+/) AND $timeFilter GROUP BY time($__interval), \"source_id\"",
+          "query": "SELECT sum(\"tot_request_response_time\")/sum(\"num_requests_handled\") FROM \"dunedaq.readoutlibs.readoutinfo.RequestHandlerInfo\" WHERE \"partition_id\"='${partition}' AND \"source_id\" =~ /[^.]+\\.[^.]+\\.tahandler\\d+/ AND $timeFilter AND \"num_requests_handled\">0 GROUP BY time($__interval) fill(null)",
           "rawQuery": true,
-          "refId": "C",
+          "refId": "D",
           "resultFormat": "time_series",
           "select": [
             [
               {
                 "params": [
-                  "received_count"
+                  "num_tps_sent"
                 ],
                 "type": "field"
-              }
-            ],
-            [
-              {
-                "params": [
-                  "sent_count"
-                ],
-                "type": "field"
-              }
-            ]
-          ],
-          "tags": [
-            {
-              "key": "partition_id",
-              "operator": "=",
-              "value": "np02-coldbox"
-            },
-            {
-              "condition": "AND",
-              "key": "source_id",
-              "operator": "=",
-              "value": "np02-coldbox.trigger.tcm"
-            }
-          ]
-        }
-      ],
-      "title": "TCM",
-      "type": "timeseries"
-    },
-    {
-      "datasource": {
-        "uid": "${influxdb}"
-      },
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "mode": "palette-classic"
-          },
-          "custom": {
-            "axisCenteredZero": false,
-            "axisColorMode": "text",
-            "axisLabel": "",
-            "axisPlacement": "auto",
-            "barAlignment": 0,
-            "drawStyle": "line",
-            "fillOpacity": 0,
-            "gradientMode": "none",
-            "hideFrom": {
-              "legend": false,
-              "tooltip": false,
-              "viz": false
-            },
-            "insertNulls": false,
-            "lineInterpolation": "stepBefore",
-            "lineWidth": 1,
-            "pointSize": 5,
-            "scaleDistribution": {
-              "type": "linear"
-            },
-            "showPoints": "auto",
-            "spanNulls": false,
-            "stacking": {
-              "group": "A",
-              "mode": "none"
-            },
-            "thresholdsStyle": {
-              "mode": "off"
-            }
-          },
-          "mappings": [],
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "green"
               },
               {
-                "color": "red",
-                "value": 80
+                "params": [],
+                "type": "sum"
+              },
+              {
+                "params": [],
+                "type": "cumulative_sum"
+              },
+              {
+                "params": [
+                  "1s"
+                ],
+                "type": "non_negative_derivative"
               }
             ]
-          },
-          "unit": "hertz"
+          ],
+          "tags": [
+            {
+              "key": "source_id",
+              "operator": "=",
+              "value": "maroda_test_ruemu0.datahandler_0"
+            }
+          ]
         },
-        "overrides": []
-      },
-      "gridPos": {
-        "h": 8,
-        "w": 12,
-        "x": 0,
-        "y": 33
-      },
-      "id": 11,
-      "options": {
-        "legend": {
-          "calcs": [],
-          "displayMode": "table",
-          "placement": "right",
-          "showLegend": true
-        },
-        "tooltip": {
-          "mode": "multi",
-          "sort": "none"
-        }
-      },
-      "targets": [
         {
           "alias": "$tag_source_id",
           "datasource": {
             "uid": "${influxdb}"
           },
-          "groupBy": [],
+          "groupBy": [
+            {
+              "params": [
+                "$__interval"
+              ],
+              "type": "time"
+            },
+            {
+              "params": [
+                "null"
+              ],
+              "type": "fill"
+            }
+          ],
           "hide": false,
-          "measurement": "dunedaq.trigger.faketpcreatorheartbeatmakerinfo.Info",
+          "measurement": "dunedaq.readoutlibs.readoutinfo.RawDataProcessorInfo",
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "SELECT non_negative_derivative(last(\"tpset_received_count\"),1s) FROM \"dunedaq.trigger.faketpcreatorheartbeatmakerinfo.Info\" WHERE (\"partition_id\" = '${partition}') AND $timeFilter GROUP BY time($__interval), \"source_id\"",
+          "query": "SELECT sum(\"tot_request_response_time\")/sum(\"num_requests_handled\") FROM \"dunedaq.readoutlibs.readoutinfo.RequestHandlerInfo\" WHERE \"partition_id\"='${partition}' AND \"source_id\" =~ /[^.]+\\.[^.]+\\.tahandler\\d+/ AND \"num_requests_handled\">0 AND  $timeFilter GROUP BY time($__interval), \"source_id\" fill(null)",
           "rawQuery": true,
-          "refId": "H",
+          "refId": "A",
           "resultFormat": "time_series",
           "select": [
             [
               {
                 "params": [
-                  "tpset_received_count"
+                  "num_tps_sent"
                 ],
                 "type": "field"
+              },
+              {
+                "params": [],
+                "type": "sum"
+              },
+              {
+                "params": [],
+                "type": "cumulative_sum"
+              },
+              {
+                "params": [
+                  "1s"
+                ],
+                "type": "non_negative_derivative"
               }
             ]
           ],
           "tags": [
             {
-              "key": "partition_id",
-              "operator": "=",
-              "value": "np02-coldbox"
-            },
-            {
-              "condition": "AND",
               "key": "source_id",
               "operator": "=",
-              "value": "np02-coldbox.trigger.heartbeatmaker_ru0_link6"
+              "value": "maroda_test_ruemu0.datahandler_0"
+            }
+          ]
+        },
+        {
+          "alias": "Min",
+          "datasource": {
+            "uid": "${influxdb}"
+          },
+          "groupBy": [
+            {
+              "params": [
+                "$__interval"
+              ],
+              "type": "time"
+            },
+            {
+              "params": [
+                "null"
+              ],
+              "type": "fill"
+            }
+          ],
+          "hide": false,
+          "measurement": "dunedaq.readoutlibs.readoutinfo.RawDataProcessorInfo",
+          "orderByTime": "ASC",
+          "policy": "default",
+          "query": "SELECT min(\"min_request_response_time\") FROM \"dunedaq.readoutlibs.readoutinfo.RequestHandlerInfo\" WHERE \"partition_id\"='${partition}' AND \"source_id\" =~ /[^.]+\\.[^.]+\\.tahandler\\d+/ AND $timeFilter AND \"num_requests_handled\">0 GROUP BY time($__interval) fill(null)",
+          "rawQuery": true,
+          "refId": "B",
+          "resultFormat": "time_series",
+          "select": [
+            [
+              {
+                "params": [
+                  "num_tps_sent"
+                ],
+                "type": "field"
+              },
+              {
+                "params": [],
+                "type": "sum"
+              },
+              {
+                "params": [],
+                "type": "cumulative_sum"
+              },
+              {
+                "params": [
+                  "1s"
+                ],
+                "type": "non_negative_derivative"
+              }
+            ]
+          ],
+          "tags": [
+            {
+              "key": "source_id",
+              "operator": "=",
+              "value": "maroda_test_ruemu0.datahandler_0"
+            }
+          ]
+        },
+        {
+          "alias": "Max",
+          "datasource": {
+            "uid": "${influxdb}"
+          },
+          "groupBy": [
+            {
+              "params": [
+                "$__interval"
+              ],
+              "type": "time"
+            },
+            {
+              "params": [
+                "null"
+              ],
+              "type": "fill"
+            }
+          ],
+          "hide": false,
+          "measurement": "dunedaq.readoutlibs.readoutinfo.RawDataProcessorInfo",
+          "orderByTime": "ASC",
+          "policy": "default",
+          "query": "SELECT max(\"max_request_response_time\") FROM \"dunedaq.readoutlibs.readoutinfo.RequestHandlerInfo\" WHERE \"partition_id\"='${partition}' AND \"source_id\" =~ /[^.]+\\.[^.]+\\.tahandler\\d+/ AND $timeFilter AND \"num_requests_handled\">0 GROUP BY time($__interval) fill(null)",
+          "rawQuery": true,
+          "refId": "C",
+          "resultFormat": "time_series",
+          "select": [
+            [
+              {
+                "params": [
+                  "num_tps_sent"
+                ],
+                "type": "field"
+              },
+              {
+                "params": [],
+                "type": "sum"
+              },
+              {
+                "params": [],
+                "type": "cumulative_sum"
+              },
+              {
+                "params": [
+                  "1s"
+                ],
+                "type": "non_negative_derivative"
+              }
+            ]
+          ],
+          "tags": [
+            {
+              "key": "source_id",
+              "operator": "=",
+              "value": "maroda_test_ruemu0.datahandler_0"
             }
           ]
         }
       ],
-      "title": "TPHeartbeatMaker receive",
+      "title": "Request answering time",
       "transformations": [
         {
           "id": "renameByRegex",
           "options": {
-            "regex": "[^.]+\\.[^.]+\\.([^.]+)",
-            "renamePattern": "$1"
+            "regex": "[^.]+\\.([^.]+)\\.([^.]+)",
+            "renamePattern": "$1 $2"
           }
         }
       ],
@@ -1586,17 +1684,20 @@
     },
     {
       "datasource": {
+        "type": "influxdb",
         "uid": "${influxdb}"
       },
+      "description": "",
       "fieldConfig": {
         "defaults": {
           "color": {
             "mode": "palette-classic"
           },
           "custom": {
+            "axisBorderShow": false,
             "axisCenteredZero": false,
             "axisColorMode": "text",
-            "axisLabel": "",
+            "axisLabel": "Hz",
             "axisPlacement": "auto",
             "barAlignment": 0,
             "drawStyle": "line",
@@ -1608,7 +1709,7 @@
               "viz": false
             },
             "insertNulls": false,
-            "lineInterpolation": "stepBefore",
+            "lineInterpolation": "linear",
             "lineWidth": 1,
             "pointSize": 5,
             "scaleDistribution": {
@@ -1629,30 +1730,30 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green"
+                "color": "green",
+                "value": null
               },
               {
                 "color": "red",
                 "value": 80
               }
             ]
-          },
-          "unit": "hertz"
+          }
         },
         "overrides": []
       },
       "gridPos": {
-        "h": 8,
-        "w": 12,
-        "x": 12,
-        "y": 33
+        "h": 7,
+        "w": 8,
+        "x": 8,
+        "y": 20
       },
-      "id": 12,
+      "id": 23,
       "options": {
         "legend": {
           "calcs": [],
-          "displayMode": "table",
-          "placement": "right",
+          "displayMode": "list",
+          "placement": "bottom",
           "showLegend": true
         },
         "tooltip": {
@@ -1662,60 +1763,281 @@
       },
       "targets": [
         {
-          "alias": "$tag_source_id",
+          "alias": "Cleanups",
           "datasource": {
             "uid": "${influxdb}"
           },
-          "groupBy": [],
-          "hide": false,
-          "measurement": "dunedaq.trigger.faketpcreatorheartbeatmakerinfo.Info",
+          "groupBy": [
+            {
+              "params": [
+                "$__interval"
+              ],
+              "type": "time"
+            },
+            {
+              "params": [
+                "null"
+              ],
+              "type": "fill"
+            }
+          ],
+          "measurement": "dunedaq.readoutlibs.readoutinfo.RequestHandlerInfo",
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "SELECT non_negative_derivative(last(\"tpset_sent_count\"), 1s) FROM \"dunedaq.trigger.faketpcreatorheartbeatmakerinfo.Info\" WHERE (\"partition_id\" = '${partition}') AND $timeFilter GROUP BY time($__interval), \"source_id\"",
+          "query": "SELECT non_negative_derivative(cumulative_sum(sum(\"num_buffer_cleanups\")), 1s) FROM \"dunedaq.readoutlibs.readoutinfo.RequestHandlerInfo\" WHERE (\"partition_id\"='${partition}' AND \"source_id\" =~ /[^.]+\\.[^.]+\\.tahandler\\d+/ ) AND $timeFilter GROUP BY time($__interval) fill(null)",
           "rawQuery": true,
-          "refId": "H",
+          "refId": "A",
           "resultFormat": "time_series",
           "select": [
             [
               {
                 "params": [
-                  "tpset_sent_count"
+                  "num_buffer_cleanups"
                 ],
                 "type": "field"
+              },
+              {
+                "params": [],
+                "type": "sum"
+              },
+              {
+                "params": [],
+                "type": "cumulative_sum"
+              },
+              {
+                "params": [
+                  "1s"
+                ],
+                "type": "non_negative_derivative"
               }
             ]
           ],
           "tags": [
             {
-              "key": "partition_id",
-              "operator": "=",
-              "value": "np02-coldbox"
-            },
-            {
-              "condition": "AND",
               "key": "source_id",
               "operator": "=",
-              "value": "np02-coldbox.trigger.heartbeatmaker_ru0_link6"
+              "value": "maroda_test_ruemu0.datahandler_1"
+            }
+          ]
+        },
+        {
+          "alias": "Overwritten",
+          "datasource": {
+            "uid": "${influxdb}"
+          },
+          "groupBy": [
+            {
+              "params": [
+                "$__interval"
+              ],
+              "type": "time"
+            },
+            {
+              "params": [
+                "null"
+              ],
+              "type": "fill"
+            }
+          ],
+          "hide": false,
+          "measurement": "dunedaq.readoutlibs.readoutinfo.ReadoutInfo",
+          "orderByTime": "ASC",
+          "policy": "default",
+          "query": "SELECT non_negative_derivative(cumulative_sum(sum(\"num_payloads_overwritten\")), 1s) FROM \"dunedaq.readoutlibs.readoutinfo.ReadoutInfo\" WHERE (\"partition_id\"='${partition}' AND \"source_id\" =~ /[^.]+\\.[^.]+\\.tahandler\\d+/  ) AND $timeFilter GROUP BY time($__interval) fill(null)",
+          "rawQuery": true,
+          "refId": "B",
+          "resultFormat": "time_series",
+          "select": [
+            [
+              {
+                "params": [
+                  "num_payloads_overwritten"
+                ],
+                "type": "field"
+              },
+              {
+                "params": [],
+                "type": "sum"
+              },
+              {
+                "params": [],
+                "type": "cumulative_sum"
+              },
+              {
+                "params": [
+                  "1s"
+                ],
+                "type": "non_negative_derivative"
+              }
+            ]
+          ],
+          "tags": [
+            {
+              "key": "source_id",
+              "operator": "=",
+              "value": "maroda_test_ruemu0.datahandler_1"
             }
           ]
         }
       ],
-      "title": "TPHeartbeatMaker sent",
+      "title": "Buffers - Operational rates",
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "influxdb",
+        "uid": "${influxdb}"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "drawStyle": "line",
+            "fillOpacity": 13,
+            "gradientMode": "opacity",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "auto",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 7,
+        "w": 8,
+        "x": 16,
+        "y": 20
+      },
+      "id": 24,
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "tooltip": {
+          "mode": "multi",
+          "sort": "none"
+        }
+      },
+      "pluginVersion": "8.0.6",
+      "targets": [
+        {
+          "alias": "$tag_source_id",
+          "datasource": {
+            "uid": "${influxdb}"
+          },
+          "groupBy": [
+            {
+              "params": [
+                "$__interval"
+              ],
+              "type": "time"
+            },
+            {
+              "params": [
+                "null"
+              ],
+              "type": "fill"
+            }
+          ],
+          "hide": false,
+          "measurement": "dunedaq.readoutlibs.readoutinfo.RequestHandlerInfo",
+          "orderByTime": "ASC",
+          "policy": "default",
+          "query": "SELECT sum(\"num_requests_waiting\") FROM \"dunedaq.readoutlibs.readoutinfo.RequestHandlerInfo\" WHERE (\"partition_id\"='${partition}' AND \"source_id\" =~ /[^.]+\\.[^.]+\\.tahandler\\d+/ ) AND $timeFilter GROUP BY time($__interval), \"source_id\"",
+          "rawQuery": true,
+          "refId": "E",
+          "resultFormat": "time_series",
+          "select": [
+            [
+              {
+                "params": [
+                  "num_requests_waiting"
+                ],
+                "type": "field"
+              },
+              {
+                "params": [],
+                "type": "sum"
+              },
+              {
+                "params": [],
+                "type": "cumulative_sum"
+              },
+              {
+                "params": [
+                  "1s"
+                ],
+                "type": "non_negative_derivative"
+              }
+            ]
+          ],
+          "tags": [
+            {
+              "key": "source_id",
+              "operator": "=",
+              "value": "maroda_test_ruemu0.datahandler_0"
+            }
+          ]
+        }
+      ],
+      "title": "Waiting requests",
       "transformations": [
         {
           "id": "renameByRegex",
           "options": {
-            "regex": "[^.]+\\.[^.]+\\.([^.]+)",
-            "renamePattern": "$1"
+            "regex": ".*\\.(.*)\\.(.*)",
+            "renamePattern": "$1 $2"
           }
         }
       ],
       "type": "timeseries"
     }
   ],
-  "refresh": "",
+  "refresh": "10s",
   "schemaVersion": 38,
-  "style": "dark",
   "tags": [
     "v5.0.0",
     "Subsystem"
@@ -1743,8 +2065,8 @@
       {
         "current": {
           "selected": false,
-          "text": "np02vdcoldbox",
-          "value": "np02vdcoldbox"
+          "text": "test-session",
+          "value": "test-session"
         },
         "datasource": {
           "uid": "${influxdb}"
@@ -1766,13 +2088,13 @@
     ]
   },
   "time": {
-    "from": "now-24h",
+    "from": "now-30m",
     "to": "now"
   },
   "timepicker": {},
   "timezone": "",
   "title": "Trigger Flow",
   "uid": "v5_0_0-trigger_flow",
-  "version": 17,
+  "version": 7,
   "weekStart": ""
 }

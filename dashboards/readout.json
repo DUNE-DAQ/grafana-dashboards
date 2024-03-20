@@ -959,7 +959,7 @@
           "measurement": "dunedaq.readoutlibs.readoutinfo.RawDataProcessorInfo",
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "SELECT sum(\"tot_request_response_time\")/sum(\"num_requests_handled\") FROM \"dunedaq.readoutlibs.readoutinfo.RequestHandlerInfo\" WHERE \"partition_id\"='${partition}' AND $timeFilter AND \"num_requests_handled\">0 GROUP BY time($__interval) fill(null)",
+          "query": "SELECT sum(\"tot_request_response_time\")/sum(\"num_requests_handled\") FROM \"dunedaq.readoutlibs.readoutinfo.RequestHandlerInfo\" WHERE \"partition_id\"='${partition}' AND  \"source_id\" =~ /.*\\.DLH-\\d+/ AND $timeFilter AND \"num_requests_handled\">0 GROUP BY time($__interval) fill(null)",
           "rawQuery": true,
           "refId": "D",
           "resultFormat": "time_series",
@@ -1018,7 +1018,7 @@
           "measurement": "dunedaq.readoutlibs.readoutinfo.RawDataProcessorInfo",
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "SELECT sum(\"tot_request_response_time\")/sum(\"num_requests_handled\") FROM \"dunedaq.readoutlibs.readoutinfo.RequestHandlerInfo\" WHERE \"partition_id\"='${partition}' AND \"num_requests_handled\">0 AND  $timeFilter GROUP BY time($__interval), \"source_id\" fill(null)",
+          "query": "SELECT sum(\"tot_request_response_time\")/sum(\"num_requests_handled\") FROM \"dunedaq.readoutlibs.readoutinfo.RequestHandlerInfo\" WHERE \"partition_id\"='${partition}' AND  \"source_id\" =~ /.*\\.DLH-\\d+/ AND \"num_requests_handled\">0 AND  $timeFilter GROUP BY time($__interval), \"source_id\" fill(null)",
           "rawQuery": true,
           "refId": "A",
           "resultFormat": "time_series",
@@ -1077,7 +1077,7 @@
           "measurement": "dunedaq.readoutlibs.readoutinfo.RawDataProcessorInfo",
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "SELECT min(\"min_request_response_time\") FROM \"dunedaq.readoutlibs.readoutinfo.RequestHandlerInfo\" WHERE \"partition_id\"='${partition}' AND $timeFilter AND \"num_requests_handled\">0 GROUP BY time($__interval) fill(null)",
+          "query": "SELECT min(\"min_request_response_time\") FROM \"dunedaq.readoutlibs.readoutinfo.RequestHandlerInfo\" WHERE \"partition_id\"='${partition}' AND  \"source_id\" =~ /.*\\.DLH-\\d+/ AND  $timeFilter AND \"num_requests_handled\">0 GROUP BY time($__interval) fill(null)",
           "rawQuery": true,
           "refId": "B",
           "resultFormat": "time_series",
@@ -1136,7 +1136,7 @@
           "measurement": "dunedaq.readoutlibs.readoutinfo.RawDataProcessorInfo",
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "SELECT max(\"max_request_response_time\") FROM \"dunedaq.readoutlibs.readoutinfo.RequestHandlerInfo\" WHERE \"partition_id\"='${partition}' AND $timeFilter AND \"num_requests_handled\">0 GROUP BY time($__interval) fill(null)",
+          "query": "SELECT max(\"max_request_response_time\") FROM \"dunedaq.readoutlibs.readoutinfo.RequestHandlerInfo\" WHERE \"partition_id\"='${partition}' AND  \"source_id\" =~ /.*\\.DLH-\\d+/ AND $timeFilter AND \"num_requests_handled\">0 GROUP BY time($__interval) fill(null)",
           "rawQuery": true,
           "refId": "C",
           "resultFormat": "time_series",
@@ -1941,7 +1941,7 @@
             "h": 7,
             "w": 8,
             "x": 0,
-            "y": 17
+            "y": 31
           },
           "id": 42,
           "links": [],
@@ -2252,7 +2252,7 @@
             "h": 7,
             "w": 8,
             "x": 8,
-            "y": 17
+            "y": 31
           },
           "id": 38,
           "options": {
@@ -2432,7 +2432,7 @@
             "h": 7,
             "w": 8,
             "x": 16,
-            "y": 17
+            "y": 31
           },
           "id": 47,
           "options": {
@@ -2909,8 +2909,8 @@
       {
         "current": {
           "selected": false,
-          "text": "crp4-oks-session",
-          "value": "crp4-oks-session"
+          "text": "test-session",
+          "value": "test-session"
         },
         "datasource": {
           "type": "influxdb",
@@ -2932,9 +2932,10 @@
       },
       {
         "current": {
+          "isNone": true,
           "selected": false,
-          "text": "runp02srv003eth0",
-          "value": "runp02srv003eth0"
+          "text": "None",
+          "value": ""
         },
         "datasource": {
           "type": "influxdb",
@@ -2949,16 +2950,17 @@
         "options": [],
         "query": "SELECT \"source_id\" FROM (SELECT \"num_buffer_cleanups\",\"source_id\" FROM \"dunedaq.readoutlibs.readoutinfo.RequestHandlerInfo\" WHERE $timeFilter AND \"partition_id\"='${partition}' )",
         "refresh": 2,
-        "regex": "[^.]+\\.([^.]+)\\..*",
+        "regex": "[^.]+\\.([^.]+)\\.DLH-\\d+",
         "skipUrlSync": false,
         "sort": 1,
         "type": "query"
       },
       {
         "current": {
+          "isNone": true,
           "selected": false,
-          "text": "DLH-200",
-          "value": "DLH-200"
+          "text": "None",
+          "value": ""
         },
         "datasource": {
           "type": "influxdb",
@@ -2973,7 +2975,7 @@
         "options": [],
         "query": "SELECT \"source_id\" FROM (SELECT \"num_buffer_cleanups\",\"source_id\" FROM \"dunedaq.readoutlibs.readoutinfo.RequestHandlerInfo\" WHERE $timeFilter AND \"partition_id\"='${partition}' )",
         "refresh": 1,
-        "regex": ".*\\.${readout_app}\\.(.*)",
+        "regex": "[^.]+\\.${readout_app}\\.([^.]+)",
         "skipUrlSync": false,
         "sort": 1,
         "type": "query"
@@ -2981,15 +2983,19 @@
       {
         "allValue": "",
         "current": {
-          "selected": false,
-          "text": "All",
-          "value": "$__all"
+          "selected": true,
+          "text": [
+            "All"
+          ],
+          "value": [
+            "$__all"
+          ]
         },
         "datasource": {
           "type": "influxdb",
           "uid": "${influxdb}"
         },
-        "definition": "SELECT \"source_id\" FROM (SELECT \"last_daq_timestamp\",\"source_id\" FROM \"dunedaq.readoutlibs.readoutinfo.ReadoutInfo\" WHERE $timeFilter AND \"partition_id\"='${partition}' AND \"last_daq_timestamp\" > 0)",
+        "definition": "SELECT \"source_id\" FROM (SELECT \"last_daq_timestamp\",\"source_id\" FROM \"dunedaq.readoutlibs.readoutinfo.ReadoutInfo\" WHERE $timeFilter AND \"partition_id\"='${partition}')",
         "description": "variable to generate timestamp spread",
         "hide": 2,
         "includeAll": true,
@@ -2997,9 +3003,9 @@
         "multi": true,
         "name": "timestamp_app",
         "options": [],
-        "query": "SELECT \"source_id\" FROM (SELECT \"last_daq_timestamp\",\"source_id\" FROM \"dunedaq.readoutlibs.readoutinfo.ReadoutInfo\" WHERE $timeFilter AND \"partition_id\"='${partition}' AND \"last_daq_timestamp\" > 0)",
+        "query": "SELECT \"source_id\" FROM (SELECT \"last_daq_timestamp\",\"source_id\" FROM \"dunedaq.readoutlibs.readoutinfo.ReadoutInfo\" WHERE $timeFilter AND \"partition_id\"='${partition}')",
         "refresh": 2,
-        "regex": "[^.]+\\.([^.]+)\\.[^.]+",
+        "regex": "[^.]+\\.([^.]+)\\.DLH-\\d+",
         "skipUrlSync": false,
         "sort": 1,
         "type": "query"
@@ -3038,6 +3044,6 @@
   "timezone": "",
   "title": "Readout",
   "uid": "v5_0_0-readout",
-  "version": 12,
+  "version": 18,
   "weekStart": ""
 }

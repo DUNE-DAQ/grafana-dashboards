@@ -154,7 +154,7 @@
           }
         ]
       },
-      "pluginVersion": "10.1.4",
+      "pluginVersion": "10.2.2",
       "targets": [
         {
           "datasource": {
@@ -165,7 +165,7 @@
           "group": [],
           "metricColumn": "none",
           "rawQuery": true,
-          "rawSql": "SELECT severity,time/1000000 as time,application_name,message,issue_name,host_name\nFROM \"ERSstream\"\nWHERE session='${partition}' AND time/1000000 >= ${__from} AND time/1000000 <= ${__to} AND severity in ([[severity]]) AND issue_name in ([[issue_full_name]]) AND application_name in ([[application_in]]) AND application_name not in ([[application_out]]) AND host_name in ([[host]]) AND message ~ '[[message_regex]]'   \nORDER BY -time\n",
+          "rawSql": "SELECT severity,time/1000000 as time,application_name,message,issue_name,host_name\nFROM ${table}\nWHERE session='${partition}' AND time/1000000 >= ${__from} AND time/1000000 <= ${__to} AND severity in ([[severity]]) AND issue_name in ([[issue_full_name]]) AND application_name in ([[application_in]]) AND host_name in ([[host]]) AND message ~ '[[message_regex]]'   \nORDER BY -time\n",
           "refId": "A",
           "select": [
             [
@@ -210,7 +210,6 @@
   ],
   "refresh": "",
   "schemaVersion": 38,
-  "style": "dark",
   "tags": [
     "v5.0.0",
     "Subsystem"
@@ -236,22 +235,56 @@
         "type": "datasource"
       },
       {
+        "hide": 2,
+        "name": "table",
+        "query": "\"ERSstream\"",
+        "skipUrlSync": false,
+        "type": "constant"
+      },
+      {
         "current": {
           "selected": false,
-          "text": "coldbbox-timing-tlu",
-          "value": "coldbbox-timing-tlu"
+          "text": "np04hddev",
+          "value": "np04hddev"
         },
         "datasource": {
           "uid": "${postgresql}"
         },
-        "definition": "SELECT partition\nFROM public.\"ErrorReports\"\nWHERE time >= ${__from} AND time <= ${__to}\nORDER BY -time\n",
+        "definition": "SELECT session\nFROM ${table}\nWHERE time/1000000 >= ${__from} AND time/1000000 <= ${__to} \n",
         "hide": 0,
         "includeAll": false,
         "label": "Partition name",
         "multi": false,
         "name": "partition",
         "options": [],
-        "query": "SELECT partition\nFROM public.\"ErrorReports\"\nWHERE time >= ${__from} AND time <= ${__to}\nORDER BY -time\n",
+        "query": "SELECT session\nFROM ${table}\nWHERE time/1000000 >= ${__from} AND time/1000000 <= ${__to} \n",
+        "refresh": 2,
+        "regex": "",
+        "skipUrlSync": false,
+        "sort": 1,
+        "type": "query"
+      },
+      {
+        "current": {
+          "selected": true,
+          "text": [
+            "All"
+          ],
+          "value": [
+            "$__all"
+          ]
+        },
+        "datasource": {
+          "uid": "${postgresql}"
+        },
+        "definition": "SELECT severity\nFROM ${table}\nWHERE session='${partition}' AND time/1000000 >= ${__from} AND time/1000000 <= ${__to}\n",
+        "hide": 0,
+        "includeAll": true,
+        "label": "Severity",
+        "multi": true,
+        "name": "severity",
+        "options": [],
+        "query": "SELECT severity\nFROM ${table}\nWHERE session='${partition}' AND time/1000000 >= ${__from} AND time/1000000 <= ${__to}\n",
         "refresh": 2,
         "regex": "",
         "skipUrlSync": false,
@@ -262,75 +295,50 @@
         "current": {
           "selected": true,
           "text": [
-            "WARNING",
-            "ERROR"
+            "All"
           ],
           "value": [
-            "WARNING",
-            "ERROR"
+            "$__all"
           ]
         },
         "datasource": {
           "uid": "${postgresql}"
         },
-        "definition": "SELECT severity\nFROM public.\"ErrorReports\"\nWHERE time >= ${__from} AND time <= ${__to} AND partition='${partition}'\nORDER BY -time\n",
+        "definition": "SELECT application_name\nFROM ${table}\nWHERE session='${partition}' AND time/1000000 >= ${__from} AND time/1000000 <= ${__to}\n\n",
         "hide": 0,
-        "includeAll": false,
-        "label": "Severity",
-        "multi": true,
-        "name": "severity",
-        "options": [],
-        "query": "SELECT severity\nFROM public.\"ErrorReports\"\nWHERE time >= ${__from} AND time <= ${__to} AND partition='${partition}'\nORDER BY -time\n",
-        "refresh": 2,
-        "regex": "",
-        "skipUrlSync": false,
-        "sort": 0,
-        "type": "query"
-      },
-      {
-        "current": {
-          "selected": false,
-          "text": "thi",
-          "value": "thi"
-        },
-        "datasource": {
-          "uid": "${postgresql}"
-        },
-        "definition": "SELECT application_name\nFROM public.\"ErrorReports\"\nWHERE time >= ${__from} AND time <= ${__to} AND partition='${partition}'\nORDER BY -time\n",
-        "hide": 0,
-        "includeAll": false,
+        "includeAll": true,
         "label": "Application included",
         "multi": true,
         "name": "application_in",
         "options": [],
-        "query": "SELECT application_name\nFROM public.\"ErrorReports\"\nWHERE time >= ${__from} AND time <= ${__to} AND partition='${partition}'\nORDER BY -time\n",
+        "query": "SELECT application_name\nFROM ${table}\nWHERE session='${partition}' AND time/1000000 >= ${__from} AND time/1000000 <= ${__to}\n\n",
         "refresh": 2,
         "regex": "",
         "skipUrlSync": false,
-        "sort": 0,
+        "sort": 1,
         "type": "query"
       },
       {
         "current": {
           "selected": false,
-          "text": "thi",
-          "value": "thi"
+          "text": "ctbhsi",
+          "value": "ctbhsi"
         },
         "datasource": {
           "uid": "${postgresql}"
         },
-        "definition": "SELECT application_name\nFROM public.\"ErrorReports\"\nWHERE time >= ${__from} AND time <= ${__to} AND partition='${partition}'\nORDER BY -time\n",
-        "hide": 0,
+        "definition": "SELECT application_name\nFROM ${table}\nWHERE session='${partition}' AND time/1000000 >= ${__from} AND time/1000000 <= ${__to}",
+        "hide": 2,
         "includeAll": false,
         "label": "Application excluded",
         "multi": true,
         "name": "application_out",
         "options": [],
-        "query": "SELECT application_name\nFROM public.\"ErrorReports\"\nWHERE time >= ${__from} AND time <= ${__to} AND partition='${partition}'\nORDER BY -time\n",
+        "query": "SELECT application_name\nFROM ${table}\nWHERE session='${partition}' AND time/1000000 >= ${__from} AND time/1000000 <= ${__to}",
         "refresh": 2,
         "regex": "",
         "skipUrlSync": false,
-        "sort": 0,
+        "sort": 1,
         "type": "query"
       },
       {
@@ -355,60 +363,64 @@
       },
       {
         "current": {
-          "selected": false,
-          "text": "timinglibs::FailedToCollectOpMonInfo",
-          "value": "timinglibs::FailedToCollectOpMonInfo"
+          "selected": true,
+          "text": [
+            "All"
+          ],
+          "value": [
+            "$__all"
+          ]
         },
         "datasource": {
           "uid": "${postgresql}"
         },
-        "definition": "SELECT issue_name\nFROM public.\"ErrorReports\"\nWHERE time >= ${__from} AND time <= ${__to} AND partition='${partition}' \nORDER BY -time\n",
+        "definition": "SELECT issue_name\nFROM ${table}\nWHERE session='${partition}' AND time/1000000 >= ${__from} AND time/1000000 <= ${__to}\n",
         "hide": 0,
-        "includeAll": false,
+        "includeAll": true,
         "label": "Issue",
         "multi": true,
         "name": "issue_full_name",
         "options": [],
-        "query": "SELECT issue_name\nFROM public.\"ErrorReports\"\nWHERE time >= ${__from} AND time <= ${__to} AND partition='${partition}' \nORDER BY -time\n",
+        "query": "SELECT issue_name\nFROM ${table}\nWHERE session='${partition}' AND time/1000000 >= ${__from} AND time/1000000 <= ${__to}\n",
         "refresh": 2,
         "regex": "",
         "skipUrlSync": false,
-        "sort": 0,
+        "sort": 1,
         "type": "query"
       },
       {
         "current": {
           "selected": false,
-          "text": "np04-srv-012",
-          "value": "np04-srv-012"
+          "text": "All",
+          "value": "$__all"
         },
         "datasource": {
           "uid": "${postgresql}"
         },
-        "definition": "SELECT host_name\nFROM public.\"ErrorReports\"\nWHERE time >= ${__from} AND time <= ${__to} AND partition='${partition}'\nORDER BY -time\n",
+        "definition": "SELECT host_name\nFROM ${table}\nWHERE session='${partition}' AND time/1000000 >= ${__from} AND time/1000000 <= ${__to}\n",
         "hide": 0,
-        "includeAll": false,
+        "includeAll": true,
         "label": "Host",
         "multi": true,
         "name": "host",
         "options": [],
-        "query": "SELECT host_name\nFROM public.\"ErrorReports\"\nWHERE time >= ${__from} AND time <= ${__to} AND partition='${partition}'\nORDER BY -time\n",
+        "query": "SELECT host_name\nFROM ${table}\nWHERE session='${partition}' AND time/1000000 >= ${__from} AND time/1000000 <= ${__to}\n",
         "refresh": 2,
         "regex": "",
         "skipUrlSync": false,
-        "sort": 0,
+        "sort": 1,
         "type": "query"
       }
     ]
   },
   "time": {
-    "from": "now-2d",
+    "from": "now-30m",
     "to": "now"
   },
   "timepicker": {},
   "timezone": "",
   "title": "ERS",
   "uid": "v5_0_0-ers",
-  "version": 2,
+  "version": 16,
   "weekStart": ""
 }

@@ -738,7 +738,7 @@
           ]
         }
       ],
-      "title": "Run number",
+      "title": "Current Run number",
       "type": "stat"
     },
     {
@@ -875,6 +875,7 @@
     },
     {
       "datasource": {
+        "type": "influxdb",
         "uid": "${influxdb}"
       },
       "fieldConfig": {
@@ -960,7 +961,7 @@
           "measurement": "dunedaq.trigger.moduleleveltriggerinfo.Info",
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "SELECT last(\"td_sent_count\") FROM \"dunedaq.trigger.moduleleveltriggerinfo.Info\" WHERE (\"partition_id\" ='${partition}' ) AND $timeFilter",
+          "query": "SELECT last(\"td_sent_count\") FROM \"dunedaq.trigger.moduleleveltriggerinfo.Info\" WHERE (\"partition_id\" ='${partition}' ) AND time > now() - 30s",
           "rawQuery": true,
           "refId": "A",
           "resultFormat": "table",
@@ -987,7 +988,7 @@
           ]
         }
       ],
-      "title": "Issued triggers",
+      "title": "Current Issued triggers",
       "transformations": [
         {
           "id": "calculateField",
@@ -1085,7 +1086,7 @@
           "measurement": "dunedaq.dfmodules.datawriterinfo.Info",
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "SELECT last(\"records_written\") FROM \"dunedaq.dfmodules.datawriterinfo.Info\" WHERE (\"partition_id\" = '${partition}') AND $timeFilter GROUP BY \"source_id\" fill(null)",
+          "query": "SELECT last(\"records_written\") FROM \"dunedaq.dfmodules.datawriterinfo.Info\" WHERE (\"partition_id\" = '${partition}') AND time > now() - 30s GROUP BY \"source_id\" fill(null)",
           "rawQuery": true,
           "refId": "A",
           "resultFormat": "table",
@@ -1108,7 +1109,7 @@
           ]
         }
       ],
-      "title": "Written TRs",
+      "title": "Current Written TRs",
       "transformations": [
         {
           "disabled": true,
@@ -2822,8 +2823,8 @@
       {
         "current": {
           "selected": false,
-          "text": "3213",
-          "value": "3213"
+          "text": "4371",
+          "value": "4371"
         },
         "datasource": {
           "uid": "${influxdb}"
@@ -2875,6 +2876,6 @@
   "timezone": "",
   "title": "DAQ overview",
   "uid": "v4_4_0-overview",
-  "version": 23,
+  "version": 24,
   "weekStart": ""
 }

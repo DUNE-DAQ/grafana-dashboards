@@ -1086,7 +1086,7 @@
           "measurement": "dunedaq.dfmodules.datawriterinfo.Info",
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "SELECT last(\"records_written\") FROM \"dunedaq.dfmodules.datawriterinfo.Info\" WHERE (\"partition_id\" = '${partition}') AND time > now() - 30s GROUP BY \"source_id\" fill(null)",
+          "query": "SELECT sum(\"data\") FROM (SELECT last(\"records_written\") AS \"data\", \"source_id\" FROM \"dunedaq.dfmodules.datawriterinfo.Info\" WHERE (\"partition_id\" = '${partition}') AND time > now() - 30s GROUP BY \"source_id\" fill(null) )",
           "rawQuery": true,
           "refId": "A",
           "resultFormat": "table",
@@ -1110,19 +1110,7 @@
         }
       ],
       "title": "Current Written TRs",
-      "transformations": [
-        {
-          "disabled": true,
-          "id": "reduce",
-          "options": {
-            "includeTimeField": false,
-            "mode": "reduceFields",
-            "reducers": [
-              "sum"
-            ]
-          }
-        }
-      ],
+      "transformations": [],
       "type": "stat"
     },
     {
@@ -2402,7 +2390,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green"
+                "color": "green",
+                "value": null
               },
               {
                 "color": "red",
@@ -2611,7 +2600,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green"
+                "color": "green",
+                "value": null
               },
               {
                 "color": "red",
@@ -2823,8 +2813,8 @@
       {
         "current": {
           "selected": false,
-          "text": "4371",
-          "value": "4371"
+          "text": "9391",
+          "value": "9391"
         },
         "datasource": {
           "uid": "${influxdb}"
@@ -2876,6 +2866,6 @@
   "timezone": "",
   "title": "DAQ overview",
   "uid": "v4_4_0-overview",
-  "version": 24,
+  "version": 27,
   "weekStart": ""
 }

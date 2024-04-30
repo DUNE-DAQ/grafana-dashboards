@@ -24,7 +24,7 @@
   "editable": true,
   "fiscalYearStartMonth": 0,
   "graphTooltip": 0,
-  "id": 45,
+  "id": 68,
   "links": [],
   "liveNow": false,
   "panels": [
@@ -103,7 +103,7 @@
       "type": "state-timeline"
     },
     {
-      "collapsed": false,
+      "collapsed": true,
       "datasource": {
         "type": "prometheus",
         "uid": "e28ab080-9f4e-4069-81a9-e5bdee344d06"
@@ -115,7 +115,617 @@
         "y": 3
       },
       "id": 24,
-      "panels": [],
+      "panels": [
+        {
+          "datasource": {
+            "uid": "${influxdb}"
+          },
+          "fieldConfig": {
+            "defaults": {
+              "color": {
+                "mode": "palette-classic"
+              },
+              "custom": {
+                "axisBorderShow": false,
+                "axisCenteredZero": false,
+                "axisColorMode": "text",
+                "axisLabel": "",
+                "axisPlacement": "auto",
+                "barAlignment": 0,
+                "drawStyle": "line",
+                "fillOpacity": 0,
+                "gradientMode": "none",
+                "hideFrom": {
+                  "legend": false,
+                  "tooltip": false,
+                  "viz": false
+                },
+                "insertNulls": false,
+                "lineInterpolation": "linear",
+                "lineWidth": 1,
+                "pointSize": 5,
+                "scaleDistribution": {
+                  "type": "linear"
+                },
+                "showPoints": "auto",
+                "spanNulls": false,
+                "stacking": {
+                  "group": "A",
+                  "mode": "none"
+                },
+                "thresholdsStyle": {
+                  "mode": "off"
+                }
+              },
+              "mappings": [],
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {
+                    "color": "green",
+                    "value": null
+                  },
+                  {
+                    "color": "red",
+                    "value": 80
+                  }
+                ]
+              },
+              "unit": "pps"
+            },
+            "overrides": []
+          },
+          "gridPos": {
+            "h": 8,
+            "w": 8,
+            "x": 0,
+            "y": 124
+          },
+          "id": 7,
+          "options": {
+            "legend": {
+              "calcs": [],
+              "displayMode": "list",
+              "placement": "bottom",
+              "showLegend": true
+            },
+            "tooltip": {
+              "mode": "multi",
+              "sort": "none"
+            }
+          },
+          "targets": [
+            {
+              "alias": "$tag_source_id",
+              "datasource": {
+                "uid": "${influxdb}"
+              },
+              "query": "SELECT non_negative_derivative(last(\"sent_udp_count\"), 1s) FROM \"dunedaq.hermesmodules.hermescontrollerinfo.LinkStats\" WHERE (\"partition_id\" = '${partition}') AND $timeFilter GROUP BY time($__interval), \"source_id\" fill(null)",
+              "rawQuery": true,
+              "refId": "A"
+            }
+          ],
+          "title": "TX UDP Sent rate",
+          "transformations": [
+            {
+              "id": "renameByRegex",
+              "options": {
+                "regex": "[^.]+\\.[^.]+\\.[^.]+_([0-9]+)_([0-9]+)_([0-9]+).link_([0-9]+)",
+                "renamePattern": "det:$1 crt:$2 slt:$3 str:$4"
+              }
+            }
+          ],
+          "type": "timeseries"
+        },
+        {
+          "datasource": {
+            "uid": "${influxdb}"
+          },
+          "fieldConfig": {
+            "defaults": {
+              "color": {
+                "mode": "palette-classic"
+              },
+              "custom": {
+                "axisBorderShow": false,
+                "axisCenteredZero": false,
+                "axisColorMode": "text",
+                "axisLabel": "",
+                "axisPlacement": "auto",
+                "barAlignment": 0,
+                "drawStyle": "line",
+                "fillOpacity": 0,
+                "gradientMode": "none",
+                "hideFrom": {
+                  "legend": false,
+                  "tooltip": false,
+                  "viz": false
+                },
+                "insertNulls": false,
+                "lineInterpolation": "linear",
+                "lineWidth": 1,
+                "pointSize": 5,
+                "scaleDistribution": {
+                  "type": "linear"
+                },
+                "showPoints": "auto",
+                "spanNulls": false,
+                "stacking": {
+                  "group": "A",
+                  "mode": "none"
+                },
+                "thresholdsStyle": {
+                  "mode": "off"
+                }
+              },
+              "mappings": [],
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {
+                    "color": "green",
+                    "value": null
+                  },
+                  {
+                    "color": "red",
+                    "value": 80
+                  }
+                ]
+              },
+              "unit": "pps"
+            },
+            "overrides": []
+          },
+          "gridPos": {
+            "h": 4,
+            "w": 4,
+            "x": 8,
+            "y": 124
+          },
+          "id": 18,
+          "options": {
+            "legend": {
+              "calcs": [],
+              "displayMode": "list",
+              "placement": "bottom",
+              "showLegend": true
+            },
+            "tooltip": {
+              "mode": "multi",
+              "sort": "none"
+            }
+          },
+          "targets": [
+            {
+              "alias": "$tag_source_id",
+              "datasource": {
+                "uid": "${influxdb}"
+              },
+              "query": "SELECT non_negative_derivative(last(\"sent_ping_count\"),1s) FROM \"dunedaq.hermesmodules.hermescontrollerinfo.LinkStats\" WHERE (\"partition_id\" = '${partition}') AND $timeFilter GROUP BY time($__interval), \"source_id\" fill(null)",
+              "rawQuery": true,
+              "refId": "A"
+            }
+          ],
+          "title": "TX Ping Sent",
+          "transformations": [
+            {
+              "id": "renameByRegex",
+              "options": {
+                "regex": "[^.]+\\.[^.]+\\.[^.]+_([0-9]+)_([0-9]+)_([0-9]+).link_([0-9]+)",
+                "renamePattern": "det:$1 crt:$2 slt:$3 str:$4"
+              }
+            }
+          ],
+          "type": "timeseries"
+        },
+        {
+          "datasource": {
+            "uid": "${influxdb}"
+          },
+          "fieldConfig": {
+            "defaults": {
+              "color": {
+                "mode": "palette-classic"
+              },
+              "custom": {
+                "axisBorderShow": false,
+                "axisCenteredZero": false,
+                "axisColorMode": "text",
+                "axisLabel": "",
+                "axisPlacement": "auto",
+                "barAlignment": 0,
+                "drawStyle": "line",
+                "fillOpacity": 0,
+                "gradientMode": "none",
+                "hideFrom": {
+                  "legend": false,
+                  "tooltip": false,
+                  "viz": false
+                },
+                "insertNulls": false,
+                "lineInterpolation": "linear",
+                "lineWidth": 1,
+                "pointSize": 5,
+                "scaleDistribution": {
+                  "type": "linear"
+                },
+                "showPoints": "auto",
+                "spanNulls": false,
+                "stacking": {
+                  "group": "A",
+                  "mode": "none"
+                },
+                "thresholdsStyle": {
+                  "mode": "off"
+                }
+              },
+              "mappings": [],
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {
+                    "color": "green",
+                    "value": null
+                  },
+                  {
+                    "color": "red",
+                    "value": 80
+                  }
+                ]
+              },
+              "unit": "pps"
+            },
+            "overrides": []
+          },
+          "gridPos": {
+            "h": 8,
+            "w": 8,
+            "x": 12,
+            "y": 124
+          },
+          "id": 16,
+          "options": {
+            "legend": {
+              "calcs": [],
+              "displayMode": "list",
+              "placement": "bottom",
+              "showLegend": true
+            },
+            "tooltip": {
+              "mode": "multi",
+              "sort": "none"
+            }
+          },
+          "targets": [
+            {
+              "alias": "$tag_source_id",
+              "datasource": {
+                "uid": "${influxdb}"
+              },
+              "query": "SELECT non_negative_derivative(last(\"rcvd_udp_count\"), 1s) FROM \"dunedaq.hermesmodules.hermescontrollerinfo.LinkStats\" WHERE (\"partition_id\" = '${partition}') AND $timeFilter GROUP BY time($__interval), \"source_id\" fill(null)",
+              "rawQuery": true,
+              "refId": "A"
+            }
+          ],
+          "title": "TX UDP Received rate",
+          "transformations": [
+            {
+              "id": "renameByRegex",
+              "options": {
+                "regex": "[^.]+\\.[^.]+\\.[^.]+_([0-9]+)_([0-9]+)_([0-9]+).link_([0-9]+)",
+                "renamePattern": "det:$1 crt:$2 slt:$3 str:$4"
+              }
+            }
+          ],
+          "type": "timeseries"
+        },
+        {
+          "datasource": {
+            "uid": "${influxdb}"
+          },
+          "fieldConfig": {
+            "defaults": {
+              "color": {
+                "mode": "palette-classic"
+              },
+              "custom": {
+                "axisBorderShow": false,
+                "axisCenteredZero": false,
+                "axisColorMode": "text",
+                "axisLabel": "",
+                "axisPlacement": "auto",
+                "barAlignment": 0,
+                "drawStyle": "line",
+                "fillOpacity": 0,
+                "gradientMode": "none",
+                "hideFrom": {
+                  "legend": false,
+                  "tooltip": false,
+                  "viz": false
+                },
+                "insertNulls": false,
+                "lineInterpolation": "linear",
+                "lineWidth": 1,
+                "pointSize": 5,
+                "scaleDistribution": {
+                  "type": "linear"
+                },
+                "showPoints": "auto",
+                "spanNulls": false,
+                "stacking": {
+                  "group": "A",
+                  "mode": "none"
+                },
+                "thresholdsStyle": {
+                  "mode": "off"
+                }
+              },
+              "mappings": [],
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {
+                    "color": "green",
+                    "value": null
+                  },
+                  {
+                    "color": "red",
+                    "value": 80
+                  }
+                ]
+              },
+              "unit": "pps"
+            },
+            "overrides": []
+          },
+          "gridPos": {
+            "h": 4,
+            "w": 4,
+            "x": 20,
+            "y": 124
+          },
+          "id": 19,
+          "options": {
+            "legend": {
+              "calcs": [],
+              "displayMode": "list",
+              "placement": "bottom",
+              "showLegend": true
+            },
+            "tooltip": {
+              "mode": "multi",
+              "sort": "none"
+            }
+          },
+          "targets": [
+            {
+              "alias": "$tag_source_id",
+              "datasource": {
+                "uid": "${influxdb}"
+              },
+              "query": "SELECT  non_negative_derivative(last(\"rcvd_arp_count\"), 1s) FROM \"dunedaq.hermesmodules.hermescontrollerinfo.LinkStats\" WHERE (\"partition_id\" = '${partition}') AND $timeFilter GROUP BY time($__interval), \"source_id\" fill(null)",
+              "rawQuery": true,
+              "refId": "A"
+            }
+          ],
+          "title": "TX ARP Received",
+          "transformations": [
+            {
+              "id": "renameByRegex",
+              "options": {
+                "regex": "[^.]+\\.[^.]+\\.[^.]+_([0-9]+)_([0-9]+)_([0-9]+).link_([0-9]+)",
+                "renamePattern": "det:$1 crt:$2 slt:$3 str:$4"
+              }
+            }
+          ],
+          "type": "timeseries"
+        },
+        {
+          "datasource": {
+            "uid": "${influxdb}"
+          },
+          "fieldConfig": {
+            "defaults": {
+              "color": {
+                "mode": "palette-classic"
+              },
+              "custom": {
+                "axisBorderShow": false,
+                "axisCenteredZero": false,
+                "axisColorMode": "text",
+                "axisLabel": "",
+                "axisPlacement": "auto",
+                "barAlignment": 0,
+                "drawStyle": "line",
+                "fillOpacity": 0,
+                "gradientMode": "none",
+                "hideFrom": {
+                  "legend": false,
+                  "tooltip": false,
+                  "viz": false
+                },
+                "insertNulls": false,
+                "lineInterpolation": "linear",
+                "lineWidth": 1,
+                "pointSize": 5,
+                "scaleDistribution": {
+                  "type": "linear"
+                },
+                "showPoints": "auto",
+                "spanNulls": false,
+                "stacking": {
+                  "group": "A",
+                  "mode": "none"
+                },
+                "thresholdsStyle": {
+                  "mode": "off"
+                }
+              },
+              "mappings": [],
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {
+                    "color": "green",
+                    "value": null
+                  },
+                  {
+                    "color": "red",
+                    "value": 80
+                  }
+                ]
+              },
+              "unit": "pps"
+            },
+            "overrides": []
+          },
+          "gridPos": {
+            "h": 4,
+            "w": 4,
+            "x": 8,
+            "y": 128
+          },
+          "id": 17,
+          "options": {
+            "legend": {
+              "calcs": [],
+              "displayMode": "list",
+              "placement": "bottom",
+              "showLegend": true
+            },
+            "tooltip": {
+              "mode": "multi",
+              "sort": "none"
+            }
+          },
+          "targets": [
+            {
+              "alias": "$tag_source_id",
+              "datasource": {
+                "uid": "${influxdb}"
+              },
+              "query": "SELECT  non_negative_derivative(last(\"sent_arp_count\"), 1s) FROM \"dunedaq.hermesmodules.hermescontrollerinfo.LinkStats\" WHERE (\"partition_id\" = '${partition}') AND $timeFilter GROUP BY time($__interval), \"source_id\" fill(null)",
+              "rawQuery": true,
+              "refId": "A"
+            }
+          ],
+          "title": "TX ARP Sent",
+          "transformations": [
+            {
+              "id": "renameByRegex",
+              "options": {
+                "regex": "[^.]+\\.[^.]+\\.[^.]+_([0-9]+)_([0-9]+)_([0-9]+).link_([0-9]+)",
+                "renamePattern": "det:$1 crt:$2 slt:$3 str:$4"
+              }
+            }
+          ],
+          "type": "timeseries"
+        },
+        {
+          "datasource": {
+            "uid": "${influxdb}"
+          },
+          "fieldConfig": {
+            "defaults": {
+              "color": {
+                "mode": "palette-classic"
+              },
+              "custom": {
+                "axisBorderShow": false,
+                "axisCenteredZero": false,
+                "axisColorMode": "text",
+                "axisLabel": "",
+                "axisPlacement": "auto",
+                "barAlignment": 0,
+                "drawStyle": "line",
+                "fillOpacity": 0,
+                "gradientMode": "none",
+                "hideFrom": {
+                  "legend": false,
+                  "tooltip": false,
+                  "viz": false
+                },
+                "insertNulls": false,
+                "lineInterpolation": "linear",
+                "lineStyle": {
+                  "fill": "solid"
+                },
+                "lineWidth": 1,
+                "pointSize": 5,
+                "scaleDistribution": {
+                  "type": "linear"
+                },
+                "showPoints": "auto",
+                "spanNulls": false,
+                "stacking": {
+                  "group": "A",
+                  "mode": "none"
+                },
+                "thresholdsStyle": {
+                  "mode": "off"
+                }
+              },
+              "mappings": [],
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {
+                    "color": "green",
+                    "value": null
+                  },
+                  {
+                    "color": "red",
+                    "value": 80
+                  }
+                ]
+              },
+              "unit": "pps"
+            },
+            "overrides": []
+          },
+          "gridPos": {
+            "h": 4,
+            "w": 4,
+            "x": 20,
+            "y": 128
+          },
+          "id": 20,
+          "options": {
+            "legend": {
+              "calcs": [],
+              "displayMode": "list",
+              "placement": "bottom",
+              "showLegend": true
+            },
+            "tooltip": {
+              "mode": "multi",
+              "sort": "none"
+            }
+          },
+          "targets": [
+            {
+              "alias": "$tag_source_id",
+              "datasource": {
+                "uid": "${influxdb}"
+              },
+              "query": "SELECT non_negative_derivative(last(\"rcvd_ping_count\"),1s) FROM \"dunedaq.hermesmodules.hermescontrollerinfo.LinkStats\" WHERE (\"partition_id\" = '${partition}') AND $timeFilter GROUP BY time($__interval), \"source_id\" fill(null)",
+              "rawQuery": true,
+              "refId": "A"
+            }
+          ],
+          "title": "TX Ping Received",
+          "transformations": [
+            {
+              "id": "renameByRegex",
+              "options": {
+                "regex": "[^.]+\\.[^.]+\\.[^.]+_([0-9]+)_([0-9]+)_([0-9]+).link_([0-9]+)",
+                "renamePattern": "det:$1 crt:$2 slt:$3 str:$4"
+              }
+            }
+          ],
+          "type": "timeseries"
+        }
+      ],
       "targets": [
         {
           "datasource": {
@@ -129,619 +739,16 @@
       "type": "row"
     },
     {
-      "datasource": {
-        "uid": "${influxdb}"
-      },
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "mode": "palette-classic"
-          },
-          "custom": {
-            "axisCenteredZero": false,
-            "axisColorMode": "text",
-            "axisLabel": "",
-            "axisPlacement": "auto",
-            "barAlignment": 0,
-            "drawStyle": "line",
-            "fillOpacity": 0,
-            "gradientMode": "none",
-            "hideFrom": {
-              "legend": false,
-              "tooltip": false,
-              "viz": false
-            },
-            "insertNulls": false,
-            "lineInterpolation": "linear",
-            "lineWidth": 1,
-            "pointSize": 5,
-            "scaleDistribution": {
-              "type": "linear"
-            },
-            "showPoints": "auto",
-            "spanNulls": false,
-            "stacking": {
-              "group": "A",
-              "mode": "none"
-            },
-            "thresholdsStyle": {
-              "mode": "off"
-            }
-          },
-          "mappings": [],
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "green",
-                "value": null
-              },
-              {
-                "color": "red",
-                "value": 80
-              }
-            ]
-          },
-          "unit": "pps"
-        },
-        "overrides": []
-      },
-      "gridPos": {
-        "h": 8,
-        "w": 8,
-        "x": 0,
-        "y": 4
-      },
-      "id": 7,
-      "options": {
-        "legend": {
-          "calcs": [],
-          "displayMode": "list",
-          "placement": "bottom",
-          "showLegend": true
-        },
-        "tooltip": {
-          "mode": "multi",
-          "sort": "none"
-        }
-      },
-      "targets": [
-        {
-          "alias": "$tag_source_id",
-          "datasource": {
-            "uid": "${influxdb}"
-          },
-          "query": "SELECT non_negative_derivative(last(\"sent_udp_count\"), 1s) FROM \"dunedaq.hermesmodules.hermescontrollerinfo.LinkStats\" WHERE (\"partition_id\" = '${partition}') AND $timeFilter GROUP BY time($__interval), \"source_id\" fill(null)",
-          "rawQuery": true,
-          "refId": "A"
-        }
-      ],
-      "title": "TX UDP Sent rate",
-      "transformations": [
-        {
-          "id": "renameByRegex",
-          "options": {
-            "regex": "[^.]+\\.[^.]+\\.[^.]+_([0-9]+)_([0-9]+)_([0-9]+).link_([0-9]+)",
-            "renamePattern": "det:$1 crt:$2 slt:$3 str:$4"
-          }
-        }
-      ],
-      "type": "timeseries"
-    },
-    {
-      "datasource": {
-        "uid": "${influxdb}"
-      },
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "mode": "palette-classic"
-          },
-          "custom": {
-            "axisCenteredZero": false,
-            "axisColorMode": "text",
-            "axisLabel": "",
-            "axisPlacement": "auto",
-            "barAlignment": 0,
-            "drawStyle": "line",
-            "fillOpacity": 0,
-            "gradientMode": "none",
-            "hideFrom": {
-              "legend": false,
-              "tooltip": false,
-              "viz": false
-            },
-            "insertNulls": false,
-            "lineInterpolation": "linear",
-            "lineWidth": 1,
-            "pointSize": 5,
-            "scaleDistribution": {
-              "type": "linear"
-            },
-            "showPoints": "auto",
-            "spanNulls": false,
-            "stacking": {
-              "group": "A",
-              "mode": "none"
-            },
-            "thresholdsStyle": {
-              "mode": "off"
-            }
-          },
-          "mappings": [],
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "green",
-                "value": null
-              },
-              {
-                "color": "red",
-                "value": 80
-              }
-            ]
-          },
-          "unit": "pps"
-        },
-        "overrides": []
-      },
-      "gridPos": {
-        "h": 4,
-        "w": 4,
-        "x": 8,
-        "y": 4
-      },
-      "id": 18,
-      "options": {
-        "legend": {
-          "calcs": [],
-          "displayMode": "list",
-          "placement": "bottom",
-          "showLegend": true
-        },
-        "tooltip": {
-          "mode": "multi",
-          "sort": "none"
-        }
-      },
-      "targets": [
-        {
-          "alias": "$tag_source_id",
-          "datasource": {
-            "uid": "${influxdb}"
-          },
-          "query": "SELECT non_negative_derivative(last(\"sent_ping_count\"),1s) FROM \"dunedaq.hermesmodules.hermescontrollerinfo.LinkStats\" WHERE (\"partition_id\" = '${partition}') AND $timeFilter GROUP BY time($__interval), \"source_id\" fill(null)",
-          "rawQuery": true,
-          "refId": "A"
-        }
-      ],
-      "title": "TX Ping Sent",
-      "transformations": [
-        {
-          "id": "renameByRegex",
-          "options": {
-            "regex": "[^.]+\\.[^.]+\\.[^.]+_([0-9]+)_([0-9]+)_([0-9]+).link_([0-9]+)",
-            "renamePattern": "det:$1 crt:$2 slt:$3 str:$4"
-          }
-        }
-      ],
-      "type": "timeseries"
-    },
-    {
-      "datasource": {
-        "uid": "${influxdb}"
-      },
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "mode": "palette-classic"
-          },
-          "custom": {
-            "axisCenteredZero": false,
-            "axisColorMode": "text",
-            "axisLabel": "",
-            "axisPlacement": "auto",
-            "barAlignment": 0,
-            "drawStyle": "line",
-            "fillOpacity": 0,
-            "gradientMode": "none",
-            "hideFrom": {
-              "legend": false,
-              "tooltip": false,
-              "viz": false
-            },
-            "insertNulls": false,
-            "lineInterpolation": "linear",
-            "lineWidth": 1,
-            "pointSize": 5,
-            "scaleDistribution": {
-              "type": "linear"
-            },
-            "showPoints": "auto",
-            "spanNulls": false,
-            "stacking": {
-              "group": "A",
-              "mode": "none"
-            },
-            "thresholdsStyle": {
-              "mode": "off"
-            }
-          },
-          "mappings": [],
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "green",
-                "value": null
-              },
-              {
-                "color": "red",
-                "value": 80
-              }
-            ]
-          },
-          "unit": "pps"
-        },
-        "overrides": []
-      },
-      "gridPos": {
-        "h": 8,
-        "w": 8,
-        "x": 12,
-        "y": 4
-      },
-      "id": 16,
-      "options": {
-        "legend": {
-          "calcs": [],
-          "displayMode": "list",
-          "placement": "bottom",
-          "showLegend": true
-        },
-        "tooltip": {
-          "mode": "multi",
-          "sort": "none"
-        }
-      },
-      "targets": [
-        {
-          "alias": "$tag_source_id",
-          "datasource": {
-            "uid": "${influxdb}"
-          },
-          "query": "SELECT non_negative_derivative(last(\"rcvd_udp_count\"), 1s) FROM \"dunedaq.hermesmodules.hermescontrollerinfo.LinkStats\" WHERE (\"partition_id\" = '${partition}') AND $timeFilter GROUP BY time($__interval), \"source_id\" fill(null)",
-          "rawQuery": true,
-          "refId": "A"
-        }
-      ],
-      "title": "TX UDP Received rate",
-      "transformations": [
-        {
-          "id": "renameByRegex",
-          "options": {
-            "regex": "[^.]+\\.[^.]+\\.[^.]+_([0-9]+)_([0-9]+)_([0-9]+).link_([0-9]+)",
-            "renamePattern": "det:$1 crt:$2 slt:$3 str:$4"
-          }
-        }
-      ],
-      "type": "timeseries"
-    },
-    {
-      "datasource": {
-        "uid": "${influxdb}"
-      },
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "mode": "palette-classic"
-          },
-          "custom": {
-            "axisCenteredZero": false,
-            "axisColorMode": "text",
-            "axisLabel": "",
-            "axisPlacement": "auto",
-            "barAlignment": 0,
-            "drawStyle": "line",
-            "fillOpacity": 0,
-            "gradientMode": "none",
-            "hideFrom": {
-              "legend": false,
-              "tooltip": false,
-              "viz": false
-            },
-            "insertNulls": false,
-            "lineInterpolation": "linear",
-            "lineWidth": 1,
-            "pointSize": 5,
-            "scaleDistribution": {
-              "type": "linear"
-            },
-            "showPoints": "auto",
-            "spanNulls": false,
-            "stacking": {
-              "group": "A",
-              "mode": "none"
-            },
-            "thresholdsStyle": {
-              "mode": "off"
-            }
-          },
-          "mappings": [],
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "green",
-                "value": null
-              },
-              {
-                "color": "red",
-                "value": 80
-              }
-            ]
-          },
-          "unit": "pps"
-        },
-        "overrides": []
-      },
-      "gridPos": {
-        "h": 4,
-        "w": 4,
-        "x": 20,
-        "y": 4
-      },
-      "id": 19,
-      "options": {
-        "legend": {
-          "calcs": [],
-          "displayMode": "list",
-          "placement": "bottom",
-          "showLegend": true
-        },
-        "tooltip": {
-          "mode": "multi",
-          "sort": "none"
-        }
-      },
-      "targets": [
-        {
-          "alias": "$tag_source_id",
-          "datasource": {
-            "uid": "${influxdb}"
-          },
-          "query": "SELECT  non_negative_derivative(last(\"rcvd_arp_count\"), 1s) FROM \"dunedaq.hermesmodules.hermescontrollerinfo.LinkStats\" WHERE (\"partition_id\" = '${partition}') AND $timeFilter GROUP BY time($__interval), \"source_id\" fill(null)",
-          "rawQuery": true,
-          "refId": "A"
-        }
-      ],
-      "title": "TX ARP Received",
-      "transformations": [
-        {
-          "id": "renameByRegex",
-          "options": {
-            "regex": "[^.]+\\.[^.]+\\.[^.]+_([0-9]+)_([0-9]+)_([0-9]+).link_([0-9]+)",
-            "renamePattern": "det:$1 crt:$2 slt:$3 str:$4"
-          }
-        }
-      ],
-      "type": "timeseries"
-    },
-    {
-      "datasource": {
-        "uid": "${influxdb}"
-      },
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "mode": "palette-classic"
-          },
-          "custom": {
-            "axisCenteredZero": false,
-            "axisColorMode": "text",
-            "axisLabel": "",
-            "axisPlacement": "auto",
-            "barAlignment": 0,
-            "drawStyle": "line",
-            "fillOpacity": 0,
-            "gradientMode": "none",
-            "hideFrom": {
-              "legend": false,
-              "tooltip": false,
-              "viz": false
-            },
-            "insertNulls": false,
-            "lineInterpolation": "linear",
-            "lineWidth": 1,
-            "pointSize": 5,
-            "scaleDistribution": {
-              "type": "linear"
-            },
-            "showPoints": "auto",
-            "spanNulls": false,
-            "stacking": {
-              "group": "A",
-              "mode": "none"
-            },
-            "thresholdsStyle": {
-              "mode": "off"
-            }
-          },
-          "mappings": [],
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "green",
-                "value": null
-              },
-              {
-                "color": "red",
-                "value": 80
-              }
-            ]
-          },
-          "unit": "pps"
-        },
-        "overrides": []
-      },
-      "gridPos": {
-        "h": 4,
-        "w": 4,
-        "x": 8,
-        "y": 8
-      },
-      "id": 17,
-      "options": {
-        "legend": {
-          "calcs": [],
-          "displayMode": "list",
-          "placement": "bottom",
-          "showLegend": true
-        },
-        "tooltip": {
-          "mode": "multi",
-          "sort": "none"
-        }
-      },
-      "targets": [
-        {
-          "alias": "$tag_source_id",
-          "datasource": {
-            "uid": "${influxdb}"
-          },
-          "query": "SELECT  non_negative_derivative(last(\"sent_arp_count\"), 1s) FROM \"dunedaq.hermesmodules.hermescontrollerinfo.LinkStats\" WHERE (\"partition_id\" = '${partition}') AND $timeFilter GROUP BY time($__interval), \"source_id\" fill(null)",
-          "rawQuery": true,
-          "refId": "A"
-        }
-      ],
-      "title": "TX ARP Sent",
-      "transformations": [
-        {
-          "id": "renameByRegex",
-          "options": {
-            "regex": "[^.]+\\.[^.]+\\.[^.]+_([0-9]+)_([0-9]+)_([0-9]+).link_([0-9]+)",
-            "renamePattern": "det:$1 crt:$2 slt:$3 str:$4"
-          }
-        }
-      ],
-      "type": "timeseries"
-    },
-    {
-      "datasource": {
-        "uid": "${influxdb}"
-      },
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "mode": "palette-classic"
-          },
-          "custom": {
-            "axisCenteredZero": false,
-            "axisColorMode": "text",
-            "axisLabel": "",
-            "axisPlacement": "auto",
-            "barAlignment": 0,
-            "drawStyle": "line",
-            "fillOpacity": 0,
-            "gradientMode": "none",
-            "hideFrom": {
-              "legend": false,
-              "tooltip": false,
-              "viz": false
-            },
-            "insertNulls": false,
-            "lineInterpolation": "linear",
-            "lineStyle": {
-              "fill": "solid"
-            },
-            "lineWidth": 1,
-            "pointSize": 5,
-            "scaleDistribution": {
-              "type": "linear"
-            },
-            "showPoints": "auto",
-            "spanNulls": false,
-            "stacking": {
-              "group": "A",
-              "mode": "none"
-            },
-            "thresholdsStyle": {
-              "mode": "off"
-            }
-          },
-          "mappings": [],
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "green",
-                "value": null
-              },
-              {
-                "color": "red",
-                "value": 80
-              }
-            ]
-          },
-          "unit": "pps"
-        },
-        "overrides": []
-      },
-      "gridPos": {
-        "h": 4,
-        "w": 4,
-        "x": 20,
-        "y": 8
-      },
-      "id": 20,
-      "options": {
-        "legend": {
-          "calcs": [],
-          "displayMode": "list",
-          "placement": "bottom",
-          "showLegend": true
-        },
-        "tooltip": {
-          "mode": "multi",
-          "sort": "none"
-        }
-      },
-      "targets": [
-        {
-          "alias": "$tag_source_id",
-          "datasource": {
-            "uid": "${influxdb}"
-          },
-          "query": "SELECT non_negative_derivative(last(\"rcvd_ping_count\"),1s) FROM \"dunedaq.hermesmodules.hermescontrollerinfo.LinkStats\" WHERE (\"partition_id\" = '${partition}') AND $timeFilter GROUP BY time($__interval), \"source_id\" fill(null)",
-          "rawQuery": true,
-          "refId": "A"
-        }
-      ],
-      "title": "TX Ping Received",
-      "transformations": [
-        {
-          "id": "renameByRegex",
-          "options": {
-            "regex": "[^.]+\\.[^.]+\\.[^.]+_([0-9]+)_([0-9]+)_([0-9]+).link_([0-9]+)",
-            "renamePattern": "det:$1 crt:$2 slt:$3 str:$4"
-          }
-        }
-      ],
-      "type": "timeseries"
-    },
-    {
       "collapsed": false,
       "gridPos": {
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 12
+        "y": 4
       },
-      "id": 33,
+      "id": 50,
       "panels": [],
-      "title": "Receiver (NIC XStats)",
+      "title": "Receiver (NIC Stats)",
       "type": "row"
     },
     {
@@ -755,6 +762,7 @@
             "mode": "palette-classic"
           },
           "custom": {
+            "axisBorderShow": false,
             "axisCenteredZero": false,
             "axisColorMode": "text",
             "axisLabel": "",
@@ -807,9 +815,9 @@
         "h": 8,
         "w": 8,
         "x": 0,
-        "y": 13
+        "y": 5
       },
-      "id": 2,
+      "id": 55,
       "options": {
         "legend": {
           "calcs": [],
@@ -828,7 +836,7 @@
           "datasource": {
             "uid": "${influxdb}"
           },
-          "query": "SELECT mean(\"rx_good_packets\") FROM \"dunedaq.dpdklibs.nicreaderinfo.Info\" WHERE (\"partition_id\" = '${partition}') AND $timeFilter GROUP BY time($__interval), \"source_id\" fill(null)",
+          "query": "SELECT mean(\"rx_good_packets\") FROM \"dunedaq.dpdklibs.nicreaderinfo.EthXStats\" WHERE (\"partition_id\" = '${partition}') AND $timeFilter GROUP BY time($__interval), \"source_id\" fill(null)",
           "rawQuery": true,
           "refId": "A",
           "resultFormat": "time_series"
@@ -857,6 +865,7 @@
             "mode": "palette-classic"
           },
           "custom": {
+            "axisBorderShow": false,
             "axisCenteredZero": false,
             "axisColorMode": "text",
             "axisLabel": "",
@@ -909,9 +918,9 @@
         "h": 8,
         "w": 8,
         "x": 8,
-        "y": 13
+        "y": 5
       },
-      "id": 3,
+      "id": 56,
       "options": {
         "legend": {
           "calcs": [],
@@ -930,7 +939,7 @@
           "datasource": {
             "uid": "${influxdb}"
           },
-          "query": "SELECT mean(\"rx_good_bytes\") FROM \"dunedaq.dpdklibs.nicreaderinfo.Info\" WHERE (\"partition_id\" = '${partition}') AND $timeFilter GROUP BY time($__interval), \"source_id\" fill(null)",
+          "query": "SELECT mean(\"rx_good_bytes\") FROM \"dunedaq.dpdklibs.nicreaderinfo.EthXStats\" WHERE (\"partition_id\" = '${partition}') AND $timeFilter GROUP BY time($__interval), \"source_id\" fill(null)",
           "rawQuery": true,
           "refId": "A",
           "resultFormat": "time_series"
@@ -959,6 +968,7 @@
             "mode": "palette-classic"
           },
           "custom": {
+            "axisBorderShow": false,
             "axisCenteredZero": false,
             "axisColorMode": "text",
             "axisLabel": "",
@@ -1014,9 +1024,9 @@
         "h": 8,
         "w": 8,
         "x": 16,
-        "y": 13
+        "y": 5
       },
-      "id": 25,
+      "id": 57,
       "options": {
         "legend": {
           "calcs": [],
@@ -1035,7 +1045,7 @@
           "datasource": {
             "uid": "${influxdb}"
           },
-          "query": "SELECT mean(\"rx_size_1523_to_max_packets\") FROM \"dunedaq.dpdklibs.nicreaderinfo.Info\" WHERE (\"partition_id\" = '${partition}') AND $timeFilter GROUP BY time($__interval), \"source_id\" fill(null)",
+          "query": "SELECT mean(\"rx_size_1523_to_max_packets\") FROM \"dunedaq.dpdklibs.nicreaderinfo.EthXStats\" WHERE (\"partition_id\" = '${partition}') AND $timeFilter GROUP BY time($__interval), \"source_id\" fill(null)",
           "rawQuery": true,
           "refId": "A",
           "resultFormat": "time_series"
@@ -1064,6 +1074,7 @@
             "mode": "palette-classic"
           },
           "custom": {
+            "axisBorderShow": false,
             "axisCenteredZero": false,
             "axisColorMode": "text",
             "axisLabel": "",
@@ -1119,9 +1130,9 @@
         "h": 8,
         "w": 6,
         "x": 0,
-        "y": 21
+        "y": 13
       },
-      "id": 27,
+      "id": 58,
       "options": {
         "legend": {
           "calcs": [],
@@ -1140,7 +1151,7 @@
           "datasource": {
             "uid": "${influxdb}"
           },
-          "query": "SELECT sum(\"rx_dropped_packets\") FROM \"dunedaq.dpdklibs.nicreaderinfo.Info\" WHERE (\"partition_id\" = '${partition}') AND $timeFilter GROUP BY time($__interval), \"source_id\" fill(null)",
+          "query": "SELECT sum(\"rx_dropped_packets\") FROM \"dunedaq.dpdklibs.nicreaderinfo.EthXStats\" WHERE (\"partition_id\" = '${partition}') AND $timeFilter GROUP BY time($__interval), \"source_id\" fill(null)",
           "rawQuery": true,
           "refId": "A",
           "resultFormat": "time_series"
@@ -1169,6 +1180,7 @@
             "mode": "palette-classic"
           },
           "custom": {
+            "axisBorderShow": false,
             "axisCenteredZero": false,
             "axisColorMode": "text",
             "axisLabel": "",
@@ -1224,9 +1236,9 @@
         "h": 8,
         "w": 6,
         "x": 6,
-        "y": 21
+        "y": 13
       },
-      "id": 28,
+      "id": 59,
       "options": {
         "legend": {
           "calcs": [],
@@ -1245,7 +1257,7 @@
           "datasource": {
             "uid": "${influxdb}"
           },
-          "query": "SELECT sum(\"rx_missed_errors\") FROM \"dunedaq.dpdklibs.nicreaderinfo.Info\" WHERE (\"partition_id\" = '${partition}') AND $timeFilter GROUP BY time($__interval), \"source_id\" fill(null)",
+          "query": "SELECT sum(\"rx_missed_errors\") FROM \"dunedaq.dpdklibs.nicreaderinfo.EthXStats\" WHERE (\"partition_id\" = '${partition}') AND $timeFilter GROUP BY time($__interval), \"source_id\" fill(null)",
           "rawQuery": true,
           "refId": "A",
           "resultFormat": "time_series"
@@ -1274,6 +1286,7 @@
             "mode": "palette-classic"
           },
           "custom": {
+            "axisBorderShow": false,
             "axisCenteredZero": false,
             "axisColorMode": "text",
             "axisLabel": "",
@@ -1329,9 +1342,9 @@
         "h": 8,
         "w": 6,
         "x": 12,
-        "y": 21
+        "y": 13
       },
-      "id": 29,
+      "id": 60,
       "options": {
         "legend": {
           "calcs": [],
@@ -1350,7 +1363,7 @@
           "datasource": {
             "uid": "${influxdb}"
           },
-          "query": "SELECT sum(\"rx_errors\") FROM \"dunedaq.dpdklibs.nicreaderinfo.Info\" WHERE (\"partition_id\" = '${partition}') AND $timeFilter GROUP BY time($__interval), \"source_id\" fill(null)",
+          "query": "SELECT sum(\"rx_errors\") FROM \"dunedaq.dpdklibs.nicreaderinfo.EthXStats\" WHERE (\"partition_id\" = '${partition}') AND $timeFilter GROUP BY time($__interval), \"source_id\" fill(null)",
           "rawQuery": true,
           "refId": "A",
           "resultFormat": "time_series"
@@ -1379,6 +1392,7 @@
             "mode": "palette-classic"
           },
           "custom": {
+            "axisBorderShow": false,
             "axisCenteredZero": false,
             "axisColorMode": "text",
             "axisLabel": "",
@@ -1434,9 +1448,9 @@
         "h": 8,
         "w": 6,
         "x": 18,
-        "y": 21
+        "y": 13
       },
-      "id": 30,
+      "id": 61,
       "options": {
         "legend": {
           "calcs": [],
@@ -1455,7 +1469,7 @@
           "datasource": {
             "uid": "${influxdb}"
           },
-          "query": "SELECT sum(\"rx_crc_errors\") FROM \"dunedaq.dpdklibs.nicreaderinfo.Info\" WHERE (\"partition_id\" = '${partition}') AND $timeFilter GROUP BY time($__interval), \"source_id\" fill(null)",
+          "query": "SELECT sum(\"rx_crc_errors\") FROM \"dunedaq.dpdklibs.nicreaderinfo.EthXStats\" WHERE (\"partition_id\" = '${partition}') AND $timeFilter GROUP BY time($__interval), \"source_id\" fill(null)",
           "rawQuery": true,
           "refId": "A",
           "resultFormat": "time_series"
@@ -1484,6 +1498,7 @@
             "mode": "palette-classic"
           },
           "custom": {
+            "axisBorderShow": false,
             "axisCenteredZero": false,
             "axisColorMode": "text",
             "axisLabel": "",
@@ -1522,7 +1537,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green"
+                "color": "green",
+                "value": null
               },
               {
                 "color": "red",
@@ -1538,9 +1554,9 @@
         "h": 8,
         "w": 6,
         "x": 0,
-        "y": 29
+        "y": 21
       },
-      "id": 31,
+      "id": 62,
       "options": {
         "legend": {
           "calcs": [],
@@ -1559,7 +1575,7 @@
           "datasource": {
             "uid": "${influxdb}"
           },
-          "query": "SELECT sum(\"rx_illegal_byte_errors\") FROM \"dunedaq.dpdklibs.nicreaderinfo.Info\" WHERE (\"partition_id\" = '${partition}') AND $timeFilter GROUP BY time($__interval), \"source_id\" fill(null)",
+          "query": "SELECT sum(\"rx_illegal_byte_errors\") FROM \"dunedaq.dpdklibs.nicreaderinfo.EthXStats\" WHERE (\"partition_id\" = '${partition}') AND $timeFilter GROUP BY time($__interval), \"source_id\" fill(null)",
           "rawQuery": true,
           "refId": "A",
           "resultFormat": "time_series"
@@ -1588,6 +1604,7 @@
             "mode": "palette-classic"
           },
           "custom": {
+            "axisBorderShow": false,
             "axisCenteredZero": false,
             "axisColorMode": "text",
             "axisLabel": "",
@@ -1626,7 +1643,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green"
+                "color": "green",
+                "value": null
               },
               {
                 "color": "red",
@@ -1642,9 +1660,9 @@
         "h": 8,
         "w": 6,
         "x": 6,
-        "y": 29
+        "y": 21
       },
-      "id": 32,
+      "id": 63,
       "options": {
         "legend": {
           "calcs": [],
@@ -1663,7 +1681,7 @@
           "datasource": {
             "uid": "${influxdb}"
           },
-          "query": "SELECT sum(\"rx_jabber_errors\") FROM \"dunedaq.dpdklibs.nicreaderinfo.Info\" WHERE (\"partition_id\" = '${partition}') AND $timeFilter GROUP BY time($__interval), \"source_id\" fill(null)",
+          "query": "SELECT sum(\"rx_jabber_errors\") FROM \"dunedaq.dpdklibs.nicreaderinfo.EthXStats\" WHERE (\"partition_id\" = '${partition}') AND $timeFilter GROUP BY time($__interval), \"source_id\" fill(null)",
           "rawQuery": true,
           "refId": "A",
           "resultFormat": "time_series"
@@ -1692,6 +1710,7 @@
             "mode": "palette-classic"
           },
           "custom": {
+            "axisBorderShow": false,
             "axisCenteredZero": false,
             "axisColorMode": "text",
             "axisLabel": "",
@@ -1730,7 +1749,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green"
+                "color": "green",
+                "value": null
               },
               {
                 "color": "red",
@@ -1746,9 +1766,9 @@
         "h": 8,
         "w": 12,
         "x": 12,
-        "y": 29
+        "y": 21
       },
-      "id": 26,
+      "id": 64,
       "options": {
         "legend": {
           "calcs": [],
@@ -1767,7 +1787,7 @@
           "datasource": {
             "uid": "${influxdb}"
           },
-          "query": "SELECT sum(\"rx_q0_packets\") FROM \"dunedaq.dpdklibs.nicreaderinfo.Info\" WHERE (\"partition_id\" = '${partition}') AND $timeFilter GROUP BY time($__interval), \"source_id\" fill(null)",
+          "query": "SELECT sum(\"rx_q0_packets\") FROM \"dunedaq.dpdklibs.nicreaderinfo.EthXStats\" WHERE (\"partition_id\" = '${partition}') AND $timeFilter GROUP BY time($__interval), \"source_id\" fill(null)",
           "rawQuery": true,
           "refId": "A",
           "resultFormat": "time_series"
@@ -1778,7 +1798,7 @@
             "uid": "${influxdb}"
           },
           "hide": false,
-          "query": "SELECT sum(\"rx_q1_packets\") FROM \"dunedaq.dpdklibs.nicreaderinfo.Info\" WHERE (\"partition_id\" = '${partition}') AND $timeFilter GROUP BY time($__interval), \"source_id\" fill(null)",
+          "query": "SELECT sum(\"rx_q1_packets\") FROM \"dunedaq.dpdklibs.nicreaderinfo.EthXStats\" WHERE (\"partition_id\" = '${partition}') AND $timeFilter GROUP BY time($__interval), \"source_id\" fill(null)",
           "rawQuery": true,
           "refId": "B",
           "resultFormat": "time_series"
@@ -1789,7 +1809,7 @@
             "uid": "${influxdb}"
           },
           "hide": false,
-          "query": "SELECT sum(\"rx_q2_packets\") FROM \"dunedaq.dpdklibs.nicreaderinfo.Info\" WHERE (\"partition_id\" = '${partition}') AND $timeFilter GROUP BY time($__interval), \"source_id\" fill(null)",
+          "query": "SELECT sum(\"rx_q2_packets\") FROM \"dunedaq.dpdklibs.nicreaderinfo.EthXStats\" WHERE (\"partition_id\" = '${partition}') AND $timeFilter GROUP BY time($__interval), \"source_id\" fill(null)",
           "rawQuery": true,
           "refId": "C",
           "resultFormat": "time_series"
@@ -1800,7 +1820,7 @@
             "uid": "${influxdb}"
           },
           "hide": false,
-          "query": "SELECT sum(\"rx_q3_packets\") FROM \"dunedaq.dpdklibs.nicreaderinfo.Info\" WHERE (\"partition_id\" = '${partition}') AND $timeFilter GROUP BY time($__interval), \"source_id\" fill(null)",
+          "query": "SELECT sum(\"rx_q3_packets\") FROM \"dunedaq.dpdklibs.nicreaderinfo.EthXStats\" WHERE (\"partition_id\" = '${partition}') AND $timeFilter GROUP BY time($__interval), \"source_id\" fill(null)",
           "rawQuery": true,
           "refId": "D",
           "resultFormat": "time_series"
@@ -1811,7 +1831,7 @@
             "uid": "${influxdb}"
           },
           "hide": false,
-          "query": "SELECT sum(\"rx_q4_packets\") FROM \"dunedaq.dpdklibs.nicreaderinfo.Info\" WHERE (\"partition_id\" = '${partition}') AND $timeFilter GROUP BY time($__interval), \"source_id\" fill(null)",
+          "query": "SELECT sum(\"rx_q4_packets\") FROM \"dunedaq.dpdklibs.nicreaderinfo.EthXStats\" WHERE (\"partition_id\" = '${partition}') AND $timeFilter GROUP BY time($__interval), \"source_id\" fill(null)",
           "rawQuery": true,
           "refId": "E",
           "resultFormat": "time_series"
@@ -1822,7 +1842,7 @@
             "uid": "${influxdb}"
           },
           "hide": false,
-          "query": "SELECT sum(\"rx_q5_packets\") FROM \"dunedaq.dpdklibs.nicreaderinfo.Info\" WHERE (\"partition_id\" = '${partition}') AND $timeFilter GROUP BY time($__interval), \"source_id\" fill(null)",
+          "query": "SELECT sum(\"rx_q5_packets\") FROM \"dunedaq.dpdklibs.nicreaderinfo.EthXStats\" WHERE (\"partition_id\" = '${partition}') AND $timeFilter GROUP BY time($__interval), \"source_id\" fill(null)",
           "rawQuery": true,
           "refId": "F",
           "resultFormat": "time_series"
@@ -1833,7 +1853,7 @@
             "uid": "${influxdb}"
           },
           "hide": false,
-          "query": "SELECT sum(\"rx_q6_packets\") FROM \"dunedaq.dpdklibs.nicreaderinfo.Info\" WHERE (\"partition_id\" = '${partition}') AND $timeFilter GROUP BY time($__interval), \"source_id\" fill(null)",
+          "query": "SELECT sum(\"rx_q6_packets\") FROM \"dunedaq.dpdklibs.nicreaderinfo.EthXStats\" WHERE (\"partition_id\" = '${partition}') AND $timeFilter GROUP BY time($__interval), \"source_id\" fill(null)",
           "rawQuery": true,
           "refId": "G",
           "resultFormat": "time_series"
@@ -1844,7 +1864,7 @@
             "uid": "${influxdb}"
           },
           "hide": false,
-          "query": "SELECT sum(\"rx_q7_packets\") FROM \"dunedaq.dpdklibs.nicreaderinfo.Info\" WHERE (\"partition_id\" = '${partition}') AND $timeFilter GROUP BY time($__interval), \"source_id\" fill(null)",
+          "query": "SELECT sum(\"rx_q7_packets\") FROM \"dunedaq.dpdklibs.nicreaderinfo.EthXStats\" WHERE (\"partition_id\" = '${partition}') AND $timeFilter GROUP BY time($__interval), \"source_id\" fill(null)",
           "rawQuery": true,
           "refId": "H",
           "resultFormat": "time_series"
@@ -1855,7 +1875,7 @@
             "uid": "${influxdb}"
           },
           "hide": false,
-          "query": "SELECT sum(\"rx_q8_packets\") FROM \"dunedaq.dpdklibs.nicreaderinfo.Info\" WHERE (\"partition_id\" = '${partition}') AND $timeFilter GROUP BY time($__interval), \"source_id\" fill(null)",
+          "query": "SELECT sum(\"rx_q8_packets\") FROM \"dunedaq.dpdklibs.nicreaderinfo.EthXStats\" WHERE (\"partition_id\" = '${partition}') AND $timeFilter GROUP BY time($__interval), \"source_id\" fill(null)",
           "rawQuery": true,
           "refId": "I",
           "resultFormat": "time_series"
@@ -1866,7 +1886,7 @@
             "uid": "${influxdb}"
           },
           "hide": false,
-          "query": "SELECT sum(\"rx_q9_packets\") FROM \"dunedaq.dpdklibs.nicreaderinfo.Info\" WHERE (\"partition_id\" = '${partition}') AND $timeFilter GROUP BY time($__interval), \"source_id\" fill(null)",
+          "query": "SELECT sum(\"rx_q9_packets\") FROM \"dunedaq.dpdklibs.nicreaderinfo.EthXStats\" WHERE (\"partition_id\" = '${partition}') AND $timeFilter GROUP BY time($__interval), \"source_id\" fill(null)",
           "rawQuery": true,
           "refId": "J",
           "resultFormat": "time_series"
@@ -1877,7 +1897,7 @@
             "uid": "${influxdb}"
           },
           "hide": false,
-          "query": "SELECT sum(\"rx_q10_packets\") FROM \"dunedaq.dpdklibs.nicreaderinfo.Info\" WHERE (\"partition_id\" = '${partition}') AND $timeFilter GROUP BY time($__interval), \"source_id\" fill(null)",
+          "query": "SELECT sum(\"rx_q10_packets\") FROM \"dunedaq.dpdklibs.nicreaderinfo.EthXStats\" WHERE (\"partition_id\" = '${partition}') AND $timeFilter GROUP BY time($__interval), \"source_id\" fill(null)",
           "rawQuery": true,
           "refId": "K",
           "resultFormat": "time_series"
@@ -1888,7 +1908,7 @@
             "uid": "${influxdb}"
           },
           "hide": false,
-          "query": "SELECT sum(\"rx_q11_packets\") FROM \"dunedaq.dpdklibs.nicreaderinfo.Info\" WHERE (\"partition_id\" = '${partition}') AND $timeFilter GROUP BY time($__interval), \"source_id\" fill(null)",
+          "query": "SELECT sum(\"rx_q11_packets\") FROM \"dunedaq.dpdklibs.nicreaderinfo.EthXStats\" WHERE (\"partition_id\" = '${partition}') AND $timeFilter GROUP BY time($__interval), \"source_id\" fill(null)",
           "rawQuery": true,
           "refId": "L",
           "resultFormat": "time_series"
@@ -1912,11 +1932,11 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 37
+        "y": 29
       },
-      "id": 50,
+      "id": 33,
       "panels": [],
-      "title": "NIC Receiver",
+      "title": "Receiver (NIC XStats)",
       "type": "row"
     },
     {
@@ -1930,6 +1950,7 @@
             "mode": "palette-classic"
           },
           "custom": {
+            "axisBorderShow": false,
             "axisCenteredZero": false,
             "axisColorMode": "text",
             "axisLabel": "",
@@ -1965,7 +1986,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green"
+                "color": "green",
+                "value": null
               },
               {
                 "color": "red",
@@ -1981,9 +2003,1197 @@
         "h": 8,
         "w": 8,
         "x": 0,
+        "y": 30
+      },
+      "id": 2,
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "tooltip": {
+          "mode": "multi",
+          "sort": "none"
+        }
+      },
+      "targets": [
+        {
+          "alias": "$tag_source_id",
+          "datasource": {
+            "uid": "${influxdb}"
+          },
+          "query": "SELECT mean(\"rx_good_packets\") FROM \"dunedaq.dpdklibs.nicreaderinfo.EthXStats\" WHERE (\"partition_id\" = '${partition}') AND $timeFilter GROUP BY time($__interval), \"source_id\" fill(null)",
+          "rawQuery": true,
+          "refId": "A",
+          "resultFormat": "time_series"
+        }
+      ],
+      "title": "Received Good Packets",
+      "transformations": [
+        {
+          "id": "renameByRegex",
+          "options": {
+            "regex": "[^.]+\\.([^.]+)\\.[^.]+\\.([^.]+)",
+            "renamePattern": "$1 $2"
+          }
+        }
+      ],
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "influxdb",
+        "uid": "${influxdb}"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "drawStyle": "line",
+            "fillOpacity": 0,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "auto",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "binbps"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 8,
+        "x": 8,
+        "y": 30
+      },
+      "id": 3,
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "tooltip": {
+          "mode": "multi",
+          "sort": "none"
+        }
+      },
+      "targets": [
+        {
+          "alias": "$tag_source_id",
+          "datasource": {
+            "uid": "${influxdb}"
+          },
+          "query": "SELECT mean(\"rx_good_bytes\") FROM \"dunedaq.dpdklibs.nicreaderinfo.EthXStats\" WHERE (\"partition_id\" = '${partition}') AND $timeFilter GROUP BY time($__interval), \"source_id\" fill(null)",
+          "rawQuery": true,
+          "refId": "A",
+          "resultFormat": "time_series"
+        }
+      ],
+      "title": "RX Good Bytes",
+      "transformations": [
+        {
+          "id": "renameByRegex",
+          "options": {
+            "regex": "[^.]+\\.([^.]+)\\.[^.]+\\.([^.]+)",
+            "renamePattern": "$1 $2"
+          }
+        }
+      ],
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "influxdb",
+        "uid": "${influxdb}"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "drawStyle": "line",
+            "fillOpacity": 0,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "linear",
+            "lineStyle": {
+              "fill": "solid"
+            },
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "auto",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "pps"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 8,
+        "x": 16,
+        "y": 30
+      },
+      "id": 25,
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "tooltip": {
+          "mode": "multi",
+          "sort": "none"
+        }
+      },
+      "targets": [
+        {
+          "alias": "$tag_source_id",
+          "datasource": {
+            "uid": "${influxdb}"
+          },
+          "query": "SELECT mean(\"rx_size_1523_to_max_packets\") FROM \"dunedaq.dpdklibs.nicreaderinfo.EthXStats\" WHERE (\"partition_id\" = '${partition}') AND $timeFilter GROUP BY time($__interval), \"source_id\" fill(null)",
+          "rawQuery": true,
+          "refId": "A",
+          "resultFormat": "time_series"
+        }
+      ],
+      "title": "RX Jumbo Packets",
+      "transformations": [
+        {
+          "id": "renameByRegex",
+          "options": {
+            "regex": "[^.]+\\.([^.]+)\\.[^.]+\\.([^.]+)",
+            "renamePattern": "$1 $2"
+          }
+        }
+      ],
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "influxdb",
+        "uid": "${influxdb}"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "drawStyle": "line",
+            "fillOpacity": 0,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "linear",
+            "lineStyle": {
+              "fill": "solid"
+            },
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "auto",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "pps"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 6,
+        "x": 0,
         "y": 38
       },
-      "id": 47,
+      "id": 27,
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "tooltip": {
+          "mode": "multi",
+          "sort": "none"
+        }
+      },
+      "targets": [
+        {
+          "alias": "$tag_source_id",
+          "datasource": {
+            "uid": "${influxdb}"
+          },
+          "query": "SELECT sum(\"rx_dropped_packets\") FROM \"dunedaq.dpdklibs.nicreaderinfo.EthXStats\" WHERE (\"partition_id\" = '${partition}') AND $timeFilter GROUP BY time($__interval), \"source_id\" fill(null)",
+          "rawQuery": true,
+          "refId": "A",
+          "resultFormat": "time_series"
+        }
+      ],
+      "title": "RX Dropped Packets",
+      "transformations": [
+        {
+          "id": "renameByRegex",
+          "options": {
+            "regex": "[^.]+\\.([^.]+)\\.[^.]+\\.([^.]+)",
+            "renamePattern": "$1 $2"
+          }
+        }
+      ],
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "influxdb",
+        "uid": "${influxdb}"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "drawStyle": "line",
+            "fillOpacity": 0,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "linear",
+            "lineStyle": {
+              "fill": "solid"
+            },
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "auto",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "cps"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 6,
+        "x": 6,
+        "y": 38
+      },
+      "id": 28,
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "tooltip": {
+          "mode": "multi",
+          "sort": "none"
+        }
+      },
+      "targets": [
+        {
+          "alias": "$tag_source_id",
+          "datasource": {
+            "uid": "${influxdb}"
+          },
+          "query": "SELECT sum(\"rx_missed_errors\") FROM \"dunedaq.dpdklibs.nicreaderinfo.EthXStats\" WHERE (\"partition_id\" = '${partition}') AND $timeFilter GROUP BY time($__interval), \"source_id\" fill(null)",
+          "rawQuery": true,
+          "refId": "A",
+          "resultFormat": "time_series"
+        }
+      ],
+      "title": "RX Missed Errors",
+      "transformations": [
+        {
+          "id": "renameByRegex",
+          "options": {
+            "regex": "[^.]+\\.([^.]+)\\.[^.]+\\.([^.]+)",
+            "renamePattern": "$1 $2"
+          }
+        }
+      ],
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "influxdb",
+        "uid": "${influxdb}"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "drawStyle": "line",
+            "fillOpacity": 0,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "linear",
+            "lineStyle": {
+              "fill": "solid"
+            },
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "auto",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "cps"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 6,
+        "x": 12,
+        "y": 38
+      },
+      "id": 29,
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "tooltip": {
+          "mode": "multi",
+          "sort": "none"
+        }
+      },
+      "targets": [
+        {
+          "alias": "$tag_source_id",
+          "datasource": {
+            "uid": "${influxdb}"
+          },
+          "query": "SELECT sum(\"rx_errors\") FROM \"dunedaq.dpdklibs.nicreaderinfo.EthXStats\" WHERE (\"partition_id\" = '${partition}') AND $timeFilter GROUP BY time($__interval), \"source_id\" fill(null)",
+          "rawQuery": true,
+          "refId": "A",
+          "resultFormat": "time_series"
+        }
+      ],
+      "title": "RX Errors",
+      "transformations": [
+        {
+          "id": "renameByRegex",
+          "options": {
+            "regex": "[^.]+\\.([^.]+)\\.[^.]+\\.([^.]+)",
+            "renamePattern": "$1 $2"
+          }
+        }
+      ],
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "influxdb",
+        "uid": "${influxdb}"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "drawStyle": "line",
+            "fillOpacity": 0,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "linear",
+            "lineStyle": {
+              "fill": "solid"
+            },
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "auto",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "cps"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 6,
+        "x": 18,
+        "y": 38
+      },
+      "id": 30,
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "tooltip": {
+          "mode": "multi",
+          "sort": "none"
+        }
+      },
+      "targets": [
+        {
+          "alias": "$tag_source_id",
+          "datasource": {
+            "uid": "${influxdb}"
+          },
+          "query": "SELECT sum(\"rx_crc_errors\") FROM \"dunedaq.dpdklibs.nicreaderinfo.EthXStats\" WHERE (\"partition_id\" = '${partition}') AND $timeFilter GROUP BY time($__interval), \"source_id\" fill(null)",
+          "rawQuery": true,
+          "refId": "A",
+          "resultFormat": "time_series"
+        }
+      ],
+      "title": "RX CRC Errors",
+      "transformations": [
+        {
+          "id": "renameByRegex",
+          "options": {
+            "regex": "[^.]+\\.([^.]+)\\.[^.]+\\.([^.]+)",
+            "renamePattern": "$1 $2"
+          }
+        }
+      ],
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "influxdb",
+        "uid": "${influxdb}"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "drawStyle": "line",
+            "fillOpacity": 0,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "linear",
+            "lineStyle": {
+              "fill": "solid"
+            },
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "auto",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "cps"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 6,
+        "x": 0,
+        "y": 46
+      },
+      "id": 31,
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "tooltip": {
+          "mode": "multi",
+          "sort": "none"
+        }
+      },
+      "targets": [
+        {
+          "alias": "$tag_source_id",
+          "datasource": {
+            "uid": "${influxdb}"
+          },
+          "query": "SELECT sum(\"rx_illegal_byte_errors\") FROM \"dunedaq.dpdklibs.nicreaderinfo.EthXStats\" WHERE (\"partition_id\" = '${partition}') AND $timeFilter GROUP BY time($__interval), \"source_id\" fill(null)",
+          "rawQuery": true,
+          "refId": "A",
+          "resultFormat": "time_series"
+        }
+      ],
+      "title": "RX Illegal Byte Errors",
+      "transformations": [
+        {
+          "id": "renameByRegex",
+          "options": {
+            "regex": "[^.]+\\.([^.]+)\\.[^.]+\\.([^.]+)",
+            "renamePattern": "$1 $2"
+          }
+        }
+      ],
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "influxdb",
+        "uid": "${influxdb}"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "drawStyle": "line",
+            "fillOpacity": 0,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "linear",
+            "lineStyle": {
+              "fill": "solid"
+            },
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "auto",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "cps"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 6,
+        "x": 6,
+        "y": 46
+      },
+      "id": 32,
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "tooltip": {
+          "mode": "multi",
+          "sort": "none"
+        }
+      },
+      "targets": [
+        {
+          "alias": "$tag_source_id",
+          "datasource": {
+            "uid": "${influxdb}"
+          },
+          "query": "SELECT sum(\"rx_jabber_errors\") FROM \"dunedaq.dpdklibs.nicreaderinfo.EthXStats\" WHERE (\"partition_id\" = '${partition}') AND $timeFilter GROUP BY time($__interval), \"source_id\" fill(null)",
+          "rawQuery": true,
+          "refId": "A",
+          "resultFormat": "time_series"
+        }
+      ],
+      "title": "RX Jabber Errors",
+      "transformations": [
+        {
+          "id": "renameByRegex",
+          "options": {
+            "regex": "[^.]+\\.([^.]+)\\.[^.]+\\.([^.]+)",
+            "renamePattern": "$1 $2"
+          }
+        }
+      ],
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "influxdb",
+        "uid": "${influxdb}"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "drawStyle": "line",
+            "fillOpacity": 0,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "linear",
+            "lineStyle": {
+              "fill": "solid"
+            },
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "auto",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "pps"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 12,
+        "y": 46
+      },
+      "id": 26,
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "tooltip": {
+          "mode": "multi",
+          "sort": "none"
+        }
+      },
+      "targets": [
+        {
+          "alias": "$tag_source_id",
+          "datasource": {
+            "uid": "${influxdb}"
+          },
+          "query": "SELECT sum(\"rx_q0_packets\") FROM \"dunedaq.dpdklibs.nicreaderinfo.EthXStats\" WHERE (\"partition_id\" = '${partition}') AND $timeFilter GROUP BY time($__interval), \"source_id\" fill(null)",
+          "rawQuery": true,
+          "refId": "A",
+          "resultFormat": "time_series"
+        },
+        {
+          "alias": "$tag_source_id",
+          "datasource": {
+            "uid": "${influxdb}"
+          },
+          "hide": false,
+          "query": "SELECT sum(\"rx_q1_packets\") FROM \"dunedaq.dpdklibs.nicreaderinfo.EthXStats\" WHERE (\"partition_id\" = '${partition}') AND $timeFilter GROUP BY time($__interval), \"source_id\" fill(null)",
+          "rawQuery": true,
+          "refId": "B",
+          "resultFormat": "time_series"
+        },
+        {
+          "alias": "$tag_source_id",
+          "datasource": {
+            "uid": "${influxdb}"
+          },
+          "hide": false,
+          "query": "SELECT sum(\"rx_q2_packets\") FROM \"dunedaq.dpdklibs.nicreaderinfo.EthXStats\" WHERE (\"partition_id\" = '${partition}') AND $timeFilter GROUP BY time($__interval), \"source_id\" fill(null)",
+          "rawQuery": true,
+          "refId": "C",
+          "resultFormat": "time_series"
+        },
+        {
+          "alias": "$tag_source_id",
+          "datasource": {
+            "uid": "${influxdb}"
+          },
+          "hide": false,
+          "query": "SELECT sum(\"rx_q3_packets\") FROM \"dunedaq.dpdklibs.nicreaderinfo.EthXStats\" WHERE (\"partition_id\" = '${partition}') AND $timeFilter GROUP BY time($__interval), \"source_id\" fill(null)",
+          "rawQuery": true,
+          "refId": "D",
+          "resultFormat": "time_series"
+        },
+        {
+          "alias": "$tag_source_id",
+          "datasource": {
+            "uid": "${influxdb}"
+          },
+          "hide": false,
+          "query": "SELECT sum(\"rx_q4_packets\") FROM \"dunedaq.dpdklibs.nicreaderinfo.EthXStats\" WHERE (\"partition_id\" = '${partition}') AND $timeFilter GROUP BY time($__interval), \"source_id\" fill(null)",
+          "rawQuery": true,
+          "refId": "E",
+          "resultFormat": "time_series"
+        },
+        {
+          "alias": "$tag_source_id",
+          "datasource": {
+            "uid": "${influxdb}"
+          },
+          "hide": false,
+          "query": "SELECT sum(\"rx_q5_packets\") FROM \"dunedaq.dpdklibs.nicreaderinfo.EthXStats\" WHERE (\"partition_id\" = '${partition}') AND $timeFilter GROUP BY time($__interval), \"source_id\" fill(null)",
+          "rawQuery": true,
+          "refId": "F",
+          "resultFormat": "time_series"
+        },
+        {
+          "alias": "$tag_source_id",
+          "datasource": {
+            "uid": "${influxdb}"
+          },
+          "hide": false,
+          "query": "SELECT sum(\"rx_q6_packets\") FROM \"dunedaq.dpdklibs.nicreaderinfo.EthXStats\" WHERE (\"partition_id\" = '${partition}') AND $timeFilter GROUP BY time($__interval), \"source_id\" fill(null)",
+          "rawQuery": true,
+          "refId": "G",
+          "resultFormat": "time_series"
+        },
+        {
+          "alias": "$tag_source_id",
+          "datasource": {
+            "uid": "${influxdb}"
+          },
+          "hide": false,
+          "query": "SELECT sum(\"rx_q7_packets\") FROM \"dunedaq.dpdklibs.nicreaderinfo.EthXStats\" WHERE (\"partition_id\" = '${partition}') AND $timeFilter GROUP BY time($__interval), \"source_id\" fill(null)",
+          "rawQuery": true,
+          "refId": "H",
+          "resultFormat": "time_series"
+        },
+        {
+          "alias": "$tag_source_id",
+          "datasource": {
+            "uid": "${influxdb}"
+          },
+          "hide": false,
+          "query": "SELECT sum(\"rx_q8_packets\") FROM \"dunedaq.dpdklibs.nicreaderinfo.EthXStats\" WHERE (\"partition_id\" = '${partition}') AND $timeFilter GROUP BY time($__interval), \"source_id\" fill(null)",
+          "rawQuery": true,
+          "refId": "I",
+          "resultFormat": "time_series"
+        },
+        {
+          "alias": "$tag_source_id",
+          "datasource": {
+            "uid": "${influxdb}"
+          },
+          "hide": false,
+          "query": "SELECT sum(\"rx_q9_packets\") FROM \"dunedaq.dpdklibs.nicreaderinfo.EthXStats\" WHERE (\"partition_id\" = '${partition}') AND $timeFilter GROUP BY time($__interval), \"source_id\" fill(null)",
+          "rawQuery": true,
+          "refId": "J",
+          "resultFormat": "time_series"
+        },
+        {
+          "alias": "$tag_source_id",
+          "datasource": {
+            "uid": "${influxdb}"
+          },
+          "hide": false,
+          "query": "SELECT sum(\"rx_q10_packets\") FROM \"dunedaq.dpdklibs.nicreaderinfo.EthXStats\" WHERE (\"partition_id\" = '${partition}') AND $timeFilter GROUP BY time($__interval), \"source_id\" fill(null)",
+          "rawQuery": true,
+          "refId": "K",
+          "resultFormat": "time_series"
+        },
+        {
+          "alias": "$tag_source_id",
+          "datasource": {
+            "uid": "${influxdb}"
+          },
+          "hide": false,
+          "query": "SELECT sum(\"rx_q11_packets\") FROM \"dunedaq.dpdklibs.nicreaderinfo.EthXStats\" WHERE (\"partition_id\" = '${partition}') AND $timeFilter GROUP BY time($__interval), \"source_id\" fill(null)",
+          "rawQuery": true,
+          "refId": "L",
+          "resultFormat": "time_series"
+        }
+      ],
+      "title": "RX Queue Packets",
+      "transformations": [
+        {
+          "id": "renameByRegex",
+          "options": {
+            "regex": "[^.]+\\.([^.]+)\\.[^.]+\\.([^.]+)",
+            "renamePattern": "$1 $2"
+          }
+        }
+      ],
+      "type": "timeseries"
+    },
+    {
+      "collapsed": false,
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 54
+      },
+      "id": 54,
+      "panels": [],
+      "title": "DPDK Processing",
+      "type": "row"
+    },
+    {
+      "datasource": {
+        "type": "influxdb",
+        "uid": "${influxdb}"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "drawStyle": "line",
+            "fillOpacity": 0,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "auto",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "pps"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 8,
+        "x": 0,
+        "y": 55
+      },
+      "id": 65,
       "options": {
         "legend": {
           "calcs": [],
@@ -2031,6 +3241,7 @@
             "mode": "palette-classic"
           },
           "custom": {
+            "axisBorderShow": false,
             "axisCenteredZero": false,
             "axisColorMode": "text",
             "axisLabel": "",
@@ -2066,7 +3277,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green"
+                "color": "green",
+                "value": null
               },
               {
                 "color": "red",
@@ -2082,9 +3294,9 @@
         "h": 8,
         "w": 9,
         "x": 8,
-        "y": 38
+        "y": 55
       },
-      "id": 49,
+      "id": 66,
       "options": {
         "legend": {
           "calcs": [],
@@ -2132,6 +3344,7 @@
             "mode": "palette-classic"
           },
           "custom": {
+            "axisBorderShow": false,
             "axisCenteredZero": false,
             "axisColorMode": "text",
             "axisLabel": "",
@@ -2167,7 +3380,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green"
+                "color": "green",
+                "value": null
               },
               {
                 "color": "red",
@@ -2208,9 +3422,9 @@
         "h": 8,
         "w": 7,
         "x": 17,
-        "y": 38
+        "y": 55
       },
-      "id": 52,
+      "id": 69,
       "options": {
         "legend": {
           "calcs": [],
@@ -2258,6 +3472,7 @@
             "mode": "palette-classic"
           },
           "custom": {
+            "axisBorderShow": false,
             "axisCenteredZero": false,
             "axisColorMode": "text",
             "axisLabel": "",
@@ -2293,7 +3508,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green"
+                "color": "green",
+                "value": null
               },
               {
                 "color": "red",
@@ -2309,9 +3525,9 @@
         "h": 8,
         "w": 8,
         "x": 0,
-        "y": 46
+        "y": 63
       },
-      "id": 48,
+      "id": 67,
       "options": {
         "legend": {
           "calcs": [],
@@ -2359,6 +3575,7 @@
             "mode": "palette-classic"
           },
           "custom": {
+            "axisBorderShow": false,
             "axisCenteredZero": false,
             "axisColorMode": "text",
             "axisLabel": "",
@@ -2394,7 +3611,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green"
+                "color": "green",
+                "value": null
               },
               {
                 "color": "red",
@@ -2410,9 +3628,9 @@
         "h": 8,
         "w": 9,
         "x": 8,
-        "y": 46
+        "y": 63
       },
-      "id": 51,
+      "id": 68,
       "options": {
         "legend": {
           "calcs": [],
@@ -2450,7 +3668,7 @@
       "type": "timeseries"
     },
     {
-      "collapsed": false,
+      "collapsed": true,
       "datasource": {
         "type": "prometheus",
         "uid": "e28ab080-9f4e-4069-81a9-e5bdee344d06"
@@ -2459,10 +3677,640 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 54
+        "y": 71
       },
       "id": 22,
-      "panels": [],
+      "panels": [
+        {
+          "datasource": {
+            "uid": "${influxdb}"
+          },
+          "fieldConfig": {
+            "defaults": {
+              "color": {
+                "mode": "palette-classic"
+              },
+              "custom": {
+                "axisBorderShow": false,
+                "axisCenteredZero": false,
+                "axisColorMode": "text",
+                "axisLabel": "",
+                "axisPlacement": "auto",
+                "barAlignment": 0,
+                "drawStyle": "line",
+                "fillOpacity": 0,
+                "gradientMode": "none",
+                "hideFrom": {
+                  "legend": false,
+                  "tooltip": false,
+                  "viz": false
+                },
+                "insertNulls": false,
+                "lineInterpolation": "linear",
+                "lineWidth": 1,
+                "pointSize": 5,
+                "scaleDistribution": {
+                  "type": "linear"
+                },
+                "showPoints": "auto",
+                "spanNulls": false,
+                "stacking": {
+                  "group": "A",
+                  "mode": "none"
+                },
+                "thresholdsStyle": {
+                  "mode": "off"
+                }
+              },
+              "mappings": [],
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {
+                    "color": "green",
+                    "value": null
+                  },
+                  {
+                    "color": "red",
+                    "value": 80
+                  }
+                ]
+              },
+              "unit": "cps"
+            },
+            "overrides": []
+          },
+          "gridPos": {
+            "h": 8,
+            "w": 6,
+            "x": 0,
+            "y": 72
+          },
+          "id": 15,
+          "options": {
+            "legend": {
+              "calcs": [],
+              "displayMode": "list",
+              "placement": "bottom",
+              "showLegend": true
+            },
+            "tooltip": {
+              "mode": "multi",
+              "sort": "none"
+            }
+          },
+          "targets": [
+            {
+              "alias": "$tag_source_id",
+              "datasource": {
+                "uid": "${influxdb}"
+              },
+              "query": "SELECT non_negative_derivative(last(\"num_seq_id_errors\"), 1s) FROM \"dunedaq.readoutlibs.readoutinfo.RawDataProcessorInfo\" WHERE (\"partition_id\" = '${partition}') AND $timeFilter GROUP BY time($__interval), \"source_id\" fill(null)",
+              "rawQuery": true,
+              "refId": "A"
+            }
+          ],
+          "title": "Sequence ID errors at DLH",
+          "transformations": [
+            {
+              "id": "renameByRegex",
+              "options": {
+                "regex": "[^.]+\\.([^.]+)\\.([^.]+)",
+                "renamePattern": "$1 $2"
+              }
+            }
+          ],
+          "type": "timeseries"
+        },
+        {
+          "datasource": {
+            "type": "influxdb",
+            "uid": "${influxdb}"
+          },
+          "fieldConfig": {
+            "defaults": {
+              "color": {
+                "mode": "palette-classic"
+              },
+              "custom": {
+                "axisBorderShow": false,
+                "axisCenteredZero": false,
+                "axisColorMode": "text",
+                "axisLabel": "",
+                "axisPlacement": "auto",
+                "barAlignment": 0,
+                "drawStyle": "line",
+                "fillOpacity": 0,
+                "gradientMode": "none",
+                "hideFrom": {
+                  "legend": false,
+                  "tooltip": false,
+                  "viz": false
+                },
+                "insertNulls": false,
+                "lineInterpolation": "linear",
+                "lineWidth": 1,
+                "pointSize": 5,
+                "scaleDistribution": {
+                  "type": "linear"
+                },
+                "showPoints": "auto",
+                "spanNulls": false,
+                "stacking": {
+                  "group": "A",
+                  "mode": "none"
+                },
+                "thresholdsStyle": {
+                  "mode": "off"
+                }
+              },
+              "mappings": [],
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {
+                    "color": "green",
+                    "value": null
+                  },
+                  {
+                    "color": "red",
+                    "value": 80
+                  }
+                ]
+              },
+              "unit": "cps"
+            },
+            "overrides": []
+          },
+          "gridPos": {
+            "h": 8,
+            "w": 6,
+            "x": 6,
+            "y": 72
+          },
+          "id": 34,
+          "options": {
+            "legend": {
+              "calcs": [],
+              "displayMode": "list",
+              "placement": "bottom",
+              "showLegend": true
+            },
+            "tooltip": {
+              "mode": "multi",
+              "sort": "none"
+            }
+          },
+          "targets": [
+            {
+              "alias": "$tag_source_id",
+              "datasource": {
+                "uid": "${influxdb}"
+              },
+              "query": "SELECT non_negative_derivative(last(\"num_ts_errors\"), 1s) FROM \"dunedaq.readoutlibs.readoutinfo.RawDataProcessorInfo\" WHERE (\"partition_id\" = '${partition}') AND $timeFilter GROUP BY time($__interval), \"source_id\" fill(null)",
+              "rawQuery": true,
+              "refId": "A",
+              "resultFormat": "time_series"
+            }
+          ],
+          "title": "Timestamp Errors at DLH",
+          "transformations": [
+            {
+              "id": "renameByRegex",
+              "options": {
+                "regex": "[^.]+\\.([^.]+)\\.([^.]+)",
+                "renamePattern": "$1 $2"
+              }
+            }
+          ],
+          "type": "timeseries"
+        },
+        {
+          "datasource": {
+            "uid": "${influxdb}"
+          },
+          "fieldConfig": {
+            "defaults": {
+              "color": {
+                "mode": "palette-classic"
+              },
+              "custom": {
+                "axisBorderShow": false,
+                "axisCenteredZero": false,
+                "axisColorMode": "text",
+                "axisLabel": "",
+                "axisPlacement": "auto",
+                "barAlignment": 0,
+                "drawStyle": "line",
+                "fillOpacity": 0,
+                "gradientMode": "none",
+                "hideFrom": {
+                  "legend": false,
+                  "tooltip": false,
+                  "viz": false
+                },
+                "insertNulls": false,
+                "lineInterpolation": "linear",
+                "lineWidth": 1,
+                "pointSize": 5,
+                "scaleDistribution": {
+                  "type": "linear"
+                },
+                "showPoints": "auto",
+                "spanNulls": false,
+                "stacking": {
+                  "group": "A",
+                  "mode": "none"
+                },
+                "thresholdsStyle": {
+                  "mode": "off"
+                }
+              },
+              "mappings": [],
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {
+                    "color": "green",
+                    "value": null
+                  },
+                  {
+                    "color": "red",
+                    "value": 80
+                  }
+                ]
+              },
+              "unit": "none"
+            },
+            "overrides": []
+          },
+          "gridPos": {
+            "h": 8,
+            "w": 6,
+            "x": 12,
+            "y": 72
+          },
+          "id": 14,
+          "options": {
+            "legend": {
+              "calcs": [],
+              "displayMode": "list",
+              "placement": "bottom",
+              "showLegend": true
+            },
+            "tooltip": {
+              "mode": "multi",
+              "sort": "none"
+            }
+          },
+          "targets": [
+            {
+              "alias": "$tag_source_id",
+              "datasource": {
+                "uid": "${influxdb}"
+              },
+              "query": "SELECT min(\"min_seq_id_jump\") FROM \"dunedaq.readoutlibs.readoutinfo.RawDataProcessorInfo\" WHERE (\"partition_id\" = '${partition}') AND $timeFilter GROUP BY time($__interval), \"source_id\" fill(null)",
+              "rawQuery": true,
+              "refId": "A"
+            }
+          ],
+          "title": "Min Sequence ID jump at DLH",
+          "transformations": [
+            {
+              "id": "renameByRegex",
+              "options": {
+                "regex": "[^.]+\\.([^.]+)\\.([^.]+)",
+                "renamePattern": "$1 $2"
+              }
+            }
+          ],
+          "type": "timeseries"
+        },
+        {
+          "datasource": {
+            "uid": "${influxdb}"
+          },
+          "fieldConfig": {
+            "defaults": {
+              "color": {
+                "mode": "palette-classic"
+              },
+              "custom": {
+                "axisBorderShow": false,
+                "axisCenteredZero": false,
+                "axisColorMode": "text",
+                "axisLabel": "",
+                "axisPlacement": "auto",
+                "barAlignment": 0,
+                "drawStyle": "line",
+                "fillOpacity": 0,
+                "gradientMode": "none",
+                "hideFrom": {
+                  "legend": false,
+                  "tooltip": false,
+                  "viz": false
+                },
+                "insertNulls": false,
+                "lineInterpolation": "linear",
+                "lineWidth": 1,
+                "pointSize": 5,
+                "scaleDistribution": {
+                  "type": "linear"
+                },
+                "showPoints": "auto",
+                "spanNulls": false,
+                "stacking": {
+                  "group": "A",
+                  "mode": "none"
+                },
+                "thresholdsStyle": {
+                  "mode": "off"
+                }
+              },
+              "mappings": [],
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {
+                    "color": "green",
+                    "value": null
+                  },
+                  {
+                    "color": "red",
+                    "value": 80
+                  }
+                ]
+              },
+              "unit": "none"
+            },
+            "overrides": []
+          },
+          "gridPos": {
+            "h": 8,
+            "w": 6,
+            "x": 18,
+            "y": 72
+          },
+          "id": 13,
+          "options": {
+            "legend": {
+              "calcs": [],
+              "displayMode": "list",
+              "placement": "bottom",
+              "showLegend": true
+            },
+            "tooltip": {
+              "mode": "multi",
+              "sort": "none"
+            }
+          },
+          "targets": [
+            {
+              "alias": "$tag_source_id",
+              "datasource": {
+                "uid": "${influxdb}"
+              },
+              "query": "SELECT max(\"max_seq_id_jump\") FROM \"dunedaq.readoutlibs.readoutinfo.RawDataProcessorInfo\" WHERE (\"partition_id\" = '${partition}') AND $timeFilter GROUP BY time($__interval), \"source_id\" fill(null)",
+              "rawQuery": true,
+              "refId": "A"
+            }
+          ],
+          "title": "Max Sequence ID jump at DLH",
+          "transformations": [
+            {
+              "id": "renameByRegex",
+              "options": {
+                "regex": "[^.]+\\.([^.]+)\\.([^.]+)",
+                "renamePattern": "$1 $2"
+              }
+            }
+          ],
+          "type": "timeseries"
+        },
+        {
+          "datasource": {
+            "type": "influxdb",
+            "uid": "${influxdb}"
+          },
+          "fieldConfig": {
+            "defaults": {
+              "color": {
+                "mode": "palette-classic"
+              },
+              "custom": {
+                "axisBorderShow": false,
+                "axisCenteredZero": false,
+                "axisColorMode": "text",
+                "axisLabel": "",
+                "axisPlacement": "auto",
+                "barAlignment": 0,
+                "drawStyle": "line",
+                "fillOpacity": 0,
+                "gradientMode": "none",
+                "hideFrom": {
+                  "legend": false,
+                  "tooltip": false,
+                  "viz": false
+                },
+                "insertNulls": false,
+                "lineInterpolation": "linear",
+                "lineWidth": 1,
+                "pointSize": 5,
+                "scaleDistribution": {
+                  "type": "linear"
+                },
+                "showPoints": "auto",
+                "spanNulls": false,
+                "stacking": {
+                  "group": "A",
+                  "mode": "none"
+                },
+                "thresholdsStyle": {
+                  "mode": "off"
+                }
+              },
+              "mappings": [],
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {
+                    "color": "green",
+                    "value": null
+                  },
+                  {
+                    "color": "red",
+                    "value": 80
+                  }
+                ]
+              },
+              "unit": "none"
+            },
+            "overrides": []
+          },
+          "gridPos": {
+            "h": 8,
+            "w": 24,
+            "x": 0,
+            "y": 80
+          },
+          "id": 35,
+          "maxPerRow": 4,
+          "options": {
+            "legend": {
+              "calcs": [],
+              "displayMode": "list",
+              "placement": "bottom",
+              "showLegend": true
+            },
+            "tooltip": {
+              "mode": "multi",
+              "sort": "none"
+            }
+          },
+          "repeat": "application",
+          "repeatDirection": "h",
+          "targets": [
+            {
+              "alias": "Max",
+              "datasource": {
+                "uid": "${influxdb}"
+              },
+              "query": "SELECT max(\"max_seq_id_jump\") FROM \"dunedaq.readoutlibs.readoutinfo.RawDataProcessorInfo\" WHERE (\"source_id\" =~ /${partition}\\.${application}\\..*/) AND $timeFilter GROUP BY time($__interval) fill(null)",
+              "rawQuery": true,
+              "refId": "A",
+              "resultFormat": "time_series"
+            },
+            {
+              "alias": "Min",
+              "datasource": {
+                "uid": "${influxdb}"
+              },
+              "hide": false,
+              "query": "SELECT min(\"min_seq_id_jump\") FROM \"dunedaq.readoutlibs.readoutinfo.RawDataProcessorInfo\" WHERE (\"source_id\" =~ /${partition}\\.${application}\\..*/) AND $timeFilter GROUP BY time($__interval) fill(null)",
+              "rawQuery": true,
+              "refId": "B",
+              "resultFormat": "time_series"
+            }
+          ],
+          "title": "Min/Max Sequence ID jump at DLH for application ${application}",
+          "transformations": [
+            {
+              "id": "renameByRegex",
+              "options": {
+                "regex": "[^.]+\\.([^.]+)\\.([^.]+)",
+                "renamePattern": "$1 $2"
+              }
+            }
+          ],
+          "type": "timeseries"
+        },
+        {
+          "datasource": {
+            "type": "influxdb",
+            "uid": "${influxdb}"
+          },
+          "fieldConfig": {
+            "defaults": {
+              "color": {
+                "mode": "palette-classic"
+              },
+              "custom": {
+                "axisBorderShow": false,
+                "axisCenteredZero": false,
+                "axisColorMode": "text",
+                "axisLabel": "",
+                "axisPlacement": "auto",
+                "barAlignment": 0,
+                "drawStyle": "line",
+                "fillOpacity": 0,
+                "gradientMode": "none",
+                "hideFrom": {
+                  "legend": false,
+                  "tooltip": false,
+                  "viz": false
+                },
+                "insertNulls": false,
+                "lineInterpolation": "linear",
+                "lineWidth": 1,
+                "pointSize": 5,
+                "scaleDistribution": {
+                  "type": "linear"
+                },
+                "showPoints": "auto",
+                "spanNulls": false,
+                "stacking": {
+                  "group": "A",
+                  "mode": "none"
+                },
+                "thresholdsStyle": {
+                  "mode": "off"
+                }
+              },
+              "mappings": [],
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {
+                    "color": "green",
+                    "value": null
+                  },
+                  {
+                    "color": "red",
+                    "value": 80
+                  }
+                ]
+              },
+              "unit": "cps"
+            },
+            "overrides": []
+          },
+          "gridPos": {
+            "h": 8,
+            "w": 24,
+            "x": 0,
+            "y": 96
+          },
+          "id": 46,
+          "maxPerRow": 4,
+          "options": {
+            "legend": {
+              "calcs": [],
+              "displayMode": "list",
+              "placement": "bottom",
+              "showLegend": false
+            },
+            "tooltip": {
+              "mode": "multi",
+              "sort": "none"
+            }
+          },
+          "repeat": "application",
+          "repeatDirection": "h",
+          "targets": [
+            {
+              "alias": "",
+              "datasource": {
+                "uid": "${influxdb}"
+              },
+              "query": "SELECT non_negative_derivative(last(\"num_seq_id_errors\"), 1s) + non_negative_derivative(last(\"num_ts_errors\"), 1s) FROM \"dunedaq.readoutlibs.readoutinfo.RawDataProcessorInfo\" WHERE (\"source_id\" =~ /${partition}\\.${application}\\..*/) AND $timeFilter GROUP BY time($__interval) fill(null)",
+              "rawQuery": true,
+              "refId": "A",
+              "resultFormat": "time_series"
+            }
+          ],
+          "title": "Total errors at DLH for ${application}",
+          "transformations": [
+            {
+              "id": "renameByRegex",
+              "options": {
+                "regex": "[^.]+\\.([^.]+)\\.([^.]+)",
+                "renamePattern": "$1 $2"
+              }
+            }
+          ],
+          "type": "timeseries"
+        }
+      ],
       "targets": [
         {
           "datasource": {
@@ -2474,628 +4322,10 @@
       ],
       "title": "Frontend",
       "type": "row"
-    },
-    {
-      "datasource": {
-        "uid": "${influxdb}"
-      },
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "mode": "palette-classic"
-          },
-          "custom": {
-            "axisCenteredZero": false,
-            "axisColorMode": "text",
-            "axisLabel": "",
-            "axisPlacement": "auto",
-            "barAlignment": 0,
-            "drawStyle": "line",
-            "fillOpacity": 0,
-            "gradientMode": "none",
-            "hideFrom": {
-              "legend": false,
-              "tooltip": false,
-              "viz": false
-            },
-            "insertNulls": false,
-            "lineInterpolation": "linear",
-            "lineWidth": 1,
-            "pointSize": 5,
-            "scaleDistribution": {
-              "type": "linear"
-            },
-            "showPoints": "auto",
-            "spanNulls": false,
-            "stacking": {
-              "group": "A",
-              "mode": "none"
-            },
-            "thresholdsStyle": {
-              "mode": "off"
-            }
-          },
-          "mappings": [],
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "green"
-              },
-              {
-                "color": "red",
-                "value": 80
-              }
-            ]
-          },
-          "unit": "cps"
-        },
-        "overrides": []
-      },
-      "gridPos": {
-        "h": 8,
-        "w": 6,
-        "x": 0,
-        "y": 55
-      },
-      "id": 15,
-      "options": {
-        "legend": {
-          "calcs": [],
-          "displayMode": "list",
-          "placement": "bottom",
-          "showLegend": true
-        },
-        "tooltip": {
-          "mode": "multi",
-          "sort": "none"
-        }
-      },
-      "targets": [
-        {
-          "alias": "$tag_source_id",
-          "datasource": {
-            "uid": "${influxdb}"
-          },
-          "query": "SELECT non_negative_derivative(last(\"num_seq_id_errors\"), 1s) FROM \"dunedaq.readoutlibs.readoutinfo.RawDataProcessorInfo\" WHERE (\"partition_id\" = '${partition}') AND $timeFilter GROUP BY time($__interval), \"source_id\" fill(null)",
-          "rawQuery": true,
-          "refId": "A"
-        }
-      ],
-      "title": "Sequence ID errors at DLH",
-      "transformations": [
-        {
-          "id": "renameByRegex",
-          "options": {
-            "regex": "[^.]+\\.([^.]+)\\.([^.]+)",
-            "renamePattern": "$1 $2"
-          }
-        }
-      ],
-      "type": "timeseries"
-    },
-    {
-      "datasource": {
-        "type": "influxdb",
-        "uid": "${influxdb}"
-      },
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "mode": "palette-classic"
-          },
-          "custom": {
-            "axisCenteredZero": false,
-            "axisColorMode": "text",
-            "axisLabel": "",
-            "axisPlacement": "auto",
-            "barAlignment": 0,
-            "drawStyle": "line",
-            "fillOpacity": 0,
-            "gradientMode": "none",
-            "hideFrom": {
-              "legend": false,
-              "tooltip": false,
-              "viz": false
-            },
-            "insertNulls": false,
-            "lineInterpolation": "linear",
-            "lineWidth": 1,
-            "pointSize": 5,
-            "scaleDistribution": {
-              "type": "linear"
-            },
-            "showPoints": "auto",
-            "spanNulls": false,
-            "stacking": {
-              "group": "A",
-              "mode": "none"
-            },
-            "thresholdsStyle": {
-              "mode": "off"
-            }
-          },
-          "mappings": [],
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "green"
-              },
-              {
-                "color": "red",
-                "value": 80
-              }
-            ]
-          },
-          "unit": "cps"
-        },
-        "overrides": []
-      },
-      "gridPos": {
-        "h": 8,
-        "w": 6,
-        "x": 6,
-        "y": 55
-      },
-      "id": 34,
-      "options": {
-        "legend": {
-          "calcs": [],
-          "displayMode": "list",
-          "placement": "bottom",
-          "showLegend": true
-        },
-        "tooltip": {
-          "mode": "multi",
-          "sort": "none"
-        }
-      },
-      "targets": [
-        {
-          "alias": "$tag_source_id",
-          "datasource": {
-            "uid": "${influxdb}"
-          },
-          "query": "SELECT non_negative_derivative(last(\"num_ts_errors\"), 1s) FROM \"dunedaq.readoutlibs.readoutinfo.RawDataProcessorInfo\" WHERE (\"partition_id\" = '${partition}') AND $timeFilter GROUP BY time($__interval), \"source_id\" fill(null)",
-          "rawQuery": true,
-          "refId": "A",
-          "resultFormat": "time_series"
-        }
-      ],
-      "title": "Timestamp Errors at DLH",
-      "transformations": [
-        {
-          "id": "renameByRegex",
-          "options": {
-            "regex": "[^.]+\\.([^.]+)\\.([^.]+)",
-            "renamePattern": "$1 $2"
-          }
-        }
-      ],
-      "type": "timeseries"
-    },
-    {
-      "datasource": {
-        "uid": "${influxdb}"
-      },
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "mode": "palette-classic"
-          },
-          "custom": {
-            "axisCenteredZero": false,
-            "axisColorMode": "text",
-            "axisLabel": "",
-            "axisPlacement": "auto",
-            "barAlignment": 0,
-            "drawStyle": "line",
-            "fillOpacity": 0,
-            "gradientMode": "none",
-            "hideFrom": {
-              "legend": false,
-              "tooltip": false,
-              "viz": false
-            },
-            "insertNulls": false,
-            "lineInterpolation": "linear",
-            "lineWidth": 1,
-            "pointSize": 5,
-            "scaleDistribution": {
-              "type": "linear"
-            },
-            "showPoints": "auto",
-            "spanNulls": false,
-            "stacking": {
-              "group": "A",
-              "mode": "none"
-            },
-            "thresholdsStyle": {
-              "mode": "off"
-            }
-          },
-          "mappings": [],
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "green"
-              },
-              {
-                "color": "red",
-                "value": 80
-              }
-            ]
-          },
-          "unit": "none"
-        },
-        "overrides": []
-      },
-      "gridPos": {
-        "h": 8,
-        "w": 6,
-        "x": 12,
-        "y": 55
-      },
-      "id": 14,
-      "options": {
-        "legend": {
-          "calcs": [],
-          "displayMode": "list",
-          "placement": "bottom",
-          "showLegend": true
-        },
-        "tooltip": {
-          "mode": "multi",
-          "sort": "none"
-        }
-      },
-      "targets": [
-        {
-          "alias": "$tag_source_id",
-          "datasource": {
-            "uid": "${influxdb}"
-          },
-          "query": "SELECT min(\"min_seq_id_jump\") FROM \"dunedaq.readoutlibs.readoutinfo.RawDataProcessorInfo\" WHERE (\"partition_id\" = '${partition}') AND $timeFilter GROUP BY time($__interval), \"source_id\" fill(null)",
-          "rawQuery": true,
-          "refId": "A"
-        }
-      ],
-      "title": "Min Sequence ID jump at DLH",
-      "transformations": [
-        {
-          "id": "renameByRegex",
-          "options": {
-            "regex": "[^.]+\\.([^.]+)\\.([^.]+)",
-            "renamePattern": "$1 $2"
-          }
-        }
-      ],
-      "type": "timeseries"
-    },
-    {
-      "datasource": {
-        "uid": "${influxdb}"
-      },
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "mode": "palette-classic"
-          },
-          "custom": {
-            "axisCenteredZero": false,
-            "axisColorMode": "text",
-            "axisLabel": "",
-            "axisPlacement": "auto",
-            "barAlignment": 0,
-            "drawStyle": "line",
-            "fillOpacity": 0,
-            "gradientMode": "none",
-            "hideFrom": {
-              "legend": false,
-              "tooltip": false,
-              "viz": false
-            },
-            "insertNulls": false,
-            "lineInterpolation": "linear",
-            "lineWidth": 1,
-            "pointSize": 5,
-            "scaleDistribution": {
-              "type": "linear"
-            },
-            "showPoints": "auto",
-            "spanNulls": false,
-            "stacking": {
-              "group": "A",
-              "mode": "none"
-            },
-            "thresholdsStyle": {
-              "mode": "off"
-            }
-          },
-          "mappings": [],
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "green"
-              },
-              {
-                "color": "red",
-                "value": 80
-              }
-            ]
-          },
-          "unit": "none"
-        },
-        "overrides": []
-      },
-      "gridPos": {
-        "h": 8,
-        "w": 6,
-        "x": 18,
-        "y": 55
-      },
-      "id": 13,
-      "options": {
-        "legend": {
-          "calcs": [],
-          "displayMode": "list",
-          "placement": "bottom",
-          "showLegend": true
-        },
-        "tooltip": {
-          "mode": "multi",
-          "sort": "none"
-        }
-      },
-      "targets": [
-        {
-          "alias": "$tag_source_id",
-          "datasource": {
-            "uid": "${influxdb}"
-          },
-          "query": "SELECT max(\"max_seq_id_jump\") FROM \"dunedaq.readoutlibs.readoutinfo.RawDataProcessorInfo\" WHERE (\"partition_id\" = '${partition}') AND $timeFilter GROUP BY time($__interval), \"source_id\" fill(null)",
-          "rawQuery": true,
-          "refId": "A"
-        }
-      ],
-      "title": "Max Sequence ID jump at DLH",
-      "transformations": [
-        {
-          "id": "renameByRegex",
-          "options": {
-            "regex": "[^.]+\\.([^.]+)\\.([^.]+)",
-            "renamePattern": "$1 $2"
-          }
-        }
-      ],
-      "type": "timeseries"
-    },
-    {
-      "datasource": {
-        "type": "influxdb",
-        "uid": "${influxdb}"
-      },
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "mode": "palette-classic"
-          },
-          "custom": {
-            "axisCenteredZero": false,
-            "axisColorMode": "text",
-            "axisLabel": "",
-            "axisPlacement": "auto",
-            "barAlignment": 0,
-            "drawStyle": "line",
-            "fillOpacity": 0,
-            "gradientMode": "none",
-            "hideFrom": {
-              "legend": false,
-              "tooltip": false,
-              "viz": false
-            },
-            "insertNulls": false,
-            "lineInterpolation": "linear",
-            "lineWidth": 1,
-            "pointSize": 5,
-            "scaleDistribution": {
-              "type": "linear"
-            },
-            "showPoints": "auto",
-            "spanNulls": false,
-            "stacking": {
-              "group": "A",
-              "mode": "none"
-            },
-            "thresholdsStyle": {
-              "mode": "off"
-            }
-          },
-          "mappings": [],
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "green"
-              },
-              {
-                "color": "red",
-                "value": 80
-              }
-            ]
-          },
-          "unit": "none"
-        },
-        "overrides": []
-      },
-      "gridPos": {
-        "h": 8,
-        "w": 24,
-        "x": 0,
-        "y": 63
-      },
-      "id": 35,
-      "maxPerRow": 4,
-      "options": {
-        "legend": {
-          "calcs": [],
-          "displayMode": "list",
-          "placement": "bottom",
-          "showLegend": true
-        },
-        "tooltip": {
-          "mode": "multi",
-          "sort": "none"
-        }
-      },
-      "repeat": "application",
-      "repeatDirection": "h",
-      "targets": [
-        {
-          "alias": "Max",
-          "datasource": {
-            "uid": "${influxdb}"
-          },
-          "query": "SELECT max(\"max_seq_id_jump\") FROM \"dunedaq.readoutlibs.readoutinfo.RawDataProcessorInfo\" WHERE (\"source_id\" =~ /${partition}\\.${application}\\..*/) AND $timeFilter GROUP BY time($__interval) fill(null)",
-          "rawQuery": true,
-          "refId": "A",
-          "resultFormat": "time_series"
-        },
-        {
-          "alias": "Min",
-          "datasource": {
-            "uid": "${influxdb}"
-          },
-          "hide": false,
-          "query": "SELECT min(\"min_seq_id_jump\") FROM \"dunedaq.readoutlibs.readoutinfo.RawDataProcessorInfo\" WHERE (\"source_id\" =~ /${partition}\\.${application}\\..*/) AND $timeFilter GROUP BY time($__interval) fill(null)",
-          "rawQuery": true,
-          "refId": "B",
-          "resultFormat": "time_series"
-        }
-      ],
-      "title": "Min/Max Sequence ID jump at DLH for application ${application}",
-      "transformations": [
-        {
-          "id": "renameByRegex",
-          "options": {
-            "regex": "[^.]+\\.([^.]+)\\.([^.]+)",
-            "renamePattern": "$1 $2"
-          }
-        }
-      ],
-      "type": "timeseries"
-    },
-    {
-      "datasource": {
-        "type": "influxdb",
-        "uid": "${influxdb}"
-      },
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "mode": "palette-classic"
-          },
-          "custom": {
-            "axisCenteredZero": false,
-            "axisColorMode": "text",
-            "axisLabel": "",
-            "axisPlacement": "auto",
-            "barAlignment": 0,
-            "drawStyle": "line",
-            "fillOpacity": 0,
-            "gradientMode": "none",
-            "hideFrom": {
-              "legend": false,
-              "tooltip": false,
-              "viz": false
-            },
-            "insertNulls": false,
-            "lineInterpolation": "linear",
-            "lineWidth": 1,
-            "pointSize": 5,
-            "scaleDistribution": {
-              "type": "linear"
-            },
-            "showPoints": "auto",
-            "spanNulls": false,
-            "stacking": {
-              "group": "A",
-              "mode": "none"
-            },
-            "thresholdsStyle": {
-              "mode": "off"
-            }
-          },
-          "mappings": [],
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "green"
-              },
-              {
-                "color": "red",
-                "value": 80
-              }
-            ]
-          },
-          "unit": "cps"
-        },
-        "overrides": []
-      },
-      "gridPos": {
-        "h": 8,
-        "w": 24,
-        "x": 0,
-        "y": 71
-      },
-      "id": 46,
-      "maxPerRow": 4,
-      "options": {
-        "legend": {
-          "calcs": [],
-          "displayMode": "list",
-          "placement": "bottom",
-          "showLegend": false
-        },
-        "tooltip": {
-          "mode": "multi",
-          "sort": "none"
-        }
-      },
-      "repeat": "application",
-      "repeatDirection": "h",
-      "targets": [
-        {
-          "alias": "",
-          "datasource": {
-            "uid": "${influxdb}"
-          },
-          "query": "SELECT non_negative_derivative(last(\"num_seq_id_errors\"), 1s) + non_negative_derivative(last(\"num_ts_errors\"), 1s) FROM \"dunedaq.readoutlibs.readoutinfo.RawDataProcessorInfo\" WHERE (\"source_id\" =~ /${partition}\\.${application}\\..*/) AND $timeFilter GROUP BY time($__interval) fill(null)",
-          "rawQuery": true,
-          "refId": "A",
-          "resultFormat": "time_series"
-        }
-      ],
-      "title": "Total errors at DLH for ${application}",
-      "transformations": [
-        {
-          "id": "renameByRegex",
-          "options": {
-            "regex": "[^.]+\\.([^.]+)\\.([^.]+)",
-            "renamePattern": "$1 $2"
-          }
-        }
-      ],
-      "type": "timeseries"
     }
   ],
-  "refresh": "",
+  "refresh": "5s",
   "schemaVersion": 38,
-  "style": "dark",
   "tags": [
     "Subsystem",
     "v5.0.0"
@@ -3123,8 +4353,8 @@
       {
         "current": {
           "selected": false,
-          "text": "np02vdcoldbox",
-          "value": "np02vdcoldbox"
+          "text": "crp4-oks-session",
+          "value": "crp4-oks-session"
         },
         "datasource": {
           "type": "influxdb",
@@ -3206,6 +4436,6 @@
   "timezone": "",
   "title": "Frontend Ethernet",
   "uid": "v5_0_0-frontend_ethernet",
-  "version": 24,
+  "version": 6,
   "weekStart": ""
 }

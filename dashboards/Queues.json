@@ -18,12 +18,13 @@
   "editable": true,
   "fiscalYearStartMonth": 0,
   "graphTooltip": 0,
-  "id": 148,
+  "id": 125,
   "links": [],
   "liveNow": false,
   "panels": [
     {
       "datasource": {
+        "type": "influxdb",
         "uid": "${influxdb}"
       },
       "fieldConfig": {
@@ -32,9 +33,10 @@
             "mode": "palette-classic"
           },
           "custom": {
+            "axisBorderShow": false,
             "axisCenteredZero": false,
             "axisColorMode": "text",
-            "axisLabel": "%",
+            "axisLabel": "",
             "axisPlacement": "auto",
             "barAlignment": 0,
             "drawStyle": "line",
@@ -45,6 +47,7 @@
               "tooltip": false,
               "viz": false
             },
+            "insertNulls": false,
             "lineInterpolation": "linear",
             "lineWidth": 2,
             "pointSize": 4,
@@ -75,7 +78,7 @@
               }
             ]
           },
-          "unit": "short"
+          "unit": "percent"
         },
         "overrides": []
       },
@@ -121,7 +124,7 @@
           "measurement": "dunedaq.appfwk.queueinfo.Info",
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "SELECT mean(\"number_of_elements\")/mean(\"capacity\")  * 100 FROM \"dunedaq.iomanager.queueinfo.Info\" WHERE (\"partition_id\" = '${partition}' AND \"source_id\"=~ /[^.]+\\.${application}\\.[^+]/) AND $timeFilter GROUP BY time($__interval), \"source_id\"",
+          "query": "SELECT mean(\"number_of_elements\")/mean(\"capacity\")  FROM \"dunedaq.iomanager.queueinfo.Info\" WHERE (\"partition_id\" = '${partition}' AND \"source_id\"=~ /[^.]+\\.${application}\\.[^.]+/) AND $timeFilter GROUP BY time($__interval), \"source_id\"",
           "rawQuery": true,
           "refId": "C",
           "resultFormat": "time_series",
@@ -169,7 +172,6 @@
   ],
   "refresh": "5s",
   "schemaVersion": 38,
-  "style": "dark",
   "tags": [
     "v4.4.1",
     "Subsystem"
@@ -179,8 +181,8 @@
       {
         "current": {
           "selected": false,
-          "text": "InfluxKafka",
-          "value": "InfluxKafka"
+          "text": "KluInflux",
+          "value": "ffedc550-6555-4a16-a113-aabf2b980c30"
         },
         "hide": 2,
         "includeAll": false,
@@ -197,8 +199,8 @@
       {
         "current": {
           "selected": false,
-          "text": "thea-apa1",
-          "value": "thea-apa1"
+          "text": "np04hd",
+          "value": "np04hd"
         },
         "datasource": {
           "type": "influxdb",
@@ -219,6 +221,7 @@
         "type": "query"
       },
       {
+        "allValue": "",
         "current": {
           "selected": true,
           "text": [
@@ -232,30 +235,30 @@
           "type": "influxdb",
           "uid": "${influxdb}"
         },
-        "definition": "SHOW TAG VALUES FROM \"dunedaq.iomanager.queueinfo.Info\" WITH KEY=\"source_id\" WHERE \"partition_id\"='${partition}' AND $timeFilter",
+        "definition": "SELECT \"source_id\" FROM (SELECT \"capacity\",\"source_id\" FROM  \"dunedaq.iomanager.queueinfo.Info\" WHERE $timeFilter AND \"partition_id\"='${partition}' )   ",
         "hide": 0,
         "includeAll": true,
         "label": "Application name",
         "multi": true,
         "name": "application",
         "options": [],
-        "query": "SHOW TAG VALUES FROM \"dunedaq.iomanager.queueinfo.Info\" WITH KEY=\"source_id\" WHERE \"partition_id\"='${partition}' AND $timeFilter",
+        "query": "SELECT \"source_id\" FROM (SELECT \"capacity\",\"source_id\" FROM  \"dunedaq.iomanager.queueinfo.Info\" WHERE $timeFilter AND \"partition_id\"='${partition}' )   ",
         "refresh": 1,
         "regex": "[^.]+\\.([^.]+)\\.[^.]+",
         "skipUrlSync": false,
-        "sort": 0,
+        "sort": 1,
         "type": "query"
       }
     ]
   },
   "time": {
-    "from": "now-15m",
+    "from": "now-30m",
     "to": "now"
   },
   "timepicker": {},
   "timezone": "",
   "title": "Queues",
   "uid": "v4_4_1-queues",
-  "version": 2,
+  "version": 7,
   "weekStart": ""
 }

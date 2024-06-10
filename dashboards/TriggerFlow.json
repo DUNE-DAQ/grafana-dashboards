@@ -2157,7 +2157,7 @@
           "measurement": "dunedaq.trigger.tpchannelfilterinfo.Info",
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "SELECT mean(\"tc_data_vs_system_ms\") FROM \"dunedaq.trigger.moduleleveltriggerinfo.Info\" WHERE $timeFilter AND (\"partition_id\" ='${partition}') GROUP BY time($__interval) fill(null)",
+          "query": "SELECT mean(\"tc_data_vs_system_ms\") FROM \"dunedaq.trigger.moduleleveltriggerinfo.Info\" WHERE $timeFilter AND \"partition_id\" ='${partition}' AND \"tc_data_vs_system_ms\" < ${year} GROUP BY time($__interval) fill(null)",
           "rawQuery": true,
           "refId": "A",
           "resultFormat": "time_series",
@@ -2201,7 +2201,7 @@
           "measurement": "dunedaq.trigger.tpchannelfilterinfo.Info",
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "SELECT mean(\"td_made_vs_ro_window_ms\") FROM \"dunedaq.trigger.moduleleveltriggerinfo.Info\" WHERE $timeFilter AND (\"partition_id\" ='${partition}') GROUP BY time($__interval) fill(null)",
+          "query": "SELECT mean(\"td_made_vs_ro_window_ms\") FROM \"dunedaq.trigger.moduleleveltriggerinfo.Info\" WHERE $timeFilter AND (\"partition_id\" ='${partition}') AND \"td_made_vs_ro_window_ms\"<${year} GROUP BY time($__interval) fill(null)",
           "rawQuery": true,
           "refId": "B",
           "resultFormat": "time_series",
@@ -2261,13 +2261,16 @@
             },
             "insertNulls": false,
             "lineInterpolation": "linear",
+            "lineStyle": {
+              "fill": "solid"
+            },
             "lineWidth": 1,
             "pointSize": 5,
             "scaleDistribution": {
               "type": "linear"
             },
             "showPoints": "auto",
-            "spanNulls": false,
+            "spanNulls": true,
             "stacking": {
               "group": "A",
               "mode": "none"
@@ -2302,18 +2305,6 @@
               {
                 "id": "custom.fillBelowTo",
                 "value": "TD vs window end"
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "TD vs window end"
-            },
-            "properties": [
-              {
-                "id": "custom.fillBelowTo",
-                "value": "TD vs window start"
               }
             ]
           }
@@ -2468,9 +2459,9 @@
       },
       {
         "current": {
-          "selected": true,
-          "text": "np04hddev",
-          "value": "np04hddev"
+          "selected": false,
+          "text": "mrigan-test",
+          "value": "mrigan-test"
         },
         "datasource": {
           "uid": "${influxdb}"
@@ -2488,17 +2479,25 @@
         "skipUrlSync": false,
         "sort": 0,
         "type": "query"
+      },
+      {
+        "description": "",
+        "hide": 2,
+        "name": "year",
+        "query": "31536000000",
+        "skipUrlSync": false,
+        "type": "constant"
       }
     ]
   },
   "time": {
-    "from": "2024-06-05T22:00:00.000Z",
-    "to": "2024-06-06T21:59:59.000Z"
+    "from": "2024-06-10T12:28:44.329Z",
+    "to": "2024-06-10T12:35:12.048Z"
   },
   "timepicker": {},
   "timezone": "",
   "title": "Trigger Flow",
   "uid": "v4_4_3-trigger_flow",
-  "version": 5,
+  "version": 6,
   "weekStart": ""
 }

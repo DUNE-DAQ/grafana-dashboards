@@ -25,7 +25,7 @@
   "editable": true,
   "fiscalYearStartMonth": 0,
   "graphTooltip": 0,
-  "id": 66,
+  "id": 169,
   "links": [],
   "liveNow": false,
   "panels": [
@@ -65,6 +65,7 @@
             "mode": "palette-classic"
           },
           "custom": {
+            "axisBorderShow": false,
             "axisCenteredZero": false,
             "axisColorMode": "text",
             "axisLabel": "",
@@ -274,6 +275,7 @@
             "mode": "palette-classic"
           },
           "custom": {
+            "axisBorderShow": false,
             "axisCenteredZero": false,
             "axisColorMode": "text",
             "axisLabel": "Hz",
@@ -727,6 +729,7 @@
     },
     {
       "datasource": {
+        "type": "influxdb",
         "uid": "${influxdb}"
       },
       "fieldConfig": {
@@ -735,6 +738,7 @@
             "mode": "palette-classic"
           },
           "custom": {
+            "axisBorderShow": false,
             "axisCenteredZero": false,
             "axisColorMode": "text",
             "axisLabel": "clock ticks",
@@ -844,7 +848,7 @@
           "measurement": "dunedaq.dfmodules.triggerrecordbuilderinfo.Info",
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "SELECT sum(\"data_request_width\") / sum(\"generated_data_requests\") FROM \"dunedaq.dfmodules.triggerrecordbuilderinfo.Info\" WHERE (\"partition_id\" = '${partition}' AND \"source_id\"=~/[^.]+\\.dataflow[^.]+\\.[^.]+/) AND $timeFilter AND \"generated_data_requests\" > 0 GROUP BY time($__interval) fill(null)\n",
+          "query": "SELECT sum(\"data_request_width\") / sum(\"generated_data_requests\") FROM \"dunedaq.dfmodules.triggerrecordbuilderinfo.Info\" WHERE (\"partition_id\" = '${partition}' AND \"source_id\"=~/[^.]+\\.[^.]+\\.[^.]+/) AND $timeFilter AND \"generated_data_requests\" > 0 GROUP BY time($__interval) fill(null)\n",
           "rawQuery": true,
           "refId": "B",
           "resultFormat": "time_series",
@@ -893,7 +897,7 @@
           "measurement": "dunedaq.dfmodules.triggerrecordbuilderinfo.Info",
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "SELECT sum(\"trigger_decision_width\") / sum(\"received_trigger_decisions\") FROM \"dunedaq.dfmodules.triggerrecordbuilderinfo.Info\" WHERE (\"partition_id\" = '${partition}' AND \"source_id\"=~/[^.]+\\.dataflow[^.]+\\.[^.]+/ ) AND $timeFilter AND \"received_trigger_decisions\" > 0 GROUP BY time($__interval) fill(null)\n",
+          "query": "SELECT sum(\"trigger_decision_width\") / sum(\"received_trigger_decisions\") FROM \"dunedaq.dfmodules.triggerrecordbuilderinfo.Info\" WHERE (\"partition_id\" = '${partition}' AND \"source_id\"=~/[^.]+\\.[^.]+\\.[^.]+/ ) AND $timeFilter AND \"received_trigger_decisions\" > 0 GROUP BY time($__interval) fill(null)\n",
           "rawQuery": true,
           "refId": "A",
           "resultFormat": "time_series",
@@ -961,6 +965,7 @@
         "displayMode": "gradient",
         "minVizHeight": 10,
         "minVizWidth": 0,
+        "namePlacement": "auto",
         "orientation": "horizontal",
         "reduceOptions": {
           "calcs": [
@@ -973,7 +978,7 @@
         "text": {},
         "valueMode": "color"
       },
-      "pluginVersion": "10.1.4",
+      "pluginVersion": "10.2.2",
       "targets": [
         {
           "alias": "Pending Trigger decisions",
@@ -1135,6 +1140,7 @@
             "mode": "palette-classic"
           },
           "custom": {
+            "axisBorderShow": false,
             "axisCenteredZero": false,
             "axisColorMode": "text",
             "axisLabel": "",
@@ -1392,6 +1398,7 @@
             "mode": "palette-classic"
           },
           "custom": {
+            "axisBorderShow": false,
             "axisCenteredZero": false,
             "axisColorMode": "text",
             "axisLabel": "",
@@ -1690,6 +1697,7 @@
             "mode": "palette-classic"
           },
           "custom": {
+            "axisBorderShow": false,
             "axisCenteredZero": false,
             "axisColorMode": "text",
             "axisLabel": "",
@@ -1921,6 +1929,7 @@
             "mode": "palette-classic"
           },
           "custom": {
+            "axisBorderShow": false,
             "axisCenteredZero": false,
             "axisColorMode": "text",
             "axisLabel": "Hz",
@@ -2108,6 +2117,7 @@
             "mode": "palette-classic"
           },
           "custom": {
+            "axisBorderShow": false,
             "axisCenteredZero": false,
             "axisColorMode": "text",
             "axisLabel": "",
@@ -2385,6 +2395,7 @@
             "mode": "palette-classic"
           },
           "custom": {
+            "axisBorderShow": false,
             "axisCenteredZero": false,
             "axisColorMode": "text",
             "axisLabel": "",
@@ -2812,6 +2823,7 @@
             "mode": "palette-classic"
           },
           "custom": {
+            "axisBorderShow": false,
             "axisCenteredZero": false,
             "axisColorMode": "text",
             "axisLabel": "milliseconds",
@@ -2961,9 +2973,8 @@
       "type": "timeseries"
     }
   ],
-  "refresh": "5s",
+  "refresh": false,
   "schemaVersion": 38,
-  "style": "dark",
   "tags": [
     "Subsystem",
     "v5.1.0"
@@ -2991,8 +3002,8 @@
       {
         "current": {
           "selected": false,
-          "text": "2apa-daphne-titavare",
-          "value": "2apa-daphne-titavare"
+          "text": "crp4-oks-session",
+          "value": "crp4-oks-session"
         },
         "datasource": {
           "uid": "${influxdb}"
@@ -3014,8 +3025,8 @@
       {
         "current": {
           "selected": false,
-          "text": "dataflow0",
-          "value": "dataflow0"
+          "text": "df-01",
+          "value": "df-01"
         },
         "datasource": {
           "uid": "${influxdb}"
@@ -3029,16 +3040,16 @@
         "options": [],
         "query": "SHOW TAG VALUES FROM \"dunedaq.dfmodules.triggerrecordbuilderinfo.Info\" WITH KEY=\"source_id\" WHERE $timeFilter AND \"partition_id\"='${partition}'",
         "refresh": 1,
-        "regex": "[^.]+\\.(dataflow[^.]+)\\.[^.]+",
+        "regex": "[^.]+\\.([^.]+)\\.[^.]+",
         "skipUrlSync": false,
-        "sort": 0,
+        "sort": 1,
         "type": "query"
       },
       {
         "current": {
           "selected": false,
-          "text": "trb",
-          "value": "trb"
+          "text": "df-01-trb",
+          "value": "df-01-trb"
         },
         "datasource": {
           "uid": "${influxdb}"
@@ -3053,15 +3064,15 @@
         "options": [],
         "query": "SHOW TAG VALUES FROM \"dunedaq.dfmodules.triggerrecordbuilderinfo.Info\" WITH KEY=\"source_id\" WHERE $timeFilter AND \"partition_id\"='${partition}'",
         "refresh": 1,
-        "regex": ".*\\.${application}\\.(.*)",
+        "regex": "[^.]+\\.${application}\\.([^.]+)",
         "skipUrlSync": false,
-        "sort": 0,
+        "sort": 1,
         "type": "query"
       }
     ]
   },
   "time": {
-    "from": "now-24h",
+    "from": "now-30m",
     "to": "now"
   },
   "timepicker": {
@@ -3092,6 +3103,6 @@
   "timezone": "",
   "title": "Dataflow",
   "uid": "v5_1_0-dataflow",
-  "version": 1,
+  "version": 3,
   "weekStart": ""
 }

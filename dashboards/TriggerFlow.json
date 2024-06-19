@@ -527,1211 +527,11 @@
     },
     {
       "collapsed": false,
-      "datasource": {
-        "type": "datasource",
-        "uid": "grafana"
-      },
       "gridPos": {
         "h": 1,
         "w": 24,
         "x": 0,
         "y": 14
-      },
-      "id": 8,
-      "panels": [],
-      "targets": [
-        {
-          "datasource": {
-            "type": "datasource",
-            "uid": "grafana"
-          },
-          "refId": "A"
-        }
-      ],
-      "title": "Filters",
-      "type": "row"
-    },
-    {
-      "datasource": {
-        "uid": "${influxdb}"
-      },
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "mode": "palette-classic"
-          },
-          "custom": {
-            "axisBorderShow": false,
-            "axisCenteredZero": false,
-            "axisColorMode": "text",
-            "axisLabel": "Rates",
-            "axisPlacement": "auto",
-            "barAlignment": 0,
-            "drawStyle": "line",
-            "fillOpacity": 0,
-            "gradientMode": "none",
-            "hideFrom": {
-              "legend": false,
-              "tooltip": false,
-              "viz": false
-            },
-            "insertNulls": false,
-            "lineInterpolation": "stepBefore",
-            "lineWidth": 1,
-            "pointSize": 5,
-            "scaleDistribution": {
-              "type": "linear"
-            },
-            "showPoints": "auto",
-            "spanNulls": false,
-            "stacking": {
-              "group": "A",
-              "mode": "none"
-            },
-            "thresholdsStyle": {
-              "mode": "off"
-            }
-          },
-          "mappings": [],
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "green",
-                "value": null
-              },
-              {
-                "color": "red",
-                "value": 80
-              }
-            ]
-          },
-          "unit": "hertz"
-        },
-        "overrides": []
-      },
-      "gridPos": {
-        "h": 8,
-        "w": 12,
-        "x": 0,
-        "y": 15
-      },
-      "id": 4,
-      "options": {
-        "legend": {
-          "calcs": [],
-          "displayMode": "table",
-          "placement": "right",
-          "showLegend": true
-        },
-        "tooltip": {
-          "mode": "multi",
-          "sort": "none"
-        }
-      },
-      "targets": [
-        {
-          "alias": "$tag_source_id",
-          "datasource": {
-            "uid": "${influxdb}"
-          },
-          "groupBy": [
-            {
-              "params": [
-                "$interval"
-              ],
-              "type": "time"
-            }
-          ],
-          "hide": false,
-          "measurement": "dunedaq.trigger.tpchannelfilterinfo.Info",
-          "orderByTime": "ASC",
-          "policy": "default",
-          "query": "SELECT non_negative_derivative(last(\"received_count\"), 1s) FROM \"dunedaq.trigger.tpchannelfilterinfo.Info\" WHERE (\"partition_id\" = '${partition}') AND $timeFilter GROUP BY time($__interval), \"source_id\" fill(null) ",
-          "rawQuery": true,
-          "refId": "H",
-          "resultFormat": "time_series",
-          "select": [
-            [
-              {
-                "params": [
-                  "received_count"
-                ],
-                "type": "field"
-              },
-              {
-                "params": [],
-                "type": "last"
-              },
-              {
-                "params": [
-                  "1s"
-                ],
-                "type": "non_negative_derivative"
-              }
-            ]
-          ],
-          "tags": [
-            {
-              "key": "partition_id",
-              "operator": "=",
-              "value": "np02-coldbox"
-            },
-            {
-              "condition": "AND",
-              "key": "source_id",
-              "operator": "=",
-              "value": "np02-coldbox.trigger.channelfilter_ru0_link0"
-            }
-          ]
-        }
-      ],
-      "title": "TPChannelFilter receive",
-      "transformations": [
-        {
-          "id": "renameByRegex",
-          "options": {
-            "regex": "[^.]+\\.[^.]+\\.([^.]+)",
-            "renamePattern": "$1"
-          }
-        }
-      ],
-      "type": "timeseries"
-    },
-    {
-      "datasource": {
-        "uid": "${influxdb}"
-      },
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "mode": "palette-classic"
-          },
-          "custom": {
-            "axisBorderShow": false,
-            "axisCenteredZero": false,
-            "axisColorMode": "text",
-            "axisLabel": "Rates",
-            "axisPlacement": "auto",
-            "barAlignment": 0,
-            "drawStyle": "line",
-            "fillOpacity": 0,
-            "gradientMode": "none",
-            "hideFrom": {
-              "legend": false,
-              "tooltip": false,
-              "viz": false
-            },
-            "insertNulls": false,
-            "lineInterpolation": "stepBefore",
-            "lineWidth": 1,
-            "pointSize": 5,
-            "scaleDistribution": {
-              "type": "linear"
-            },
-            "showPoints": "auto",
-            "spanNulls": false,
-            "stacking": {
-              "group": "A",
-              "mode": "none"
-            },
-            "thresholdsStyle": {
-              "mode": "off"
-            }
-          },
-          "mappings": [],
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "green",
-                "value": null
-              },
-              {
-                "color": "red",
-                "value": 80
-              }
-            ]
-          },
-          "unit": "hertz"
-        },
-        "overrides": []
-      },
-      "gridPos": {
-        "h": 8,
-        "w": 12,
-        "x": 12,
-        "y": 15
-      },
-      "id": 10,
-      "options": {
-        "legend": {
-          "calcs": [],
-          "displayMode": "table",
-          "placement": "right",
-          "showLegend": true
-        },
-        "tooltip": {
-          "mode": "multi",
-          "sort": "none"
-        }
-      },
-      "targets": [
-        {
-          "alias": "$tag_source_id",
-          "datasource": {
-            "uid": "${influxdb}"
-          },
-          "groupBy": [
-            {
-              "params": [
-                "$interval"
-              ],
-              "type": "time"
-            }
-          ],
-          "hide": false,
-          "measurement": "dunedaq.trigger.tpchannelfilterinfo.Info",
-          "orderByTime": "ASC",
-          "policy": "default",
-          "query": "SELECT non_negative_derivative(last(\"sent_count\"), 1s) FROM \"dunedaq.trigger.tpchannelfilterinfo.Info\" WHERE (\"partition_id\" = '${partition}') AND $timeFilter GROUP BY time($__interval), \"source_id\" fill(null)",
-          "rawQuery": true,
-          "refId": "H",
-          "resultFormat": "time_series",
-          "select": [
-            [
-              {
-                "params": [
-                  "sent_count"
-                ],
-                "type": "field"
-              },
-              {
-                "params": [],
-                "type": "last"
-              },
-              {
-                "params": [
-                  "1s"
-                ],
-                "type": "non_negative_derivative"
-              }
-            ]
-          ],
-          "tags": [
-            {
-              "key": "partition_id",
-              "operator": "=",
-              "value": "np02-coldbox"
-            },
-            {
-              "condition": "AND",
-              "key": "source_id",
-              "operator": "=",
-              "value": "np02-coldbox.trigger.channelfilter_ru0_link6"
-            }
-          ]
-        }
-      ],
-      "title": "TPChannelFilter sent",
-      "transformations": [
-        {
-          "id": "renameByRegex",
-          "options": {
-            "regex": "[^.]+\\.[^.]+\\.([^.]+)",
-            "renamePattern": "$1"
-          }
-        }
-      ],
-      "type": "timeseries"
-    },
-    {
-      "collapsed": false,
-      "datasource": {
-        "type": "datasource",
-        "uid": "grafana"
-      },
-      "gridPos": {
-        "h": 1,
-        "w": 24,
-        "x": 0,
-        "y": 23
-      },
-      "id": 6,
-      "panels": [],
-      "targets": [
-        {
-          "datasource": {
-            "type": "datasource",
-            "uid": "grafana"
-          },
-          "refId": "A"
-        }
-      ],
-      "title": "TAs/TCs",
-      "type": "row"
-    },
-    {
-      "datasource": {
-        "uid": "${influxdb}"
-      },
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "mode": "palette-classic"
-          },
-          "custom": {
-            "axisBorderShow": false,
-            "axisCenteredZero": false,
-            "axisColorMode": "text",
-            "axisLabel": "",
-            "axisPlacement": "auto",
-            "barAlignment": 0,
-            "drawStyle": "line",
-            "fillOpacity": 0,
-            "gradientMode": "none",
-            "hideFrom": {
-              "legend": false,
-              "tooltip": false,
-              "viz": false
-            },
-            "insertNulls": false,
-            "lineInterpolation": "stepAfter",
-            "lineWidth": 1,
-            "pointSize": 5,
-            "scaleDistribution": {
-              "type": "linear"
-            },
-            "showPoints": "auto",
-            "spanNulls": false,
-            "stacking": {
-              "group": "A",
-              "mode": "none"
-            },
-            "thresholdsStyle": {
-              "mode": "off"
-            }
-          },
-          "mappings": [],
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "green",
-                "value": null
-              },
-              {
-                "color": "red",
-                "value": 80
-              }
-            ]
-          },
-          "unit": "hertz"
-        },
-        "overrides": []
-      },
-      "gridPos": {
-        "h": 9,
-        "w": 7,
-        "x": 0,
-        "y": 24
-      },
-      "id": 14,
-      "options": {
-        "legend": {
-          "calcs": [],
-          "displayMode": "list",
-          "placement": "bottom",
-          "showLegend": true
-        },
-        "tooltip": {
-          "mode": "multi",
-          "sort": "none"
-        }
-      },
-      "targets": [
-        {
-          "alias": "Received",
-          "datasource": {
-            "uid": "${influxdb}"
-          },
-          "groupBy": [],
-          "measurement": "dunedaq.trigger.triggerzipperinfo.Info",
-          "orderByTime": "ASC",
-          "policy": "default",
-          "query": "SELECT non_negative_derivative(last(\"n_received\"), 1s) FROM \"dunedaq.trigger.triggerzipperinfo.Info\" WHERE (\"partition_id\" = '${partition}' ) AND $timeFilter GROUP BY time($__interval)",
-          "rawQuery": true,
-          "refId": "A",
-          "resultFormat": "time_series",
-          "select": [
-            [
-              {
-                "params": [
-                  "n_received"
-                ],
-                "type": "field"
-              }
-            ],
-            [
-              {
-                "params": [
-                  "n_sent"
-                ],
-                "type": "field"
-              }
-            ],
-            [
-              {
-                "params": [
-                  "n_tardy"
-                ],
-                "type": "field"
-              }
-            ]
-          ],
-          "tags": [
-            {
-              "key": "partition_id",
-              "operator": "=",
-              "value": "np02-coldbox"
-            },
-            {
-              "condition": "AND",
-              "key": "source_id",
-              "operator": "=",
-              "value": "np02-coldbox.trigger.zip_4"
-            }
-          ]
-        },
-        {
-          "alias": "Sent",
-          "datasource": {
-            "uid": "${influxdb}"
-          },
-          "groupBy": [],
-          "hide": false,
-          "measurement": "dunedaq.trigger.triggerzipperinfo.Info",
-          "orderByTime": "ASC",
-          "policy": "default",
-          "query": "SELECT non_negative_derivative(last(\"n_sent\"), 1s) FROM \"dunedaq.trigger.triggerzipperinfo.Info\" WHERE (\"partition_id\" = '${partition}' ) AND $timeFilter GROUP BY time($__interval)",
-          "rawQuery": true,
-          "refId": "C",
-          "resultFormat": "time_series",
-          "select": [
-            [
-              {
-                "params": [
-                  "n_received"
-                ],
-                "type": "field"
-              }
-            ],
-            [
-              {
-                "params": [
-                  "n_sent"
-                ],
-                "type": "field"
-              }
-            ],
-            [
-              {
-                "params": [
-                  "n_tardy"
-                ],
-                "type": "field"
-              }
-            ]
-          ],
-          "tags": [
-            {
-              "key": "partition_id",
-              "operator": "=",
-              "value": "np02-coldbox"
-            },
-            {
-              "condition": "AND",
-              "key": "source_id",
-              "operator": "=",
-              "value": "np02-coldbox.trigger.zip_4"
-            }
-          ]
-        },
-        {
-          "alias": "Tardy",
-          "datasource": {
-            "uid": "${influxdb}"
-          },
-          "groupBy": [],
-          "hide": false,
-          "measurement": "dunedaq.trigger.triggerzipperinfo.Info",
-          "orderByTime": "ASC",
-          "policy": "default",
-          "query": "SELECT non_negative_derivative(last(\"n_tardy\"), 1s) FROM \"dunedaq.trigger.triggerzipperinfo.Info\" WHERE (\"partition_id\" = '${partition}' ) AND $timeFilter GROUP BY time($__interval)",
-          "rawQuery": true,
-          "refId": "D",
-          "resultFormat": "time_series",
-          "select": [
-            [
-              {
-                "params": [
-                  "n_received"
-                ],
-                "type": "field"
-              }
-            ],
-            [
-              {
-                "params": [
-                  "n_sent"
-                ],
-                "type": "field"
-              }
-            ],
-            [
-              {
-                "params": [
-                  "n_tardy"
-                ],
-                "type": "field"
-              }
-            ]
-          ],
-          "tags": [
-            {
-              "key": "partition_id",
-              "operator": "=",
-              "value": "np02-coldbox"
-            },
-            {
-              "condition": "AND",
-              "key": "source_id",
-              "operator": "=",
-              "value": "np02-coldbox.trigger.zip_4"
-            }
-          ]
-        }
-      ],
-      "title": "TP Zipper",
-      "type": "timeseries"
-    },
-    {
-      "datasource": {
-        "type": "influxdb",
-        "uid": "${influxdb}"
-      },
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "mode": "palette-classic"
-          },
-          "custom": {
-            "axisBorderShow": false,
-            "axisCenteredZero": false,
-            "axisColorMode": "text",
-            "axisLabel": "",
-            "axisPlacement": "auto",
-            "barAlignment": 0,
-            "drawStyle": "line",
-            "fillOpacity": 0,
-            "gradientMode": "none",
-            "hideFrom": {
-              "legend": false,
-              "tooltip": false,
-              "viz": false
-            },
-            "insertNulls": false,
-            "lineInterpolation": "stepAfter",
-            "lineWidth": 1,
-            "pointSize": 5,
-            "scaleDistribution": {
-              "type": "linear"
-            },
-            "showPoints": "auto",
-            "spanNulls": false,
-            "stacking": {
-              "group": "A",
-              "mode": "none"
-            },
-            "thresholdsStyle": {
-              "mode": "off"
-            }
-          },
-          "mappings": [],
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "green",
-                "value": null
-              },
-              {
-                "color": "red",
-                "value": 80
-              }
-            ]
-          },
-          "unit": "hertz"
-        },
-        "overrides": []
-      },
-      "gridPos": {
-        "h": 9,
-        "w": 9,
-        "x": 7,
-        "y": 24
-      },
-      "id": 15,
-      "options": {
-        "legend": {
-          "calcs": [],
-          "displayMode": "list",
-          "placement": "bottom",
-          "showLegend": true
-        },
-        "tooltip": {
-          "mode": "multi",
-          "sort": "none"
-        }
-      },
-      "targets": [
-        {
-          "alias": "",
-          "datasource": {
-            "uid": "${influxdb}"
-          },
-          "groupBy": [],
-          "measurement": "dunedaq.trigger.triggergenericmakerinfo.Info",
-          "orderByTime": "ASC",
-          "policy": "default",
-          "query": "SELECT non_negative_derivative(last(\"received_count\"), 1s) FROM \"dunedaq.trigger.triggergenericmakerinfo.Info\" WHERE (\"partition_id\" = '${partition}'  AND \"source_id\" =~ /.*\\.tam_\\d+/) AND $timeFilter GROUP BY time($__interval), \"source_id\"",
-          "rawQuery": true,
-          "refId": "A",
-          "resultFormat": "time_series",
-          "select": [
-            [
-              {
-                "params": [
-                  "received_count"
-                ],
-                "type": "field"
-              }
-            ],
-            [
-              {
-                "params": [
-                  "sent_count"
-                ],
-                "type": "field"
-              }
-            ]
-          ],
-          "tags": [
-            {
-              "key": "partition_id",
-              "operator": "=",
-              "value": "np02-coldbox"
-            },
-            {
-              "condition": "AND",
-              "key": "source_id",
-              "operator": "=",
-              "value": "np02-coldbox.trigger.tam_4"
-            }
-          ]
-        },
-        {
-          "alias": "",
-          "datasource": {
-            "uid": "${influxdb}"
-          },
-          "groupBy": [],
-          "hide": false,
-          "measurement": "dunedaq.trigger.triggergenericmakerinfo.Info",
-          "orderByTime": "ASC",
-          "policy": "default",
-          "query": "SELECT non_negative_derivative(last(\"sent_count\"), 1s) FROM \"dunedaq.trigger.triggergenericmakerinfo.Info\" WHERE (\"partition_id\" = '${partition}'  AND \"source_id\" =~ /.*\\.tam_\\d+/) AND $timeFilter GROUP BY time($__interval), \"source_id\"",
-          "rawQuery": true,
-          "refId": "C",
-          "resultFormat": "time_series",
-          "select": [
-            [
-              {
-                "params": [
-                  "received_count"
-                ],
-                "type": "field"
-              }
-            ],
-            [
-              {
-                "params": [
-                  "sent_count"
-                ],
-                "type": "field"
-              }
-            ]
-          ],
-          "tags": [
-            {
-              "key": "partition_id",
-              "operator": "=",
-              "value": "np02-coldbox"
-            },
-            {
-              "condition": "AND",
-              "key": "source_id",
-              "operator": "=",
-              "value": "np02-coldbox.trigger.tam_4"
-            }
-          ]
-        }
-      ],
-      "title": "TAM",
-      "type": "timeseries"
-    },
-    {
-      "datasource": {
-        "type": "influxdb",
-        "uid": "${influxdb}"
-      },
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "mode": "palette-classic"
-          },
-          "custom": {
-            "axisBorderShow": false,
-            "axisCenteredZero": false,
-            "axisColorMode": "text",
-            "axisLabel": "",
-            "axisPlacement": "auto",
-            "barAlignment": 0,
-            "drawStyle": "line",
-            "fillOpacity": 0,
-            "gradientMode": "none",
-            "hideFrom": {
-              "legend": false,
-              "tooltip": false,
-              "viz": false
-            },
-            "insertNulls": false,
-            "lineInterpolation": "stepAfter",
-            "lineWidth": 1,
-            "pointSize": 5,
-            "scaleDistribution": {
-              "type": "linear"
-            },
-            "showPoints": "auto",
-            "spanNulls": false,
-            "stacking": {
-              "group": "A",
-              "mode": "none"
-            },
-            "thresholdsStyle": {
-              "mode": "off"
-            }
-          },
-          "mappings": [],
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "green",
-                "value": null
-              },
-              {
-                "color": "red",
-                "value": 80
-              }
-            ]
-          },
-          "unit": "hertz"
-        },
-        "overrides": []
-      },
-      "gridPos": {
-        "h": 9,
-        "w": 8,
-        "x": 16,
-        "y": 24
-      },
-      "id": 16,
-      "options": {
-        "legend": {
-          "calcs": [],
-          "displayMode": "list",
-          "placement": "bottom",
-          "showLegend": true
-        },
-        "tooltip": {
-          "mode": "multi",
-          "sort": "none"
-        }
-      },
-      "targets": [
-        {
-          "alias": "",
-          "datasource": {
-            "uid": "${influxdb}"
-          },
-          "groupBy": [],
-          "measurement": "dunedaq.trigger.triggergenericmakerinfo.Info",
-          "orderByTime": "ASC",
-          "policy": "default",
-          "query": "SELECT non_negative_derivative(last(\"received_count\"),1s) FROM \"dunedaq.trigger.triggergenericmakerinfo.Info\" WHERE (\"partition_id\" = '${partition}'  AND \"source_id\" =~ /.*\\.tcm_\\d+/) AND $timeFilter GROUP BY time($__interval), \"source_id\"",
-          "rawQuery": true,
-          "refId": "A",
-          "resultFormat": "time_series",
-          "select": [
-            [
-              {
-                "params": [
-                  "received_count"
-                ],
-                "type": "field"
-              }
-            ],
-            [
-              {
-                "params": [
-                  "sent_count"
-                ],
-                "type": "field"
-              }
-            ]
-          ],
-          "tags": [
-            {
-              "key": "partition_id",
-              "operator": "=",
-              "value": "np02-coldbox"
-            },
-            {
-              "condition": "AND",
-              "key": "source_id",
-              "operator": "=",
-              "value": "np02-coldbox.trigger.tcm"
-            }
-          ]
-        },
-        {
-          "alias": "",
-          "datasource": {
-            "uid": "${influxdb}"
-          },
-          "groupBy": [],
-          "hide": false,
-          "measurement": "dunedaq.trigger.triggergenericmakerinfo.Info",
-          "orderByTime": "ASC",
-          "policy": "default",
-          "query": "SELECT non_negative_derivative(last(\"sent_count\"),1s) FROM \"dunedaq.trigger.triggergenericmakerinfo.Info\" WHERE (\"partition_id\" = '${partition}'  AND \"source_id\" =~ /.*\\.tcm_\\d+/) AND $timeFilter GROUP BY time($__interval), \"source_id\"",
-          "rawQuery": true,
-          "refId": "C",
-          "resultFormat": "time_series",
-          "select": [
-            [
-              {
-                "params": [
-                  "received_count"
-                ],
-                "type": "field"
-              }
-            ],
-            [
-              {
-                "params": [
-                  "sent_count"
-                ],
-                "type": "field"
-              }
-            ]
-          ],
-          "tags": [
-            {
-              "key": "partition_id",
-              "operator": "=",
-              "value": "np02-coldbox"
-            },
-            {
-              "condition": "AND",
-              "key": "source_id",
-              "operator": "=",
-              "value": "np02-coldbox.trigger.tcm"
-            }
-          ]
-        }
-      ],
-      "title": "TCM",
-      "type": "timeseries"
-    },
-    {
-      "datasource": {
-        "uid": "${influxdb}"
-      },
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "mode": "palette-classic"
-          },
-          "custom": {
-            "axisBorderShow": false,
-            "axisCenteredZero": false,
-            "axisColorMode": "text",
-            "axisLabel": "",
-            "axisPlacement": "auto",
-            "barAlignment": 0,
-            "drawStyle": "line",
-            "fillOpacity": 0,
-            "gradientMode": "none",
-            "hideFrom": {
-              "legend": false,
-              "tooltip": false,
-              "viz": false
-            },
-            "insertNulls": false,
-            "lineInterpolation": "stepBefore",
-            "lineWidth": 1,
-            "pointSize": 5,
-            "scaleDistribution": {
-              "type": "linear"
-            },
-            "showPoints": "auto",
-            "spanNulls": false,
-            "stacking": {
-              "group": "A",
-              "mode": "none"
-            },
-            "thresholdsStyle": {
-              "mode": "off"
-            }
-          },
-          "mappings": [],
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "green",
-                "value": null
-              },
-              {
-                "color": "red",
-                "value": 80
-              }
-            ]
-          },
-          "unit": "hertz"
-        },
-        "overrides": []
-      },
-      "gridPos": {
-        "h": 8,
-        "w": 12,
-        "x": 0,
-        "y": 33
-      },
-      "id": 11,
-      "options": {
-        "legend": {
-          "calcs": [],
-          "displayMode": "table",
-          "placement": "right",
-          "showLegend": true
-        },
-        "tooltip": {
-          "mode": "multi",
-          "sort": "none"
-        }
-      },
-      "targets": [
-        {
-          "alias": "$tag_source_id",
-          "datasource": {
-            "uid": "${influxdb}"
-          },
-          "groupBy": [],
-          "hide": false,
-          "measurement": "dunedaq.trigger.faketpcreatorheartbeatmakerinfo.Info",
-          "orderByTime": "ASC",
-          "policy": "default",
-          "query": "SELECT non_negative_derivative(last(\"tpset_received_count\"),1s) FROM \"dunedaq.trigger.faketpcreatorheartbeatmakerinfo.Info\" WHERE (\"partition_id\" = '${partition}') AND $timeFilter GROUP BY time($__interval), \"source_id\"",
-          "rawQuery": true,
-          "refId": "H",
-          "resultFormat": "time_series",
-          "select": [
-            [
-              {
-                "params": [
-                  "tpset_received_count"
-                ],
-                "type": "field"
-              }
-            ]
-          ],
-          "tags": [
-            {
-              "key": "partition_id",
-              "operator": "=",
-              "value": "np02-coldbox"
-            },
-            {
-              "condition": "AND",
-              "key": "source_id",
-              "operator": "=",
-              "value": "np02-coldbox.trigger.heartbeatmaker_ru0_link6"
-            }
-          ]
-        }
-      ],
-      "title": "TPHeartbeatMaker receive",
-      "transformations": [
-        {
-          "id": "renameByRegex",
-          "options": {
-            "regex": "[^.]+\\.[^.]+\\.([^.]+)",
-            "renamePattern": "$1"
-          }
-        }
-      ],
-      "type": "timeseries"
-    },
-    {
-      "datasource": {
-        "uid": "${influxdb}"
-      },
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "mode": "palette-classic"
-          },
-          "custom": {
-            "axisBorderShow": false,
-            "axisCenteredZero": false,
-            "axisColorMode": "text",
-            "axisLabel": "",
-            "axisPlacement": "auto",
-            "barAlignment": 0,
-            "drawStyle": "line",
-            "fillOpacity": 0,
-            "gradientMode": "none",
-            "hideFrom": {
-              "legend": false,
-              "tooltip": false,
-              "viz": false
-            },
-            "insertNulls": false,
-            "lineInterpolation": "stepBefore",
-            "lineWidth": 1,
-            "pointSize": 5,
-            "scaleDistribution": {
-              "type": "linear"
-            },
-            "showPoints": "auto",
-            "spanNulls": false,
-            "stacking": {
-              "group": "A",
-              "mode": "none"
-            },
-            "thresholdsStyle": {
-              "mode": "off"
-            }
-          },
-          "mappings": [],
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "green",
-                "value": null
-              },
-              {
-                "color": "red",
-                "value": 80
-              }
-            ]
-          },
-          "unit": "hertz"
-        },
-        "overrides": []
-      },
-      "gridPos": {
-        "h": 8,
-        "w": 12,
-        "x": 12,
-        "y": 33
-      },
-      "id": 12,
-      "options": {
-        "legend": {
-          "calcs": [],
-          "displayMode": "table",
-          "placement": "right",
-          "showLegend": true
-        },
-        "tooltip": {
-          "mode": "multi",
-          "sort": "none"
-        }
-      },
-      "targets": [
-        {
-          "alias": "$tag_source_id",
-          "datasource": {
-            "uid": "${influxdb}"
-          },
-          "groupBy": [],
-          "hide": false,
-          "measurement": "dunedaq.trigger.faketpcreatorheartbeatmakerinfo.Info",
-          "orderByTime": "ASC",
-          "policy": "default",
-          "query": "SELECT non_negative_derivative(last(\"tpset_sent_count\"), 1s) FROM \"dunedaq.trigger.faketpcreatorheartbeatmakerinfo.Info\" WHERE (\"partition_id\" = '${partition}') AND $timeFilter GROUP BY time($__interval), \"source_id\"",
-          "rawQuery": true,
-          "refId": "H",
-          "resultFormat": "time_series",
-          "select": [
-            [
-              {
-                "params": [
-                  "tpset_sent_count"
-                ],
-                "type": "field"
-              }
-            ]
-          ],
-          "tags": [
-            {
-              "key": "partition_id",
-              "operator": "=",
-              "value": "np02-coldbox"
-            },
-            {
-              "condition": "AND",
-              "key": "source_id",
-              "operator": "=",
-              "value": "np02-coldbox.trigger.heartbeatmaker_ru0_link6"
-            }
-          ]
-        }
-      ],
-      "title": "TPHeartbeatMaker sent",
-      "transformations": [
-        {
-          "id": "renameByRegex",
-          "options": {
-            "regex": "[^.]+\\.[^.]+\\.([^.]+)",
-            "renamePattern": "$1"
-          }
-        }
-      ],
-      "type": "timeseries"
-    },
-    {
-      "collapsed": false,
-      "gridPos": {
-        "h": 1,
-        "w": 24,
-        "x": 0,
-        "y": 41
       },
       "id": 18,
       "panels": [],
@@ -1802,7 +602,7 @@
         "h": 8,
         "w": 12,
         "x": 0,
-        "y": 42
+        "y": 15
       },
       "id": 19,
       "options": {
@@ -1982,7 +782,7 @@
         "h": 8,
         "w": 12,
         "x": 12,
-        "y": 42
+        "y": 15
       },
       "id": 20,
       "options": {
@@ -2118,7 +918,7 @@
         "h": 8,
         "w": 12,
         "x": 0,
-        "y": 50
+        "y": 23
       },
       "id": 21,
       "options": {
@@ -2222,7 +1022,7 @@
           "tags": []
         }
       ],
-      "title": "MLT Latency",
+      "title": "TC Latency at MLT input",
       "transformations": [
         {
           "id": "renameByRegex",
@@ -2314,7 +1114,7 @@
         "h": 8,
         "w": 12,
         "x": 12,
-        "y": 50
+        "y": 23
       },
       "id": 22,
       "options": {
@@ -2418,7 +1218,7 @@
           "tags": []
         }
       ],
-      "title": "TD window latency",
+      "title": "TD window boundaries vs system time",
       "transformations": [
         {
           "id": "renameByRegex",
@@ -2429,6 +1229,1208 @@
         }
       ],
       "type": "timeseries"
+    },
+    {
+      "collapsed": true,
+      "datasource": {
+        "type": "datasource",
+        "uid": "grafana"
+      },
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 31
+      },
+      "id": 8,
+      "panels": [
+        {
+          "datasource": {
+            "uid": "${influxdb}"
+          },
+          "fieldConfig": {
+            "defaults": {
+              "color": {
+                "mode": "palette-classic"
+              },
+              "custom": {
+                "axisBorderShow": false,
+                "axisCenteredZero": false,
+                "axisColorMode": "text",
+                "axisLabel": "Rates",
+                "axisPlacement": "auto",
+                "barAlignment": 0,
+                "drawStyle": "line",
+                "fillOpacity": 0,
+                "gradientMode": "none",
+                "hideFrom": {
+                  "legend": false,
+                  "tooltip": false,
+                  "viz": false
+                },
+                "insertNulls": false,
+                "lineInterpolation": "stepBefore",
+                "lineWidth": 1,
+                "pointSize": 5,
+                "scaleDistribution": {
+                  "type": "linear"
+                },
+                "showPoints": "auto",
+                "spanNulls": false,
+                "stacking": {
+                  "group": "A",
+                  "mode": "none"
+                },
+                "thresholdsStyle": {
+                  "mode": "off"
+                }
+              },
+              "mappings": [],
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {
+                    "color": "green",
+                    "value": null
+                  },
+                  {
+                    "color": "red",
+                    "value": 80
+                  }
+                ]
+              },
+              "unit": "hertz"
+            },
+            "overrides": []
+          },
+          "gridPos": {
+            "h": 8,
+            "w": 12,
+            "x": 0,
+            "y": 15
+          },
+          "id": 4,
+          "options": {
+            "legend": {
+              "calcs": [],
+              "displayMode": "table",
+              "placement": "right",
+              "showLegend": true
+            },
+            "tooltip": {
+              "mode": "multi",
+              "sort": "none"
+            }
+          },
+          "targets": [
+            {
+              "alias": "$tag_source_id",
+              "datasource": {
+                "uid": "${influxdb}"
+              },
+              "groupBy": [
+                {
+                  "params": [
+                    "$interval"
+                  ],
+                  "type": "time"
+                }
+              ],
+              "hide": false,
+              "measurement": "dunedaq.trigger.tpchannelfilterinfo.Info",
+              "orderByTime": "ASC",
+              "policy": "default",
+              "query": "SELECT non_negative_derivative(last(\"received_count\"), 1s) FROM \"dunedaq.trigger.tpchannelfilterinfo.Info\" WHERE (\"partition_id\" = '${partition}') AND $timeFilter GROUP BY time($__interval), \"source_id\" fill(null) ",
+              "rawQuery": true,
+              "refId": "H",
+              "resultFormat": "time_series",
+              "select": [
+                [
+                  {
+                    "params": [
+                      "received_count"
+                    ],
+                    "type": "field"
+                  },
+                  {
+                    "params": [],
+                    "type": "last"
+                  },
+                  {
+                    "params": [
+                      "1s"
+                    ],
+                    "type": "non_negative_derivative"
+                  }
+                ]
+              ],
+              "tags": [
+                {
+                  "key": "partition_id",
+                  "operator": "=",
+                  "value": "np02-coldbox"
+                },
+                {
+                  "condition": "AND",
+                  "key": "source_id",
+                  "operator": "=",
+                  "value": "np02-coldbox.trigger.channelfilter_ru0_link0"
+                }
+              ]
+            }
+          ],
+          "title": "TPChannelFilter receive",
+          "transformations": [
+            {
+              "id": "renameByRegex",
+              "options": {
+                "regex": "[^.]+\\.[^.]+\\.([^.]+)",
+                "renamePattern": "$1"
+              }
+            }
+          ],
+          "type": "timeseries"
+        },
+        {
+          "datasource": {
+            "uid": "${influxdb}"
+          },
+          "fieldConfig": {
+            "defaults": {
+              "color": {
+                "mode": "palette-classic"
+              },
+              "custom": {
+                "axisBorderShow": false,
+                "axisCenteredZero": false,
+                "axisColorMode": "text",
+                "axisLabel": "Rates",
+                "axisPlacement": "auto",
+                "barAlignment": 0,
+                "drawStyle": "line",
+                "fillOpacity": 0,
+                "gradientMode": "none",
+                "hideFrom": {
+                  "legend": false,
+                  "tooltip": false,
+                  "viz": false
+                },
+                "insertNulls": false,
+                "lineInterpolation": "stepBefore",
+                "lineWidth": 1,
+                "pointSize": 5,
+                "scaleDistribution": {
+                  "type": "linear"
+                },
+                "showPoints": "auto",
+                "spanNulls": false,
+                "stacking": {
+                  "group": "A",
+                  "mode": "none"
+                },
+                "thresholdsStyle": {
+                  "mode": "off"
+                }
+              },
+              "mappings": [],
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {
+                    "color": "green",
+                    "value": null
+                  },
+                  {
+                    "color": "red",
+                    "value": 80
+                  }
+                ]
+              },
+              "unit": "hertz"
+            },
+            "overrides": []
+          },
+          "gridPos": {
+            "h": 8,
+            "w": 12,
+            "x": 12,
+            "y": 15
+          },
+          "id": 10,
+          "options": {
+            "legend": {
+              "calcs": [],
+              "displayMode": "table",
+              "placement": "right",
+              "showLegend": true
+            },
+            "tooltip": {
+              "mode": "multi",
+              "sort": "none"
+            }
+          },
+          "targets": [
+            {
+              "alias": "$tag_source_id",
+              "datasource": {
+                "uid": "${influxdb}"
+              },
+              "groupBy": [
+                {
+                  "params": [
+                    "$interval"
+                  ],
+                  "type": "time"
+                }
+              ],
+              "hide": false,
+              "measurement": "dunedaq.trigger.tpchannelfilterinfo.Info",
+              "orderByTime": "ASC",
+              "policy": "default",
+              "query": "SELECT non_negative_derivative(last(\"sent_count\"), 1s) FROM \"dunedaq.trigger.tpchannelfilterinfo.Info\" WHERE (\"partition_id\" = '${partition}') AND $timeFilter GROUP BY time($__interval), \"source_id\" fill(null)",
+              "rawQuery": true,
+              "refId": "H",
+              "resultFormat": "time_series",
+              "select": [
+                [
+                  {
+                    "params": [
+                      "sent_count"
+                    ],
+                    "type": "field"
+                  },
+                  {
+                    "params": [],
+                    "type": "last"
+                  },
+                  {
+                    "params": [
+                      "1s"
+                    ],
+                    "type": "non_negative_derivative"
+                  }
+                ]
+              ],
+              "tags": [
+                {
+                  "key": "partition_id",
+                  "operator": "=",
+                  "value": "np02-coldbox"
+                },
+                {
+                  "condition": "AND",
+                  "key": "source_id",
+                  "operator": "=",
+                  "value": "np02-coldbox.trigger.channelfilter_ru0_link6"
+                }
+              ]
+            }
+          ],
+          "title": "TPChannelFilter sent",
+          "transformations": [
+            {
+              "id": "renameByRegex",
+              "options": {
+                "regex": "[^.]+\\.[^.]+\\.([^.]+)",
+                "renamePattern": "$1"
+              }
+            }
+          ],
+          "type": "timeseries"
+        }
+      ],
+      "targets": [
+        {
+          "datasource": {
+            "type": "datasource",
+            "uid": "grafana"
+          },
+          "refId": "A"
+        }
+      ],
+      "title": "Filters",
+      "type": "row"
+    },
+    {
+      "collapsed": true,
+      "datasource": {
+        "type": "datasource",
+        "uid": "grafana"
+      },
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 32
+      },
+      "id": 6,
+      "panels": [
+        {
+          "datasource": {
+            "uid": "${influxdb}"
+          },
+          "fieldConfig": {
+            "defaults": {
+              "color": {
+                "mode": "palette-classic"
+              },
+              "custom": {
+                "axisBorderShow": false,
+                "axisCenteredZero": false,
+                "axisColorMode": "text",
+                "axisLabel": "",
+                "axisPlacement": "auto",
+                "barAlignment": 0,
+                "drawStyle": "line",
+                "fillOpacity": 0,
+                "gradientMode": "none",
+                "hideFrom": {
+                  "legend": false,
+                  "tooltip": false,
+                  "viz": false
+                },
+                "insertNulls": false,
+                "lineInterpolation": "stepAfter",
+                "lineWidth": 1,
+                "pointSize": 5,
+                "scaleDistribution": {
+                  "type": "linear"
+                },
+                "showPoints": "auto",
+                "spanNulls": false,
+                "stacking": {
+                  "group": "A",
+                  "mode": "none"
+                },
+                "thresholdsStyle": {
+                  "mode": "off"
+                }
+              },
+              "mappings": [],
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {
+                    "color": "green",
+                    "value": null
+                  },
+                  {
+                    "color": "red",
+                    "value": 80
+                  }
+                ]
+              },
+              "unit": "hertz"
+            },
+            "overrides": []
+          },
+          "gridPos": {
+            "h": 9,
+            "w": 7,
+            "x": 0,
+            "y": 16
+          },
+          "id": 14,
+          "options": {
+            "legend": {
+              "calcs": [],
+              "displayMode": "list",
+              "placement": "bottom",
+              "showLegend": true
+            },
+            "tooltip": {
+              "mode": "multi",
+              "sort": "none"
+            }
+          },
+          "targets": [
+            {
+              "alias": "Received",
+              "datasource": {
+                "uid": "${influxdb}"
+              },
+              "groupBy": [],
+              "measurement": "dunedaq.trigger.triggerzipperinfo.Info",
+              "orderByTime": "ASC",
+              "policy": "default",
+              "query": "SELECT non_negative_derivative(last(\"n_received\"), 1s) FROM \"dunedaq.trigger.triggerzipperinfo.Info\" WHERE (\"partition_id\" = '${partition}' ) AND $timeFilter GROUP BY time($__interval)",
+              "rawQuery": true,
+              "refId": "A",
+              "resultFormat": "time_series",
+              "select": [
+                [
+                  {
+                    "params": [
+                      "n_received"
+                    ],
+                    "type": "field"
+                  }
+                ],
+                [
+                  {
+                    "params": [
+                      "n_sent"
+                    ],
+                    "type": "field"
+                  }
+                ],
+                [
+                  {
+                    "params": [
+                      "n_tardy"
+                    ],
+                    "type": "field"
+                  }
+                ]
+              ],
+              "tags": [
+                {
+                  "key": "partition_id",
+                  "operator": "=",
+                  "value": "np02-coldbox"
+                },
+                {
+                  "condition": "AND",
+                  "key": "source_id",
+                  "operator": "=",
+                  "value": "np02-coldbox.trigger.zip_4"
+                }
+              ]
+            },
+            {
+              "alias": "Sent",
+              "datasource": {
+                "uid": "${influxdb}"
+              },
+              "groupBy": [],
+              "hide": false,
+              "measurement": "dunedaq.trigger.triggerzipperinfo.Info",
+              "orderByTime": "ASC",
+              "policy": "default",
+              "query": "SELECT non_negative_derivative(last(\"n_sent\"), 1s) FROM \"dunedaq.trigger.triggerzipperinfo.Info\" WHERE (\"partition_id\" = '${partition}' ) AND $timeFilter GROUP BY time($__interval)",
+              "rawQuery": true,
+              "refId": "C",
+              "resultFormat": "time_series",
+              "select": [
+                [
+                  {
+                    "params": [
+                      "n_received"
+                    ],
+                    "type": "field"
+                  }
+                ],
+                [
+                  {
+                    "params": [
+                      "n_sent"
+                    ],
+                    "type": "field"
+                  }
+                ],
+                [
+                  {
+                    "params": [
+                      "n_tardy"
+                    ],
+                    "type": "field"
+                  }
+                ]
+              ],
+              "tags": [
+                {
+                  "key": "partition_id",
+                  "operator": "=",
+                  "value": "np02-coldbox"
+                },
+                {
+                  "condition": "AND",
+                  "key": "source_id",
+                  "operator": "=",
+                  "value": "np02-coldbox.trigger.zip_4"
+                }
+              ]
+            },
+            {
+              "alias": "Tardy",
+              "datasource": {
+                "uid": "${influxdb}"
+              },
+              "groupBy": [],
+              "hide": false,
+              "measurement": "dunedaq.trigger.triggerzipperinfo.Info",
+              "orderByTime": "ASC",
+              "policy": "default",
+              "query": "SELECT non_negative_derivative(last(\"n_tardy\"), 1s) FROM \"dunedaq.trigger.triggerzipperinfo.Info\" WHERE (\"partition_id\" = '${partition}' ) AND $timeFilter GROUP BY time($__interval)",
+              "rawQuery": true,
+              "refId": "D",
+              "resultFormat": "time_series",
+              "select": [
+                [
+                  {
+                    "params": [
+                      "n_received"
+                    ],
+                    "type": "field"
+                  }
+                ],
+                [
+                  {
+                    "params": [
+                      "n_sent"
+                    ],
+                    "type": "field"
+                  }
+                ],
+                [
+                  {
+                    "params": [
+                      "n_tardy"
+                    ],
+                    "type": "field"
+                  }
+                ]
+              ],
+              "tags": [
+                {
+                  "key": "partition_id",
+                  "operator": "=",
+                  "value": "np02-coldbox"
+                },
+                {
+                  "condition": "AND",
+                  "key": "source_id",
+                  "operator": "=",
+                  "value": "np02-coldbox.trigger.zip_4"
+                }
+              ]
+            }
+          ],
+          "title": "TP Zipper",
+          "type": "timeseries"
+        },
+        {
+          "datasource": {
+            "type": "influxdb",
+            "uid": "${influxdb}"
+          },
+          "fieldConfig": {
+            "defaults": {
+              "color": {
+                "mode": "palette-classic"
+              },
+              "custom": {
+                "axisBorderShow": false,
+                "axisCenteredZero": false,
+                "axisColorMode": "text",
+                "axisLabel": "",
+                "axisPlacement": "auto",
+                "barAlignment": 0,
+                "drawStyle": "line",
+                "fillOpacity": 0,
+                "gradientMode": "none",
+                "hideFrom": {
+                  "legend": false,
+                  "tooltip": false,
+                  "viz": false
+                },
+                "insertNulls": false,
+                "lineInterpolation": "stepAfter",
+                "lineWidth": 1,
+                "pointSize": 5,
+                "scaleDistribution": {
+                  "type": "linear"
+                },
+                "showPoints": "auto",
+                "spanNulls": false,
+                "stacking": {
+                  "group": "A",
+                  "mode": "none"
+                },
+                "thresholdsStyle": {
+                  "mode": "off"
+                }
+              },
+              "mappings": [],
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {
+                    "color": "green",
+                    "value": null
+                  },
+                  {
+                    "color": "red",
+                    "value": 80
+                  }
+                ]
+              },
+              "unit": "hertz"
+            },
+            "overrides": []
+          },
+          "gridPos": {
+            "h": 9,
+            "w": 9,
+            "x": 7,
+            "y": 16
+          },
+          "id": 15,
+          "options": {
+            "legend": {
+              "calcs": [],
+              "displayMode": "list",
+              "placement": "bottom",
+              "showLegend": true
+            },
+            "tooltip": {
+              "mode": "multi",
+              "sort": "none"
+            }
+          },
+          "targets": [
+            {
+              "alias": "",
+              "datasource": {
+                "uid": "${influxdb}"
+              },
+              "groupBy": [],
+              "measurement": "dunedaq.trigger.triggergenericmakerinfo.Info",
+              "orderByTime": "ASC",
+              "policy": "default",
+              "query": "SELECT non_negative_derivative(last(\"received_count\"), 1s) FROM \"dunedaq.trigger.triggergenericmakerinfo.Info\" WHERE (\"partition_id\" = '${partition}'  AND \"source_id\" =~ /.*\\.tam_\\d+/) AND $timeFilter GROUP BY time($__interval), \"source_id\"",
+              "rawQuery": true,
+              "refId": "A",
+              "resultFormat": "time_series",
+              "select": [
+                [
+                  {
+                    "params": [
+                      "received_count"
+                    ],
+                    "type": "field"
+                  }
+                ],
+                [
+                  {
+                    "params": [
+                      "sent_count"
+                    ],
+                    "type": "field"
+                  }
+                ]
+              ],
+              "tags": [
+                {
+                  "key": "partition_id",
+                  "operator": "=",
+                  "value": "np02-coldbox"
+                },
+                {
+                  "condition": "AND",
+                  "key": "source_id",
+                  "operator": "=",
+                  "value": "np02-coldbox.trigger.tam_4"
+                }
+              ]
+            },
+            {
+              "alias": "",
+              "datasource": {
+                "uid": "${influxdb}"
+              },
+              "groupBy": [],
+              "hide": false,
+              "measurement": "dunedaq.trigger.triggergenericmakerinfo.Info",
+              "orderByTime": "ASC",
+              "policy": "default",
+              "query": "SELECT non_negative_derivative(last(\"sent_count\"), 1s) FROM \"dunedaq.trigger.triggergenericmakerinfo.Info\" WHERE (\"partition_id\" = '${partition}'  AND \"source_id\" =~ /.*\\.tam_\\d+/) AND $timeFilter GROUP BY time($__interval), \"source_id\"",
+              "rawQuery": true,
+              "refId": "C",
+              "resultFormat": "time_series",
+              "select": [
+                [
+                  {
+                    "params": [
+                      "received_count"
+                    ],
+                    "type": "field"
+                  }
+                ],
+                [
+                  {
+                    "params": [
+                      "sent_count"
+                    ],
+                    "type": "field"
+                  }
+                ]
+              ],
+              "tags": [
+                {
+                  "key": "partition_id",
+                  "operator": "=",
+                  "value": "np02-coldbox"
+                },
+                {
+                  "condition": "AND",
+                  "key": "source_id",
+                  "operator": "=",
+                  "value": "np02-coldbox.trigger.tam_4"
+                }
+              ]
+            }
+          ],
+          "title": "TAM",
+          "type": "timeseries"
+        },
+        {
+          "datasource": {
+            "type": "influxdb",
+            "uid": "${influxdb}"
+          },
+          "fieldConfig": {
+            "defaults": {
+              "color": {
+                "mode": "palette-classic"
+              },
+              "custom": {
+                "axisBorderShow": false,
+                "axisCenteredZero": false,
+                "axisColorMode": "text",
+                "axisLabel": "",
+                "axisPlacement": "auto",
+                "barAlignment": 0,
+                "drawStyle": "line",
+                "fillOpacity": 0,
+                "gradientMode": "none",
+                "hideFrom": {
+                  "legend": false,
+                  "tooltip": false,
+                  "viz": false
+                },
+                "insertNulls": false,
+                "lineInterpolation": "stepAfter",
+                "lineWidth": 1,
+                "pointSize": 5,
+                "scaleDistribution": {
+                  "type": "linear"
+                },
+                "showPoints": "auto",
+                "spanNulls": false,
+                "stacking": {
+                  "group": "A",
+                  "mode": "none"
+                },
+                "thresholdsStyle": {
+                  "mode": "off"
+                }
+              },
+              "mappings": [],
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {
+                    "color": "green",
+                    "value": null
+                  },
+                  {
+                    "color": "red",
+                    "value": 80
+                  }
+                ]
+              },
+              "unit": "hertz"
+            },
+            "overrides": []
+          },
+          "gridPos": {
+            "h": 9,
+            "w": 8,
+            "x": 16,
+            "y": 16
+          },
+          "id": 16,
+          "options": {
+            "legend": {
+              "calcs": [],
+              "displayMode": "list",
+              "placement": "bottom",
+              "showLegend": true
+            },
+            "tooltip": {
+              "mode": "multi",
+              "sort": "none"
+            }
+          },
+          "targets": [
+            {
+              "alias": "",
+              "datasource": {
+                "uid": "${influxdb}"
+              },
+              "groupBy": [],
+              "measurement": "dunedaq.trigger.triggergenericmakerinfo.Info",
+              "orderByTime": "ASC",
+              "policy": "default",
+              "query": "SELECT non_negative_derivative(last(\"received_count\"),1s) FROM \"dunedaq.trigger.triggergenericmakerinfo.Info\" WHERE (\"partition_id\" = '${partition}'  AND \"source_id\" =~ /.*\\.tcm_\\d+/) AND $timeFilter GROUP BY time($__interval), \"source_id\"",
+              "rawQuery": true,
+              "refId": "A",
+              "resultFormat": "time_series",
+              "select": [
+                [
+                  {
+                    "params": [
+                      "received_count"
+                    ],
+                    "type": "field"
+                  }
+                ],
+                [
+                  {
+                    "params": [
+                      "sent_count"
+                    ],
+                    "type": "field"
+                  }
+                ]
+              ],
+              "tags": [
+                {
+                  "key": "partition_id",
+                  "operator": "=",
+                  "value": "np02-coldbox"
+                },
+                {
+                  "condition": "AND",
+                  "key": "source_id",
+                  "operator": "=",
+                  "value": "np02-coldbox.trigger.tcm"
+                }
+              ]
+            },
+            {
+              "alias": "",
+              "datasource": {
+                "uid": "${influxdb}"
+              },
+              "groupBy": [],
+              "hide": false,
+              "measurement": "dunedaq.trigger.triggergenericmakerinfo.Info",
+              "orderByTime": "ASC",
+              "policy": "default",
+              "query": "SELECT non_negative_derivative(last(\"sent_count\"),1s) FROM \"dunedaq.trigger.triggergenericmakerinfo.Info\" WHERE (\"partition_id\" = '${partition}'  AND \"source_id\" =~ /.*\\.tcm_\\d+/) AND $timeFilter GROUP BY time($__interval), \"source_id\"",
+              "rawQuery": true,
+              "refId": "C",
+              "resultFormat": "time_series",
+              "select": [
+                [
+                  {
+                    "params": [
+                      "received_count"
+                    ],
+                    "type": "field"
+                  }
+                ],
+                [
+                  {
+                    "params": [
+                      "sent_count"
+                    ],
+                    "type": "field"
+                  }
+                ]
+              ],
+              "tags": [
+                {
+                  "key": "partition_id",
+                  "operator": "=",
+                  "value": "np02-coldbox"
+                },
+                {
+                  "condition": "AND",
+                  "key": "source_id",
+                  "operator": "=",
+                  "value": "np02-coldbox.trigger.tcm"
+                }
+              ]
+            }
+          ],
+          "title": "TCM",
+          "type": "timeseries"
+        },
+        {
+          "datasource": {
+            "uid": "${influxdb}"
+          },
+          "fieldConfig": {
+            "defaults": {
+              "color": {
+                "mode": "palette-classic"
+              },
+              "custom": {
+                "axisBorderShow": false,
+                "axisCenteredZero": false,
+                "axisColorMode": "text",
+                "axisLabel": "",
+                "axisPlacement": "auto",
+                "barAlignment": 0,
+                "drawStyle": "line",
+                "fillOpacity": 0,
+                "gradientMode": "none",
+                "hideFrom": {
+                  "legend": false,
+                  "tooltip": false,
+                  "viz": false
+                },
+                "insertNulls": false,
+                "lineInterpolation": "stepBefore",
+                "lineWidth": 1,
+                "pointSize": 5,
+                "scaleDistribution": {
+                  "type": "linear"
+                },
+                "showPoints": "auto",
+                "spanNulls": false,
+                "stacking": {
+                  "group": "A",
+                  "mode": "none"
+                },
+                "thresholdsStyle": {
+                  "mode": "off"
+                }
+              },
+              "mappings": [],
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {
+                    "color": "green",
+                    "value": null
+                  },
+                  {
+                    "color": "red",
+                    "value": 80
+                  }
+                ]
+              },
+              "unit": "hertz"
+            },
+            "overrides": []
+          },
+          "gridPos": {
+            "h": 8,
+            "w": 12,
+            "x": 0,
+            "y": 25
+          },
+          "id": 11,
+          "options": {
+            "legend": {
+              "calcs": [],
+              "displayMode": "table",
+              "placement": "right",
+              "showLegend": true
+            },
+            "tooltip": {
+              "mode": "multi",
+              "sort": "none"
+            }
+          },
+          "targets": [
+            {
+              "alias": "$tag_source_id",
+              "datasource": {
+                "uid": "${influxdb}"
+              },
+              "groupBy": [],
+              "hide": false,
+              "measurement": "dunedaq.trigger.faketpcreatorheartbeatmakerinfo.Info",
+              "orderByTime": "ASC",
+              "policy": "default",
+              "query": "SELECT non_negative_derivative(last(\"tpset_received_count\"),1s) FROM \"dunedaq.trigger.faketpcreatorheartbeatmakerinfo.Info\" WHERE (\"partition_id\" = '${partition}') AND $timeFilter GROUP BY time($__interval), \"source_id\"",
+              "rawQuery": true,
+              "refId": "H",
+              "resultFormat": "time_series",
+              "select": [
+                [
+                  {
+                    "params": [
+                      "tpset_received_count"
+                    ],
+                    "type": "field"
+                  }
+                ]
+              ],
+              "tags": [
+                {
+                  "key": "partition_id",
+                  "operator": "=",
+                  "value": "np02-coldbox"
+                },
+                {
+                  "condition": "AND",
+                  "key": "source_id",
+                  "operator": "=",
+                  "value": "np02-coldbox.trigger.heartbeatmaker_ru0_link6"
+                }
+              ]
+            }
+          ],
+          "title": "TPHeartbeatMaker receive",
+          "transformations": [
+            {
+              "id": "renameByRegex",
+              "options": {
+                "regex": "[^.]+\\.[^.]+\\.([^.]+)",
+                "renamePattern": "$1"
+              }
+            }
+          ],
+          "type": "timeseries"
+        },
+        {
+          "datasource": {
+            "uid": "${influxdb}"
+          },
+          "fieldConfig": {
+            "defaults": {
+              "color": {
+                "mode": "palette-classic"
+              },
+              "custom": {
+                "axisBorderShow": false,
+                "axisCenteredZero": false,
+                "axisColorMode": "text",
+                "axisLabel": "",
+                "axisPlacement": "auto",
+                "barAlignment": 0,
+                "drawStyle": "line",
+                "fillOpacity": 0,
+                "gradientMode": "none",
+                "hideFrom": {
+                  "legend": false,
+                  "tooltip": false,
+                  "viz": false
+                },
+                "insertNulls": false,
+                "lineInterpolation": "stepBefore",
+                "lineWidth": 1,
+                "pointSize": 5,
+                "scaleDistribution": {
+                  "type": "linear"
+                },
+                "showPoints": "auto",
+                "spanNulls": false,
+                "stacking": {
+                  "group": "A",
+                  "mode": "none"
+                },
+                "thresholdsStyle": {
+                  "mode": "off"
+                }
+              },
+              "mappings": [],
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {
+                    "color": "green",
+                    "value": null
+                  },
+                  {
+                    "color": "red",
+                    "value": 80
+                  }
+                ]
+              },
+              "unit": "hertz"
+            },
+            "overrides": []
+          },
+          "gridPos": {
+            "h": 8,
+            "w": 12,
+            "x": 12,
+            "y": 25
+          },
+          "id": 12,
+          "options": {
+            "legend": {
+              "calcs": [],
+              "displayMode": "table",
+              "placement": "right",
+              "showLegend": true
+            },
+            "tooltip": {
+              "mode": "multi",
+              "sort": "none"
+            }
+          },
+          "targets": [
+            {
+              "alias": "$tag_source_id",
+              "datasource": {
+                "uid": "${influxdb}"
+              },
+              "groupBy": [],
+              "hide": false,
+              "measurement": "dunedaq.trigger.faketpcreatorheartbeatmakerinfo.Info",
+              "orderByTime": "ASC",
+              "policy": "default",
+              "query": "SELECT non_negative_derivative(last(\"tpset_sent_count\"), 1s) FROM \"dunedaq.trigger.faketpcreatorheartbeatmakerinfo.Info\" WHERE (\"partition_id\" = '${partition}') AND $timeFilter GROUP BY time($__interval), \"source_id\"",
+              "rawQuery": true,
+              "refId": "H",
+              "resultFormat": "time_series",
+              "select": [
+                [
+                  {
+                    "params": [
+                      "tpset_sent_count"
+                    ],
+                    "type": "field"
+                  }
+                ]
+              ],
+              "tags": [
+                {
+                  "key": "partition_id",
+                  "operator": "=",
+                  "value": "np02-coldbox"
+                },
+                {
+                  "condition": "AND",
+                  "key": "source_id",
+                  "operator": "=",
+                  "value": "np02-coldbox.trigger.heartbeatmaker_ru0_link6"
+                }
+              ]
+            }
+          ],
+          "title": "TPHeartbeatMaker sent",
+          "transformations": [
+            {
+              "id": "renameByRegex",
+              "options": {
+                "regex": "[^.]+\\.[^.]+\\.([^.]+)",
+                "renamePattern": "$1"
+              }
+            }
+          ],
+          "type": "timeseries"
+        }
+      ],
+      "targets": [
+        {
+          "datasource": {
+            "type": "datasource",
+            "uid": "grafana"
+          },
+          "refId": "A"
+        }
+      ],
+      "title": "TAs/TCs",
+      "type": "row"
     }
   ],
   "refresh": "10s",
@@ -2460,8 +2462,8 @@
       {
         "current": {
           "selected": false,
-          "text": "mrigan-test",
-          "value": "mrigan-test"
+          "text": "np04hd",
+          "value": "np04hd"
         },
         "datasource": {
           "uid": "${influxdb}"
@@ -2498,6 +2500,6 @@
   "timezone": "",
   "title": "Trigger Flow",
   "uid": "v4_4_3-trigger_flow",
-  "version": 9,
+  "version": 11,
   "weekStart": ""
 }

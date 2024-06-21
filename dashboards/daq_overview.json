@@ -1863,6 +1863,7 @@
     },
     {
       "datasource": {
+        "type": "influxdb",
         "uid": "${influxdb}"
       },
       "fieldConfig": {
@@ -1887,14 +1888,14 @@
             },
             "insertNulls": false,
             "lineInterpolation": "linear",
-            "lineWidth": 1,
+            "lineWidth": 2,
             "pointSize": 5,
             "scaleDistribution": {
               "log": 10,
               "type": "log"
             },
-            "showPoints": "auto",
-            "spanNulls": false,
+            "showPoints": "never",
+            "spanNulls": true,
             "stacking": {
               "group": "A",
               "mode": "none"
@@ -1904,6 +1905,7 @@
             }
           },
           "mappings": [],
+          "min": 0,
           "thresholds": {
             "mode": "absolute",
             "steps": [
@@ -1917,81 +1919,22 @@
               }
             ]
           },
-          "unit": "percentunit"
+          "unit": "hertz"
         },
         "overrides": [
           {
             "matcher": {
-              "id": "byName",
-              "options": "Assignment time"
+              "id": "byFrameRefID",
+              "options": "Prescale ratio"
             },
             "properties": [
               {
-                "id": "color",
-                "value": {
-                  "fixedColor": "semi-dark-green",
-                  "mode": "fixed"
-                }
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "Waiting for TD"
-            },
-            "properties": [
+                "id": "custom.axisPlacement",
+                "value": "right"
+              },
               {
-                "id": "color",
-                "value": {
-                  "fixedColor": "dark-blue",
-                  "mode": "fixed"
-                }
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "Forwading decision"
-            },
-            "properties": [
-              {
-                "id": "color",
-                "value": {
-                  "fixedColor": "super-light-blue",
-                  "mode": "fixed"
-                }
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "Waiting for token"
-            },
-            "properties": [
-              {
-                "id": "color",
-                "value": {
-                  "fixedColor": "dark-yellow",
-                  "mode": "fixed"
-                }
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "Processing token"
-            },
-            "properties": [
-              {
-                "id": "color",
-                "value": {
-                  "fixedColor": "dark-orange",
-                  "mode": "fixed"
-                }
+                "id": "unit",
+                "value": "none"
               }
             ]
           }
@@ -2003,72 +1946,158 @@
         "x": 0,
         "y": 14
       },
-      "id": 44,
+      "id": 48,
+      "links": [],
       "options": {
         "legend": {
           "calcs": [],
-          "displayMode": "list",
+          "displayMode": "table",
           "placement": "bottom",
           "showLegend": true
         },
         "tooltip": {
-          "mode": "single",
-          "sort": "none"
+          "mode": "multi",
+          "sort": "desc"
         }
       },
+      "pluginVersion": "8.0.6",
       "targets": [
         {
-          "alias": "Waiting for token",
+          "alias": "Raw beam",
           "datasource": {
             "uid": "${influxdb}"
           },
+          "groupBy": [],
           "hide": false,
-          "query": "SELECT sum(\"waiting_for_token\") / (sum(\"waiting_for_token\")+sum(\"processing_token\")) FROM \"dunedaq.dfmodules.datafloworchestratorinfo.Info\" WHERE \"partition_id\"= '$partition' AND $timeFilter GROUP BY time($__interval) fill(null)",
+          "measurement": "dunedaq.trigger.moduleleveltriggerinfo.Info",
+          "orderByTime": "ASC",
+          "policy": "default",
+          "query": "SELECT non_negative_derivative(cumulative_sum(sum(\"count\")), 1s) FROM \"dunedaq.ctbmodules.ctbmoduleinfo.LevelTriggerInfo\" WHERE (\"partition_id\" = '${partition}') AND $timeFilter AND \"source_id\"=~ /[^.]+\\.[^.]+\\.[^.]+\\.llt_1$/ GROUP BY \"source_id\", time($__interval) fill(null)",
           "rawQuery": true,
-          "refId": "D"
+          "refId": "A",
+          "resultFormat": "time_series",
+          "select": [
+            [
+              {
+                "params": [
+                  "td_sent_count"
+                ],
+                "type": "field"
+              },
+              {
+                "params": [
+                  "1s"
+                ],
+                "type": "non_negative_derivative"
+              }
+            ]
+          ],
+          "tags": [
+            {
+              "key": "source_id",
+              "operator": "=",
+              "value": "${partition}_trigger.mlt"
+            }
+          ]
         },
         {
-          "alias": "Processing token",
+          "alias": "Prescale beam",
           "datasource": {
             "uid": "${influxdb}"
           },
+          "groupBy": [],
           "hide": false,
-          "query": "SELECT sum(\"processing_token\") / (sum(\"waiting_for_token\")+sum(\"processing_token\")) FROM \"dunedaq.dfmodules.datafloworchestratorinfo.Info\" WHERE \"partition_id\"= '$partition' AND $timeFilter GROUP BY time($__interval) fill(null)",
+          "measurement": "dunedaq.trigger.moduleleveltriggerinfo.Info",
+          "orderByTime": "ASC",
+          "policy": "default",
+          "query": "SELECT non_negative_derivative(cumulative_sum(sum(\"count\")), 1s) FROM \"dunedaq.ctbmodules.ctbmoduleinfo.LevelTriggerInfo\" WHERE (\"partition_id\" = '${partition}') AND $timeFilter AND \"source_id\"=~ /[^.]+\\.[^.]+\\.[^.]+\\.hlt_1$/ GROUP BY \"source_id\", time($__interval) fill(null)",
           "rawQuery": true,
-          "refId": "E"
+          "refId": "B",
+          "resultFormat": "time_series",
+          "select": [
+            [
+              {
+                "params": [
+                  "td_sent_count"
+                ],
+                "type": "field"
+              },
+              {
+                "params": [
+                  "1s"
+                ],
+                "type": "non_negative_derivative"
+              }
+            ]
+          ],
+          "tags": [
+            {
+              "key": "source_id",
+              "operator": "=",
+              "value": "${partition}_trigger.mlt"
+            }
+          ]
         },
         {
-          "alias": "Forwarding decision",
+          "alias": "Off-spill cosmic",
           "datasource": {
             "uid": "${influxdb}"
           },
+          "groupBy": [],
           "hide": false,
-          "query": "SELECT sum(\"forwarding_decision\") / (sum(\"waiting_for_decision\")+sum(\"deciding_destination\") + sum(\"forwarding_decision\"))FROM \"dunedaq.dfmodules.datafloworchestratorinfo.Info\" WHERE \"partition_id\"= '$partition' AND $timeFilter GROUP BY time($__interval) fill(null)",
+          "measurement": "dunedaq.trigger.moduleleveltriggerinfo.Info",
+          "orderByTime": "ASC",
+          "policy": "default",
+          "query": "SELECT non_negative_derivative(cumulative_sum(sum(\"count\")), 1s) FROM \"dunedaq.ctbmodules.ctbmoduleinfo.LevelTriggerInfo\" WHERE (\"partition_id\" = '${partition}') AND $timeFilter AND \"source_id\"=~ /[^.]+\\.[^.]+\\.[^.]+\\.hlt_10$/ GROUP BY \"source_id\", time($__interval) fill(null)",
           "rawQuery": true,
-          "refId": "A"
+          "refId": "C",
+          "resultFormat": "time_series",
+          "select": [
+            [
+              {
+                "params": [
+                  "td_sent_count"
+                ],
+                "type": "field"
+              },
+              {
+                "params": [
+                  "1s"
+                ],
+                "type": "non_negative_derivative"
+              }
+            ]
+          ],
+          "tags": [
+            {
+              "key": "source_id",
+              "operator": "=",
+              "value": "${partition}_trigger.mlt"
+            }
+          ]
         },
         {
-          "alias": "Assignment time",
           "datasource": {
-            "uid": "${influxdb}"
+            "name": "Expression",
+            "type": "__expr__",
+            "uid": "__expr__"
           },
+          "expression": "$A/$B ",
           "hide": false,
-          "query": "SELECT sum(\"deciding_destination\") / (sum(\"waiting_for_decision\")+sum(\"deciding_destination\") + sum(\"forwarding_decision\")) FROM \"dunedaq.dfmodules.datafloworchestratorinfo.Info\" WHERE \"partition_id\"= '$partition' AND $timeFilter GROUP BY time($__interval) fill(null)",
-          "rawQuery": true,
-          "refId": "B"
-        },
-        {
-          "alias": "Waiting for TD",
-          "datasource": {
-            "uid": "${influxdb}"
-          },
-          "hide": false,
-          "query": "SELECT sum(\"waiting_for_decision\") / (sum(\"waiting_for_decision\")+sum(\"deciding_destination\") + sum(\"forwarding_decision\")) FROM \"dunedaq.dfmodules.datafloworchestratorinfo.Info\" WHERE \"partition_id\"= '$partition' AND $timeFilter GROUP BY time($__interval) fill(null)",
-          "rawQuery": true,
-          "refId": "C"
+          "refId": "Prescale ratio",
+          "type": "math"
         }
       ],
-      "title": "DFO time ",
+      "title": "CTB Beam triggers",
+      "transformations": [
+        {
+          "id": "renameByRegex",
+          "options": {
+            "regex": "[^.]+\\.[^.]+\\.[^.]+\\.llt_(\\d+)",
+            "renamePattern": "LLT $1"
+          }
+        }
+      ],
       "type": "timeseries"
     },
     {
@@ -2261,245 +2290,6 @@
         }
       ],
       "type": "timeseries"
-    },
-    {
-      "datasource": {
-        "type": "influxdb",
-        "uid": "${influxdb}"
-      },
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "mode": "palette-classic"
-          },
-          "custom": {
-            "axisBorderShow": false,
-            "axisCenteredZero": false,
-            "axisColorMode": "text",
-            "axisLabel": "",
-            "axisPlacement": "auto",
-            "barAlignment": 0,
-            "drawStyle": "line",
-            "fillOpacity": 0,
-            "gradientMode": "none",
-            "hideFrom": {
-              "legend": false,
-              "tooltip": false,
-              "viz": false
-            },
-            "insertNulls": false,
-            "lineInterpolation": "linear",
-            "lineWidth": 2,
-            "pointSize": 5,
-            "scaleDistribution": {
-              "log": 10,
-              "type": "log"
-            },
-            "showPoints": "never",
-            "spanNulls": true,
-            "stacking": {
-              "group": "A",
-              "mode": "none"
-            },
-            "thresholdsStyle": {
-              "mode": "off"
-            }
-          },
-          "mappings": [],
-          "min": 0,
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "green",
-                "value": null
-              },
-              {
-                "color": "red",
-                "value": 80
-              }
-            ]
-          },
-          "unit": "hertz"
-        },
-        "overrides": [
-          {
-            "matcher": {
-              "id": "byFrameRefID",
-              "options": "Prescale ratio"
-            },
-            "properties": [
-              {
-                "id": "custom.axisPlacement",
-                "value": "right"
-              },
-              {
-                "id": "unit",
-                "value": "none"
-              }
-            ]
-          }
-        ]
-      },
-      "gridPos": {
-        "h": 7,
-        "w": 6,
-        "x": 0,
-        "y": 21
-      },
-      "id": 48,
-      "links": [],
-      "options": {
-        "legend": {
-          "calcs": [],
-          "displayMode": "table",
-          "placement": "bottom",
-          "showLegend": true
-        },
-        "tooltip": {
-          "mode": "multi",
-          "sort": "desc"
-        }
-      },
-      "pluginVersion": "8.0.6",
-      "targets": [
-        {
-          "alias": "Raw beam",
-          "datasource": {
-            "uid": "${influxdb}"
-          },
-          "groupBy": [],
-          "hide": false,
-          "measurement": "dunedaq.trigger.moduleleveltriggerinfo.Info",
-          "orderByTime": "ASC",
-          "policy": "default",
-          "query": "SELECT non_negative_derivative(cumulative_sum(sum(\"count\")), 1s) FROM \"dunedaq.ctbmodules.ctbmoduleinfo.LevelTriggerInfo\" WHERE (\"partition_id\" = '${partition}') AND $timeFilter AND \"source_id\"=~ /[^.]+\\.[^.]+\\.[^.]+\\.llt_1$/ GROUP BY \"source_id\", time($__interval) fill(null)",
-          "rawQuery": true,
-          "refId": "A",
-          "resultFormat": "time_series",
-          "select": [
-            [
-              {
-                "params": [
-                  "td_sent_count"
-                ],
-                "type": "field"
-              },
-              {
-                "params": [
-                  "1s"
-                ],
-                "type": "non_negative_derivative"
-              }
-            ]
-          ],
-          "tags": [
-            {
-              "key": "source_id",
-              "operator": "=",
-              "value": "${partition}_trigger.mlt"
-            }
-          ]
-        },
-        {
-          "alias": "Prescale beam",
-          "datasource": {
-            "uid": "${influxdb}"
-          },
-          "groupBy": [],
-          "hide": false,
-          "measurement": "dunedaq.trigger.moduleleveltriggerinfo.Info",
-          "orderByTime": "ASC",
-          "policy": "default",
-          "query": "SELECT non_negative_derivative(cumulative_sum(sum(\"count\")), 1s) FROM \"dunedaq.ctbmodules.ctbmoduleinfo.LevelTriggerInfo\" WHERE (\"partition_id\" = '${partition}') AND $timeFilter AND \"source_id\"=~ /[^.]+\\.[^.]+\\.[^.]+\\.hlt_1$/ GROUP BY \"source_id\", time($__interval) fill(null)",
-          "rawQuery": true,
-          "refId": "B",
-          "resultFormat": "time_series",
-          "select": [
-            [
-              {
-                "params": [
-                  "td_sent_count"
-                ],
-                "type": "field"
-              },
-              {
-                "params": [
-                  "1s"
-                ],
-                "type": "non_negative_derivative"
-              }
-            ]
-          ],
-          "tags": [
-            {
-              "key": "source_id",
-              "operator": "=",
-              "value": "${partition}_trigger.mlt"
-            }
-          ]
-        },
-        {
-          "alias": "Off-spill cosmic",
-          "datasource": {
-            "uid": "${influxdb}"
-          },
-          "groupBy": [],
-          "hide": false,
-          "measurement": "dunedaq.trigger.moduleleveltriggerinfo.Info",
-          "orderByTime": "ASC",
-          "policy": "default",
-          "query": "SELECT non_negative_derivative(cumulative_sum(sum(\"count\")), 1s) FROM \"dunedaq.ctbmodules.ctbmoduleinfo.LevelTriggerInfo\" WHERE (\"partition_id\" = '${partition}') AND $timeFilter AND \"source_id\"=~ /[^.]+\\.[^.]+\\.[^.]+\\.hlt_10$/ GROUP BY \"source_id\", time($__interval) fill(null)",
-          "rawQuery": true,
-          "refId": "C",
-          "resultFormat": "time_series",
-          "select": [
-            [
-              {
-                "params": [
-                  "td_sent_count"
-                ],
-                "type": "field"
-              },
-              {
-                "params": [
-                  "1s"
-                ],
-                "type": "non_negative_derivative"
-              }
-            ]
-          ],
-          "tags": [
-            {
-              "key": "source_id",
-              "operator": "=",
-              "value": "${partition}_trigger.mlt"
-            }
-          ]
-        },
-        {
-          "datasource": {
-            "name": "Expression",
-            "type": "__expr__",
-            "uid": "__expr__"
-          },
-          "expression": "$A/$B ",
-          "hide": false,
-          "refId": "Prescale ratio",
-          "type": "math"
-        }
-      ],
-      "title": "CTB Beam triggers",
-      "transformations": [
-        {
-          "id": "renameByRegex",
-          "options": {
-            "regex": "[^.]+\\.[^.]+\\.[^.]+\\.llt_(\\d+)",
-            "renamePattern": "LLT $1"
-          }
-        }
-      ],
-      "type": "timeseries"
     }
   ],
   "refresh": "10s",
@@ -2617,8 +2407,8 @@
       {
         "current": {
           "selected": false,
-          "text": "23",
-          "value": "23"
+          "text": "298",
+          "value": "298"
         },
         "datasource": {
           "uid": "${influxdb}"
@@ -2698,6 +2488,6 @@
   "timezone": "",
   "title": "DAQ overview",
   "uid": "v4_4_3-overview",
-  "version": 8,
+  "version": 10,
   "weekStart": ""
 }

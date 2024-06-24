@@ -1905,7 +1905,7 @@
             }
           },
           "mappings": [],
-          "min": 0,
+          "min": 0.01,
           "thresholds": {
             "mode": "absolute",
             "steps": [
@@ -1925,7 +1925,7 @@
           {
             "matcher": {
               "id": "byFrameRefID",
-              "options": "Prescale ratio"
+              "options": "Beam prescale ratio"
             },
             "properties": [
               {
@@ -1939,8 +1939,21 @@
               {
                 "id": "custom.scaleDistribution",
                 "value": {
-                  "type": "linear"
+                  "log": 2,
+                  "type": "log"
                 }
+              },
+              {
+                "id": "custom.spanNulls",
+                "value": false
+              },
+              {
+                "id": "min",
+                "value": 0.5
+              },
+              {
+                "id": "max",
+                "value": 32
               }
             ]
           }
@@ -2088,10 +2101,86 @@
             "type": "__expr__",
             "uid": "__expr__"
           },
-          "expression": "$A/$B ",
+          "expression": "$D/$E",
           "hide": false,
-          "refId": "Prescale ratio",
+          "refId": "Beam prescale ratio",
           "type": "math"
+        },
+        {
+          "alias": "",
+          "datasource": {
+            "uid": "${influxdb}"
+          },
+          "groupBy": [],
+          "hide": true,
+          "measurement": "dunedaq.trigger.moduleleveltriggerinfo.Info",
+          "orderByTime": "ASC",
+          "policy": "default",
+          "query": "SELECT sum(\"count\") FROM \"dunedaq.ctbmodules.ctbmoduleinfo.LevelTriggerInfo\" WHERE (\"partition_id\" = '${partition}') AND $timeFilter AND \"source_id\"=~ /[^.]+\\.[^.]+\\.[^.]+\\.llt_1$/ GROUP BY \"source_id\", time($__interval) fill(null)",
+          "rawQuery": true,
+          "refId": "D",
+          "resultFormat": "time_series",
+          "select": [
+            [
+              {
+                "params": [
+                  "td_sent_count"
+                ],
+                "type": "field"
+              },
+              {
+                "params": [
+                  "1s"
+                ],
+                "type": "non_negative_derivative"
+              }
+            ]
+          ],
+          "tags": [
+            {
+              "key": "source_id",
+              "operator": "=",
+              "value": "${partition}_trigger.mlt"
+            }
+          ]
+        },
+        {
+          "alias": "",
+          "datasource": {
+            "uid": "${influxdb}"
+          },
+          "groupBy": [],
+          "hide": true,
+          "measurement": "dunedaq.trigger.moduleleveltriggerinfo.Info",
+          "orderByTime": "ASC",
+          "policy": "default",
+          "query": "SELECT sum(\"count\") FROM \"dunedaq.ctbmodules.ctbmoduleinfo.LevelTriggerInfo\" WHERE (\"partition_id\" = '${partition}') AND $timeFilter AND \"source_id\"=~ /[^.]+\\.[^.]+\\.[^.]+\\.hlt_1$/ GROUP BY \"source_id\", time($__interval) fill(null)",
+          "rawQuery": true,
+          "refId": "E",
+          "resultFormat": "time_series",
+          "select": [
+            [
+              {
+                "params": [
+                  "td_sent_count"
+                ],
+                "type": "field"
+              },
+              {
+                "params": [
+                  "1s"
+                ],
+                "type": "non_negative_derivative"
+              }
+            ]
+          ],
+          "tags": [
+            {
+              "key": "source_id",
+              "operator": "=",
+              "value": "${partition}_trigger.mlt"
+            }
+          ]
         }
       ],
       "title": "CTB Beam triggers",
@@ -2298,7 +2387,7 @@
       "type": "timeseries"
     }
   ],
-  "refresh": "10s",
+  "refresh": false,
   "schemaVersion": 38,
   "tags": [
     "v4.4.3"
@@ -2366,7 +2455,6 @@
       },
       {
         "current": {
-          "isNone": true,
           "selected": false,
           "text": "None",
           "value": ""
@@ -2389,7 +2477,6 @@
       },
       {
         "current": {
-          "isNone": true,
           "selected": false,
           "text": "None",
           "value": ""
@@ -2413,8 +2500,8 @@
       {
         "current": {
           "selected": false,
-          "text": "160",
-          "value": "160"
+          "text": "0",
+          "value": "0"
         },
         "datasource": {
           "uid": "${influxdb}"
@@ -2434,7 +2521,7 @@
       },
       {
         "current": {
-          "selected": true,
+          "selected": false,
           "text": [
             "All"
           ],
@@ -2463,8 +2550,8 @@
     ]
   },
   "time": {
-    "from": "now-30m",
-    "to": "now"
+    "from": "2024-06-24T10:04:07.486Z",
+    "to": "2024-06-24T10:13:20.392Z"
   },
   "timepicker": {
     "refresh_intervals": [
@@ -2494,6 +2581,6 @@
   "timezone": "",
   "title": "DAQ overview",
   "uid": "v4_4_3-overview",
-  "version": 11,
+  "version": 24,
   "weekStart": ""
 }

@@ -57,6 +57,21 @@
       "url": ""
     },
     {
+      "asDropdown": false,
+      "icon": "external link",
+      "includeVars": true,
+      "keepTime": true,
+      "tags": [
+        "v4.4.4",
+        "RunInfo"
+      ],
+      "targetBlank": true,
+      "title": "Run Information",
+      "tooltip": "",
+      "type": "dashboards",
+      "url": ""
+    },
+    {
       "asDropdown": true,
       "icon": "dashboard",
       "includeVars": false,
@@ -267,7 +282,7 @@
           "measurement": "dunedaq.appfwk.appinfo.Info",
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "SELECT \"state\" FROM \"dunedaq.appfwk.appinfo.Info\" WHERE (\"partition_id\" = '${partition}') AND time > now() - 75s",
+          "query": "SELECT \"state\" FROM \"dunedaq.appfwk.appinfo.Info\" WHERE (\"partition_id\" = '${partition}') AND time > now() - 15s",
           "rawQuery": true,
           "refId": "A",
           "resultFormat": "table",
@@ -1696,7 +1711,7 @@
             "properties": [
               {
                 "id": "custom.width",
-                "value": 345
+                "value": 621
               }
             ]
           },
@@ -1731,7 +1746,7 @@
             "properties": [
               {
                 "id": "custom.width",
-                "value": 77
+                "value": 153
               }
             ]
           },
@@ -1755,7 +1770,7 @@
             "properties": [
               {
                 "id": "custom.width",
-                "value": 231
+                "value": 169
               }
             ]
           },
@@ -1803,7 +1818,12 @@
           "show": false
         },
         "showHeader": true,
-        "sortBy": []
+        "sortBy": [
+          {
+            "desc": true,
+            "displayName": "time"
+          }
+        ]
       },
       "pluginVersion": "10.2.2",
       "targets": [
@@ -2390,7 +2410,8 @@
   "refresh": "10s",
   "schemaVersion": 38,
   "tags": [
-    "v4.4.4"
+    "v4.4.4",
+    "Main"
   ],
   "templating": {
     "list": [
@@ -2433,8 +2454,8 @@
       {
         "current": {
           "selected": false,
-          "text": "np04hd",
-          "value": "np04hd"
+          "text": "50l-timing-fanout-0",
+          "value": "50l-timing-fanout-0"
         },
         "datasource": {
           "uid": "${influxdb}"
@@ -2502,8 +2523,8 @@
       {
         "current": {
           "selected": false,
-          "text": "6526",
-          "value": "6526"
+          "text": "695402",
+          "value": "695402"
         },
         "datasource": {
           "uid": "${influxdb}"
@@ -2552,7 +2573,7 @@
     ]
   },
   "time": {
-    "from": "now-30m",
+    "from": "now-5m",
     "to": "now"
   },
   "timepicker": {
@@ -2583,6 +2604,6 @@
   "timezone": "",
   "title": "DAQ overview",
   "uid": "v4_4_4-overview",
-  "version": 4,
+  "version": 12,
   "weekStart": ""
 }

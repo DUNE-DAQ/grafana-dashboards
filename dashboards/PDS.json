@@ -18,10 +18,700 @@
   "editable": true,
   "fiscalYearStartMonth": 0,
   "graphTooltip": 0,
-  "id": 182,
+  "id": 192,
   "links": [],
   "liveNow": false,
   "panels": [
+    {
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 0
+      },
+      "id": 12,
+      "title": "Data rates",
+      "type": "row"
+    },
+    {
+      "datasource": {
+        "type": "influxdb",
+        "uid": "${influxdb}"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "drawStyle": "line",
+            "fillOpacity": 0,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "auto",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "pps"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 10,
+        "w": 8,
+        "x": 0,
+        "y": 1
+      },
+      "id": 13,
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "tooltip": {
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "targets": [
+        {
+          "alias": "$tag_source_id",
+          "datasource": {
+            "type": "influxdb",
+            "uid": "ffedc550-6555-4a16-a113-aabf2b980c30"
+          },
+          "query": "SELECT non_negative_derivative(cumulative_sum(sum(\"new_packets\")), 1s) FROM \"dunedaq.daphnemodules.daphnecontrollerinfo.GeneralInfo\" WHERE (\"partition_id\" = '${partition}' AND \"source_id\"=~ /[^.]+\\.${application}\\.[^.]+/) AND $timeFilter GROUP BY time($__interval), \"source_id\"",
+          "rawQuery": true,
+          "refId": "A",
+          "resultFormat": "time_series"
+        }
+      ],
+      "title": "Data to Felix rate",
+      "transformations": [
+        {
+          "id": "renameByRegex",
+          "options": {
+            "regex": "[^.]+\\.[^.]+\\.([^.]+)_(\\d+)",
+            "renamePattern": "$1 $2"
+          }
+        }
+      ],
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "influxdb",
+        "uid": "${influxdb}"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "drawStyle": "line",
+            "fillOpacity": 0,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "log": 10,
+              "type": "log"
+            },
+            "showPoints": "auto",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "pps"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 10,
+        "w": 8,
+        "x": 8,
+        "y": 1
+      },
+      "id": 15,
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "tooltip": {
+          "mode": "multi",
+          "sort": "desc"
+        }
+      },
+      "repeat": "controller",
+      "repeatDirection": "v",
+      "targets": [
+        {
+          "alias": "$tag_source_id",
+          "datasource": {
+            "type": "influxdb",
+            "uid": "ffedc550-6555-4a16-a113-aabf2b980c30"
+          },
+          "query": "SELECT non_negative_derivative(cumulative_sum(sum(\"new_packets\")), 1s) FROM \"dunedaq.daphnemodules.daphnecontrollerinfo.ChannelInfo\" WHERE (\"partition_id\" = '${partition}' AND \"source_id\"=~ /[^.]+\\.${application}\\.${controller}\\.[^.]+/) AND $timeFilter GROUP BY time($__interval), \"source_id\"",
+          "rawQuery": true,
+          "refId": "A",
+          "resultFormat": "time_series"
+        }
+      ],
+      "title": "Data in FIFO from ${controller}",
+      "transformations": [
+        {
+          "id": "renameByRegex",
+          "options": {
+            "regex": "[^.]+\\.[^.]+\\.[^.]+\\.([^.]+)_(\\d+)",
+            "renamePattern": "$1 $2"
+          }
+        }
+      ],
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "influxdb",
+        "uid": "${influxdb}"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "drawStyle": "line",
+            "fillOpacity": 0,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "log": 10,
+              "type": "log"
+            },
+            "showPoints": "auto",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "pps"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 10,
+        "w": 8,
+        "x": 16,
+        "y": 1
+      },
+      "id": 17,
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "tooltip": {
+          "mode": "multi",
+          "sort": "desc"
+        }
+      },
+      "repeat": "controller",
+      "repeatDirection": "v",
+      "targets": [
+        {
+          "alias": "$tag_source_id",
+          "datasource": {
+            "type": "influxdb",
+            "uid": "ffedc550-6555-4a16-a113-aabf2b980c30"
+          },
+          "query": "SELECT non_negative_derivative(cumulative_sum(sum(\"new_triggers\")), 1s) FROM \"dunedaq.daphnemodules.daphnecontrollerinfo.ChannelInfo\" WHERE (\"partition_id\" = '${partition}' AND \"source_id\"=~ /[^.]+\\.${application}\\.${controller}\\.[^.]+/) AND $timeFilter GROUP BY time($__interval), \"source_id\"",
+          "rawQuery": true,
+          "refId": "A",
+          "resultFormat": "time_series"
+        }
+      ],
+      "title": "Selftriggers from ${controller}",
+      "transformations": [
+        {
+          "id": "renameByRegex",
+          "options": {
+            "regex": "[^.]+\\.[^.]+\\.[^.]+\\.([^.]+)_(\\d+)",
+            "renamePattern": "$1 $2"
+          }
+        }
+      ],
+      "type": "timeseries"
+    },
+    {
+      "collapsed": true,
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 21
+      },
+      "id": 10,
+      "panels": [
+        {
+          "datasource": {
+            "type": "influxdb",
+            "uid": "${influxdb}"
+          },
+          "fieldConfig": {
+            "defaults": {
+              "color": {
+                "mode": "palette-classic"
+              },
+              "custom": {
+                "axisBorderShow": false,
+                "axisCenteredZero": false,
+                "axisColorMode": "text",
+                "axisLabel": "V",
+                "axisPlacement": "auto",
+                "barAlignment": 0,
+                "drawStyle": "line",
+                "fillOpacity": 0,
+                "gradientMode": "none",
+                "hideFrom": {
+                  "legend": false,
+                  "tooltip": false,
+                  "viz": false
+                },
+                "insertNulls": false,
+                "lineInterpolation": "linear",
+                "lineWidth": 2,
+                "pointSize": 4,
+                "scaleDistribution": {
+                  "type": "linear"
+                },
+                "showPoints": "always",
+                "spanNulls": true,
+                "stacking": {
+                  "group": "A",
+                  "mode": "none"
+                },
+                "thresholdsStyle": {
+                  "mode": "off"
+                }
+              },
+              "mappings": [],
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {
+                    "color": "green"
+                  },
+                  {
+                    "color": "red",
+                    "value": 80
+                  }
+                ]
+              },
+              "unit": "none"
+            },
+            "overrides": []
+          },
+          "gridPos": {
+            "h": 9,
+            "w": 12,
+            "x": 0,
+            "y": 18
+          },
+          "id": 2,
+          "links": [],
+          "maxPerRow": 4,
+          "options": {
+            "legend": {
+              "calcs": [],
+              "displayMode": "list",
+              "placement": "bottom",
+              "showLegend": true
+            },
+            "tooltip": {
+              "mode": "single",
+              "sort": "none"
+            }
+          },
+          "pluginVersion": "8.0.6",
+          "repeat": "controller",
+          "repeatDirection": "h",
+          "targets": [
+            {
+              "alias": "AFE 0",
+              "datasource": {
+                "uid": "${influxdb}"
+              },
+              "groupBy": [
+                {
+                  "params": [
+                    "$__interval"
+                  ],
+                  "type": "time"
+                }
+              ],
+              "hide": false,
+              "measurement": "dunedaq.appfwk.queueinfo.Info",
+              "orderByTime": "ASC",
+              "policy": "default",
+              "query": "SELECT mean(\"v_bias_0\")  FROM \"dunedaq.daphnemodules.daphnecontrollerinfo.GeneralInfo\" WHERE (\"partition_id\" = '${partition}' AND \"source_id\"=~ /[^.]+\\.${application}\\.${controller}/) AND $timeFilter GROUP BY time($__interval), \"source_id\"",
+              "rawQuery": true,
+              "refId": "C",
+              "resultFormat": "time_series",
+              "select": [
+                [
+                  {
+                    "params": [
+                      "number_of_elements"
+                    ],
+                    "type": "field"
+                  },
+                  {
+                    "params": [],
+                    "type": "distinct"
+                  },
+                  {
+                    "params": [
+                      " * 100"
+                    ],
+                    "type": "math"
+                  }
+                ]
+              ],
+              "tags": [
+                {
+                  "key": "source_id",
+                  "operator": "=",
+                  "value": "maroda_test_dataflow.trigger_record_q"
+                }
+              ]
+            },
+            {
+              "alias": "AFE 1",
+              "datasource": {
+                "uid": "${influxdb}"
+              },
+              "groupBy": [
+                {
+                  "params": [
+                    "$__interval"
+                  ],
+                  "type": "time"
+                }
+              ],
+              "hide": false,
+              "measurement": "dunedaq.appfwk.queueinfo.Info",
+              "orderByTime": "ASC",
+              "policy": "default",
+              "query": "SELECT mean(\"v_bias_1\")  FROM \"dunedaq.daphnemodules.daphnecontrollerinfo.GeneralInfo\" WHERE (\"partition_id\" = '${partition}' AND \"source_id\"=~ /[^.]+\\.${application}\\.${controller}/) AND $timeFilter GROUP BY time($__interval), \"source_id\"",
+              "rawQuery": true,
+              "refId": "A",
+              "resultFormat": "time_series",
+              "select": [
+                [
+                  {
+                    "params": [
+                      "number_of_elements"
+                    ],
+                    "type": "field"
+                  },
+                  {
+                    "params": [],
+                    "type": "distinct"
+                  },
+                  {
+                    "params": [
+                      " * 100"
+                    ],
+                    "type": "math"
+                  }
+                ]
+              ],
+              "tags": [
+                {
+                  "key": "source_id",
+                  "operator": "=",
+                  "value": "maroda_test_dataflow.trigger_record_q"
+                }
+              ]
+            },
+            {
+              "alias": "AFE 2",
+              "datasource": {
+                "uid": "${influxdb}"
+              },
+              "groupBy": [
+                {
+                  "params": [
+                    "$__interval"
+                  ],
+                  "type": "time"
+                }
+              ],
+              "hide": false,
+              "measurement": "dunedaq.appfwk.queueinfo.Info",
+              "orderByTime": "ASC",
+              "policy": "default",
+              "query": "SELECT mean(\"v_bias_2\")  FROM \"dunedaq.daphnemodules.daphnecontrollerinfo.GeneralInfo\" WHERE (\"partition_id\" = '${partition}' AND \"source_id\"=~ /[^.]+\\.${application}\\.${controller}/) AND $timeFilter GROUP BY time($__interval), \"source_id\"",
+              "rawQuery": true,
+              "refId": "B",
+              "resultFormat": "time_series",
+              "select": [
+                [
+                  {
+                    "params": [
+                      "number_of_elements"
+                    ],
+                    "type": "field"
+                  },
+                  {
+                    "params": [],
+                    "type": "distinct"
+                  },
+                  {
+                    "params": [
+                      " * 100"
+                    ],
+                    "type": "math"
+                  }
+                ]
+              ],
+              "tags": [
+                {
+                  "key": "source_id",
+                  "operator": "=",
+                  "value": "maroda_test_dataflow.trigger_record_q"
+                }
+              ]
+            },
+            {
+              "alias": "AFE 3",
+              "datasource": {
+                "uid": "${influxdb}"
+              },
+              "groupBy": [
+                {
+                  "params": [
+                    "$__interval"
+                  ],
+                  "type": "time"
+                }
+              ],
+              "hide": false,
+              "measurement": "dunedaq.appfwk.queueinfo.Info",
+              "orderByTime": "ASC",
+              "policy": "default",
+              "query": "SELECT mean(\"v_bias_3\")  FROM \"dunedaq.daphnemodules.daphnecontrollerinfo.GeneralInfo\" WHERE (\"partition_id\" = '${partition}' AND \"source_id\"=~ /[^.]+\\.${application}\\.${controller}/) AND $timeFilter GROUP BY time($__interval), \"source_id\"",
+              "rawQuery": true,
+              "refId": "D",
+              "resultFormat": "time_series",
+              "select": [
+                [
+                  {
+                    "params": [
+                      "number_of_elements"
+                    ],
+                    "type": "field"
+                  },
+                  {
+                    "params": [],
+                    "type": "distinct"
+                  },
+                  {
+                    "params": [
+                      " * 100"
+                    ],
+                    "type": "math"
+                  }
+                ]
+              ],
+              "tags": [
+                {
+                  "key": "source_id",
+                  "operator": "=",
+                  "value": "maroda_test_dataflow.trigger_record_q"
+                }
+              ]
+            },
+            {
+              "alias": "AFE 4",
+              "datasource": {
+                "uid": "${influxdb}"
+              },
+              "groupBy": [
+                {
+                  "params": [
+                    "$__interval"
+                  ],
+                  "type": "time"
+                }
+              ],
+              "hide": false,
+              "measurement": "dunedaq.appfwk.queueinfo.Info",
+              "orderByTime": "ASC",
+              "policy": "default",
+              "query": "SELECT mean(\"v_bias_4\")  FROM \"dunedaq.daphnemodules.daphnecontrollerinfo.GeneralInfo\" WHERE (\"partition_id\" = '${partition}' AND \"source_id\"=~ /[^.]+\\.${application}\\.${controller}/) AND $timeFilter GROUP BY time($__interval), \"source_id\"",
+              "rawQuery": true,
+              "refId": "E",
+              "resultFormat": "time_series",
+              "select": [
+                [
+                  {
+                    "params": [
+                      "number_of_elements"
+                    ],
+                    "type": "field"
+                  },
+                  {
+                    "params": [],
+                    "type": "distinct"
+                  },
+                  {
+                    "params": [
+                      " * 100"
+                    ],
+                    "type": "math"
+                  }
+                ]
+              ],
+              "tags": [
+                {
+                  "key": "source_id",
+                  "operator": "=",
+                  "value": "maroda_test_dataflow.trigger_record_q"
+                }
+              ]
+            }
+          ],
+          "title": "Bias for ${controller}",
+          "transformations": [],
+          "type": "timeseries"
+        }
+      ],
+      "title": "Bias",
+      "type": "row"
+    },
+    {
+      "collapsed": false,
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 22
+      },
+      "id": 8,
+      "panels": [],
+      "title": "Miscellaneous",
+      "type": "row"
+    },
     {
       "datasource": {
         "type": "influxdb",
@@ -86,7 +776,7 @@
         "h": 9,
         "w": 6,
         "x": 0,
-        "y": 0
+        "y": 23
       },
       "id": 5,
       "links": [],
@@ -121,7 +811,7 @@
           "measurement": "dunedaq.appfwk.queueinfo.Info",
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "SELECT mean(\"power_ce\")  FROM \"dunedaq.daphnemodules.daphnecontrollerinfo.VoltageInfo\" WHERE (\"partition_id\" = '${partition}' AND \"source_id\"=~ /[^.]+\\.${application}\\.${controller}/) AND $timeFilter GROUP BY time($__interval), \"source_id\"",
+          "query": "SELECT mean(\"power_ce\")  FROM \"dunedaq.daphnemodules.daphnecontrollerinfo.GeneralInfo\" WHERE (\"partition_id\" = '${partition}' AND \"source_id\"=~ /[^.]+\\.${application}\\.${controller}/) AND $timeFilter GROUP BY time($__interval), \"source_id\"",
           "rawQuery": true,
           "refId": "E",
           "resultFormat": "time_series",
@@ -230,7 +920,7 @@
         "h": 9,
         "w": 6,
         "x": 6,
-        "y": 0
+        "y": 23
       },
       "id": 4,
       "links": [],
@@ -265,7 +955,7 @@
           "measurement": "dunedaq.appfwk.queueinfo.Info",
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "SELECT mean(\"power_plus2p5v\")  FROM \"dunedaq.daphnemodules.daphnecontrollerinfo.VoltageInfo\" WHERE (\"partition_id\" = '${partition}' AND \"source_id\"=~ /[^.]+\\.${application}\\.${controller}/) AND $timeFilter GROUP BY time($__interval), \"source_id\"",
+          "query": "SELECT mean(\"power_plus2p5v\")  FROM \"dunedaq.daphnemodules.daphnecontrollerinfo.GeneralInfo\" WHERE (\"partition_id\" = '${partition}' AND \"source_id\"=~ /[^.]+\\.${application}\\.${controller}/) AND $timeFilter GROUP BY time($__interval), \"source_id\"",
           "rawQuery": true,
           "refId": "E",
           "resultFormat": "time_series",
@@ -374,7 +1064,7 @@
         "h": 9,
         "w": 6,
         "x": 12,
-        "y": 0
+        "y": 23
       },
       "id": 3,
       "links": [],
@@ -409,7 +1099,7 @@
           "measurement": "dunedaq.appfwk.queueinfo.Info",
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "SELECT mean(\"power_minus5v\")  FROM \"dunedaq.daphnemodules.daphnecontrollerinfo.VoltageInfo\" WHERE (\"partition_id\" = '${partition}' AND \"source_id\"=~ /[^.]+\\.${application}\\.${controller}/) AND $timeFilter GROUP BY time($__interval), \"source_id\"",
+          "query": "SELECT mean(\"power_minus5v\")  FROM \"dunedaq.daphnemodules.daphnecontrollerinfo.GeneralInfo\" WHERE (\"partition_id\" = '${partition}' AND \"source_id\"=~ /[^.]+\\.${application}\\.${controller}/) AND $timeFilter GROUP BY time($__interval), \"source_id\"",
           "rawQuery": true,
           "refId": "E",
           "resultFormat": "time_series",
@@ -518,7 +1208,7 @@
         "h": 9,
         "w": 6,
         "x": 18,
-        "y": 0
+        "y": 23
       },
       "id": 6,
       "links": [],
@@ -553,7 +1243,7 @@
           "measurement": "dunedaq.appfwk.queueinfo.Info",
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "SELECT mean(\"temperature\")  FROM \"dunedaq.daphnemodules.daphnecontrollerinfo.VoltageInfo\" WHERE (\"partition_id\" = '${partition}' AND \"source_id\"=~ /[^.]+\\.${application}\\.${controller}/) AND $timeFilter GROUP BY time($__interval), \"source_id\"",
+          "query": "SELECT mean(\"temperature\")  FROM \"dunedaq.daphnemodules.daphnecontrollerinfo.GeneralInfo\" WHERE (\"partition_id\" = '${partition}' AND \"source_id\"=~ /[^.]+\\.${application}\\.${controller}/) AND $timeFilter GROUP BY time($__interval), \"source_id\"",
           "rawQuery": true,
           "refId": "E",
           "resultFormat": "time_series",
@@ -597,341 +1287,6 @@
         }
       ],
       "type": "timeseries"
-    },
-    {
-      "datasource": {
-        "type": "influxdb",
-        "uid": "${influxdb}"
-      },
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "mode": "palette-classic"
-          },
-          "custom": {
-            "axisBorderShow": false,
-            "axisCenteredZero": false,
-            "axisColorMode": "text",
-            "axisLabel": "V",
-            "axisPlacement": "auto",
-            "barAlignment": 0,
-            "drawStyle": "line",
-            "fillOpacity": 0,
-            "gradientMode": "none",
-            "hideFrom": {
-              "legend": false,
-              "tooltip": false,
-              "viz": false
-            },
-            "insertNulls": false,
-            "lineInterpolation": "linear",
-            "lineWidth": 2,
-            "pointSize": 4,
-            "scaleDistribution": {
-              "type": "linear"
-            },
-            "showPoints": "always",
-            "spanNulls": true,
-            "stacking": {
-              "group": "A",
-              "mode": "none"
-            },
-            "thresholdsStyle": {
-              "mode": "off"
-            }
-          },
-          "mappings": [],
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "green",
-                "value": null
-              },
-              {
-                "color": "red",
-                "value": 80
-              }
-            ]
-          },
-          "unit": "none"
-        },
-        "overrides": []
-      },
-      "gridPos": {
-        "h": 9,
-        "w": 6,
-        "x": 0,
-        "y": 9
-      },
-      "id": 2,
-      "links": [],
-      "maxPerRow": 4,
-      "options": {
-        "legend": {
-          "calcs": [],
-          "displayMode": "list",
-          "placement": "bottom",
-          "showLegend": true
-        },
-        "tooltip": {
-          "mode": "single",
-          "sort": "none"
-        }
-      },
-      "pluginVersion": "8.0.6",
-      "repeat": "controller",
-      "repeatDirection": "h",
-      "targets": [
-        {
-          "alias": "AFE 0",
-          "datasource": {
-            "uid": "${influxdb}"
-          },
-          "groupBy": [
-            {
-              "params": [
-                "$__interval"
-              ],
-              "type": "time"
-            }
-          ],
-          "hide": false,
-          "measurement": "dunedaq.appfwk.queueinfo.Info",
-          "orderByTime": "ASC",
-          "policy": "default",
-          "query": "SELECT mean(\"v_bias_0\")  FROM \"dunedaq.daphnemodules.daphnecontrollerinfo.VoltageInfo\" WHERE (\"partition_id\" = '${partition}' AND \"source_id\"=~ /[^.]+\\.${application}\\.${controller}/) AND $timeFilter GROUP BY time($__interval), \"source_id\"",
-          "rawQuery": true,
-          "refId": "C",
-          "resultFormat": "time_series",
-          "select": [
-            [
-              {
-                "params": [
-                  "number_of_elements"
-                ],
-                "type": "field"
-              },
-              {
-                "params": [],
-                "type": "distinct"
-              },
-              {
-                "params": [
-                  " * 100"
-                ],
-                "type": "math"
-              }
-            ]
-          ],
-          "tags": [
-            {
-              "key": "source_id",
-              "operator": "=",
-              "value": "maroda_test_dataflow.trigger_record_q"
-            }
-          ]
-        },
-        {
-          "alias": "AFE 1",
-          "datasource": {
-            "uid": "${influxdb}"
-          },
-          "groupBy": [
-            {
-              "params": [
-                "$__interval"
-              ],
-              "type": "time"
-            }
-          ],
-          "hide": false,
-          "measurement": "dunedaq.appfwk.queueinfo.Info",
-          "orderByTime": "ASC",
-          "policy": "default",
-          "query": "SELECT mean(\"v_bias_1\")  FROM \"dunedaq.daphnemodules.daphnecontrollerinfo.VoltageInfo\" WHERE (\"partition_id\" = '${partition}' AND \"source_id\"=~ /[^.]+\\.${application}\\.${controller}/) AND $timeFilter GROUP BY time($__interval), \"source_id\"",
-          "rawQuery": true,
-          "refId": "A",
-          "resultFormat": "time_series",
-          "select": [
-            [
-              {
-                "params": [
-                  "number_of_elements"
-                ],
-                "type": "field"
-              },
-              {
-                "params": [],
-                "type": "distinct"
-              },
-              {
-                "params": [
-                  " * 100"
-                ],
-                "type": "math"
-              }
-            ]
-          ],
-          "tags": [
-            {
-              "key": "source_id",
-              "operator": "=",
-              "value": "maroda_test_dataflow.trigger_record_q"
-            }
-          ]
-        },
-        {
-          "alias": "AFE 2",
-          "datasource": {
-            "uid": "${influxdb}"
-          },
-          "groupBy": [
-            {
-              "params": [
-                "$__interval"
-              ],
-              "type": "time"
-            }
-          ],
-          "hide": false,
-          "measurement": "dunedaq.appfwk.queueinfo.Info",
-          "orderByTime": "ASC",
-          "policy": "default",
-          "query": "SELECT mean(\"v_bias_2\")  FROM \"dunedaq.daphnemodules.daphnecontrollerinfo.VoltageInfo\" WHERE (\"partition_id\" = '${partition}' AND \"source_id\"=~ /[^.]+\\.${application}\\.${controller}/) AND $timeFilter GROUP BY time($__interval), \"source_id\"",
-          "rawQuery": true,
-          "refId": "B",
-          "resultFormat": "time_series",
-          "select": [
-            [
-              {
-                "params": [
-                  "number_of_elements"
-                ],
-                "type": "field"
-              },
-              {
-                "params": [],
-                "type": "distinct"
-              },
-              {
-                "params": [
-                  " * 100"
-                ],
-                "type": "math"
-              }
-            ]
-          ],
-          "tags": [
-            {
-              "key": "source_id",
-              "operator": "=",
-              "value": "maroda_test_dataflow.trigger_record_q"
-            }
-          ]
-        },
-        {
-          "alias": "AFE 3",
-          "datasource": {
-            "uid": "${influxdb}"
-          },
-          "groupBy": [
-            {
-              "params": [
-                "$__interval"
-              ],
-              "type": "time"
-            }
-          ],
-          "hide": false,
-          "measurement": "dunedaq.appfwk.queueinfo.Info",
-          "orderByTime": "ASC",
-          "policy": "default",
-          "query": "SELECT mean(\"v_bias_3\")  FROM \"dunedaq.daphnemodules.daphnecontrollerinfo.VoltageInfo\" WHERE (\"partition_id\" = '${partition}' AND \"source_id\"=~ /[^.]+\\.${application}\\.${controller}/) AND $timeFilter GROUP BY time($__interval), \"source_id\"",
-          "rawQuery": true,
-          "refId": "D",
-          "resultFormat": "time_series",
-          "select": [
-            [
-              {
-                "params": [
-                  "number_of_elements"
-                ],
-                "type": "field"
-              },
-              {
-                "params": [],
-                "type": "distinct"
-              },
-              {
-                "params": [
-                  " * 100"
-                ],
-                "type": "math"
-              }
-            ]
-          ],
-          "tags": [
-            {
-              "key": "source_id",
-              "operator": "=",
-              "value": "maroda_test_dataflow.trigger_record_q"
-            }
-          ]
-        },
-        {
-          "alias": "AFE 4",
-          "datasource": {
-            "uid": "${influxdb}"
-          },
-          "groupBy": [
-            {
-              "params": [
-                "$__interval"
-              ],
-              "type": "time"
-            }
-          ],
-          "hide": false,
-          "measurement": "dunedaq.appfwk.queueinfo.Info",
-          "orderByTime": "ASC",
-          "policy": "default",
-          "query": "SELECT mean(\"v_bias_4\")  FROM \"dunedaq.daphnemodules.daphnecontrollerinfo.VoltageInfo\" WHERE (\"partition_id\" = '${partition}' AND \"source_id\"=~ /[^.]+\\.${application}\\.${controller}/) AND $timeFilter GROUP BY time($__interval), \"source_id\"",
-          "rawQuery": true,
-          "refId": "E",
-          "resultFormat": "time_series",
-          "select": [
-            [
-              {
-                "params": [
-                  "number_of_elements"
-                ],
-                "type": "field"
-              },
-              {
-                "params": [],
-                "type": "distinct"
-              },
-              {
-                "params": [
-                  " * 100"
-                ],
-                "type": "math"
-              }
-            ]
-          ],
-          "tags": [
-            {
-              "key": "source_id",
-              "operator": "=",
-              "value": "maroda_test_dataflow.trigger_record_q"
-            }
-          ]
-        }
-      ],
-      "title": "Bias for ${controller}",
-      "transformations": [],
-      "type": "timeseries"
     }
   ],
   "refresh": "5s",
@@ -963,8 +1318,8 @@
       {
         "current": {
           "selected": false,
-          "text": "np04hd",
-          "value": "np04hd"
+          "text": "maroda",
+          "value": "maroda"
         },
         "datasource": {
           "type": "influxdb",
@@ -995,14 +1350,14 @@
           "type": "influxdb",
           "uid": "${influxdb}"
         },
-        "definition": "SELECT \"source_id\" FROM (SELECT \"power_ce\",\"source_id\" FROM  \"dunedaq.daphnemodules.daphnecontrollerinfo.VoltageInfo\" WHERE $timeFilter AND \"partition_id\"='${partition}' )   ",
+        "definition": "SELECT \"source_id\" FROM (SELECT \"power_ce\",\"source_id\" FROM  \"dunedaq.daphnemodules.daphnecontrollerinfo.GeneralInfo\" WHERE $timeFilter AND \"partition_id\"='${partition}' )   ",
         "hide": 0,
         "includeAll": false,
         "label": "Application name",
         "multi": false,
         "name": "application",
         "options": [],
-        "query": "SELECT \"source_id\" FROM (SELECT \"power_ce\",\"source_id\" FROM  \"dunedaq.daphnemodules.daphnecontrollerinfo.VoltageInfo\" WHERE $timeFilter AND \"partition_id\"='${partition}' )   ",
+        "query": "SELECT \"source_id\" FROM (SELECT \"power_ce\",\"source_id\" FROM  \"dunedaq.daphnemodules.daphnecontrollerinfo.GeneralInfo\" WHERE $timeFilter AND \"partition_id\"='${partition}' )   ",
         "refresh": 1,
         "regex": "[^.]+\\.([^.]+)\\.[^.]+",
         "skipUrlSync": false,
@@ -1024,14 +1379,14 @@
           "type": "influxdb",
           "uid": "${influxdb}"
         },
-        "definition": "SELECT \"source_id\" FROM (SELECT \"power_ce\",\"source_id\" FROM  \"dunedaq.daphnemodules.daphnecontrollerinfo.VoltageInfo\" WHERE $timeFilter AND \"partition_id\"='${partition}' )   ",
+        "definition": "SELECT \"source_id\" FROM (SELECT \"power_ce\",\"source_id\" FROM  \"dunedaq.daphnemodules.daphnecontrollerinfo.GeneralInfo\" WHERE $timeFilter AND \"partition_id\"='${partition}' )   ",
         "hide": 0,
         "includeAll": true,
-        "label": "Application name",
+        "label": "Controller names",
         "multi": true,
         "name": "controller",
         "options": [],
-        "query": "SELECT \"source_id\" FROM (SELECT \"power_ce\",\"source_id\" FROM  \"dunedaq.daphnemodules.daphnecontrollerinfo.VoltageInfo\" WHERE $timeFilter AND \"partition_id\"='${partition}' )   ",
+        "query": "SELECT \"source_id\" FROM (SELECT \"power_ce\",\"source_id\" FROM  \"dunedaq.daphnemodules.daphnecontrollerinfo.GeneralInfo\" WHERE $timeFilter AND \"partition_id\"='${partition}' )   ",
         "refresh": 2,
         "regex": "[^.]+\\.[^.]+\\.([^.]+)",
         "skipUrlSync": false,
@@ -1041,13 +1396,13 @@
     ]
   },
   "time": {
-    "from": "now-24h",
+    "from": "now-30m",
     "to": "now"
   },
   "timepicker": {},
   "timezone": "",
   "title": "Photon Detection System",
   "uid": "v4_4_4-pds",
-  "version": 10,
+  "version": 17,
   "weekStart": ""
 }

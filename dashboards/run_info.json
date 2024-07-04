@@ -18,8 +18,24 @@
   "editable": true,
   "fiscalYearStartMonth": 0,
   "graphTooltip": 0,
-  "id": 94,
-  "links": [],
+  "id": 195,
+  "links": [
+    {
+      "asDropdown": false,
+      "icon": "external link",
+      "includeVars": true,
+      "keepTime": true,
+      "tags": [
+        "v4.4.4",
+        "Main"
+      ],
+      "targetBlank": true,
+      "title": "Main Dashboard",
+      "tooltip": "",
+      "type": "dashboards",
+      "url": ""
+    }
+  ],
   "liveNow": false,
   "panels": [
     {
@@ -86,7 +102,7 @@
             "type": "influxdb",
             "uid": "${influxdb}"
           },
-          "query": "SELECT \"runno\" FROM \"dunedaq.rcif.runinfo.Info\" WHERE ($timeFilter AND runno > 0) GROUP BY \"partition_id\"",
+          "query": "SELECT \"runno\" FROM \"dunedaq.rcif.runinfo.Info\" WHERE ($timeFilter AND runno > 0 ) GROUP BY \"partition_id\"",
           "rawQuery": true,
           "refId": "A",
           "resultFormat": "time_series"
@@ -102,7 +118,8 @@
   "schemaVersion": 38,
   "tags": [
     "Global",
-    "v4.4.4"
+    "v4.4.4",
+    "RunInfo"
   ],
   "templating": {
     "list": [
@@ -123,17 +140,41 @@
         "regex": "",
         "skipUrlSync": false,
         "type": "datasource"
+      },
+      {
+        "current": {
+          "selected": false,
+          "text": "np04hddev",
+          "value": "np04hddev"
+        },
+        "datasource": {
+          "type": "influxdb",
+          "uid": "${influxdb}"
+        },
+        "definition": "SELECT \"partition_id\" FROM (SELECT \"runno\",\"partition_id\" FROM \"dunedaq.rcif.runinfo.Info\" WHERE $timeFilter AND \"runno\" > 0)",
+        "hide": 0,
+        "includeAll": false,
+        "label": "Partition",
+        "multi": false,
+        "name": "partition",
+        "options": [],
+        "query": "SELECT \"partition_id\" FROM (SELECT \"runno\",\"partition_id\" FROM \"dunedaq.rcif.runinfo.Info\" WHERE $timeFilter AND \"runno\" > 0)",
+        "refresh": 2,
+        "regex": "",
+        "skipUrlSync": false,
+        "sort": 0,
+        "type": "query"
       }
     ]
   },
   "time": {
-    "from": "now-30m",
+    "from": "now-6h",
     "to": "now"
   },
   "timepicker": {},
   "timezone": "",
   "title": "Run Info",
   "uid": "v4_4_4-run_info",
-  "version": 2,
+  "version": 10,
   "weekStart": ""
 }

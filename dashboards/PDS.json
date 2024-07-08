@@ -91,7 +91,49 @@
           },
           "unit": "pps"
         },
-        "overrides": []
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byFrameRefID",
+              "options": "B"
+            },
+            "properties": [
+              {
+                "id": "custom.axisPlacement",
+                "value": "right"
+              },
+              {
+                "id": "unit",
+                "value": "none"
+              }
+            ]
+          },
+          {
+            "__systemRef": "hideSeriesFrom",
+            "matcher": {
+              "id": "byNames",
+              "options": {
+                "mode": "exclude",
+                "names": [
+                  "Rate controller 11",
+                  "Total controller 11"
+                ],
+                "prefix": "All except:",
+                "readOnly": true
+              }
+            },
+            "properties": [
+              {
+                "id": "custom.hideFrom",
+                "value": {
+                  "legend": false,
+                  "tooltip": false,
+                  "viz": true
+                }
+              }
+            ]
+          }
+        ]
       },
       "gridPos": {
         "h": 10,
@@ -114,7 +156,7 @@
       },
       "targets": [
         {
-          "alias": "$tag_source_id",
+          "alias": "Rate $tag_source_id",
           "datasource": {
             "type": "influxdb",
             "uid": "ffedc550-6555-4a16-a113-aabf2b980c30"
@@ -123,6 +165,18 @@
           "rawQuery": true,
           "refId": "A",
           "resultFormat": "time_series"
+        },
+        {
+          "alias": "Total $tag_source_id",
+          "datasource": {
+            "type": "influxdb",
+            "uid": "ffedc550-6555-4a16-a113-aabf2b980c30"
+          },
+          "hide": false,
+          "query": "SELECT last(\"total_packets\") FROM \"dunedaq.daphnemodules.daphnecontrollerinfo.GeneralInfo\" WHERE (\"partition_id\" = '${partition}' AND \"source_id\"=~ /[^.]+\\.${application}\\.[^.]+/) AND $timeFilter GROUP BY time($__interval), \"source_id\"",
+          "rawQuery": true,
+          "refId": "B",
+          "resultFormat": "time_series"
         }
       ],
       "title": "Data to Felix rate",
@@ -130,8 +184,8 @@
         {
           "id": "renameByRegex",
           "options": {
-            "regex": "[^.]+\\.[^.]+\\.([^.]+)_(\\d+)",
-            "renamePattern": "$1 $2"
+            "regex": "([^.]+) [^.]+\\.[^.]+\\.([^.]+)_(\\d+)",
+            "renamePattern": "$1 $2 $3"
           }
         }
       ],
@@ -196,7 +250,30 @@
           },
           "unit": "pps"
         },
-        "overrides": []
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byFrameRefID",
+              "options": "B"
+            },
+            "properties": [
+              {
+                "id": "custom.axisPlacement",
+                "value": "right"
+              },
+              {
+                "id": "unit",
+                "value": "none"
+              },
+              {
+                "id": "custom.scaleDistribution",
+                "value": {
+                  "type": "linear"
+                }
+              }
+            ]
+          }
+        ]
       },
       "gridPos": {
         "h": 10,
@@ -209,7 +286,7 @@
         "legend": {
           "calcs": [],
           "displayMode": "list",
-          "placement": "bottom",
+          "placement": "right",
           "showLegend": true
         },
         "tooltip": {
@@ -221,7 +298,7 @@
       "repeatDirection": "v",
       "targets": [
         {
-          "alias": "$tag_source_id",
+          "alias": "Rate $tag_source_id",
           "datasource": {
             "type": "influxdb",
             "uid": "ffedc550-6555-4a16-a113-aabf2b980c30"
@@ -230,6 +307,18 @@
           "rawQuery": true,
           "refId": "A",
           "resultFormat": "time_series"
+        },
+        {
+          "alias": "Total $tag_source_id",
+          "datasource": {
+            "type": "influxdb",
+            "uid": "ffedc550-6555-4a16-a113-aabf2b980c30"
+          },
+          "hide": false,
+          "query": "SELECT last(\"total_packets\") FROM \"dunedaq.daphnemodules.daphnecontrollerinfo.ChannelInfo\" WHERE (\"partition_id\" = '${partition}' AND \"source_id\"=~ /[^.]+\\.${application}\\.${controller}\\.[^.]+/) AND $timeFilter GROUP BY time($__interval), \"source_id\"",
+          "rawQuery": true,
+          "refId": "B",
+          "resultFormat": "time_series"
         }
       ],
       "title": "Data in FIFO from ${controller}",
@@ -237,8 +326,8 @@
         {
           "id": "renameByRegex",
           "options": {
-            "regex": "[^.]+\\.[^.]+\\.[^.]+\\.([^.]+)_(\\d+)",
-            "renamePattern": "$1 $2"
+            "regex": "([^.]+) [^.]+\\.[^.]+\\.[^.]+\\.([^.]+)_(\\d+)",
+            "renamePattern": "$1 $2 $3"
           }
         }
       ],
@@ -303,7 +392,54 @@
           },
           "unit": "pps"
         },
-        "overrides": []
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byFrameRefID",
+              "options": "B"
+            },
+            "properties": [
+              {
+                "id": "custom.axisPlacement",
+                "value": "right"
+              },
+              {
+                "id": "unit",
+                "value": "none"
+              },
+              {
+                "id": "custom.scaleDistribution",
+                "value": {
+                  "type": "linear"
+                }
+              }
+            ]
+          },
+          {
+            "__systemRef": "hideSeriesFrom",
+            "matcher": {
+              "id": "byNames",
+              "options": {
+                "mode": "exclude",
+                "names": [
+                  "Total ch 33"
+                ],
+                "prefix": "All except:",
+                "readOnly": true
+              }
+            },
+            "properties": [
+              {
+                "id": "custom.hideFrom",
+                "value": {
+                  "legend": false,
+                  "tooltip": false,
+                  "viz": true
+                }
+              }
+            ]
+          }
+        ]
       },
       "gridPos": {
         "h": 10,
@@ -316,7 +452,7 @@
         "legend": {
           "calcs": [],
           "displayMode": "list",
-          "placement": "bottom",
+          "placement": "right",
           "showLegend": true
         },
         "tooltip": {
@@ -328,7 +464,7 @@
       "repeatDirection": "v",
       "targets": [
         {
-          "alias": "$tag_source_id",
+          "alias": "Rate $tag_source_id",
           "datasource": {
             "type": "influxdb",
             "uid": "ffedc550-6555-4a16-a113-aabf2b980c30"
@@ -337,6 +473,18 @@
           "rawQuery": true,
           "refId": "A",
           "resultFormat": "time_series"
+        },
+        {
+          "alias": "Total $tag_source_id",
+          "datasource": {
+            "type": "influxdb",
+            "uid": "ffedc550-6555-4a16-a113-aabf2b980c30"
+          },
+          "hide": false,
+          "query": "SELECT last(\"total_triggers\") FROM \"dunedaq.daphnemodules.daphnecontrollerinfo.ChannelInfo\" WHERE (\"partition_id\" = '${partition}' AND \"source_id\"=~ /[^.]+\\.${application}\\.${controller}\\.[^.]+/) AND $timeFilter GROUP BY time($__interval), \"source_id\"",
+          "rawQuery": true,
+          "refId": "B",
+          "resultFormat": "time_series"
         }
       ],
       "title": "Selftriggers from ${controller}",
@@ -344,8 +492,8 @@
         {
           "id": "renameByRegex",
           "options": {
-            "regex": "[^.]+\\.[^.]+\\.[^.]+\\.([^.]+)_(\\d+)",
-            "renamePattern": "$1 $2"
+            "regex": "([^.]+) [^.]+\\.[^.]+\\.[^.]+\\.([^.]+)_(\\d+)",
+            "renamePattern": "$1 $2 $3"
           }
         }
       ],
@@ -357,7 +505,7 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 21
+        "y": 11
       },
       "id": 10,
       "panels": [
@@ -408,7 +556,8 @@
                 "mode": "absolute",
                 "steps": [
                   {
-                    "color": "green"
+                    "color": "green",
+                    "value": null
                   },
                   {
                     "color": "red",
@@ -424,7 +573,7 @@
             "h": 9,
             "w": 12,
             "x": 0,
-            "y": 18
+            "y": 22
           },
           "id": 2,
           "links": [],
@@ -705,7 +854,7 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 22
+        "y": 12
       },
       "id": 8,
       "panels": [],
@@ -776,7 +925,7 @@
         "h": 9,
         "w": 6,
         "x": 0,
-        "y": 23
+        "y": 13
       },
       "id": 5,
       "links": [],
@@ -920,7 +1069,7 @@
         "h": 9,
         "w": 6,
         "x": 6,
-        "y": 23
+        "y": 13
       },
       "id": 4,
       "links": [],
@@ -1064,7 +1213,7 @@
         "h": 9,
         "w": 6,
         "x": 12,
-        "y": 23
+        "y": 13
       },
       "id": 3,
       "links": [],
@@ -1208,7 +1357,7 @@
         "h": 9,
         "w": 6,
         "x": 18,
-        "y": 23
+        "y": 13
       },
       "id": 6,
       "links": [],
@@ -1342,9 +1491,10 @@
       {
         "allValue": "",
         "current": {
+          "isNone": true,
           "selected": false,
-          "text": "daphneapp",
-          "value": "daphneapp"
+          "text": "None",
+          "value": ""
         },
         "datasource": {
           "type": "influxdb",
@@ -1396,13 +1546,13 @@
     ]
   },
   "time": {
-    "from": "now-30m",
+    "from": "now-15m",
     "to": "now"
   },
   "timepicker": {},
   "timezone": "",
   "title": "Photon Detection System",
   "uid": "v4_4_4-pds",
-  "version": 18,
+  "version": 24,
   "weekStart": ""
 }

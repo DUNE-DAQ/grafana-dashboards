@@ -163,7 +163,7 @@
           "measurement": "dunedaq.datahandlinglibs.readoutinfo.TPChannelInfo",
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "SELECT \"channel\", \"num_tp\" FROM \"dunedaq.datahandlinglibs.readoutinfo.TPChannelInfo\" WHERE \"partition_id\"='${partition}' AND $timeFilter GROUP BY \"source_id\" ",
+          "query": "SELECT \"channel\", \"num_tp\" FROM \"dunedaq.datahandlinglibs.readoutinfo.TPChannelInfo\" WHERE \"partition_id\"='${partition}' AND \"source_id\" =~ /[^.]+\\.${readout_app}\\.${DLH}/ AND $timeFilter GROUP BY \"source_id\" ",
           "rawQuery": true,
           "refId": "A",
           "resultFormat": "table",
@@ -4041,7 +4041,7 @@
       {
         "allValue": "",
         "current": {
-          "selected": false,
+          "selected": true,
           "text": [
             "All"
           ],
@@ -4067,7 +4067,7 @@
       },
       {
         "current": {
-          "selected": false,
+          "selected": true,
           "text": [
             "All"
           ],
@@ -4094,7 +4094,7 @@
       {
         "allValue": "",
         "current": {
-          "selected": false,
+          "selected": true,
           "text": [
             "All"
           ],
@@ -4153,6 +4153,6 @@
   "timezone": "",
   "title": "Trigger Primitives",
   "uid": "v5_1_0-trigger_primitives",
-  "version": 26,
+  "version": 27,
   "weekStart": ""
 }

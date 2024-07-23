@@ -25,7 +25,7 @@
   "editable": true,
   "fiscalYearStartMonth": 0,
   "graphTooltip": 0,
-  "id": 205,
+  "id": 222,
   "links": [],
   "liveNow": false,
   "panels": [
@@ -399,6 +399,7 @@
     },
     {
       "datasource": {
+        "type": "influxdb",
         "uid": "${influxdb}"
       },
       "fieldConfig": {
@@ -410,7 +411,6 @@
             "axisBorderShow": false,
             "axisCenteredZero": false,
             "axisColorMode": "text",
-            "axisLabel": "Hz",
             "axisPlacement": "auto",
             "barAlignment": 0,
             "drawStyle": "line",
@@ -430,7 +430,7 @@
               "type": "log"
             },
             "showPoints": "always",
-            "spanNulls": true,
+            "spanNulls": 15000,
             "stacking": {
               "group": "A",
               "mode": "none"
@@ -446,57 +446,30 @@
               {
                 "color": "green",
                 "value": null
-              },
-              {
-                "color": "red",
-                "value": 80
               }
             ]
           },
-          "unit": "short"
+          "unit": "cps"
         },
         "overrides": [
           {
             "matcher": {
               "id": "byName",
-              "options": "Pending TDs"
+              "options": "Requests per TD"
             },
             "properties": [
               {
-                "id": "color",
-                "value": {
-                  "fixedColor": "dark-red",
-                  "mode": "fixed"
-                }
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "Received fragments"
-            },
-            "properties": [
+                "id": "custom.axisPlacement",
+                "value": "right"
+              },
               {
-                "id": "color",
-                "value": {
-                  "fixedColor": "semi-dark-yellow",
-                  "mode": "fixed"
-                }
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "Pending fragments"
-            },
-            "properties": [
+                "id": "unit",
+                "value": "none"
+              },
               {
-                "id": "color",
+                "id": "custom.scaleDistribution",
                 "value": {
-                  "fixedColor": "semi-dark-blue",
-                  "mode": "fixed"
+                  "type": "linear"
                 }
               }
             ]
@@ -826,6 +799,61 @@
           "query": "SELECT non_negative_derivative(cumulative_sum(sum(\"generated_trigger_records\")), 1s) FROM \"dunedaq.dfmodules.triggerrecordbuilderinfo.Info\" WHERE (\"partition_id\" = '${partition}' AND \"source_id\"=~/[^.]+\\.dataflow[^.]+\\.[^.]+/) AND $timeFilter GROUP BY time($__interval) fill(null)",
           "rawQuery": true,
           "refId": "F",
+          "resultFormat": "time_series",
+          "select": [
+            [
+              {
+                "params": [
+                  "generated_trigger_records"
+                ],
+                "type": "field"
+              },
+              {
+                "params": [],
+                "type": "distinct"
+              },
+              {
+                "params": [
+                  "1s"
+                ],
+                "type": "derivative"
+              }
+            ]
+          ],
+          "tags": [
+            {
+              "key": "source_id",
+              "operator": "=",
+              "value": "maroda_test_dataflow.trb"
+            }
+          ]
+        },
+        {
+          "alias": "Requests per TD",
+          "datasource": {
+            "uid": "${influxdb}"
+          },
+          "groupBy": [
+            {
+              "params": [
+                "$__interval"
+              ],
+              "type": "time"
+            },
+            {
+              "params": [
+                "null"
+              ],
+              "type": "fill"
+            }
+          ],
+          "hide": false,
+          "measurement": "dunedaq.dfmodules.triggerrecordbuilderinfo.Info",
+          "orderByTime": "ASC",
+          "policy": "default",
+          "query": "SELECT sum(\"generated_data_requests\")/sum(\"received_trigger_decisions\") FROM \"dunedaq.dfmodules.triggerrecordbuilderinfo.Info\" WHERE \"partition_id\" = '${partition}' AND $timeFilter AND \"received_trigger_decisions\" > 0 GROUP BY time($__interval) fill(null)",
+          "rawQuery": true,
+          "refId": "G",
           "resultFormat": "time_series",
           "select": [
             [
@@ -1313,6 +1341,55 @@
           "hide": false,
           "refId": "Completition",
           "type": "math"
+        },
+        {
+          "alias": "Fragments per TR",
+          "datasource": {
+            "uid": "${influxdb}"
+          },
+          "groupBy": [
+            {
+              "params": [
+                "$__interval"
+              ],
+              "type": "time"
+            },
+            {
+              "params": [
+                "null"
+              ],
+              "type": "fill"
+            }
+          ],
+          "hide": false,
+          "measurement": "dunedaq.dfmodules.triggerrecordbuilderinfo.Info",
+          "orderByTime": "ASC",
+          "policy": "default",
+          "query": "SELECT sum(\"data\") FROM (SELECT (mean(\"pending_fragments\") +  mean(\"fragments_in_the_book\")) / mean(\"pending_trigger_decisions\") AS \"data\"  FROM \"dunedaq.dfmodules.triggerrecordbuilderinfo.Info\" WHERE \"partition_id\"='${partition}' AND $timeFilter GROUP BY time($__interval), \"source_id\" fill(null) ) GROUP BY time($__interval)  fill(null)",
+          "rawQuery": true,
+          "refId": "A",
+          "resultFormat": "time_series",
+          "select": [
+            [
+              {
+                "params": [
+                  "value"
+                ],
+                "type": "field"
+              },
+              {
+                "params": [],
+                "type": "sum"
+              }
+            ]
+          ],
+          "tags": [
+            {
+              "key": "source_id",
+              "operator": "=",
+              "value": "select tag value"
+            }
+          ]
         }
       ],
       "title": "Pending data",
@@ -3190,7 +3267,7 @@
       },
       {
         "current": {
-          "selected": true,
+          "selected": false,
           "text": "np04hddev",
           "value": "np04hddev"
         },
@@ -3261,7 +3338,7 @@
     ]
   },
   "time": {
-    "from": "now-5m",
+    "from": "now-15m",
     "to": "now"
   },
   "timepicker": {
@@ -3292,6 +3369,6 @@
   "timezone": "",
   "title": "Dataflow",
   "uid": "v4_4_6-dataflow",
-  "version": 10,
+  "version": 2,
   "weekStart": ""
 }

@@ -900,6 +900,10 @@
               {
                 "id": "custom.axisLabel",
                 "value": "Fragments per TD"
+              },
+              {
+                "id": "unit",
+                "value": "none"
               }
             ]
           }
@@ -922,7 +926,7 @@
         },
         "tooltip": {
           "mode": "multi",
-          "sort": "none"
+          "sort": "desc"
         }
       },
       "pluginVersion": "8.0.6",
@@ -1032,7 +1036,7 @@
             "uid": "${influxdb}"
           },
           "hide": false,
-          "query": "SELECT sum(\"generated_data_requests\")/sum(\"received_trigger_decisions\") FROM \"dunedaq.dfmodules.triggerrecordbuilderinfo.Info\" WHERE \"partition_id\" = '${partition}' AND $timeFilter AND \"received_trigger_decisions\" > 0 GROUP BY time($__interval) fill(null)",
+          "query": "SELECT mean(\"data\") FROM (SELECT (last(\"pending_fragments\") +  last(\"fragments_in_the_book\")) / last(\"pending_trigger_decisions\") AS \"data\"  FROM \"dunedaq.dfmodules.triggerrecordbuilderinfo.Info\" WHERE \"partition_id\"='${partition}' AND \"pending_trigger_decisions\" > 0 AND $timeFilter GROUP BY time($__interval), \"source_id\" fill(null) ) GROUP BY time($__interval)  fill(null)",
           "rawQuery": true,
           "refId": "C",
           "resultFormat": "time_series"
@@ -1207,7 +1211,7 @@
               "type": "fill"
             }
           ],
-          "hide": true,
+          "hide": false,
           "measurement": "dunedaq.dfmodules.triggerrecordbuilderinfo.Info",
           "orderByTime": "ASC",
           "policy": "default",
@@ -3324,6 +3328,6 @@
   "timezone": "",
   "title": "Dataflow",
   "uid": "v4_4_6-dataflow",
-  "version": 7,
+  "version": 9,
   "weekStart": ""
 }

@@ -847,7 +847,6 @@
             "axisBorderShow": false,
             "axisCenteredZero": false,
             "axisColorMode": "text",
-            "axisLabel": "clock ticks",
             "axisPlacement": "auto",
             "barAlignment": 0,
             "drawStyle": "line",
@@ -885,7 +884,7 @@
               }
             ]
           },
-          "unit": "none"
+          "unit": "ns"
         },
         "overrides": [
           {
@@ -922,7 +921,7 @@
           "showLegend": true
         },
         "tooltip": {
-          "mode": "single",
+          "mode": "multi",
           "sort": "none"
         }
       },
@@ -951,7 +950,7 @@
           "measurement": "dunedaq.dfmodules.triggerrecordbuilderinfo.Info",
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "SELECT sum(\"data_request_width\") / sum(\"generated_data_requests\") FROM \"dunedaq.dfmodules.triggerrecordbuilderinfo.Info\" WHERE \"partition_id\" = '${partition}' AND $timeFilter AND \"generated_data_requests\" > 0 GROUP BY time($__interval) fill(null)\n",
+          "query": "SELECT sum(\"data_request_width\") / sum(\"generated_data_requests\") * 16 FROM \"dunedaq.dfmodules.triggerrecordbuilderinfo.Info\" WHERE \"partition_id\" = '${partition}' AND $timeFilter AND \"generated_data_requests\" > 0 GROUP BY time($__interval) fill(null)\n",
           "rawQuery": true,
           "refId": "B",
           "resultFormat": "time_series",
@@ -1000,7 +999,7 @@
           "measurement": "dunedaq.dfmodules.triggerrecordbuilderinfo.Info",
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "SELECT sum(\"trigger_decision_width\") / sum(\"received_trigger_decisions\") FROM \"dunedaq.dfmodules.triggerrecordbuilderinfo.Info\" WHERE \"partition_id\" = '${partition}' AND $timeFilter AND \"received_trigger_decisions\" > 0 GROUP BY time($__interval) fill(null)\n",
+          "query": "SELECT sum(\"trigger_decision_width\") / sum(\"received_trigger_decisions\") * 16 FROM \"dunedaq.dfmodules.triggerrecordbuilderinfo.Info\" WHERE \"partition_id\" = '${partition}' AND $timeFilter AND \"received_trigger_decisions\" > 0 GROUP BY time($__interval) fill(null)\n",
           "rawQuery": true,
           "refId": "A",
           "resultFormat": "time_series",
@@ -3325,6 +3324,6 @@
   "timezone": "",
   "title": "Dataflow",
   "uid": "v4_4_6-dataflow",
-  "version": 6,
+  "version": 7,
   "weekStart": ""
 }

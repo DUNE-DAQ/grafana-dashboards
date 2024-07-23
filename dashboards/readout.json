@@ -157,7 +157,7 @@
           "measurement": "dunedaq.datahandlinglibs.readoutinfo.ReadoutInfo",
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "SELECT mean(\"rate_payloads_consumed\") FROM \"dunedaq.datahandlinglibs.readoutinfo.ReadoutInfo\" WHERE (partition_id = '${partition}' AND \"source_id\" =~ /[^.]+\\.DLH-\\d+/ ) AND $timeFilter GROUP BY time($__interval), \"source_id\"",
+          "query": "SELECT mean(\"rate_payloads_consumed\") FROM \"dunedaq.datahandlinglibs.readoutinfo.ReadoutInfo\" WHERE (partition_id = '${partition}' AND \"source_id\" =~ /[^.]+\\.${readout_app}\\.${DLH}/ ) AND $timeFilter GROUP BY time($__interval), \"source_id\"",
           "rawQuery": true,
           "refId": "A",
           "resultFormat": "time_series",
@@ -306,7 +306,7 @@
           "measurement": "dunedaq.datahandlinglibs.readoutinfo.ReadoutInfo",
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "SELECT mean(\"num_buffer_elements\") FROM \"dunedaq.datahandlinglibs.readoutinfo.ReadoutInfo\" WHERE (\"partition_id\"='${partition}' AND \"source_id\" =~ /[^.]+\\.DLH-\\d+/ ) AND $timeFilter GROUP BY time($__interval), \"source_id\" fill(null)",
+          "query": "SELECT mean(\"num_buffer_elements\") FROM \"dunedaq.datahandlinglibs.readoutinfo.ReadoutInfo\" WHERE (\"partition_id\"='${partition}' AND \"source_id\" =~ /[^.]+\\.${readout_app}\\.${DLH}/ ) AND $timeFilter GROUP BY time($__interval), \"source_id\" fill(null)",
           "rawQuery": true,
           "refId": "A",
           "resultFormat": "time_series",
@@ -460,7 +460,7 @@
           "measurement": "dunedaq.datahandlinglibs.readoutinfo.ReadoutInfo",
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "SELECT non_negative_derivative(cumulative_sum(sum(\"num_requests\")), 1s) FROM \"dunedaq.datahandlinglibs.readoutinfo.ReadoutInfo\" WHERE (\"partition_id\"='${partition}' AND \"source_id\" =~ /[^.]+\\.DLH-\\d+/ ) AND $timeFilter GROUP BY time($__interval) fill(null)",
+          "query": "SELECT non_negative_derivative(cumulative_sum(sum(\"num_requests\")), 1s) FROM \"dunedaq.datahandlinglibs.readoutinfo.ReadoutInfo\" WHERE (\"partition_id\"='${partition}' AND \"source_id\" =~ /[^.]+\\.[^.]+\\.DLH-\\d+/ ) AND $timeFilter GROUP BY time($__interval) fill(null)",
           "rawQuery": true,
           "refId": "A",
           "resultFormat": "time_series",
@@ -1018,7 +1018,7 @@
           "measurement": "dunedaq.datahandlinglibs.readoutinfo.RawDataProcessorInfo",
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "SELECT sum(\"tot_request_response_time\")/sum(\"num_requests_handled\") FROM \"dunedaq.datahandlinglibs.readoutinfo.RequestHandlerInfo\" WHERE \"partition_id\"='${partition}' AND  \"source_id\" =~ /.*\\.DLH-\\d+/ AND \"num_requests_handled\">0 AND  $timeFilter GROUP BY time($__interval), \"source_id\" fill(null)",
+          "query": "SELECT sum(\"tot_request_response_time\")/sum(\"num_requests_handled\") FROM \"dunedaq.datahandlinglibs.readoutinfo.RequestHandlerInfo\" WHERE \"partition_id\"='${partition}' AND  \"source_id\" =~ /[^.]+\\.${readout_app}\\.${DLH}/ AND \"num_requests_handled\">0 AND  $timeFilter GROUP BY time($__interval), \"source_id\" fill(null)",
           "rawQuery": true,
           "refId": "A",
           "resultFormat": "time_series",
@@ -1489,7 +1489,7 @@
           "measurement": "dunedaq.datahandlinglibs.readoutinfo.RequestHandlerInfo",
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "SELECT sum(\"num_requests_waiting\") FROM \"dunedaq.datahandlinglibs.readoutinfo.RequestHandlerInfo\" WHERE (\"partition_id\"='${partition}' AND \"source_id\" =~ /[^.]+\\.DLH-\\d+/ ) AND $timeFilter GROUP BY time($__interval), \"source_id\"",
+          "query": "SELECT sum(\"num_requests_waiting\") FROM \"dunedaq.datahandlinglibs.readoutinfo.RequestHandlerInfo\" WHERE (\"partition_id\"='${partition}' AND \"source_id\" =~ /[^.]+\\.${readout_app}\\.${DLH}/ ) AND $timeFilter GROUP BY time($__interval), \"source_id\"",
           "rawQuery": true,
           "refId": "E",
           "resultFormat": "time_series",
@@ -2930,22 +2930,26 @@
       },
       {
         "current": {
-          "selected": false,
-          "text": "runp02srv003eth0",
-          "value": "runp02srv003eth0"
+          "selected": true,
+          "text": [
+            "All"
+          ],
+          "value": [
+            "$__all"
+          ]
         },
         "datasource": {
           "type": "influxdb",
           "uid": "${influxdb}"
         },
-        "definition": "SELECT \"source_id\" FROM (SELECT \"num_buffer_cleanups\",\"source_id\" FROM \"dunedaq.datahandlinglibs.readoutinfo.RequestHandlerInfo\" WHERE $timeFilter AND \"partition_id\"='${partition}' )",
+        "definition": "SELECT \"source_id\" FROM (SELECT \"rate_payloads_consumed\", \"source_id\" FROM \"dunedaq.datahandlinglibs.readoutinfo.ReadoutInfo\" WHERE partition_id = '${partition}' AND $timeFilter)",
         "hide": 0,
-        "includeAll": false,
+        "includeAll": true,
         "label": "Readout application",
-        "multi": false,
+        "multi": true,
         "name": "readout_app",
         "options": [],
-        "query": "SELECT \"source_id\" FROM (SELECT \"num_buffer_cleanups\",\"source_id\" FROM \"dunedaq.datahandlinglibs.readoutinfo.RequestHandlerInfo\" WHERE $timeFilter AND \"partition_id\"='${partition}' )",
+        "query": "SELECT \"source_id\" FROM (SELECT \"rate_payloads_consumed\", \"source_id\" FROM \"dunedaq.datahandlinglibs.readoutinfo.ReadoutInfo\" WHERE partition_id = '${partition}' AND $timeFilter)",
         "refresh": 2,
         "regex": "[^.]+\\.([^.]+)\\.DLH-\\d+",
         "skipUrlSync": false,
@@ -2954,9 +2958,37 @@
       },
       {
         "current": {
+          "selected": true,
+          "text": [
+            "All"
+          ],
+          "value": [
+            "$__all"
+          ]
+        },
+        "datasource": {
+          "type": "influxdb",
+          "uid": "${influxdb}"
+        },
+        "definition": "SELECT \"source_id\" FROM (SELECT \"rate_payloads_consumed\", \"source_id\" FROM \"dunedaq.datahandlinglibs.readoutinfo.ReadoutInfo\" WHERE partition_id = '${partition}' AND \"source_id\" =~/[^.]+\\.${readout_app}\\.[^.]+/ AND $timeFilter)",
+        "hide": 0,
+        "includeAll": true,
+        "label": "",
+        "multi": true,
+        "name": "DLH",
+        "options": [],
+        "query": "SELECT \"source_id\" FROM (SELECT \"rate_payloads_consumed\", \"source_id\" FROM \"dunedaq.datahandlinglibs.readoutinfo.ReadoutInfo\" WHERE partition_id = '${partition}' AND \"source_id\" =~/[^.]+\\.${readout_app}\\.[^.]+/ AND $timeFilter)",
+        "refresh": 2,
+        "regex": "[^.]+\\.[^.]+\\.(DLH-\\d+)",
+        "skipUrlSync": false,
+        "sort": 1,
+        "type": "query"
+      },
+      {
+        "current": {
           "selected": false,
-          "text": "DLH-200",
-          "value": "DLH-200"
+          "text": "DLH-400",
+          "value": "DLH-400"
         },
         "datasource": {
           "type": "influxdb",
@@ -3040,6 +3072,6 @@
   "timezone": "",
   "title": "Readout",
   "uid": "v5_1_0-readout",
-  "version": 2,
+  "version": 9,
   "weekStart": ""
 }

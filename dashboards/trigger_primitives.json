@@ -3523,7 +3523,7 @@
       },
       "gridPos": {
         "h": 7,
-        "w": 8,
+        "w": 12,
         "x": 0,
         "y": 54
       },
@@ -3669,8 +3669,8 @@
       },
       "gridPos": {
         "h": 7,
-        "w": 8,
-        "x": 8,
+        "w": 12,
+        "x": 12,
         "y": 54
       },
       "id": 38,
@@ -3810,6 +3810,7 @@
     },
     {
       "datasource": {
+        "type": "influxdb",
         "uid": "${influxdb}"
       },
       "description": "",
@@ -3869,7 +3870,7 @@
       },
       "gridPos": {
         "h": 7,
-        "w": 12,
+        "w": 6,
         "x": 0,
         "y": 61
       },
@@ -3886,9 +3887,11 @@
           "sort": "none"
         }
       },
+      "repeat": "DLH",
+      "repeatDirection": "h",
       "targets": [
         {
-          "alias": "Cleanups",
+          "alias": "Cleanup",
           "datasource": {
             "uid": "${influxdb}"
           },
@@ -3909,7 +3912,7 @@
           "measurement": "dunedaq.datahandlinglibs.readoutinfo.RequestHandlerInfo",
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "SELECT mean(\"num_buffer_cleanups\") FROM \"dunedaq.datahandlinglibs.readoutinfo.RequestHandlerInfo\" WHERE (\"source_id\" = '${partition}.${readout_app}.${readout_module}') AND $timeFilter GROUP BY time($__interval) fill(null)",
+          "query": "SELECT mean(\"num_buffer_cleanups\") FROM \"dunedaq.datahandlinglibs.readoutinfo.RequestHandlerInfo\" WHERE \"partition_id\"='${partition}' AND \"source_id\"=~/[^.]+\\.[^.]+\\.${DLH}/ AND $timeFilter GROUP BY time($__interval) fill(null)",
           "rawQuery": true,
           "refId": "A",
           "resultFormat": "time_series",
@@ -3958,7 +3961,7 @@
           "measurement": "dunedaq.datahandlinglibs.readoutinfo.ReadoutInfo",
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "SELECT mean(\"num_payloads_overwritten\") FROM \"dunedaq.datahandlinglibs.readoutinfo.ReadoutInfo\" WHERE  (\"source_id\" = '${partition}.${readout_app}.${readout_module}')  AND $timeFilter GROUP BY time($__interval) fill(null)",
+          "query": "SELECT mean(\"num_payloads_overwritten\") FROM \"dunedaq.datahandlinglibs.readoutinfo.ReadoutInfo\" WHERE  \"partition_id\"='${partition}' AND \"source_id\"=~/[^.]+\\.[^.]+\\.${DLH}/ AND $timeFilter GROUP BY time($__interval) fill(null)",
           "rawQuery": true,
           "refId": "B",
           "resultFormat": "time_series",
@@ -3985,7 +3988,7 @@
           ]
         }
       ],
-      "title": "TP Buffers - Operational rates for ${readout_app}",
+      "title": "TP Buffers - Operational rates for ${DLH}",
       "type": "timeseries"
     }
   ],
@@ -4041,13 +4044,9 @@
       {
         "allValue": "",
         "current": {
-          "selected": true,
-          "text": [
-            "runp02srv003eth1"
-          ],
-          "value": [
-            "runp02srv003eth1"
-          ]
+          "selected": false,
+          "text": "All",
+          "value": "$__all"
         },
         "datasource": {
           "uid": "${influxdb}"
@@ -4153,6 +4152,6 @@
   "timezone": "",
   "title": "Trigger Primitives",
   "uid": "v5_1_0-trigger_primitives",
-  "version": 34,
+  "version": 37,
   "weekStart": ""
 }

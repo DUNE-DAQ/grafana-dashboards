@@ -57,6 +57,168 @@
     },
     {
       "datasource": {
+        "type": "influxdb",
+        "uid": "${influxdb}"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "drawStyle": "line",
+            "fillOpacity": 0,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "log": 10,
+              "type": "log"
+            },
+            "showPoints": "auto",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "percentunit"
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Assignment time"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "red",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Waiting for TD"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "yellow",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Forwarding decision"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "orange",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 7,
+        "w": 6,
+        "x": 0,
+        "y": 1
+      },
+      "id": 41,
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "tooltip": {
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "targets": [
+        {
+          "alias": "Forwarding decision",
+          "datasource": {
+            "uid": "${influxdb}"
+          },
+          "hide": false,
+          "query": "SELECT sum(\"forwarding_decision\") / (sum(\"waiting_for_decision\")+sum(\"deciding_destination\") + sum(\"forwarding_decision\"))FROM \"dunedaq.dfmodules.datafloworchestratorinfo.Info\" WHERE \"partition_id\"= '$partition' AND $timeFilter GROUP BY time($__interval) fill(null)",
+          "rawQuery": true,
+          "refId": "A"
+        },
+        {
+          "alias": "Assignment time",
+          "datasource": {
+            "uid": "${influxdb}"
+          },
+          "hide": false,
+          "query": "SELECT sum(\"deciding_destination\") / (sum(\"waiting_for_decision\")+sum(\"deciding_destination\") + sum(\"forwarding_decision\")) FROM \"dunedaq.dfmodules.datafloworchestratorinfo.Info\" WHERE \"partition_id\"= '$partition' AND $timeFilter GROUP BY time($__interval) fill(null)",
+          "rawQuery": true,
+          "refId": "B"
+        },
+        {
+          "alias": "Waiting for TD",
+          "datasource": {
+            "uid": "${influxdb}"
+          },
+          "hide": false,
+          "query": "SELECT sum(\"waiting_for_decision\") / (sum(\"waiting_for_decision\")+sum(\"deciding_destination\") + sum(\"forwarding_decision\")) FROM \"dunedaq.dfmodules.datafloworchestratorinfo.Info\" WHERE \"partition_id\"= '$partition' AND $timeFilter GROUP BY time($__interval) fill(null)",
+          "rawQuery": true,
+          "refId": "C"
+        }
+      ],
+      "title": "DFO time - Decision thread",
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "influxdb",
         "uid": "${influxdb}"
       },
       "fieldConfig": {
@@ -193,11 +355,11 @@
       },
       "gridPos": {
         "h": 7,
-        "w": 8,
-        "x": 0,
+        "w": 6,
+        "x": 6,
         "y": 1
       },
-      "id": 21,
+      "id": 42,
       "options": {
         "legend": {
           "calcs": [],
@@ -230,39 +392,9 @@
           "query": "SELECT sum(\"processing_token\") / (sum(\"waiting_for_token\")+sum(\"processing_token\")) FROM \"dunedaq.dfmodules.datafloworchestratorinfo.Info\" WHERE \"partition_id\"= '$partition' AND $timeFilter GROUP BY time($__interval) fill(null)",
           "rawQuery": true,
           "refId": "E"
-        },
-        {
-          "alias": "Forwarding decision",
-          "datasource": {
-            "uid": "${influxdb}"
-          },
-          "hide": false,
-          "query": "SELECT sum(\"forwarding_decision\") / (sum(\"waiting_for_decision\")+sum(\"deciding_destination\") + sum(\"forwarding_decision\"))FROM \"dunedaq.dfmodules.datafloworchestratorinfo.Info\" WHERE \"partition_id\"= '$partition' AND $timeFilter GROUP BY time($__interval) fill(null)",
-          "rawQuery": true,
-          "refId": "A"
-        },
-        {
-          "alias": "Assignment time",
-          "datasource": {
-            "uid": "${influxdb}"
-          },
-          "hide": false,
-          "query": "SELECT sum(\"deciding_destination\") / (sum(\"waiting_for_decision\")+sum(\"deciding_destination\") + sum(\"forwarding_decision\")) FROM \"dunedaq.dfmodules.datafloworchestratorinfo.Info\" WHERE \"partition_id\"= '$partition' AND $timeFilter GROUP BY time($__interval) fill(null)",
-          "rawQuery": true,
-          "refId": "B"
-        },
-        {
-          "alias": "Waiting for TD",
-          "datasource": {
-            "uid": "${influxdb}"
-          },
-          "hide": false,
-          "query": "SELECT sum(\"waiting_for_decision\") / (sum(\"waiting_for_decision\")+sum(\"deciding_destination\") + sum(\"forwarding_decision\")) FROM \"dunedaq.dfmodules.datafloworchestratorinfo.Info\" WHERE \"partition_id\"= '$partition' AND $timeFilter GROUP BY time($__interval) fill(null)",
-          "rawQuery": true,
-          "refId": "C"
         }
       ],
-      "title": "DFO time ",
+      "title": "DFO time - Token thread",
       "type": "timeseries"
     },
     {
@@ -373,8 +505,8 @@
       },
       "gridPos": {
         "h": 7,
-        "w": 8,
-        "x": 8,
+        "w": 6,
+        "x": 12,
         "y": 1
       },
       "id": 19,
@@ -805,8 +937,8 @@
       },
       "gridPos": {
         "h": 7,
-        "w": 8,
-        "x": 16,
+        "w": 6,
+        "x": 18,
         "y": 1
       },
       "id": 16,
@@ -930,12 +1062,48 @@
     },
     {
       "datasource": {
+        "type": "influxdb",
         "uid": "${influxdb}"
       },
       "fieldConfig": {
         "defaults": {
           "color": {
-            "mode": "thresholds"
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "drawStyle": "line",
+            "fillOpacity": 0,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "linear",
+            "lineStyle": {
+              "fill": "solid"
+            },
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "auto",
+            "spanNulls": 15000,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
           },
           "mappings": [],
           "thresholds": {
@@ -944,15 +1112,29 @@
               {
                 "color": "green",
                 "value": null
+              }
+            ]
+          },
+          "unit": "none"
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Completition"
+            },
+            "properties": [
+              {
+                "id": "custom.axisPlacement",
+                "value": "right"
               },
               {
-                "color": "red",
-                "value": 80
+                "id": "unit",
+                "value": "percentunit"
               }
             ]
           }
-        },
-        "overrides": []
+        ]
       },
       "gridPos": {
         "h": 7,
@@ -960,23 +1142,18 @@
         "x": 0,
         "y": 8
       },
-      "id": 33,
+      "id": 40,
       "options": {
-        "displayMode": "gradient",
-        "minVizHeight": 10,
-        "minVizWidth": 0,
-        "namePlacement": "auto",
-        "orientation": "horizontal",
-        "reduceOptions": {
-          "calcs": [
-            "lastNotNull"
-          ],
-          "fields": "",
-          "values": false
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": true
         },
-        "showUnfilled": true,
-        "text": {},
-        "valueMode": "color"
+        "tooltip": {
+          "mode": "single",
+          "sort": "none"
+        }
       },
       "pluginVersion": "10.2.2",
       "targets": [
@@ -1003,9 +1180,9 @@
           "measurement": "dunedaq.dfmodules.triggerrecordbuilderinfo.Info",
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "SELECT sum(\"pending_trigger_decisions\") FROM \"dunedaq.dfmodules.triggerrecordbuilderinfo.Info\" WHERE (\"source_id\" =~ /${partition}.dataflow[^.]+\\.[^.]+/ AND \"partition_id\"='${partition}') AND (time > now() - 1s) ",
+          "query": "SELECT sum(\"data\") FROM (SELECT mean(\"pending_trigger_decisions\") AS \"data\"  FROM \"dunedaq.dfmodules.triggerrecordbuilderinfo.Info\" WHERE \"partition_id\"='${partition}' AND $timeFilter GROUP BY time($__interval), \"source_id\" fill(null) ) GROUP BY time($__interval)  fill(null)",
           "rawQuery": true,
-          "refId": "C",
+          "refId": "D",
           "resultFormat": "time_series",
           "select": [
             [
@@ -1048,12 +1225,13 @@
               "type": "fill"
             }
           ],
+          "hide": true,
           "measurement": "dunedaq.dfmodules.triggerrecordbuilderinfo.Info",
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "SELECT sum(\"pending_fragments\") FROM \"dunedaq.dfmodules.triggerrecordbuilderinfo.Info\" WHERE (\"source_id\" =~ /${partition}.dataflow[^.]+\\.[^.]+/ AND \"partition_id\"='${partition}') AND (time > now() - 1s) ",
+          "query": "SELECT sum(\"data\") FROM (SELECT mean(\"pending_fragments\") AS \"data\"  FROM \"dunedaq.dfmodules.triggerrecordbuilderinfo.Info\" WHERE \"partition_id\"='${partition}' AND $timeFilter GROUP BY time($__interval), \"source_id\" fill(null)) GROUP BY time($__interval)  fill(null)",
           "rawQuery": true,
-          "refId": "A",
+          "refId": "E",
           "resultFormat": "time_series",
           "select": [
             [
@@ -1096,13 +1274,13 @@
               "type": "fill"
             }
           ],
-          "hide": false,
+          "hide": true,
           "measurement": "dunedaq.dfmodules.triggerrecordbuilderinfo.Info",
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "SELECT sum(\"fragments_in_the_book\") FROM \"dunedaq.dfmodules.triggerrecordbuilderinfo.Info\" WHERE (\"source_id\" =~ /${partition}.dataflow[^.]+\\.[^.]+/ AND \"partition_id\"='${partition}') AND (time > now() - 1s) ",
+          "query": "SELECT sum(\"data\") FROM (SELECT mean(\"fragments_in_the_book\") AS \"data\" FROM \"dunedaq.dfmodules.triggerrecordbuilderinfo.Info\" WHERE \"partition_id\"='${partition}' AND $timeFilter GROUP BY time($__interval), \"source_id\" fill(null)) GROUP BY time($__interval)  fill(null)",
           "rawQuery": true,
-          "refId": "B",
+          "refId": "F",
           "resultFormat": "time_series",
           "select": [
             [
@@ -1125,10 +1303,21 @@
               "value": "select tag value"
             }
           ]
+        },
+        {
+          "datasource": {
+            "name": "Expression",
+            "type": "__expr__",
+            "uid": "__expr__"
+          },
+          "expression": "$F/($E+$F)",
+          "hide": false,
+          "refId": "Completition",
+          "type": "math"
         }
       ],
       "title": "Pending data",
-      "type": "bargauge"
+      "type": "timeseries"
     },
     {
       "datasource": {
@@ -2973,7 +3162,7 @@
       "type": "timeseries"
     }
   ],
-  "refresh": false,
+  "refresh": "10s",
   "schemaVersion": 38,
   "tags": [
     "Subsystem",
@@ -3002,8 +3191,8 @@
       {
         "current": {
           "selected": false,
-          "text": "crp4-oks-session",
-          "value": "crp4-oks-session"
+          "text": "np02-oks-session",
+          "value": "np02-oks-session"
         },
         "datasource": {
           "uid": "${influxdb}"
@@ -3103,6 +3292,6 @@
   "timezone": "",
   "title": "Dataflow",
   "uid": "v5_1_0-dataflow",
-  "version": 3,
+  "version": 5,
   "weekStart": ""
 }

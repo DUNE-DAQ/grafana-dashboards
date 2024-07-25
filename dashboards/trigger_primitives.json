@@ -3486,7 +3486,7 @@
               "tooltip": false,
               "viz": false
             },
-            "insertNulls": false,
+            "insertNulls": 15000,
             "lineInterpolation": "linear",
             "lineWidth": 1,
             "pointSize": 5,
@@ -3495,7 +3495,7 @@
               "type": "log"
             },
             "showPoints": "auto",
-            "spanNulls": false,
+            "spanNulls": 15000,
             "stacking": {
               "group": "A",
               "mode": "none"
@@ -3564,9 +3564,58 @@
           "measurement": "dunedaq.datahandlinglibs.readoutinfo.ReadoutInfo",
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "SELECT mean(\"num_buffer_elements\") FROM \"dunedaq.datahandlinglibs.readoutinfo.ReadoutInfo\" WHERE (\"partition_id\"='${partition}' AND \"source_id\" =~ /[^.]+\\.tphandler-\\d+/ ) AND $timeFilter GROUP BY time($__interval), \"source_id\" fill(null)",
+          "query": "SELECT mean(\"num_buffer_elements\") FROM \"dunedaq.datahandlinglibs.readoutinfo.ReadoutInfo\" WHERE (\"partition_id\"='${partition}' AND \"source_id\" =~ /[^.]+\\.${readout_app}\\.${tp_handler}/ ) AND $timeFilter GROUP BY time($__interval), \"source_id\" fill(null)",
           "rawQuery": true,
           "refId": "C",
+          "resultFormat": "time_series",
+          "select": [
+            [
+              {
+                "params": [
+                  "num_buffer_elements"
+                ],
+                "type": "field"
+              },
+              {
+                "params": [],
+                "type": "sum"
+              }
+            ]
+          ],
+          "tags": [
+            {
+              "key": "source_id",
+              "operator": "=",
+              "value": "maroda_test_ruemu0.datahandler_1"
+            }
+          ]
+        },
+        {
+          "alias": "Total",
+          "datasource": {
+            "uid": "${influxdb}"
+          },
+          "groupBy": [
+            {
+              "params": [
+                "$__interval"
+              ],
+              "type": "time"
+            },
+            {
+              "params": [
+                "null"
+              ],
+              "type": "fill"
+            }
+          ],
+          "hide": false,
+          "measurement": "dunedaq.datahandlinglibs.readoutinfo.ReadoutInfo",
+          "orderByTime": "ASC",
+          "policy": "default",
+          "query": "SELECT sum(\"data\") FROM (SELECT mean(\"num_buffer_elements\") AS \"data\" FROM \"dunedaq.datahandlinglibs.readoutinfo.ReadoutInfo\" WHERE (\"partition_id\"='${partition}' AND \"source_id\" =~ /[^.]+\\.${readout_app}\\.${tp_handler}/ ) AND $timeFilter GROUP BY time($__interval), \"source_id\" fill(null) )  GROUP BY time($__interval)",
+          "rawQuery": true,
+          "refId": "A",
           "resultFormat": "time_series",
           "select": [
             [
@@ -3599,10 +3648,6 @@
             "regex": ".*\\.(.*)\\.(.*)",
             "renamePattern": "$1 $2"
           }
-        },
-        {
-          "id": "calculateField",
-          "options": {}
         }
       ],
       "type": "timeseries"
@@ -3992,7 +4037,7 @@
       "type": "timeseries"
     }
   ],
-  "refresh": "10s",
+  "refresh": false,
   "schemaVersion": 38,
   "tags": [
     "Subsystem",
@@ -4121,8 +4166,8 @@
     ]
   },
   "time": {
-    "from": "now-15m",
-    "to": "now"
+    "from": "2024-07-25T05:51:36.761Z",
+    "to": "2024-07-25T09:37:18.948Z"
   },
   "timepicker": {
     "refresh_intervals": [
@@ -4152,6 +4197,6 @@
   "timezone": "",
   "title": "Trigger Primitives",
   "uid": "v5_1_0-trigger_primitives",
-  "version": 37,
+  "version": 39,
   "weekStart": ""
 }

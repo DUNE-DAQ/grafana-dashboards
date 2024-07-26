@@ -58,29 +58,30 @@
     },
     {
       "asDropdown": false,
+      "icon": "external link",
+      "includeVars": true,
+      "keepTime": true,
+      "tags": [
+        "v5.1.0",
+        "RunInfo"
+      ],
+      "targetBlank": true,
+      "title": "Run Information",
+      "tooltip": "",
+      "type": "dashboards",
+      "url": ""
+    },
+    {
+      "asDropdown": true,
       "icon": "dashboard",
       "includeVars": false,
       "keepTime": true,
       "tags": [],
       "targetBlank": true,
-      "title": "NP04 Network",
+      "title": " NP04 servers",
       "tooltip": "",
       "type": "link",
-      "url": "https://monit-grafana.cern.ch/d/ri8pqWBnz/prototype-protodune-np04?orgId=14"
-    },
-    {
-      "asDropdown": true,
-      "icon": "external link",
-      "includeVars": false,
-      "keepTime": true,
-      "tags": [
-        "linux"
-      ],
-      "targetBlank": true,
-      "title": "NP04",
-      "tooltip": "",
-      "type": "dashboards",
-      "url": ""
+      "url": "http://np04-srv-017:31003/d/k8s_views_nodes/kubernetes-views-nodes?orgId=1&refresh=30s"
     },
     {
       "asDropdown": false,
@@ -89,7 +90,19 @@
       "keepTime": true,
       "tags": [],
       "targetBlank": true,
-      "title": "Ethernet inputs",
+      "title": "CERN - NP04 Network",
+      "tooltip": "",
+      "type": "link",
+      "url": "https://monit-grafana.cern.ch/d/ri8pqWBnz/prototype-protodune-np04?orgId=14"
+    },
+    {
+      "asDropdown": false,
+      "icon": "dashboard",
+      "includeVars": false,
+      "keepTime": true,
+      "tags": [],
+      "targetBlank": true,
+      "title": "CERN - Ethernet inputs",
       "tooltip": "",
       "type": "link",
       "url": "https://monit-grafana.cern.ch/d/ACGp9HB7z/traffic-errors-and-discards-basic?orgId=14&refresh=30s&var-source=raw&var-table=production&var-interface_pattern=d887-rv4-ip14-sju&var-pattern=d887-rv4-ip14-sju&var-interface=All&from=now-15m&to=now"
@@ -2370,7 +2383,8 @@
   "refresh": "10s",
   "schemaVersion": 38,
   "tags": [
-    "v5.1.0"
+    "v5.1.0",
+    "Main"
   ],
   "templating": {
     "list": [
@@ -2413,8 +2427,8 @@
       {
         "current": {
           "selected": false,
-          "text": "np02-oks-session",
-          "value": "np02-oks-session"
+          "text": "np04hd",
+          "value": "np04hd"
         },
         "datasource": {
           "uid": "${influxdb}"
@@ -2482,8 +2496,8 @@
       {
         "current": {
           "selected": false,
-          "text": "0",
-          "value": "0"
+          "text": "141364",
+          "value": "141364"
         },
         "datasource": {
           "uid": "${influxdb}"
@@ -2504,7 +2518,7 @@
     ]
   },
   "time": {
-    "from": "now-1h",
+    "from": "now-30m",
     "to": "now"
   },
   "timepicker": {
@@ -2535,6 +2549,6 @@
   "timezone": "",
   "title": "DAQ overview",
   "uid": "v5_1_0-overview",
-  "version": 4,
+  "version": 8,
   "weekStart": ""
 }

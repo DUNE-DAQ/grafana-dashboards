@@ -504,7 +504,7 @@
           "measurement": "dunedaq.rcif.runinfo.Info",
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "SELECT max(\"runtime\") FROM \"dunedaq.rcif.runinfo.Info\" WHERE (\"partition_id\" = '${partition}') AND $timeFilter",
+          "query": "SELECT max(\"data\") FROM (SELECT last(\"runtime\") AS \"data\" FROM \"dunedaq.rcif.runinfo.Info\" WHERE (\"partition_id\" = '${partition}') AND $timeFilter GROUP BY \"source_id\")",
           "rawQuery": true,
           "refId": "A",
           "resultFormat": "table",
@@ -2528,8 +2528,8 @@
       {
         "current": {
           "selected": false,
-          "text": "6",
-          "value": "6"
+          "text": "194",
+          "value": "194"
         },
         "datasource": {
           "uid": "${influxdb}"
@@ -2609,6 +2609,6 @@
   "timezone": "",
   "title": "DAQ overview",
   "uid": "v4_4_6-overview",
-  "version": 7,
+  "version": 8,
   "weekStart": ""
 }

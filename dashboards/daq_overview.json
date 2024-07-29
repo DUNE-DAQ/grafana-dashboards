@@ -24,7 +24,7 @@
   "editable": true,
   "fiscalYearStartMonth": 0,
   "graphTooltip": 0,
-  "id": 168,
+  "id": 239,
   "links": [
     {
       "asDropdown": true,
@@ -560,6 +560,7 @@
     },
     {
       "datasource": {
+        "type": "influxdb",
         "uid": "${influxdb}"
       },
       "fieldConfig": {
@@ -630,7 +631,7 @@
           "measurement": "dunedaq.rcif.runinfo.Info",
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "SELECT last(\"runtime\") FROM \"dunedaq.rcif.runinfo.Info\" WHERE (\"partition_id\" = '${partition}') AND $timeFilter",
+          "query": "SELECT max(\"data\") FROM (SELECT last(\"runtime\") AS \"data\" FROM \"dunedaq.rcif.runinfo.Info\" WHERE (\"partition_id\" = '${partition}') AND $timeFilter GROUP BY \"source_id\" )",
           "rawQuery": true,
           "refId": "A",
           "resultFormat": "table",
@@ -2427,8 +2428,8 @@
       {
         "current": {
           "selected": false,
-          "text": "np04hd",
-          "value": "np04hd"
+          "text": "np04hddev",
+          "value": "np04hddev"
         },
         "datasource": {
           "uid": "${influxdb}"
@@ -2496,8 +2497,8 @@
       {
         "current": {
           "selected": false,
-          "text": "141364",
-          "value": "141364"
+          "text": "0",
+          "value": "0"
         },
         "datasource": {
           "uid": "${influxdb}"
@@ -2549,6 +2550,6 @@
   "timezone": "",
   "title": "DAQ overview",
   "uid": "v5_2_0-overview",
-  "version": 8,
+  "version": 2,
   "weekStart": ""
 }

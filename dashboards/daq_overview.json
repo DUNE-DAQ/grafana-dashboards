@@ -433,6 +433,7 @@
     },
     {
       "datasource": {
+        "type": "influxdb",
         "uid": "${influxdb}"
       },
       "fieldConfig": {
@@ -503,7 +504,7 @@
           "measurement": "dunedaq.rcif.runinfo.Info",
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "SELECT last(\"runtime\") FROM \"dunedaq.rcif.runinfo.Info\" WHERE (\"partition_id\" = '${partition}') AND $timeFilter",
+          "query": "SELECT max(\"runtime\") FROM \"dunedaq.rcif.runinfo.Info\" WHERE (\"partition_id\" = '${partition}') AND $timeFilter",
           "rawQuery": true,
           "refId": "A",
           "resultFormat": "table",
@@ -2458,8 +2459,8 @@
       {
         "current": {
           "selected": false,
-          "text": "np04hd",
-          "value": "np04hd"
+          "text": "np04hddev",
+          "value": "np04hddev"
         },
         "datasource": {
           "uid": "${influxdb}"
@@ -2527,8 +2528,8 @@
       {
         "current": {
           "selected": false,
-          "text": "0",
-          "value": "0"
+          "text": "6",
+          "value": "6"
         },
         "datasource": {
           "uid": "${influxdb}"
@@ -2577,7 +2578,7 @@
     ]
   },
   "time": {
-    "from": "now-1h",
+    "from": "now-15m",
     "to": "now"
   },
   "timepicker": {
@@ -2608,6 +2609,6 @@
   "timezone": "",
   "title": "DAQ overview",
   "uid": "v4_4_6-overview",
-  "version": 6,
+  "version": 7,
   "weekStart": ""
 }

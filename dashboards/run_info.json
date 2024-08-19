@@ -18,7 +18,7 @@
   "editable": true,
   "fiscalYearStartMonth": 0,
   "graphTooltip": 0,
-  "id": 177,
+  "id": 248,
   "links": [
     {
       "asDropdown": false,
@@ -97,12 +97,12 @@
       },
       "targets": [
         {
-          "alias": "$tag_partition_id",
+          "alias": "$tag_session",
           "datasource": {
             "type": "influxdb",
             "uid": "${influxdb}"
           },
-          "query": "SELECT \"runno\" FROM \"dunedaq.rcif.runinfo.Info\" WHERE ($timeFilter AND runno > 0) GROUP BY \"partition_id\"",
+          "query": "SELECT \"run_number\" FROM \"dunedaq.rcif.opmon.RunInfo\" WHERE $timeFilter AND run_number > 0 GROUP BY \"session\"",
           "rawQuery": true,
           "refId": "A",
           "resultFormat": "time_series"
@@ -114,7 +114,7 @@
       "type": "state-timeline"
     }
   ],
-  "refresh": "",
+  "refresh": "10s",
   "schemaVersion": 38,
   "tags": [
     "Global",
@@ -126,8 +126,8 @@
       {
         "current": {
           "selected": false,
-          "text": "KluInflux",
-          "value": "ffedc550-6555-4a16-a113-aabf2b980c30"
+          "text": "KafkaMonitoring_v5.2",
+          "value": "f68a27a2-f292-478c-8093-2a4adad3be1b"
         },
         "hide": 2,
         "includeAll": false,
@@ -137,20 +137,20 @@
         "options": [],
         "query": "influxdb",
         "refresh": 1,
-        "regex": "",
+        "regex": ".*_v5.2",
         "skipUrlSync": false,
         "type": "datasource"
       }
     ]
   },
   "time": {
-    "from": "now-30m",
+    "from": "now-15m",
     "to": "now"
   },
   "timepicker": {},
   "timezone": "",
   "title": "Run Info",
   "uid": "v5_2_0-run_info",
-  "version": 3,
+  "version": 5,
   "weekStart": ""
 }

@@ -660,8 +660,19 @@
           "mappings": [
             {
               "options": {
+                "0": {
+                  "color": "dark-orange",
+                  "index": 1,
+                  "text": "NO RUN"
+                }
+              },
+              "type": "value"
+            },
+            {
+              "options": {
                 "match": "null",
                 "result": {
+                  "index": 0,
                   "text": "N/A"
                 }
               },
@@ -717,7 +728,7 @@
           "measurement": "dunedaq.rcif.runinfo.Info",
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "SELECT last(\"run_number\") FROM \"dunedaq.rcif.opmon.RunInfo\" WHERE (\"session\" = '${session}') AND $timeFilter",
+          "query": "SELECT last(\"run_number\") FROM \"dunedaq.rcif.opmon.RunInfo\" WHERE \"session\" = '${session}' AND $timeFilter",
           "rawQuery": true,
           "refId": "A",
           "resultFormat": "table",
@@ -2432,7 +2443,7 @@
     ]
   },
   "time": {
-    "from": "now-15m",
+    "from": "now-30m",
     "to": "now"
   },
   "timepicker": {
@@ -2463,6 +2474,6 @@
   "timezone": "",
   "title": "DAQ overview",
   "uid": "v5_2_0-overview",
-  "version": 19,
+  "version": 20,
   "weekStart": ""
 }

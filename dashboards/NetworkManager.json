@@ -988,8 +988,7 @@
                 "mode": "absolute",
                 "steps": [
                   {
-                    "color": "green",
-                    "value": null
+                    "color": "green"
                   },
                   {
                     "color": "red",
@@ -1005,7 +1004,7 @@
             "h": 6,
             "w": 6,
             "x": 0,
-            "y": 15
+            "y": 23
           },
           "id": 2,
           "links": [],
@@ -1212,8 +1211,7 @@
                 "mode": "absolute",
                 "steps": [
                   {
-                    "color": "green",
-                    "value": null
+                    "color": "green"
                   },
                   {
                     "color": "red",
@@ -1229,7 +1227,7 @@
             "h": 6,
             "w": 6,
             "x": 0,
-            "y": 28
+            "y": 52
           },
           "id": 39,
           "links": [],
@@ -1373,6 +1371,428 @@
       ],
       "title": "Application monitors - messages",
       "type": "row"
+    },
+    {
+      "collapsed": true,
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 16
+      },
+      "id": 48,
+      "panels": [
+        {
+          "datasource": {
+            "type": "influxdb",
+            "uid": "${influxdb}"
+          },
+          "fieldConfig": {
+            "defaults": {
+              "color": {
+                "mode": "palette-classic"
+              },
+              "custom": {
+                "axisBorderShow": false,
+                "axisCenteredZero": false,
+                "axisColorMode": "text",
+                "axisLabel": "",
+                "axisPlacement": "auto",
+                "barAlignment": 0,
+                "drawStyle": "line",
+                "fillOpacity": 0,
+                "gradientMode": "none",
+                "hideFrom": {
+                  "legend": false,
+                  "tooltip": false,
+                  "viz": false
+                },
+                "insertNulls": false,
+                "lineInterpolation": "linear",
+                "lineWidth": 2,
+                "pointSize": 3,
+                "scaleDistribution": {
+                  "log": 10,
+                  "type": "log"
+                },
+                "showPoints": "always",
+                "spanNulls": true,
+                "stacking": {
+                  "group": "A",
+                  "mode": "none"
+                },
+                "thresholdsStyle": {
+                  "mode": "off"
+                }
+              },
+              "mappings": [],
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {
+                    "color": "green",
+                    "value": null
+                  },
+                  {
+                    "color": "red",
+                    "value": 80
+                  }
+                ]
+              },
+              "unit": "binBps"
+            },
+            "overrides": []
+          },
+          "gridPos": {
+            "h": 6,
+            "w": 6,
+            "x": 0,
+            "y": 17
+          },
+          "id": 55,
+          "links": [],
+          "maxPerRow": 4,
+          "options": {
+            "legend": {
+              "calcs": [],
+              "displayMode": "list",
+              "placement": "right",
+              "showLegend": true
+            },
+            "tooltip": {
+              "mode": "single",
+              "sort": "none"
+            }
+          },
+          "pluginVersion": "8.0.6",
+          "repeat": "connection",
+          "repeatDirection": "h",
+          "targets": [
+            {
+              "alias": "Out of $tag_application",
+              "datasource": {
+                "uid": "${influxdb}"
+              },
+              "groupBy": [
+                {
+                  "params": [
+                    "$__interval"
+                  ],
+                  "type": "time"
+                }
+              ],
+              "hide": false,
+              "measurement": "dunedaq.appfwk.queueinfo.Info",
+              "orderByTime": "ASC",
+              "policy": "default",
+              "query": "SELECT non_negative_derivative(cumulative_sum(sum(\"bytes\")), 1s) FROM \"dunedaq.ipm.opmon.SenderInfo\" WHERE \"session\" = '${session}' AND \"subelement\"=~ /${connection}/ AND \"application\" =~ /${application}/ AND $timeFilter AND \"messages\">0 GROUP BY time($__interval), \"application\"",
+              "rawQuery": true,
+              "refId": "C",
+              "resultFormat": "time_series",
+              "select": [
+                [
+                  {
+                    "params": [
+                      "number_of_elements"
+                    ],
+                    "type": "field"
+                  },
+                  {
+                    "params": [],
+                    "type": "distinct"
+                  },
+                  {
+                    "params": [
+                      " * 100"
+                    ],
+                    "type": "math"
+                  }
+                ]
+              ],
+              "tags": [
+                {
+                  "key": "source_id",
+                  "operator": "=",
+                  "value": "maroda_test_dataflow.trigger_record_q"
+                }
+              ]
+            },
+            {
+              "alias": "Into $tag_application",
+              "datasource": {
+                "uid": "${influxdb}"
+              },
+              "groupBy": [
+                {
+                  "params": [
+                    "$__interval"
+                  ],
+                  "type": "time"
+                }
+              ],
+              "hide": false,
+              "measurement": "dunedaq.appfwk.queueinfo.Info",
+              "orderByTime": "ASC",
+              "policy": "default",
+              "query": "SELECT non_negative_derivative(cumulative_sum(sum(\"bytes\")), 1s) FROM \"dunedaq.ipm.opmon.ReceiverInfo\" WHERE \"session\" = '${session}' AND \"subelement\"=~ /${connection}/ AND \"application\" =~ /${application}/ AND $timeFilter AND \"messages\">0 GROUP BY time($__interval), \"application\"",
+              "rawQuery": true,
+              "refId": "A",
+              "resultFormat": "time_series",
+              "select": [
+                [
+                  {
+                    "params": [
+                      "number_of_elements"
+                    ],
+                    "type": "field"
+                  },
+                  {
+                    "params": [],
+                    "type": "distinct"
+                  },
+                  {
+                    "params": [
+                      " * 100"
+                    ],
+                    "type": "math"
+                  }
+                ]
+              ],
+              "tags": [
+                {
+                  "key": "source_id",
+                  "operator": "=",
+                  "value": "maroda_test_dataflow.trigger_record_q"
+                }
+              ]
+            }
+          ],
+          "title": "Balance for ${connection}",
+          "transformations": [
+            {
+              "id": "renameByRegex",
+              "options": {
+                "regex": "(.*) .*\\.([^.]+)",
+                "renamePattern": "$1 $2"
+              }
+            }
+          ],
+          "type": "timeseries"
+        }
+      ],
+      "title": "Balance - bytes",
+      "type": "row"
+    },
+    {
+      "collapsed": true,
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 17
+      },
+      "id": 171,
+      "panels": [
+        {
+          "datasource": {
+            "type": "influxdb",
+            "uid": "${influxdb}"
+          },
+          "fieldConfig": {
+            "defaults": {
+              "color": {
+                "mode": "palette-classic"
+              },
+              "custom": {
+                "axisBorderShow": false,
+                "axisCenteredZero": false,
+                "axisColorMode": "text",
+                "axisLabel": "",
+                "axisPlacement": "auto",
+                "barAlignment": 0,
+                "drawStyle": "line",
+                "fillOpacity": 0,
+                "gradientMode": "none",
+                "hideFrom": {
+                  "legend": false,
+                  "tooltip": false,
+                  "viz": false
+                },
+                "insertNulls": false,
+                "lineInterpolation": "linear",
+                "lineWidth": 2,
+                "pointSize": 3,
+                "scaleDistribution": {
+                  "log": 10,
+                  "type": "log"
+                },
+                "showPoints": "always",
+                "spanNulls": true,
+                "stacking": {
+                  "group": "A",
+                  "mode": "none"
+                },
+                "thresholdsStyle": {
+                  "mode": "off"
+                }
+              },
+              "mappings": [],
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {
+                    "color": "green",
+                    "value": null
+                  },
+                  {
+                    "color": "red",
+                    "value": 80
+                  }
+                ]
+              },
+              "unit": "pps"
+            },
+            "overrides": []
+          },
+          "gridPos": {
+            "h": 6,
+            "w": 6,
+            "x": 0,
+            "y": 18
+          },
+          "id": 281,
+          "links": [],
+          "maxPerRow": 4,
+          "options": {
+            "legend": {
+              "calcs": [],
+              "displayMode": "list",
+              "placement": "right",
+              "showLegend": true
+            },
+            "tooltip": {
+              "mode": "single",
+              "sort": "none"
+            }
+          },
+          "pluginVersion": "8.0.6",
+          "repeat": "connection",
+          "repeatDirection": "h",
+          "targets": [
+            {
+              "alias": "Out of $tag_application",
+              "datasource": {
+                "uid": "${influxdb}"
+              },
+              "groupBy": [
+                {
+                  "params": [
+                    "$__interval"
+                  ],
+                  "type": "time"
+                }
+              ],
+              "hide": false,
+              "measurement": "dunedaq.appfwk.queueinfo.Info",
+              "orderByTime": "ASC",
+              "policy": "default",
+              "query": "SELECT non_negative_derivative(cumulative_sum(sum(\"messages\")), 1s) FROM \"dunedaq.ipm.opmon.SenderInfo\" WHERE \"session\" = '${session}' AND \"subelement\"=~ /${connection}/ AND \"application\" =~ /${application}/ AND $timeFilter AND \"messages\">0 GROUP BY time($__interval), \"application\"",
+              "rawQuery": true,
+              "refId": "C",
+              "resultFormat": "time_series",
+              "select": [
+                [
+                  {
+                    "params": [
+                      "number_of_elements"
+                    ],
+                    "type": "field"
+                  },
+                  {
+                    "params": [],
+                    "type": "distinct"
+                  },
+                  {
+                    "params": [
+                      " * 100"
+                    ],
+                    "type": "math"
+                  }
+                ]
+              ],
+              "tags": [
+                {
+                  "key": "source_id",
+                  "operator": "=",
+                  "value": "maroda_test_dataflow.trigger_record_q"
+                }
+              ]
+            },
+            {
+              "alias": "Into $tag_application",
+              "datasource": {
+                "uid": "${influxdb}"
+              },
+              "groupBy": [
+                {
+                  "params": [
+                    "$__interval"
+                  ],
+                  "type": "time"
+                }
+              ],
+              "hide": false,
+              "measurement": "dunedaq.appfwk.queueinfo.Info",
+              "orderByTime": "ASC",
+              "policy": "default",
+              "query": "SELECT non_negative_derivative(cumulative_sum(sum(\"messages\")), 1s) FROM \"dunedaq.ipm.opmon.ReceiverInfo\" WHERE \"session\" = '${session}' AND \"subelement\"=~ /${connection}/ AND \"application\" =~ /${application}/ AND $timeFilter AND \"messages\">0 GROUP BY time($__interval), \"application\"",
+              "rawQuery": true,
+              "refId": "A",
+              "resultFormat": "time_series",
+              "select": [
+                [
+                  {
+                    "params": [
+                      "number_of_elements"
+                    ],
+                    "type": "field"
+                  },
+                  {
+                    "params": [],
+                    "type": "distinct"
+                  },
+                  {
+                    "params": [
+                      " * 100"
+                    ],
+                    "type": "math"
+                  }
+                ]
+              ],
+              "tags": [
+                {
+                  "key": "source_id",
+                  "operator": "=",
+                  "value": "maroda_test_dataflow.trigger_record_q"
+                }
+              ]
+            }
+          ],
+          "title": "Balance for ${connection}",
+          "transformations": [
+            {
+              "id": "renameByRegex",
+              "options": {
+                "regex": "(.*) .*\\.([^.]+)",
+                "renamePattern": "$1 $2"
+              }
+            }
+          ],
+          "type": "timeseries"
+        }
+      ],
+      "title": "Balance - messages",
+      "type": "row"
     }
   ],
   "refresh": "",
@@ -1482,13 +1902,13 @@
     ]
   },
   "time": {
-    "from": "now-3h",
+    "from": "now-2d",
     "to": "now"
   },
   "timepicker": {},
   "timezone": "",
   "title": "Network Manager",
   "uid": "v5_2_0-network-manager",
-  "version": 18,
+  "version": 23,
   "weekStart": ""
 }

@@ -193,7 +193,7 @@
           "group": [],
           "metricColumn": "none",
           "rawQuery": true,
-          "rawSql": "SELECT severity,time/1000000 as time,application_name,message,issue_name,host_name\nFROM ${table}\nWHERE session='${partition}' AND time/1000000 >= ${__from} AND time/1000000 <= ${__to} AND severity in ([[severity]]) AND issue_name in ([[issue_full_name]]) AND application_name in ([[application_in]]) AND host_name in ([[host]]) AND message ~ '[[message_regex]]'   \nORDER BY -time\n",
+          "rawSql": "SELECT severity,time/1000000 as time,application_name,message,issue_name,host_name\nFROM ${table}\nWHERE session='${session}' AND time/1000000 >= ${__from} AND time/1000000 <= ${__to} AND severity in ([[severity]]) AND issue_name in ([[issue_full_name]]) AND application_name in ([[application_in]]) AND host_name in ([[host]]) AND message ~ '[[message_regex]]'   \nORDER BY -time\n",
           "refId": "A",
           "select": [
             [
@@ -282,9 +282,9 @@
         "definition": "SELECT session\nFROM ${table}\nWHERE time/1000000 >= ${__from} AND time/1000000 <= ${__to} \n",
         "hide": 0,
         "includeAll": false,
-        "label": "Partition name",
+        "label": "Session",
         "multi": false,
-        "name": "partition",
+        "name": "session",
         "options": [],
         "query": "SELECT session\nFROM ${table}\nWHERE time/1000000 >= ${__from} AND time/1000000 <= ${__to} \n",
         "refresh": 2,
@@ -306,14 +306,14 @@
         "datasource": {
           "uid": "${postgresql}"
         },
-        "definition": "SELECT severity\nFROM ${table}\nWHERE session='${partition}' AND time/1000000 >= ${__from} AND time/1000000 <= ${__to}\n",
+        "definition": "SELECT severity\nFROM ${table}\nWHERE session='${session}' AND time/1000000 >= ${__from} AND time/1000000 <= ${__to}\n",
         "hide": 0,
         "includeAll": true,
         "label": "Severity",
         "multi": true,
         "name": "severity",
         "options": [],
-        "query": "SELECT severity\nFROM ${table}\nWHERE session='${partition}' AND time/1000000 >= ${__from} AND time/1000000 <= ${__to}\n",
+        "query": "SELECT severity\nFROM ${table}\nWHERE session='${session}' AND time/1000000 >= ${__from} AND time/1000000 <= ${__to}\n",
         "refresh": 2,
         "regex": "",
         "skipUrlSync": false,
@@ -333,14 +333,14 @@
         "datasource": {
           "uid": "${postgresql}"
         },
-        "definition": "SELECT application_name\nFROM ${table}\nWHERE session='${partition}' AND time/1000000 >= ${__from} AND time/1000000 <= ${__to}\n\n",
+        "definition": "SELECT application_name\nFROM ${table}\nWHERE session='${session}' AND time/1000000 >= ${__from} AND time/1000000 <= ${__to}\n\n",
         "hide": 0,
         "includeAll": true,
         "label": "Application included",
         "multi": true,
         "name": "application_in",
         "options": [],
-        "query": "SELECT application_name\nFROM ${table}\nWHERE session='${partition}' AND time/1000000 >= ${__from} AND time/1000000 <= ${__to}\n\n",
+        "query": "SELECT application_name\nFROM ${table}\nWHERE session='${session}' AND time/1000000 >= ${__from} AND time/1000000 <= ${__to}\n\n",
         "refresh": 2,
         "regex": "",
         "skipUrlSync": false,
@@ -357,14 +357,14 @@
         "datasource": {
           "uid": "${postgresql}"
         },
-        "definition": "SELECT application_name\nFROM ${table}\nWHERE session='${partition}' AND time/1000000 >= ${__from} AND time/1000000 <= ${__to}",
+        "definition": "SELECT application_name\nFROM ${table}\nWHERE session='${session}' AND time/1000000 >= ${__from} AND time/1000000 <= ${__to}",
         "hide": 2,
         "includeAll": false,
         "label": "Application excluded",
         "multi": true,
         "name": "application_out",
         "options": [],
-        "query": "SELECT application_name\nFROM ${table}\nWHERE session='${partition}' AND time/1000000 >= ${__from} AND time/1000000 <= ${__to}",
+        "query": "SELECT application_name\nFROM ${table}\nWHERE session='${session}' AND time/1000000 >= ${__from} AND time/1000000 <= ${__to}",
         "refresh": 2,
         "regex": "",
         "skipUrlSync": false,
@@ -404,14 +404,14 @@
         "datasource": {
           "uid": "${postgresql}"
         },
-        "definition": "SELECT issue_name\nFROM ${table}\nWHERE session='${partition}' AND time/1000000 >= ${__from} AND time/1000000 <= ${__to}\n",
+        "definition": "SELECT issue_name\nFROM ${table}\nWHERE session='${session}' AND time/1000000 >= ${__from} AND time/1000000 <= ${__to}\n",
         "hide": 0,
         "includeAll": true,
         "label": "Issue",
         "multi": true,
         "name": "issue_full_name",
         "options": [],
-        "query": "SELECT issue_name\nFROM ${table}\nWHERE session='${partition}' AND time/1000000 >= ${__from} AND time/1000000 <= ${__to}\n",
+        "query": "SELECT issue_name\nFROM ${table}\nWHERE session='${session}' AND time/1000000 >= ${__from} AND time/1000000 <= ${__to}\n",
         "refresh": 2,
         "regex": "",
         "skipUrlSync": false,
@@ -427,14 +427,14 @@
         "datasource": {
           "uid": "${postgresql}"
         },
-        "definition": "SELECT host_name\nFROM ${table}\nWHERE session='${partition}' AND time/1000000 >= ${__from} AND time/1000000 <= ${__to}\n",
+        "definition": "SELECT host_name\nFROM ${table}\nWHERE session='${session}' AND time/1000000 >= ${__from} AND time/1000000 <= ${__to}\n",
         "hide": 0,
         "includeAll": true,
         "label": "Host",
         "multi": true,
         "name": "host",
         "options": [],
-        "query": "SELECT host_name\nFROM ${table}\nWHERE session='${partition}' AND time/1000000 >= ${__from} AND time/1000000 <= ${__to}\n",
+        "query": "SELECT host_name\nFROM ${table}\nWHERE session='${session}' AND time/1000000 >= ${__from} AND time/1000000 <= ${__to}\n",
         "refresh": 2,
         "regex": "",
         "skipUrlSync": false,
@@ -451,6 +451,6 @@
   "timezone": "",
   "title": "ERS",
   "uid": "v5_2_0-ers",
-  "version": 2,
+  "version": 6,
   "weekStart": ""
 }

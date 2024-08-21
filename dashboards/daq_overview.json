@@ -494,7 +494,7 @@
       "pluginVersion": "10.2.2",
       "targets": [
         {
-          "alias": "SELECT max(\"data\") FROM (",
+          "alias": "",
           "datasource": {
             "uid": "${influxdb}"
           },
@@ -505,7 +505,7 @@
           "measurement": "dunedaq.rcif.runinfo.Info",
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "SELECT last(\"run_time\") AS \"data\" FROM \"dunedaq.rcif.opmon.RunInfo\" WHERE \"session\" = '${session}' AND $timeFilter GROUP BY \"application\" ",
+          "query": "SELECT max(\"data\") FROM (SELECT last(\"run_time\") AS \"data\" FROM \"dunedaq.rcif.opmon.RunInfo\" WHERE \"session\" = '${session}' AND $timeFilter GROUP BY \"application\" )",
           "rawQuery": true,
           "refId": "A",
           "resultFormat": "table",
@@ -1400,7 +1400,7 @@
           "measurement": "dunedaq.dfmodules.datawriterinfo.Info",
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "SELECT non_negative_derivative(cumulative_sum(sum(\"tokens_received\")), 1s) FROM \"dunedaq.dfmodules.opmon.DFOInfo\" WHERE \"session\" = '${session}' AND $timeFilter GROUP BY time($__interval) fill(null)",
+          "query": "SELECT non_negative_derivative(cumulative_sum(count(\"tr_number\")), 1s) FROM  \"dunedaq.dfmodules.opmon.TRCompleteInfo\" WHERE \"session\" = '${session}' AND $timeFilter GROUP BY time($__interval) fill(null)",
           "rawQuery": true,
           "refId": "A",
           "resultFormat": "time_series",
@@ -1586,7 +1586,7 @@
       "pluginVersion": "10.2.2",
       "targets": [
         {
-          "alias": "$tag_source_id",
+          "alias": "$tag_type",
           "datasource": {
             "type": "influxdb",
             "uid": "${influxdb}"
@@ -1608,7 +1608,7 @@
           "measurement": "dunedaq.dfmodules.datafloworchestratorinfo.TriggerInfo",
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "SELECT non_negative_derivative(cumulative_sum(sum(\"received\")),1s) FROM \"dunedaq.dfmodules.datafloworchestratorinfo.TriggerInfo\" WHERE (\"partition_id\"::tag = '${partition}') AND $timeFilter GROUP BY \"source_id\", time($__interval)  fill(null)",
+          "query": "SELECT non_negative_derivative(cumulative_sum(sum(\"received\")),1s) FROM \"dunedaq.dfmodules.opmon.TriggerInfo\" WHERE (\"session\"::tag = '${session}') AND $timeFilter GROUP BY \"type\", time($__interval)  fill(null)",
           "rawQuery": true,
           "refId": "A",
           "resultFormat": "time_series",
@@ -2418,10 +2418,9 @@
       },
       {
         "current": {
-          "isNone": true,
           "selected": false,
-          "text": "None",
-          "value": ""
+          "text": "np02-oks-session",
+          "value": "np02-oks-session"
         },
         "datasource": {
           "uid": "${influxdb}"
@@ -2443,7 +2442,7 @@
     ]
   },
   "time": {
-    "from": "now-30m",
+    "from": "now-1h",
     "to": "now"
   },
   "timepicker": {
@@ -2474,6 +2473,6 @@
   "timezone": "",
   "title": "DAQ overview",
   "uid": "v5_2_0-overview",
-  "version": 20,
+  "version": 22,
   "weekStart": ""
 }

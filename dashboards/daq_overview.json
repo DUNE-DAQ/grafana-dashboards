@@ -1831,7 +1831,7 @@
           "group": [],
           "metricColumn": "none",
           "rawQuery": true,
-          "rawSql": "SELECT severity,time/1000000 as time,application_name,message,issue_name,host_name\nFROM \"ERSstream\"\nWHERE session='${partition}' AND time/1000000 >= ${__from} AND time/1000000 <= ${__to}\nORDER BY -time\n",
+          "rawSql": "SELECT severity,time/1000000 as time,application_name,message,issue_name,host_name\nFROM \"ERSstream\"\nWHERE session='${session}' AND time/1000000 >= ${__from} AND time/1000000 <= ${__to}\nORDER BY -time\n",
           "refId": "A",
           "select": [
             [
@@ -2442,7 +2442,7 @@
     ]
   },
   "time": {
-    "from": "now-1h",
+    "from": "now-5m",
     "to": "now"
   },
   "timepicker": {
@@ -2473,6 +2473,6 @@
   "timezone": "",
   "title": "DAQ overview",
   "uid": "v5_2_0-overview",
-  "version": 22,
+  "version": 24,
   "weekStart": ""
 }

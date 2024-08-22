@@ -803,7 +803,7 @@
           "measurement": "dunedaq.dfmodules.triggerrecordbuilderinfo.Info",
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "SELECT non_negative_derivative(cumulative_sum(sum(\"generated_data_requests\")), 1s) FROM \"dunedaq.dfmodules.opmon.TRBInfo\" WHERE \"session\" = '${session}' AND \"element\"=~/${trb}/ AND $timeFilter GROUP BY time($__interval) fill(null)",
+          "query": "SELECT non_negative_derivative(cumulative_sum(sum(\"generated_data_requests\")), 1s) FROM \"dunedaq.dfmodules.opmon.TRBInfo\" WHERE \"session\" = '${session}' AND \"application\"=~/${application}/ AND $timeFilter GROUP BY time($__interval) fill(null)",
           "rawQuery": true,
           "refId": "G",
           "resultFormat": "time_series",
@@ -858,7 +858,7 @@
           "measurement": "dunedaq.dfmodules.triggerrecordbuilderinfo.Info",
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "SELECT non_negative_derivative(cumulative_sum(sum(\"generated_trigger_records\")), 1s) FROM \"dunedaq.dfmodules.opmon.TRBInfo\" WHERE \"session\" = '${session}' AND \"element\"=~/${trb}/ AND $timeFilter GROUP BY time($__interval) fill(null) ",
+          "query": "SELECT non_negative_derivative(cumulative_sum(sum(\"generated_trigger_records\")), 1s) FROM \"dunedaq.dfmodules.opmon.TRBInfo\" WHERE \"session\" = '${session}' AND \"application\"=~/${application}/ AND $timeFilter GROUP BY time($__interval) fill(null) ",
           "rawQuery": true,
           "refId": "F",
           "resultFormat": "time_series",
@@ -891,7 +891,7 @@
           ]
         },
         {
-          "alias": "Trigger Records $tag_element",
+          "alias": "Trigger Records $tag_application",
           "datasource": {
             "uid": "${influxdb}"
           },
@@ -913,7 +913,7 @@
           "measurement": "dunedaq.dfmodules.triggerrecordbuilderinfo.Info",
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "SELECT non_negative_derivative(cumulative_sum(sum(\"generated_trigger_records\")), 1s) FROM \"dunedaq.dfmodules.opmon.TRBInfo\" WHERE \"session\" = '${session}' AND \"element\"=~/${trb}/ AND $timeFilter GROUP BY time($__interval), \"element\" fill(null) ",
+          "query": "SELECT non_negative_derivative(cumulative_sum(sum(\"generated_trigger_records\")), 1s) FROM \"dunedaq.dfmodules.opmon.TRBInfo\" WHERE \"session\" = '${session}' AND \"application\"=~/${application}/ AND $timeFilter GROUP BY time($__interval), \"application\" fill(null) ",
           "rawQuery": true,
           "refId": "H",
           "resultFormat": "time_series",
@@ -1069,7 +1069,7 @@
           "measurement": "dunedaq.dfmodules.triggerrecordbuilderinfo.Info",
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "SELECT sum(\"data\") FROM (SELECT mean(\"pending_trigger_decisions\") AS \"data\"  FROM \"dunedaq.dfmodules.opmon.TRBInfo\" WHERE \"session\"='${session}' AND \"element\"=~/${trb}/ AND $timeFilter GROUP BY time($__interval), \"element\" fill(null) ) GROUP BY time($__interval)  fill(null)",
+          "query": "SELECT sum(\"data\") FROM (SELECT mean(\"pending_trigger_decisions\") AS \"data\"  FROM \"dunedaq.dfmodules.opmon.TRBInfo\" WHERE \"session\"='${session}' AND \"application\"=~/${application}/ AND $timeFilter GROUP BY time($__interval), \"application\" fill(null) ) GROUP BY time($__interval)  fill(null)",
           "rawQuery": true,
           "refId": "D",
           "resultFormat": "time_series",
@@ -1118,7 +1118,7 @@
           "measurement": "dunedaq.dfmodules.triggerrecordbuilderinfo.Info",
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "SELECT sum(\"data\") FROM (SELECT mean(\"pending_fragments\") AS \"data\"  FROM \"dunedaq.dfmodules.opmon.TRBInfo\" WHERE \"session\"='${session}' AND \"element\"=~/${trb}/ AND $timeFilter GROUP BY time($__interval), \"element\" fill(null) ) GROUP BY time($__interval)  fill(null)",
+          "query": "SELECT sum(\"data\") FROM (SELECT mean(\"pending_fragments\") AS \"data\"  FROM \"dunedaq.dfmodules.opmon.TRBInfo\" WHERE \"session\"='${session}' AND  \"application\"=~/${application}/ AND $timeFilter GROUP BY time($__interval), \"application\" fill(null) ) GROUP BY time($__interval)  fill(null)",
           "rawQuery": true,
           "refId": "E",
           "resultFormat": "time_series",
@@ -1167,7 +1167,7 @@
           "measurement": "dunedaq.dfmodules.triggerrecordbuilderinfo.Info",
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "SELECT sum(\"data\") FROM (SELECT mean(\"fragments_in_the_book\") AS \"data\" FROM \"dunedaq.dfmodules.opmon.TRBInfo\" WHERE \"session\"='${session}' AND \"element\"=~/${trb}/ AND $timeFilter GROUP BY time($__interval), \"element\" fill(null) ) GROUP BY time($__interval)  fill(null)",
+          "query": "SELECT sum(\"data\") FROM (SELECT mean(\"fragments_in_the_book\") AS \"data\" FROM \"dunedaq.dfmodules.opmon.TRBInfo\" WHERE \"session\"='${session}' AND \"application\"=~/${application}/ AND $timeFilter GROUP BY time($__interval), \"application\" fill(null) ) GROUP BY time($__interval)  fill(null)",
           "rawQuery": true,
           "refId": "F",
           "resultFormat": "time_series",
@@ -1311,7 +1311,7 @@
           "measurement": "dunedaq.dfmodules.dfapplicationinfo.Info",
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "SELECT min(\"min_time_since_assignment\") FROM \"dunedaq.dfmodules.opmon.DFApplicationInfo\" WHERE \"session\" = '${session}' AND \"subelement\"=~/${df_app}/ AND $timeFilter AND \"outstanding_decisions\" > 0 GROUP BY time($__interval) fill(null)",
+          "query": "SELECT min(\"min_time_since_assignment\") FROM \"dunedaq.dfmodules.opmon.DFApplicationInfo\" WHERE \"session\" = '${session}' AND \"subelement\"=~/.+_${application}/ AND $timeFilter AND \"outstanding_decisions\" > 0 GROUP BY time($__interval) fill(null)",
           "rawQuery": true,
           "refId": "A",
           "resultFormat": "time_series",
@@ -1360,7 +1360,7 @@
           "measurement": "dunedaq.dfmodules.dfapplicationinfo.Info",
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "SELECT max(\"max_time_since_assignment\") FROM \"dunedaq.dfmodules.opmon.DFApplicationInfo\" WHERE \"session\" = '${session}' AND \"subelement\"=~/${df_app}/  AND $timeFilter AND \"outstanding_decisions\" > 0 GROUP BY time($__interval) fill(null) ",
+          "query": "SELECT max(\"max_time_since_assignment\") FROM \"dunedaq.dfmodules.opmon.DFApplicationInfo\" WHERE \"session\" = '${session}' AND \"subelement\"=~/.+_${application}/  AND $timeFilter AND \"outstanding_decisions\" > 0 GROUP BY time($__interval) fill(null) ",
           "rawQuery": true,
           "refId": "B",
           "resultFormat": "time_series",
@@ -1415,7 +1415,7 @@
           "measurement": "dunedaq.dfmodules.dfapplicationinfo.Info",
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "SELECT sum(\"total_time_since_assignment\")/sum(\"outstanding_decisions\") FROM  \"dunedaq.dfmodules.opmon.DFApplicationInfo\"  WHERE \"session\" = '${session}' AND \"subelement\"=~/${df_app}/  AND $timeFilter AND \"outstanding_decisions\" > 0 GROUP BY \"subelement\", time($__interval) fill(null) ",
+          "query": "SELECT sum(\"total_time_since_assignment\")/sum(\"outstanding_decisions\") FROM  \"dunedaq.dfmodules.opmon.DFApplicationInfo\"  WHERE \"session\" = '${session}' AND \"subelement\"=~/.+_${application}/  AND $timeFilter AND \"outstanding_decisions\" > 0 GROUP BY \"subelement\", time($__interval) fill(null) ",
           "rawQuery": true,
           "refId": "C",
           "resultFormat": "time_series",
@@ -1470,7 +1470,7 @@
           "measurement": "dunedaq.dfmodules.dfapplicationinfo.Info",
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "SELECT sum(\"total_time_since_assignment\")/sum(\"outstanding_decisions\") FROM  \"dunedaq.dfmodules.opmon.DFApplicationInfo\"  WHERE \"session\" = '${session}' AND \"subelement\"=~/${df_app}/  AND $timeFilter AND \"outstanding_decisions\" > 0 GROUP BY time($__interval) fill(null)",
+          "query": "SELECT sum(\"total_time_since_assignment\")/sum(\"outstanding_decisions\") FROM  \"dunedaq.dfmodules.opmon.DFApplicationInfo\"  WHERE \"session\" = '${session}' AND \"subelement\"=~/.+_${df_app}/  AND $timeFilter AND \"outstanding_decisions\" > 0 GROUP BY time($__interval) fill(null)",
           "rawQuery": true,
           "refId": "D",
           "resultFormat": "time_series",
@@ -1631,7 +1631,7 @@
           "measurement": "dunedaq.dfmodules.triggerrecordbuilderinfo.Info",
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "SELECT sum(\"data_request_width\") / sum(\"generated_data_requests\") * 16 FROM \"dunedaq.dfmodules.opmon.TRBInfo\" WHERE \"session\" = '${session}' AND \"element\"=~/${trb}/ AND $timeFilter AND \"generated_data_requests\" > 0 GROUP BY time($__interval) fill(null)\n",
+          "query": "SELECT sum(\"data_request_width\") / sum(\"generated_data_requests\") * 16 FROM \"dunedaq.dfmodules.opmon.TRBInfo\" WHERE \"session\" = '${session}' AND \"application\"=~/${application}/ AND $timeFilter AND \"generated_data_requests\" > 0 GROUP BY time($__interval) fill(null)\n",
           "rawQuery": true,
           "refId": "B",
           "resultFormat": "time_series",
@@ -1680,7 +1680,7 @@
           "measurement": "dunedaq.dfmodules.triggerrecordbuilderinfo.Info",
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "SELECT sum(\"trigger_decision_width\") / sum(\"received_trigger_decisions\") * 16 FROM \"dunedaq.dfmodules.opmon.TRBInfo\" WHERE \"session\" = '${session}' AND \"element\"=~/${trb}/ AND $timeFilter AND \"received_trigger_decisions\" > 0 GROUP BY time($__interval) fill(null)\n",
+          "query": "SELECT sum(\"trigger_decision_width\") / sum(\"received_trigger_decisions\") * 16 FROM \"dunedaq.dfmodules.opmon.TRBInfo\" WHERE \"session\" = '${session}' AND \"application\"=~/${application}/ AND $timeFilter AND \"received_trigger_decisions\" > 0 GROUP BY time($__interval) fill(null)\n",
           "rawQuery": true,
           "refId": "A",
           "resultFormat": "time_series",
@@ -1713,7 +1713,7 @@
             "uid": "${influxdb}"
           },
           "hide": false,
-          "query": "SELECT mean(\"data\") FROM (SELECT (last(\"pending_fragments\") +  last(\"fragments_in_the_book\")) / last(\"pending_trigger_decisions\") AS \"data\" FROM \"dunedaq.dfmodules.opmon.TRBInfo\" WHERE \"session\" = '${session}' AND \"element\"=~/${trb}/ AND \"pending_trigger_decisions\" > 0 AND $timeFilter GROUP BY time($__interval), \"source_id\" fill(null) ) GROUP BY time($__interval)  fill(null)",
+          "query": "SELECT mean(\"data\") FROM (SELECT (last(\"pending_fragments\") +  last(\"fragments_in_the_book\")) / last(\"pending_trigger_decisions\") AS \"data\" FROM \"dunedaq.dfmodules.opmon.TRBInfo\" WHERE \"session\" = '${session}' AND \"application\"=~/${application}/ AND \"pending_trigger_decisions\" > 0 AND $timeFilter GROUP BY time($__interval), \"source_id\" fill(null) ) GROUP BY time($__interval)  fill(null)",
           "rawQuery": true,
           "refId": "C",
           "resultFormat": "time_series"
@@ -1830,7 +1830,7 @@
           "measurement": "dunedaq.dfmodules.triggerrecordbuilderinfo.Info",
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "SELECT sum(\"data\") FROM (\n  SELECT last(\"lost_fragments\") AS \"data\" FROM \"dunedaq.dfmodules.opmon.TRBInfo\" WHERE \"session\" = '${session}' AND \"element\"=~/${trb}/ AND $timeFilter GROUP BY \"element\", time($__interval) fill(null) \n) GROUP BY time($__interval) fill(null) ",
+          "query": "SELECT sum(\"data\") FROM (\n  SELECT last(\"lost_fragments\") AS \"data\" FROM \"dunedaq.dfmodules.opmon.TRBInfo\" WHERE \"session\" = '${session}' AND \"application\"=~/${application}/ AND $timeFilter GROUP BY \"application\", time($__interval) fill(null) \n) GROUP BY time($__interval) fill(null) ",
           "rawQuery": true,
           "refId": "B",
           "resultFormat": "time_series",
@@ -1879,7 +1879,7 @@
           "measurement": "dunedaq.dfmodules.triggerrecordbuilderinfo.Info",
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "SELECT sum(\"data\") FROM (\n  SELECT last(\"unexpected_fragments\") AS \"data\" FROM \"dunedaq.dfmodules.opmon.TRBInfo\" WHERE \"session\" = '${session}' AND \"element\"=~/${trb}/ AND $timeFilter GROUP BY \"element\", time($__interval) fill(null) \n) GROUP BY time($__interval) fill(null) ",
+          "query": "SELECT sum(\"data\") FROM (\n  SELECT last(\"unexpected_fragments\") AS \"data\" FROM \"dunedaq.dfmodules.opmon.TRBInfo\" WHERE \"session\" = '${session}' AND \"application\"=~/${application}/ AND $timeFilter GROUP BY \"application\", time($__interval) fill(null) \n) GROUP BY time($__interval) fill(null) ",
           "rawQuery": true,
           "refId": "E",
           "resultFormat": "time_series",
@@ -1930,7 +1930,7 @@
           "measurement": "dunedaq.dfmodules.triggerrecordbuilderinfo.Info",
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "SELECT sum(\"data\") FROM (\n  SELECT last(\"invalid_requests\") AS \"data\" FROM \"dunedaq.dfmodules.opmon.TRBInfo\" WHERE \"session\" = '${session}' AND \"element\"=~/${trb}/ AND $timeFilter GROUP BY \"element\", time($__interval) fill(null) \n) GROUP BY time($__interval) fill(null) ",
+          "query": "SELECT sum(\"data\") FROM (\n  SELECT last(\"invalid_requests\") AS \"data\" FROM \"dunedaq.dfmodules.opmon.TRBInfo\" WHERE \"session\" = '${session}' AND \"application\"=~/${application}/ AND $timeFilter GROUP BY \"application\", time($__interval) fill(null) \n) GROUP BY time($__interval) fill(null) ",
           "rawQuery": true,
           "refId": "A",
           "resultFormat": "time_series",
@@ -1979,7 +1979,7 @@
           "measurement": "dunedaq.dfmodules.triggerrecordbuilderinfo.Info",
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "SELECT sum(\"data\") FROM (\n  SELECT last(\"duplicated_trigger_ids\") AS \"data\" FROM \"dunedaq.dfmodules.opmon.TRBInfo\" WHERE \"session\" = '${session}' AND \"element\"=~/${trb}/ AND $timeFilter GROUP BY \"element\", time($__interval) fill(null) \n) GROUP BY time($__interval) fill(null) ",
+          "query": "SELECT sum(\"data\") FROM (\n  SELECT last(\"duplicated_trigger_ids\") AS \"data\" FROM \"dunedaq.dfmodules.opmon.TRBInfo\" WHERE \"session\" = '${session}' AND \"application\"=~/${application}/ AND $timeFilter GROUP BY \"appplication\", time($__interval) fill(null) \n) GROUP BY time($__interval) fill(null) ",
           "rawQuery": true,
           "refId": "C",
           "resultFormat": "time_series",
@@ -2028,7 +2028,7 @@
           "measurement": "dunedaq.dfmodules.triggerrecordbuilderinfo.Info",
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "SELECT sum(\"data\") FROM (\n  SELECT last(\"timed_out_trigger_records\") AS \"data\" FROM \"dunedaq.dfmodules.opmon.TRBInfo\" WHERE \"session\" = '${session}' AND \"element\"=~/${trb}/ AND $timeFilter GROUP BY \"element\", time($__interval) fill(null) \n) GROUP BY time($__interval) fill(null) ",
+          "query": "SELECT sum(\"data\") FROM (\n  SELECT last(\"timed_out_trigger_records\") AS \"data\" FROM \"dunedaq.dfmodules.opmon.TRBInfo\" WHERE \"session\" = '${session}' AND \"application\"=~/${application}/ AND $timeFilter GROUP BY \"application\", time($__interval) fill(null) \n) GROUP BY time($__interval) fill(null) ",
           "rawQuery": true,
           "refId": "D",
           "resultFormat": "time_series",
@@ -2077,7 +2077,7 @@
           "measurement": "dunedaq.dfmodules.triggerrecordbuilderinfo.Info",
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "SELECT sum(\"data\") FROM (\n  SELECT last(\"unexpected_trigger_decisions\") AS \"data\" FROM \"dunedaq.dfmodules.opmon.TRBInfo\" WHERE \"session\" = '${session}' AND \"element\"=~/${trb}/ AND $timeFilter GROUP BY \"element\", time($__interval) fill(null) \n) GROUP BY time($__interval) fill(null) ",
+          "query": "SELECT sum(\"data\") FROM (\n  SELECT last(\"unexpected_trigger_decisions\") AS \"data\" FROM \"dunedaq.dfmodules.opmon.TRBInfo\" WHERE \"session\" = '${session}' AND \"application\"=~/${application}/ AND $timeFilter GROUP BY \"application\", time($__interval) fill(null) \n) GROUP BY time($__interval) fill(null) ",
           "rawQuery": true,
           "refId": "F",
           "resultFormat": "time_series",
@@ -2126,7 +2126,7 @@
           "measurement": "dunedaq.dfmodules.triggerrecordbuilderinfo.Info",
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "SELECT sum(\"data\") FROM (\n  SELECT last(\"abandoned_trigger_records\") AS \"data\" FROM \"dunedaq.dfmodules.opmon.TRBInfo\" WHERE \"session\" = '${session}' AND \"element\"=~/${trb}/ AND $timeFilter GROUP BY \"element\", time($__interval) fill(null) \n) GROUP BY time($__interval) fill(null) ",
+          "query": "SELECT sum(\"data\") FROM (\n  SELECT last(\"abandoned_trigger_records\") AS \"data\" FROM \"dunedaq.dfmodules.opmon.TRBInfo\" WHERE \"session\" = '${session}' AND \"application\"=~/${application}/ AND $timeFilter GROUP BY \"application\", time($__interval) fill(null) \n) GROUP BY time($__interval) fill(null) ",
           "rawQuery": true,
           "refId": "G",
           "resultFormat": "time_series",
@@ -2655,7 +2655,7 @@
       "type": "timeseries"
     }
   ],
-  "refresh": "",
+  "refresh": "5s",
   "schemaVersion": 38,
   "tags": [
     "Subsystem",
@@ -2706,7 +2706,7 @@
       },
       {
         "current": {
-          "selected": true,
+          "selected": false,
           "text": [
             "All"
           ],
@@ -2730,66 +2730,11 @@
         "skipUrlSync": false,
         "sort": 1,
         "type": "query"
-      },
-      {
-        "current": {
-          "selected": true,
-          "text": [
-            "All"
-          ],
-          "value": [
-            "$__all"
-          ]
-        },
-        "datasource": {
-          "uid": "${influxdb}"
-        },
-        "definition": "SELECT \"element\" FROM (SELECT \"element\", \"generated_data_requests\" FROM \"dunedaq.dfmodules.opmon.TRBInfo\" WHERE \"session\"='${session}' AND \"application\"=~/${application}/ AND $timeFilter)",
-        "hide": 0,
-        "includeAll": true,
-        "label": "TRB",
-        "multi": true,
-        "name": "trb",
-        "options": [],
-        "query": "SELECT \"element\" FROM (SELECT \"element\", \"generated_data_requests\" FROM \"dunedaq.dfmodules.opmon.TRBInfo\" WHERE \"session\"='${session}' AND \"application\"=~/${application}/ AND $timeFilter)",
-        "refresh": 1,
-        "regex": "",
-        "skipUrlSync": false,
-        "sort": 1,
-        "type": "query"
-      },
-      {
-        "current": {
-          "selected": true,
-          "text": [
-            "All"
-          ],
-          "value": [
-            "$__all"
-          ]
-        },
-        "datasource": {
-          "uid": "${influxdb}"
-        },
-        "definition": "SELECT \"subelement\" FROM (SELECT \"subelement\", \"capacity_rate\" FROM \"dunedaq.dfmodules.opmon.DFApplicationInfo\" WHERE \"session\"='${session}' AND $timeFilter)",
-        "description": "Variable to select on DFApplication info",
-        "hide": 0,
-        "includeAll": true,
-        "label": "DF App",
-        "multi": true,
-        "name": "df_app",
-        "options": [],
-        "query": "SELECT \"subelement\" FROM (SELECT \"subelement\", \"capacity_rate\" FROM \"dunedaq.dfmodules.opmon.DFApplicationInfo\" WHERE \"session\"='${session}' AND $timeFilter)",
-        "refresh": 1,
-        "regex": "(.*_${application})",
-        "skipUrlSync": false,
-        "sort": 1,
-        "type": "query"
       }
     ]
   },
   "time": {
-    "from": "now-2d",
+    "from": "now-15m",
     "to": "now"
   },
   "timepicker": {
@@ -2820,6 +2765,6 @@
   "timezone": "",
   "title": "Dataflow",
   "uid": "v5_2_0-dataflow",
-  "version": 29,
+  "version": 33,
   "weekStart": ""
 }

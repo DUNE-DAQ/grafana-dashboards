@@ -1830,7 +1830,7 @@
           "measurement": "dunedaq.dfmodules.triggerrecordbuilderinfo.Info",
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "SELECT sum(\"data\") FROM (\n  SELECT last(\"lost_fragments\") AS \"data\" FROM \"dunedaq.dfmodules.opmon.TRBInfo\" WHERE \"session\" = '${session}' AND \"application\"=~/${application}/ AND $timeFilter GROUP BY \"application\", time($__interval) fill(null) \n) GROUP BY time($__interval) fill(null) ",
+          "query": "SELECT sum(\"data\") FROM (\n  SELECT last(\"lost_fragments\") AS \"data\" FROM \"dunedaq.dfmodules.opmon.TRBErrors\" WHERE \"session\" = '${session}' AND \"application\"=~/${application}/ AND $timeFilter GROUP BY \"application\", time($__interval) fill(null) \n) GROUP BY time($__interval) fill(null) ",
           "rawQuery": true,
           "refId": "B",
           "resultFormat": "time_series",
@@ -1879,7 +1879,7 @@
           "measurement": "dunedaq.dfmodules.triggerrecordbuilderinfo.Info",
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "SELECT sum(\"data\") FROM (\n  SELECT last(\"unexpected_fragments\") AS \"data\" FROM \"dunedaq.dfmodules.opmon.TRBInfo\" WHERE \"session\" = '${session}' AND \"application\"=~/${application}/ AND $timeFilter GROUP BY \"application\", time($__interval) fill(null) \n) GROUP BY time($__interval) fill(null) ",
+          "query": "SELECT sum(\"data\") FROM (\n  SELECT last(\"unexpected_fragments\") AS \"data\" FROM \"dunedaq.dfmodules.opmon.TRBErrors\" WHERE \"session\" = '${session}' AND \"application\"=~/${application}/ AND $timeFilter GROUP BY \"application\", time($__interval) fill(null) \n) GROUP BY time($__interval) fill(null) ",
           "rawQuery": true,
           "refId": "E",
           "resultFormat": "time_series",
@@ -1930,7 +1930,7 @@
           "measurement": "dunedaq.dfmodules.triggerrecordbuilderinfo.Info",
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "SELECT sum(\"data\") FROM (\n  SELECT last(\"invalid_requests\") AS \"data\" FROM \"dunedaq.dfmodules.opmon.TRBInfo\" WHERE \"session\" = '${session}' AND \"application\"=~/${application}/ AND $timeFilter GROUP BY \"application\", time($__interval) fill(null) \n) GROUP BY time($__interval) fill(null) ",
+          "query": "SELECT sum(\"data\") FROM (\n  SELECT last(\"invalid_requests\") AS \"data\" FROM \"dunedaq.dfmodules.opmon.TRBErrors\" WHERE \"session\" = '${session}' AND \"application\"=~/${application}/ AND $timeFilter GROUP BY \"application\", time($__interval) fill(null) \n) GROUP BY time($__interval) fill(null) ",
           "rawQuery": true,
           "refId": "A",
           "resultFormat": "time_series",
@@ -1979,7 +1979,7 @@
           "measurement": "dunedaq.dfmodules.triggerrecordbuilderinfo.Info",
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "SELECT sum(\"data\") FROM (\n  SELECT last(\"duplicated_trigger_ids\") AS \"data\" FROM \"dunedaq.dfmodules.opmon.TRBInfo\" WHERE \"session\" = '${session}' AND \"application\"=~/${application}/ AND $timeFilter GROUP BY \"appplication\", time($__interval) fill(null) \n) GROUP BY time($__interval) fill(null) ",
+          "query": "SELECT sum(\"data\") FROM (\n  SELECT last(\"duplicated_trigger_ids\") AS \"data\" FROM \"dunedaq.dfmodules.opmon.TRBErrors\" WHERE \"session\" = '${session}' AND \"application\"=~/${application}/ AND $timeFilter GROUP BY \"appplication\", time($__interval) fill(null) \n) GROUP BY time($__interval) fill(null) ",
           "rawQuery": true,
           "refId": "C",
           "resultFormat": "time_series",
@@ -2028,7 +2028,7 @@
           "measurement": "dunedaq.dfmodules.triggerrecordbuilderinfo.Info",
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "SELECT sum(\"data\") FROM (\n  SELECT last(\"timed_out_trigger_records\") AS \"data\" FROM \"dunedaq.dfmodules.opmon.TRBInfo\" WHERE \"session\" = '${session}' AND \"application\"=~/${application}/ AND $timeFilter GROUP BY \"application\", time($__interval) fill(null) \n) GROUP BY time($__interval) fill(null) ",
+          "query": "SELECT sum(\"data\") FROM (\n  SELECT last(\"timed_out_trigger_records\") AS \"data\" FROM \"dunedaq.dfmodules.opmon.TRBErrors\" WHERE \"session\" = '${session}' AND \"application\"=~/${application}/ AND $timeFilter GROUP BY \"application\", time($__interval) fill(null) \n) GROUP BY time($__interval) fill(null) ",
           "rawQuery": true,
           "refId": "D",
           "resultFormat": "time_series",
@@ -2077,7 +2077,7 @@
           "measurement": "dunedaq.dfmodules.triggerrecordbuilderinfo.Info",
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "SELECT sum(\"data\") FROM (\n  SELECT last(\"unexpected_trigger_decisions\") AS \"data\" FROM \"dunedaq.dfmodules.opmon.TRBInfo\" WHERE \"session\" = '${session}' AND \"application\"=~/${application}/ AND $timeFilter GROUP BY \"application\", time($__interval) fill(null) \n) GROUP BY time($__interval) fill(null) ",
+          "query": "SELECT sum(\"data\") FROM (\n  SELECT last(\"unexpected_trigger_decisions\") AS \"data\" FROM \"dunedaq.dfmodules.opmon.TRBErrors\" WHERE \"session\" = '${session}' AND \"application\"=~/${application}/ AND $timeFilter GROUP BY \"application\", time($__interval) fill(null) \n) GROUP BY time($__interval) fill(null) ",
           "rawQuery": true,
           "refId": "F",
           "resultFormat": "time_series",
@@ -2126,7 +2126,7 @@
           "measurement": "dunedaq.dfmodules.triggerrecordbuilderinfo.Info",
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "SELECT sum(\"data\") FROM (\n  SELECT last(\"abandoned_trigger_records\") AS \"data\" FROM \"dunedaq.dfmodules.opmon.TRBInfo\" WHERE \"session\" = '${session}' AND \"application\"=~/${application}/ AND $timeFilter GROUP BY \"application\", time($__interval) fill(null) \n) GROUP BY time($__interval) fill(null) ",
+          "query": "SELECT sum(\"data\") FROM (\n  SELECT last(\"abandoned_trigger_records\") AS \"data\" FROM \"dunedaq.dfmodules.opmon.TRBErrors\" WHERE \"session\" = '${session}' AND \"application\"=~/${application}/ AND $timeFilter GROUP BY \"application\", time($__interval) fill(null) \n) GROUP BY time($__interval) fill(null) ",
           "rawQuery": true,
           "refId": "G",
           "resultFormat": "time_series",
@@ -2448,6 +2448,7 @@
     },
     {
       "datasource": {
+        "type": "influxdb",
         "uid": "${influxdb}"
       },
       "fieldConfig": {
@@ -2544,7 +2545,7 @@
       "pluginVersion": "8.0.6",
       "targets": [
         {
-          "alias": "$tag_source_id",
+          "alias": "$tag_element",
           "datasource": {
             "uid": "${influxdb}"
           },
@@ -2566,7 +2567,7 @@
           "measurement": "dunedaq.dfmodules.triggerrecordbuilderinfo.Info",
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "SELECT sum(\"writing_time\") / sum(\"new_records_written\") FROM \"dunedaq.dfmodules.datawriterinfo.Info\" WHERE (\"partition_id\" = '${partition}' ) AND $timeFilter AND \"new_records_written\" > 0 GROUP BY time($__interval), \"source_id\" fill(null)",
+          "query": "SELECT sum(\"writing_time_us\") / sum(\"new_records_written\") FROM \"dunedaq.dfmodules.opmon.DataWriterInfo\" WHERE \"session\" = '${session}' AND \"application\"=~/${application}/ AND $timeFilter AND \"new_records_written\" > 0 GROUP BY time($__interval), \"element\" fill(null)",
           "rawQuery": true,
           "refId": "B",
           "resultFormat": "time_series",
@@ -2615,7 +2616,7 @@
           "measurement": "dunedaq.dfmodules.triggerrecordbuilderinfo.Info",
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "SELECT sum(\"writing_time\") / sum(\"new_records_written\") FROM \"dunedaq.dfmodules.datawriterinfo.Info\" WHERE (\"partition_id\" = '${partition}' ) AND $timeFilter AND \"new_records_written\" > 0 GROUP BY time($__interval) fill(null)",
+          "query": "SELECT sum(\"writing_time_us\") / sum(\"new_records_written\") FROM \"dunedaq.dfmodules.opmon.DataWriterInfo\" WHERE \"session\" = '${session}' AND \"application\"=~/${application}/ AND $timeFilter AND \"new_records_written\" > 0 GROUP BY time($__interval) fill(null)",
           "rawQuery": true,
           "refId": "A",
           "resultFormat": "time_series",
@@ -2655,7 +2656,7 @@
       "type": "timeseries"
     }
   ],
-  "refresh": "5s",
+  "refresh": "10s",
   "schemaVersion": 38,
   "tags": [
     "Subsystem",
@@ -2684,8 +2685,8 @@
       {
         "current": {
           "selected": false,
-          "text": "np02-oks-session",
-          "value": "np02-oks-session"
+          "text": "test-session",
+          "value": "test-session"
         },
         "datasource": {
           "uid": "${influxdb}"
@@ -2706,7 +2707,7 @@
       },
       {
         "current": {
-          "selected": false,
+          "selected": true,
           "text": [
             "All"
           ],
@@ -2765,6 +2766,6 @@
   "timezone": "",
   "title": "Dataflow",
   "uid": "v5_2_0-dataflow",
-  "version": 33,
+  "version": 36,
   "weekStart": ""
 }

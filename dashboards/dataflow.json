@@ -1713,7 +1713,7 @@
             "uid": "${influxdb}"
           },
           "hide": false,
-          "query": "SELECT mean(\"data\") FROM (SELECT (last(\"pending_fragments\") +  last(\"fragments_in_the_book\")) / last(\"pending_trigger_decisions\") AS \"data\" FROM \"dunedaq.dfmodules.opmon.TRBInfo\" WHERE \"session\" = '${session}' AND \"application\"=~/${application}/ AND \"pending_trigger_decisions\" > 0 AND $timeFilter GROUP BY time($__interval), \"source_id\" fill(null) ) GROUP BY time($__interval)  fill(null)",
+          "query": "SELECT mean(\"data\") FROM (SELECT (last(\"pending_fragments\") +  last(\"fragments_in_the_book\")) / last(\"pending_trigger_decisions\") AS \"data\" FROM \"dunedaq.dfmodules.opmon.TRBInfo\" WHERE \"session\" = '${session}' AND \"application\"=~/${application}/ AND \"pending_trigger_decisions\" > 0 AND $timeFilter GROUP BY time($__interval), \"element\" fill(null) ) GROUP BY time($__interval)  fill(null)",
           "rawQuery": true,
           "refId": "C",
           "resultFormat": "time_series"
@@ -2707,7 +2707,7 @@
       },
       {
         "current": {
-          "selected": true,
+          "selected": false,
           "text": [
             "All"
           ],
@@ -2766,6 +2766,6 @@
   "timezone": "",
   "title": "Dataflow",
   "uid": "v5_2_0-dataflow",
-  "version": 36,
+  "version": 38,
   "weekStart": ""
 }

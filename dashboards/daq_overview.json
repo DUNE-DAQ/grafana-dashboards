@@ -1089,7 +1089,7 @@
       "pluginVersion": "10.2.2",
       "targets": [
         {
-          "alias": "$tag_source_id",
+          "alias": "",
           "datasource": {
             "uid": "${influxdb}"
           },
@@ -1100,7 +1100,7 @@
           "measurement": "dunedaq.dfmodules.datawriterinfo.Info",
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "SELECT sum(\"data\") FROM (SELECT last(\"records_written\") AS \"data\", \"source_id\" FROM \"dunedaq.dfmodules.datawriterinfo.Info\" WHERE (\"partition_id\" = '${partition}') AND time > now() - 30s GROUP BY \"source_id\" fill(null) )",
+          "query": "SELECT sum(\"data\") FROM (SELECT last(\"records_written\") AS \"data\", \"source_id\" FROM \"dunedaq.dfmodules.opmon.DataWriterInfo\" WHERE (\"session\" = '${session}') AND time > now() - 30s GROUP BY \"element\" fill(null) )",
           "rawQuery": true,
           "refId": "A",
           "resultFormat": "table",
@@ -2473,6 +2473,6 @@
   "timezone": "",
   "title": "DAQ overview",
   "uid": "v5_2_0-overview",
-  "version": 26,
+  "version": 27,
   "weekStart": ""
 }

@@ -181,15 +181,7 @@
         }
       ],
       "title": "Frontend receiving rates",
-      "transformations": [
-        {
-          "id": "renameByRegex",
-          "options": {
-            "regex": ".*\\.(.*)\\.(.*)",
-            "renamePattern": "$1 $2"
-          }
-        }
-      ],
+      "transformations": [],
       "type": "timeseries"
     },
     {
@@ -1674,7 +1666,7 @@
             "type": "influxdb",
             "uid": "${influxdb}"
           },
-          "query": "SELECT spread(\"last_daq_timestamp\") FROM \"dunedaq.datahandlinglibs.opmon.DataHandlerInfo\" WHERE \"session\" = '${session}' AND \"application\" =~ /${application}/ AND element =~/${DLH}/ AND  $timeFilter AND \"last_daq_timestamp\" > 0  GROUP BY time(500ms) fill(null)",
+          "query": "SELECT spread(\"last_daq_timestamp\") FROM \"dunedaq.datahandlinglibs.opmon.DataHandlerInfo\" WHERE \"session\" = '${session}' AND \"application\" =~ /${application}/ AND element =~/${DLH}/ AND  $timeFilter AND \"last_daq_timestamp\" > 0  GROUP BY time(1s) fill(null)",
           "rawQuery": true,
           "refId": "A",
           "resultFormat": "time_series"
@@ -2747,6 +2739,6 @@
   "timezone": "",
   "title": "Readout",
   "uid": "v5_2_0-readout",
-  "version": 22,
+  "version": 24,
   "weekStart": ""
 }

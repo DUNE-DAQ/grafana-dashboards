@@ -397,6 +397,690 @@
         "type": "influxdb",
         "uid": "${influxdb}"
       },
+      "description": "",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "Hz",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "drawStyle": "line",
+            "fillOpacity": 0,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "auto",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 7,
+        "w": 8,
+        "x": 16,
+        "y": 1
+      },
+      "id": 37,
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "tooltip": {
+          "mode": "multi",
+          "sort": "none"
+        }
+      },
+      "targets": [
+        {
+          "alias": "Cleanups",
+          "datasource": {
+            "uid": "${influxdb}"
+          },
+          "groupBy": [
+            {
+              "params": [
+                "$__interval"
+              ],
+              "type": "time"
+            },
+            {
+              "params": [
+                "null"
+              ],
+              "type": "fill"
+            }
+          ],
+          "measurement": "dunedaq.datahandlinglibs.readoutinfo.RequestHandlerInfo",
+          "orderByTime": "ASC",
+          "policy": "default",
+          "query": "SELECT non_negative_derivative(cumulative_sum(sum(\"num_buffer_cleanups\")), 1s) FROM \"dunedaq.datahandlinglibs.opmon.RequestHandlerInfo\" WHERE \"session\"='${session}' AND \"element\" =~ /${DLH}/  AND $timeFilter GROUP BY time($__interval) fill(null)",
+          "rawQuery": true,
+          "refId": "A",
+          "resultFormat": "time_series",
+          "select": [
+            [
+              {
+                "params": [
+                  "num_buffer_cleanups"
+                ],
+                "type": "field"
+              },
+              {
+                "params": [],
+                "type": "sum"
+              },
+              {
+                "params": [],
+                "type": "cumulative_sum"
+              },
+              {
+                "params": [
+                  "1s"
+                ],
+                "type": "non_negative_derivative"
+              }
+            ]
+          ],
+          "tags": [
+            {
+              "key": "source_id",
+              "operator": "=",
+              "value": "maroda_test_ruemu0.datahandler_1"
+            }
+          ]
+        },
+        {
+          "alias": "Overwritten",
+          "datasource": {
+            "uid": "${influxdb}"
+          },
+          "groupBy": [
+            {
+              "params": [
+                "$__interval"
+              ],
+              "type": "time"
+            },
+            {
+              "params": [
+                "null"
+              ],
+              "type": "fill"
+            }
+          ],
+          "hide": false,
+          "measurement": "dunedaq.datahandlinglibs.readoutinfo.ReadoutInfo",
+          "orderByTime": "ASC",
+          "policy": "default",
+          "query": "SELECT non_negative_derivative(cumulative_sum(sum(\"num_payloads_overwritten\")), 1s) FROM \"dunedaq.datahandlinglibs.opmon.DataHandlerInfo\" WHERE \"session\"='${session}' AND \"element\" =~ /${DLH}/  AND $timeFilter GROUP BY time($__interval) fill(null) ",
+          "rawQuery": true,
+          "refId": "B",
+          "resultFormat": "time_series",
+          "select": [
+            [
+              {
+                "params": [
+                  "num_payloads_overwritten"
+                ],
+                "type": "field"
+              },
+              {
+                "params": [],
+                "type": "sum"
+              },
+              {
+                "params": [],
+                "type": "cumulative_sum"
+              },
+              {
+                "params": [
+                  "1s"
+                ],
+                "type": "non_negative_derivative"
+              }
+            ]
+          ],
+          "tags": [
+            {
+              "key": "source_id",
+              "operator": "=",
+              "value": "maroda_test_ruemu0.datahandler_1"
+            }
+          ]
+        }
+      ],
+      "title": "Buffers - Operational rates",
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "influxdb",
+        "uid": "${influxdb}"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "drawStyle": "line",
+            "fillOpacity": 0,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "linear",
+            "lineWidth": 2,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "never",
+            "spanNulls": true,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "µs"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 7,
+        "w": 8,
+        "x": 0,
+        "y": 8
+      },
+      "id": 11,
+      "links": [],
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "tooltip": {
+          "mode": "multi",
+          "sort": "none"
+        }
+      },
+      "pluginVersion": "8.0.6",
+      "targets": [
+        {
+          "alias": "Partition average",
+          "datasource": {
+            "uid": "${influxdb}"
+          },
+          "groupBy": [
+            {
+              "params": [
+                "$__interval"
+              ],
+              "type": "time"
+            },
+            {
+              "params": [
+                "null"
+              ],
+              "type": "fill"
+            }
+          ],
+          "hide": false,
+          "measurement": "dunedaq.datahandlinglibs.readoutinfo.RawDataProcessorInfo",
+          "orderByTime": "ASC",
+          "policy": "default",
+          "query": "SELECT sum(\"tot_request_response_time\")/sum(\"num_requests_handled\") FROM \"dunedaq.datahandlinglibs.opmon.RequestHandlerInfo\" WHERE \"session\"='${session}' AND \"element\" =~ /${DLH}/ AND \"num_requests_handled\">0 AND  $timeFilter GROUP BY time($__interval) fill(null)",
+          "rawQuery": true,
+          "refId": "D",
+          "resultFormat": "time_series",
+          "select": [
+            [
+              {
+                "params": [
+                  "num_tps_sent"
+                ],
+                "type": "field"
+              },
+              {
+                "params": [],
+                "type": "sum"
+              },
+              {
+                "params": [],
+                "type": "cumulative_sum"
+              },
+              {
+                "params": [
+                  "1s"
+                ],
+                "type": "non_negative_derivative"
+              }
+            ]
+          ],
+          "tags": [
+            {
+              "key": "source_id",
+              "operator": "=",
+              "value": "maroda_test_ruemu0.datahandler_0"
+            }
+          ]
+        },
+        {
+          "alias": "$tag_element",
+          "datasource": {
+            "uid": "${influxdb}"
+          },
+          "groupBy": [
+            {
+              "params": [
+                "$__interval"
+              ],
+              "type": "time"
+            },
+            {
+              "params": [
+                "null"
+              ],
+              "type": "fill"
+            }
+          ],
+          "hide": false,
+          "measurement": "dunedaq.datahandlinglibs.readoutinfo.RawDataProcessorInfo",
+          "orderByTime": "ASC",
+          "policy": "default",
+          "query": "SELECT sum(\"tot_request_response_time\")/sum(\"num_requests_handled\") FROM \"dunedaq.datahandlinglibs.opmon.RequestHandlerInfo\" WHERE \"session\"='${session}' AND \"element\" =~ /${DLH}/ AND \"num_requests_handled\">0 AND $timeFilter GROUP BY \"element\", time($__interval) fill(null)",
+          "rawQuery": true,
+          "refId": "A",
+          "resultFormat": "time_series",
+          "select": [
+            [
+              {
+                "params": [
+                  "num_tps_sent"
+                ],
+                "type": "field"
+              },
+              {
+                "params": [],
+                "type": "sum"
+              },
+              {
+                "params": [],
+                "type": "cumulative_sum"
+              },
+              {
+                "params": [
+                  "1s"
+                ],
+                "type": "non_negative_derivative"
+              }
+            ]
+          ],
+          "tags": [
+            {
+              "key": "source_id",
+              "operator": "=",
+              "value": "maroda_test_ruemu0.datahandler_0"
+            }
+          ]
+        },
+        {
+          "alias": "Min",
+          "datasource": {
+            "uid": "${influxdb}"
+          },
+          "groupBy": [
+            {
+              "params": [
+                "$__interval"
+              ],
+              "type": "time"
+            },
+            {
+              "params": [
+                "null"
+              ],
+              "type": "fill"
+            }
+          ],
+          "hide": false,
+          "measurement": "dunedaq.datahandlinglibs.readoutinfo.RawDataProcessorInfo",
+          "orderByTime": "ASC",
+          "policy": "default",
+          "query": "SELECT min(\"min_request_response_time\") FROM \"dunedaq.datahandlinglibs.opmon.RequestHandlerInfo\" WHERE \"session\"='${session}' AND \"element\" =~ /${DLH}/ AND \"num_requests_handled\">0 AND $timeFilter GROUP BY time($__interval) fill(null)",
+          "rawQuery": true,
+          "refId": "B",
+          "resultFormat": "time_series",
+          "select": [
+            [
+              {
+                "params": [
+                  "num_tps_sent"
+                ],
+                "type": "field"
+              },
+              {
+                "params": [],
+                "type": "sum"
+              },
+              {
+                "params": [],
+                "type": "cumulative_sum"
+              },
+              {
+                "params": [
+                  "1s"
+                ],
+                "type": "non_negative_derivative"
+              }
+            ]
+          ],
+          "tags": [
+            {
+              "key": "source_id",
+              "operator": "=",
+              "value": "maroda_test_ruemu0.datahandler_0"
+            }
+          ]
+        },
+        {
+          "alias": "Max",
+          "datasource": {
+            "uid": "${influxdb}"
+          },
+          "groupBy": [
+            {
+              "params": [
+                "$__interval"
+              ],
+              "type": "time"
+            },
+            {
+              "params": [
+                "null"
+              ],
+              "type": "fill"
+            }
+          ],
+          "hide": false,
+          "measurement": "dunedaq.datahandlinglibs.readoutinfo.RawDataProcessorInfo",
+          "orderByTime": "ASC",
+          "policy": "default",
+          "query": "SELECT max(\"max_request_response_time\") FROM \"dunedaq.datahandlinglibs.opmon.RequestHandlerInfo\" WHERE \"session\"='${session}' AND \"element\" =~ /${DLH}/ AND \"num_requests_handled\">0 AND $timeFilter GROUP BY time($__interval) fill(null)",
+          "rawQuery": true,
+          "refId": "C",
+          "resultFormat": "time_series",
+          "select": [
+            [
+              {
+                "params": [
+                  "num_tps_sent"
+                ],
+                "type": "field"
+              },
+              {
+                "params": [],
+                "type": "sum"
+              },
+              {
+                "params": [],
+                "type": "cumulative_sum"
+              },
+              {
+                "params": [
+                  "1s"
+                ],
+                "type": "non_negative_derivative"
+              }
+            ]
+          ],
+          "tags": [
+            {
+              "key": "source_id",
+              "operator": "=",
+              "value": "maroda_test_ruemu0.datahandler_0"
+            }
+          ]
+        }
+      ],
+      "title": "Request answering time",
+      "transformations": [
+        {
+          "id": "renameByRegex",
+          "options": {
+            "regex": "[^.]+\\.([^.]+)\\.([^.]+)",
+            "renamePattern": "$1 $2"
+          }
+        }
+      ],
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "influxdb",
+        "uid": "${influxdb}"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "drawStyle": "line",
+            "fillOpacity": 13,
+            "gradientMode": "opacity",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "auto",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 7,
+        "w": 8,
+        "x": 8,
+        "y": 8
+      },
+      "id": 39,
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "tooltip": {
+          "mode": "multi",
+          "sort": "none"
+        }
+      },
+      "pluginVersion": "8.0.6",
+      "targets": [
+        {
+          "alias": "$tag_element",
+          "datasource": {
+            "uid": "${influxdb}"
+          },
+          "groupBy": [
+            {
+              "params": [
+                "$__interval"
+              ],
+              "type": "time"
+            },
+            {
+              "params": [
+                "null"
+              ],
+              "type": "fill"
+            }
+          ],
+          "hide": false,
+          "measurement": "dunedaq.datahandlinglibs.readoutinfo.RequestHandlerInfo",
+          "orderByTime": "ASC",
+          "policy": "default",
+          "query": "SELECT sum(\"num_requests_waiting\") FROM \"dunedaq.datahandlinglibs.opmon.RequestHandlerInfo\" WHERE \"session\"='${session}' AND \"element\" =~ /${DLH}/ AND $timeFilter GROUP BY time($__interval), \"element\"",
+          "rawQuery": true,
+          "refId": "E",
+          "resultFormat": "time_series",
+          "select": [
+            [
+              {
+                "params": [
+                  "num_requests_waiting"
+                ],
+                "type": "field"
+              },
+              {
+                "params": [],
+                "type": "sum"
+              },
+              {
+                "params": [],
+                "type": "cumulative_sum"
+              },
+              {
+                "params": [
+                  "1s"
+                ],
+                "type": "non_negative_derivative"
+              }
+            ]
+          ],
+          "tags": [
+            {
+              "key": "source_id",
+              "operator": "=",
+              "value": "maroda_test_ruemu0.datahandler_0"
+            }
+          ]
+        }
+      ],
+      "title": "Waiting requests",
+      "transformations": [
+        {
+          "id": "renameByRegex",
+          "options": {
+            "regex": ".*\\.(.*)\\.(.*)",
+            "renamePattern": "$1 $2"
+          }
+        }
+      ],
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "influxdb",
+        "uid": "${influxdb}"
+      },
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -456,7 +1140,7 @@
         "h": 7,
         "w": 8,
         "x": 16,
-        "y": 1
+        "y": 8
       },
       "id": 23,
       "options": {
@@ -888,690 +1572,6 @@
         }
       ],
       "title": "Request rates",
-      "type": "timeseries"
-    },
-    {
-      "datasource": {
-        "type": "influxdb",
-        "uid": "${influxdb}"
-      },
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "mode": "palette-classic"
-          },
-          "custom": {
-            "axisBorderShow": false,
-            "axisCenteredZero": false,
-            "axisColorMode": "text",
-            "axisLabel": "",
-            "axisPlacement": "auto",
-            "barAlignment": 0,
-            "drawStyle": "line",
-            "fillOpacity": 0,
-            "gradientMode": "none",
-            "hideFrom": {
-              "legend": false,
-              "tooltip": false,
-              "viz": false
-            },
-            "insertNulls": false,
-            "lineInterpolation": "linear",
-            "lineWidth": 2,
-            "pointSize": 5,
-            "scaleDistribution": {
-              "type": "linear"
-            },
-            "showPoints": "never",
-            "spanNulls": true,
-            "stacking": {
-              "group": "A",
-              "mode": "none"
-            },
-            "thresholdsStyle": {
-              "mode": "off"
-            }
-          },
-          "mappings": [],
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "green",
-                "value": null
-              },
-              {
-                "color": "red",
-                "value": 80
-              }
-            ]
-          },
-          "unit": "µs"
-        },
-        "overrides": []
-      },
-      "gridPos": {
-        "h": 7,
-        "w": 8,
-        "x": 0,
-        "y": 8
-      },
-      "id": 11,
-      "links": [],
-      "options": {
-        "legend": {
-          "calcs": [],
-          "displayMode": "list",
-          "placement": "bottom",
-          "showLegend": true
-        },
-        "tooltip": {
-          "mode": "multi",
-          "sort": "none"
-        }
-      },
-      "pluginVersion": "8.0.6",
-      "targets": [
-        {
-          "alias": "Partition average",
-          "datasource": {
-            "uid": "${influxdb}"
-          },
-          "groupBy": [
-            {
-              "params": [
-                "$__interval"
-              ],
-              "type": "time"
-            },
-            {
-              "params": [
-                "null"
-              ],
-              "type": "fill"
-            }
-          ],
-          "hide": false,
-          "measurement": "dunedaq.datahandlinglibs.readoutinfo.RawDataProcessorInfo",
-          "orderByTime": "ASC",
-          "policy": "default",
-          "query": "SELECT sum(\"tot_request_response_time\")/sum(\"num_requests_handled\") FROM \"dunedaq.datahandlinglibs.opmon.RequestHandlerInfo\" WHERE \"session\"='${session}' AND \"element\" =~ /${DLH}/ AND \"num_requests_handled\">0 AND  $timeFilter GROUP BY time($__interval) fill(null)",
-          "rawQuery": true,
-          "refId": "D",
-          "resultFormat": "time_series",
-          "select": [
-            [
-              {
-                "params": [
-                  "num_tps_sent"
-                ],
-                "type": "field"
-              },
-              {
-                "params": [],
-                "type": "sum"
-              },
-              {
-                "params": [],
-                "type": "cumulative_sum"
-              },
-              {
-                "params": [
-                  "1s"
-                ],
-                "type": "non_negative_derivative"
-              }
-            ]
-          ],
-          "tags": [
-            {
-              "key": "source_id",
-              "operator": "=",
-              "value": "maroda_test_ruemu0.datahandler_0"
-            }
-          ]
-        },
-        {
-          "alias": "$tag_element",
-          "datasource": {
-            "uid": "${influxdb}"
-          },
-          "groupBy": [
-            {
-              "params": [
-                "$__interval"
-              ],
-              "type": "time"
-            },
-            {
-              "params": [
-                "null"
-              ],
-              "type": "fill"
-            }
-          ],
-          "hide": false,
-          "measurement": "dunedaq.datahandlinglibs.readoutinfo.RawDataProcessorInfo",
-          "orderByTime": "ASC",
-          "policy": "default",
-          "query": "SELECT sum(\"tot_request_response_time\")/sum(\"num_requests_handled\") FROM \"dunedaq.datahandlinglibs.opmon.RequestHandlerInfo\" WHERE \"session\"='${session}' AND \"element\" =~ /${DLH}/ AND \"num_requests_handled\">0 AND $timeFilter GROUP BY \"element\", time($__interval) fill(null)",
-          "rawQuery": true,
-          "refId": "A",
-          "resultFormat": "time_series",
-          "select": [
-            [
-              {
-                "params": [
-                  "num_tps_sent"
-                ],
-                "type": "field"
-              },
-              {
-                "params": [],
-                "type": "sum"
-              },
-              {
-                "params": [],
-                "type": "cumulative_sum"
-              },
-              {
-                "params": [
-                  "1s"
-                ],
-                "type": "non_negative_derivative"
-              }
-            ]
-          ],
-          "tags": [
-            {
-              "key": "source_id",
-              "operator": "=",
-              "value": "maroda_test_ruemu0.datahandler_0"
-            }
-          ]
-        },
-        {
-          "alias": "Min",
-          "datasource": {
-            "uid": "${influxdb}"
-          },
-          "groupBy": [
-            {
-              "params": [
-                "$__interval"
-              ],
-              "type": "time"
-            },
-            {
-              "params": [
-                "null"
-              ],
-              "type": "fill"
-            }
-          ],
-          "hide": false,
-          "measurement": "dunedaq.datahandlinglibs.readoutinfo.RawDataProcessorInfo",
-          "orderByTime": "ASC",
-          "policy": "default",
-          "query": "SELECT min(\"min_request_response_time\") FROM \"dunedaq.datahandlinglibs.opmon.RequestHandlerInfo\" WHERE \"session\"='${session}' AND \"element\" =~ /${DLH}/ AND \"num_requests_handled\">0 AND $timeFilter GROUP BY time($__interval) fill(null)",
-          "rawQuery": true,
-          "refId": "B",
-          "resultFormat": "time_series",
-          "select": [
-            [
-              {
-                "params": [
-                  "num_tps_sent"
-                ],
-                "type": "field"
-              },
-              {
-                "params": [],
-                "type": "sum"
-              },
-              {
-                "params": [],
-                "type": "cumulative_sum"
-              },
-              {
-                "params": [
-                  "1s"
-                ],
-                "type": "non_negative_derivative"
-              }
-            ]
-          ],
-          "tags": [
-            {
-              "key": "source_id",
-              "operator": "=",
-              "value": "maroda_test_ruemu0.datahandler_0"
-            }
-          ]
-        },
-        {
-          "alias": "Max",
-          "datasource": {
-            "uid": "${influxdb}"
-          },
-          "groupBy": [
-            {
-              "params": [
-                "$__interval"
-              ],
-              "type": "time"
-            },
-            {
-              "params": [
-                "null"
-              ],
-              "type": "fill"
-            }
-          ],
-          "hide": false,
-          "measurement": "dunedaq.datahandlinglibs.readoutinfo.RawDataProcessorInfo",
-          "orderByTime": "ASC",
-          "policy": "default",
-          "query": "SELECT max(\"max_request_response_time\") FROM \"dunedaq.datahandlinglibs.opmon.RequestHandlerInfo\" WHERE \"session\"='${session}' AND \"element\" =~ /${DLH}/ AND \"num_requests_handled\">0 AND $timeFilter GROUP BY time($__interval) fill(null)",
-          "rawQuery": true,
-          "refId": "C",
-          "resultFormat": "time_series",
-          "select": [
-            [
-              {
-                "params": [
-                  "num_tps_sent"
-                ],
-                "type": "field"
-              },
-              {
-                "params": [],
-                "type": "sum"
-              },
-              {
-                "params": [],
-                "type": "cumulative_sum"
-              },
-              {
-                "params": [
-                  "1s"
-                ],
-                "type": "non_negative_derivative"
-              }
-            ]
-          ],
-          "tags": [
-            {
-              "key": "source_id",
-              "operator": "=",
-              "value": "maroda_test_ruemu0.datahandler_0"
-            }
-          ]
-        }
-      ],
-      "title": "Request answering time",
-      "transformations": [
-        {
-          "id": "renameByRegex",
-          "options": {
-            "regex": "[^.]+\\.([^.]+)\\.([^.]+)",
-            "renamePattern": "$1 $2"
-          }
-        }
-      ],
-      "type": "timeseries"
-    },
-    {
-      "datasource": {
-        "type": "influxdb",
-        "uid": "${influxdb}"
-      },
-      "description": "",
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "mode": "palette-classic"
-          },
-          "custom": {
-            "axisBorderShow": false,
-            "axisCenteredZero": false,
-            "axisColorMode": "text",
-            "axisLabel": "Hz",
-            "axisPlacement": "auto",
-            "barAlignment": 0,
-            "drawStyle": "line",
-            "fillOpacity": 0,
-            "gradientMode": "none",
-            "hideFrom": {
-              "legend": false,
-              "tooltip": false,
-              "viz": false
-            },
-            "insertNulls": false,
-            "lineInterpolation": "linear",
-            "lineWidth": 1,
-            "pointSize": 5,
-            "scaleDistribution": {
-              "type": "linear"
-            },
-            "showPoints": "auto",
-            "spanNulls": false,
-            "stacking": {
-              "group": "A",
-              "mode": "none"
-            },
-            "thresholdsStyle": {
-              "mode": "off"
-            }
-          },
-          "mappings": [],
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "green",
-                "value": null
-              },
-              {
-                "color": "red",
-                "value": 80
-              }
-            ]
-          }
-        },
-        "overrides": []
-      },
-      "gridPos": {
-        "h": 7,
-        "w": 8,
-        "x": 8,
-        "y": 8
-      },
-      "id": 37,
-      "options": {
-        "legend": {
-          "calcs": [],
-          "displayMode": "list",
-          "placement": "bottom",
-          "showLegend": true
-        },
-        "tooltip": {
-          "mode": "multi",
-          "sort": "none"
-        }
-      },
-      "targets": [
-        {
-          "alias": "Cleanups",
-          "datasource": {
-            "uid": "${influxdb}"
-          },
-          "groupBy": [
-            {
-              "params": [
-                "$__interval"
-              ],
-              "type": "time"
-            },
-            {
-              "params": [
-                "null"
-              ],
-              "type": "fill"
-            }
-          ],
-          "measurement": "dunedaq.datahandlinglibs.readoutinfo.RequestHandlerInfo",
-          "orderByTime": "ASC",
-          "policy": "default",
-          "query": "SELECT non_negative_derivative(cumulative_sum(sum(\"num_buffer_cleanups\")), 1s) FROM \"dunedaq.datahandlinglibs.opmon.RequestHandlerInfo\" WHERE \"session\"='${session}' AND \"element\" =~ /${DLH}/  AND $timeFilter GROUP BY time($__interval) fill(null)",
-          "rawQuery": true,
-          "refId": "A",
-          "resultFormat": "time_series",
-          "select": [
-            [
-              {
-                "params": [
-                  "num_buffer_cleanups"
-                ],
-                "type": "field"
-              },
-              {
-                "params": [],
-                "type": "sum"
-              },
-              {
-                "params": [],
-                "type": "cumulative_sum"
-              },
-              {
-                "params": [
-                  "1s"
-                ],
-                "type": "non_negative_derivative"
-              }
-            ]
-          ],
-          "tags": [
-            {
-              "key": "source_id",
-              "operator": "=",
-              "value": "maroda_test_ruemu0.datahandler_1"
-            }
-          ]
-        },
-        {
-          "alias": "Overwritten",
-          "datasource": {
-            "uid": "${influxdb}"
-          },
-          "groupBy": [
-            {
-              "params": [
-                "$__interval"
-              ],
-              "type": "time"
-            },
-            {
-              "params": [
-                "null"
-              ],
-              "type": "fill"
-            }
-          ],
-          "hide": false,
-          "measurement": "dunedaq.datahandlinglibs.readoutinfo.ReadoutInfo",
-          "orderByTime": "ASC",
-          "policy": "default",
-          "query": "SELECT non_negative_derivative(cumulative_sum(sum(\"num_payloads_overwritten\")), 1s) FROM \"dunedaq.datahandlinglibs.opmon.DataHandlerInfo\" WHERE \"session\"='${session}' AND \"element\" =~ /${DLH}/  AND $timeFilter GROUP BY time($__interval) fill(null) ",
-          "rawQuery": true,
-          "refId": "B",
-          "resultFormat": "time_series",
-          "select": [
-            [
-              {
-                "params": [
-                  "num_payloads_overwritten"
-                ],
-                "type": "field"
-              },
-              {
-                "params": [],
-                "type": "sum"
-              },
-              {
-                "params": [],
-                "type": "cumulative_sum"
-              },
-              {
-                "params": [
-                  "1s"
-                ],
-                "type": "non_negative_derivative"
-              }
-            ]
-          ],
-          "tags": [
-            {
-              "key": "source_id",
-              "operator": "=",
-              "value": "maroda_test_ruemu0.datahandler_1"
-            }
-          ]
-        }
-      ],
-      "title": "Buffers - Operational rates",
-      "type": "timeseries"
-    },
-    {
-      "datasource": {
-        "type": "influxdb",
-        "uid": "${influxdb}"
-      },
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "mode": "palette-classic"
-          },
-          "custom": {
-            "axisBorderShow": false,
-            "axisCenteredZero": false,
-            "axisColorMode": "text",
-            "axisLabel": "",
-            "axisPlacement": "auto",
-            "barAlignment": 0,
-            "drawStyle": "line",
-            "fillOpacity": 13,
-            "gradientMode": "opacity",
-            "hideFrom": {
-              "legend": false,
-              "tooltip": false,
-              "viz": false
-            },
-            "insertNulls": false,
-            "lineInterpolation": "linear",
-            "lineWidth": 1,
-            "pointSize": 5,
-            "scaleDistribution": {
-              "type": "linear"
-            },
-            "showPoints": "auto",
-            "spanNulls": false,
-            "stacking": {
-              "group": "A",
-              "mode": "none"
-            },
-            "thresholdsStyle": {
-              "mode": "off"
-            }
-          },
-          "mappings": [],
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "green",
-                "value": null
-              },
-              {
-                "color": "red",
-                "value": 80
-              }
-            ]
-          }
-        },
-        "overrides": []
-      },
-      "gridPos": {
-        "h": 7,
-        "w": 8,
-        "x": 16,
-        "y": 8
-      },
-      "id": 39,
-      "options": {
-        "legend": {
-          "calcs": [],
-          "displayMode": "list",
-          "placement": "bottom",
-          "showLegend": true
-        },
-        "tooltip": {
-          "mode": "multi",
-          "sort": "none"
-        }
-      },
-      "pluginVersion": "8.0.6",
-      "targets": [
-        {
-          "alias": "$tag_element",
-          "datasource": {
-            "uid": "${influxdb}"
-          },
-          "groupBy": [
-            {
-              "params": [
-                "$__interval"
-              ],
-              "type": "time"
-            },
-            {
-              "params": [
-                "null"
-              ],
-              "type": "fill"
-            }
-          ],
-          "hide": false,
-          "measurement": "dunedaq.datahandlinglibs.readoutinfo.RequestHandlerInfo",
-          "orderByTime": "ASC",
-          "policy": "default",
-          "query": "SELECT sum(\"num_requests_waiting\") FROM \"dunedaq.datahandlinglibs.opmon.RequestHandlerInfo\" WHERE \"session\"='${session}' AND \"element\" =~ /${DLH}/ AND $timeFilter GROUP BY time($__interval), \"element\"",
-          "rawQuery": true,
-          "refId": "E",
-          "resultFormat": "time_series",
-          "select": [
-            [
-              {
-                "params": [
-                  "num_requests_waiting"
-                ],
-                "type": "field"
-              },
-              {
-                "params": [],
-                "type": "sum"
-              },
-              {
-                "params": [],
-                "type": "cumulative_sum"
-              },
-              {
-                "params": [
-                  "1s"
-                ],
-                "type": "non_negative_derivative"
-              }
-            ]
-          ],
-          "tags": [
-            {
-              "key": "source_id",
-              "operator": "=",
-              "value": "maroda_test_ruemu0.datahandler_0"
-            }
-          ]
-        }
-      ],
-      "title": "Waiting requests",
-      "transformations": [
-        {
-          "id": "renameByRegex",
-          "options": {
-            "regex": ".*\\.(.*)\\.(.*)",
-            "renamePattern": "$1 $2"
-          }
-        }
-      ],
       "type": "timeseries"
     },
     {
@@ -2716,7 +2716,7 @@
     ]
   },
   "time": {
-    "from": "now-30m",
+    "from": "now-15m",
     "to": "now"
   },
   "timepicker": {
@@ -2747,6 +2747,6 @@
   "timezone": "",
   "title": "Readout",
   "uid": "v5_2_0-readout",
-  "version": 20,
+  "version": 22,
   "weekStart": ""
 }

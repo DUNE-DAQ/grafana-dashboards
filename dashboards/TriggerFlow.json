@@ -23,19 +23,6 @@
   "liveNow": false,
   "panels": [
     {
-      "collapsed": false,
-      "gridPos": {
-        "h": 1,
-        "w": 24,
-        "x": 0,
-        "y": 0
-      },
-      "id": 29,
-      "panels": [],
-      "title": "Global",
-      "type": "row"
-    },
-    {
       "datasource": {
         "type": "influxdb",
         "uid": "${influxdb}"
@@ -73,7 +60,7 @@
         "h": 3,
         "w": 24,
         "x": 0,
-        "y": 1
+        "y": 0
       },
       "id": 17,
       "options": {
@@ -108,6 +95,19 @@
       "title": "Runs",
       "transformations": [],
       "type": "state-timeline"
+    },
+    {
+      "collapsed": false,
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 3
+      },
+      "id": 29,
+      "panels": [],
+      "title": "Global",
+      "type": "row"
     },
     {
       "datasource": {
@@ -186,8 +186,8 @@
         ]
       },
       "gridPos": {
-        "h": 8,
-        "w": 24,
+        "h": 7,
+        "w": 8,
         "x": 0,
         "y": 4
       },
@@ -615,10 +615,10 @@
         ]
       },
       "gridPos": {
-        "h": 8,
-        "w": 12,
-        "x": 0,
-        "y": 12
+        "h": 7,
+        "w": 8,
+        "x": 8,
+        "y": 4
       },
       "id": 30,
       "options": {
@@ -1100,10 +1100,10 @@
         ]
       },
       "gridPos": {
-        "h": 8,
-        "w": 12,
-        "x": 12,
-        "y": 12
+        "h": 7,
+        "w": 8,
+        "x": 16,
+        "y": 4
       },
       "id": 31,
       "options": {
@@ -1404,7 +1404,588 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 20
+        "y": 11
+      },
+      "id": 53,
+      "panels": [],
+      "title": "Type flow",
+      "type": "row"
+    },
+    {
+      "datasource": {
+        "type": "influxdb",
+        "uid": "${influxdb}"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "drawStyle": "line",
+            "fillOpacity": 0,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": 15000,
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "auto",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "hertz"
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Success ratio"
+            },
+            "properties": [
+              {
+                "id": "custom.axisPlacement",
+                "value": "right"
+              },
+              {
+                "id": "unit",
+                "value": "percentunit"
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 7,
+        "w": 8,
+        "x": 0,
+        "y": 12
+      },
+      "id": 56,
+      "maxPerRow": 4,
+      "options": {
+        "legend": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "displayMode": "table",
+          "placement": "right",
+          "showLegend": true
+        },
+        "tooltip": {
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "pluginVersion": "10.2.2",
+      "repeat": "type",
+      "repeatDirection": "h",
+      "targets": [
+        {
+          "datasource": {
+            "name": "Expression",
+            "type": "__expr__",
+            "uid": "__expr__"
+          },
+          "expression": "${I}/${H}",
+          "hide": false,
+          "refId": "Success ratio",
+          "type": "math"
+        },
+        {
+          "alias": "Received",
+          "datasource": {
+            "type": "influxdb",
+            "uid": "${influxdb}"
+          },
+          "groupBy": [
+            {
+              "params": [
+                "$__interval"
+              ],
+              "type": "time"
+            },
+            {
+              "params": [
+                "null"
+              ],
+              "type": "fill"
+            }
+          ],
+          "measurement": "dunedaq.dfmodules.datafloworchestratorinfo.TriggerInfo",
+          "orderByTime": "ASC",
+          "policy": "default",
+          "query": "SELECT non_negative_derivative(cumulative_sum(sum(\"received\")),1s) FROM \"dunedaq.trigger.opmon.TriggerDecisionInfo\" WHERE \"session\"::tag = '${session}' AND type=~ /k${type}/ AND $timeFilter GROUP BY time($__interval)  fill(null)",
+          "rawQuery": true,
+          "refId": "A",
+          "resultFormat": "time_series",
+          "select": [
+            [
+              {
+                "params": [
+                  "completed"
+                ],
+                "type": "field"
+              },
+              {
+                "params": [],
+                "type": "mean"
+              }
+            ]
+          ],
+          "tags": [
+            {
+              "key": "partition_id::tag",
+              "operator": "=",
+              "value": "maroda"
+            }
+          ]
+        },
+        {
+          "alias": "Sent",
+          "datasource": {
+            "type": "influxdb",
+            "uid": "${influxdb}"
+          },
+          "groupBy": [
+            {
+              "params": [
+                "$__interval"
+              ],
+              "type": "time"
+            },
+            {
+              "params": [
+                "null"
+              ],
+              "type": "fill"
+            }
+          ],
+          "hide": false,
+          "measurement": "dunedaq.dfmodules.datafloworchestratorinfo.TriggerInfo",
+          "orderByTime": "ASC",
+          "policy": "default",
+          "query": "SELECT non_negative_derivative(cumulative_sum(sum(\"sent\")),1s) FROM \"dunedaq.trigger.opmon.TriggerDecisionInfo\" WHERE \"session\"::tag = '${session}' AND type=~ /k${type}/ AND $timeFilter GROUP BY time($__interval)  fill(null)",
+          "rawQuery": true,
+          "refId": "B",
+          "resultFormat": "time_series",
+          "select": [
+            [
+              {
+                "params": [
+                  "completed"
+                ],
+                "type": "field"
+              },
+              {
+                "params": [],
+                "type": "mean"
+              }
+            ]
+          ],
+          "tags": [
+            {
+              "key": "partition_id::tag",
+              "operator": "=",
+              "value": "maroda"
+            }
+          ]
+        },
+        {
+          "alias": "Sent failed",
+          "datasource": {
+            "type": "influxdb",
+            "uid": "${influxdb}"
+          },
+          "groupBy": [
+            {
+              "params": [
+                "$__interval"
+              ],
+              "type": "time"
+            },
+            {
+              "params": [
+                "null"
+              ],
+              "type": "fill"
+            }
+          ],
+          "hide": false,
+          "measurement": "dunedaq.dfmodules.datafloworchestratorinfo.TriggerInfo",
+          "orderByTime": "ASC",
+          "policy": "default",
+          "query": "SELECT non_negative_derivative(cumulative_sum(sum(\"failed_send\")),1s) FROM \"dunedaq.trigger.opmon.TriggerDecisionInfo\" WHERE \"session\"::tag = '${session}' AND type=~ /k${type}/ AND $timeFilter GROUP BY time($__interval)  fill(null)",
+          "rawQuery": true,
+          "refId": "C",
+          "resultFormat": "time_series",
+          "select": [
+            [
+              {
+                "params": [
+                  "completed"
+                ],
+                "type": "field"
+              },
+              {
+                "params": [],
+                "type": "mean"
+              }
+            ]
+          ],
+          "tags": [
+            {
+              "key": "partition_id::tag",
+              "operator": "=",
+              "value": "maroda"
+            }
+          ]
+        },
+        {
+          "alias": "Inhibited",
+          "datasource": {
+            "type": "influxdb",
+            "uid": "${influxdb}"
+          },
+          "groupBy": [
+            {
+              "params": [
+                "$__interval"
+              ],
+              "type": "time"
+            },
+            {
+              "params": [
+                "null"
+              ],
+              "type": "fill"
+            }
+          ],
+          "hide": false,
+          "measurement": "dunedaq.dfmodules.datafloworchestratorinfo.TriggerInfo",
+          "orderByTime": "ASC",
+          "policy": "default",
+          "query": "SELECT non_negative_derivative(cumulative_sum(sum(\"inhibited\")),1s) FROM \"dunedaq.trigger.opmon.TriggerDecisionInfo\" WHERE \"session\"::tag = '${session}' AND type=~ /k${type}/ AND $timeFilter GROUP BY time($__interval)  fill(null)",
+          "rawQuery": true,
+          "refId": "D",
+          "resultFormat": "time_series",
+          "select": [
+            [
+              {
+                "params": [
+                  "completed"
+                ],
+                "type": "field"
+              },
+              {
+                "params": [],
+                "type": "mean"
+              }
+            ]
+          ],
+          "tags": [
+            {
+              "key": "partition_id::tag",
+              "operator": "=",
+              "value": "maroda"
+            }
+          ]
+        },
+        {
+          "alias": "Paused",
+          "datasource": {
+            "type": "influxdb",
+            "uid": "${influxdb}"
+          },
+          "groupBy": [
+            {
+              "params": [
+                "$__interval"
+              ],
+              "type": "time"
+            },
+            {
+              "params": [
+                "null"
+              ],
+              "type": "fill"
+            }
+          ],
+          "hide": false,
+          "measurement": "dunedaq.dfmodules.datafloworchestratorinfo.TriggerInfo",
+          "orderByTime": "ASC",
+          "policy": "default",
+          "query": "SELECT non_negative_derivative(cumulative_sum(sum(\"paused\")),1s) FROM \"dunedaq.trigger.opmon.TriggerDecisionInfo\" WHERE \"session\"::tag = '${session}' AND type=~ /k${type}/ AND $timeFilter GROUP BY time($__interval)  fill(null)",
+          "rawQuery": true,
+          "refId": "E",
+          "resultFormat": "time_series",
+          "select": [
+            [
+              {
+                "params": [
+                  "completed"
+                ],
+                "type": "field"
+              },
+              {
+                "params": [],
+                "type": "mean"
+              }
+            ]
+          ],
+          "tags": [
+            {
+              "key": "partition_id::tag",
+              "operator": "=",
+              "value": "maroda"
+            }
+          ]
+        },
+        {
+          "alias": "To Dataflow",
+          "datasource": {
+            "type": "influxdb",
+            "uid": "${influxdb}"
+          },
+          "groupBy": [
+            {
+              "params": [
+                "$__interval"
+              ],
+              "type": "time"
+            },
+            {
+              "params": [
+                "null"
+              ],
+              "type": "fill"
+            }
+          ],
+          "hide": false,
+          "measurement": "dunedaq.dfmodules.datafloworchestratorinfo.TriggerInfo",
+          "orderByTime": "ASC",
+          "policy": "default",
+          "query": "SELECT non_negative_derivative(cumulative_sum(sum(\"received\")),1s) FROM \"dunedaq.dfmodules.opmon.TriggerInfo\" WHERE \"session\"::tag = '${session}' AND type=~ /k${type}/ AND $timeFilter GROUP BY time($__interval)  fill(null)",
+          "rawQuery": true,
+          "refId": "F",
+          "resultFormat": "time_series",
+          "select": [
+            [
+              {
+                "params": [
+                  "completed"
+                ],
+                "type": "field"
+              },
+              {
+                "params": [],
+                "type": "mean"
+              }
+            ]
+          ],
+          "tags": [
+            {
+              "key": "partition_id::tag",
+              "operator": "=",
+              "value": "maroda"
+            }
+          ]
+        },
+        {
+          "alias": "Completed",
+          "datasource": {
+            "type": "influxdb",
+            "uid": "${influxdb}"
+          },
+          "groupBy": [
+            {
+              "params": [
+                "$__interval"
+              ],
+              "type": "time"
+            },
+            {
+              "params": [
+                "null"
+              ],
+              "type": "fill"
+            }
+          ],
+          "hide": false,
+          "measurement": "dunedaq.dfmodules.datafloworchestratorinfo.TriggerInfo",
+          "orderByTime": "ASC",
+          "policy": "default",
+          "query": "SELECT non_negative_derivative(cumulative_sum(sum(\"completed\")),1s) FROM \"dunedaq.dfmodules.opmon.TriggerInfo\" WHERE \"session\"::tag = '${session}' AND type=~ /k${type}/ AND $timeFilter GROUP BY time($__interval)  fill(null)",
+          "rawQuery": true,
+          "refId": "G",
+          "resultFormat": "time_series",
+          "select": [
+            [
+              {
+                "params": [
+                  "completed"
+                ],
+                "type": "field"
+              },
+              {
+                "params": [],
+                "type": "mean"
+              }
+            ]
+          ],
+          "tags": [
+            {
+              "key": "partition_id::tag",
+              "operator": "=",
+              "value": "maroda"
+            }
+          ]
+        },
+        {
+          "alias": "total generated",
+          "datasource": {
+            "type": "influxdb",
+            "uid": "${influxdb}"
+          },
+          "groupBy": [
+            {
+              "params": [
+                "$__interval"
+              ],
+              "type": "time"
+            },
+            {
+              "params": [
+                "null"
+              ],
+              "type": "fill"
+            }
+          ],
+          "hide": true,
+          "measurement": "dunedaq.dfmodules.datafloworchestratorinfo.TriggerInfo",
+          "orderByTime": "ASC",
+          "policy": "default",
+          "query": "SELECT cumulative_sum(sum(\"received\")) FROM \"dunedaq.trigger.opmon.TriggerDecisionInfo\" WHERE \"session\"::tag = '${session}' AND type=~ /k${type}/ AND $timeFilter GROUP BY time($__interval)  fill(null)",
+          "rawQuery": true,
+          "refId": "H",
+          "resultFormat": "time_series",
+          "select": [
+            [
+              {
+                "params": [
+                  "completed"
+                ],
+                "type": "field"
+              },
+              {
+                "params": [],
+                "type": "mean"
+              }
+            ]
+          ],
+          "tags": [
+            {
+              "key": "partition_id::tag",
+              "operator": "=",
+              "value": "maroda"
+            }
+          ]
+        },
+        {
+          "alias": "total completed",
+          "datasource": {
+            "type": "influxdb",
+            "uid": "${influxdb}"
+          },
+          "groupBy": [
+            {
+              "params": [
+                "$__interval"
+              ],
+              "type": "time"
+            },
+            {
+              "params": [
+                "null"
+              ],
+              "type": "fill"
+            }
+          ],
+          "hide": true,
+          "measurement": "dunedaq.dfmodules.datafloworchestratorinfo.TriggerInfo",
+          "orderByTime": "ASC",
+          "policy": "default",
+          "query": "SELECT cumulative_sum(sum(\"completed\")) FROM \"dunedaq.dfmodules.opmon.TriggerInfo\" WHERE \"session\"::tag = '${session}' AND type=~ /k${type}/ AND $timeFilter GROUP BY time($__interval)  fill(null)",
+          "rawQuery": true,
+          "refId": "I",
+          "resultFormat": "time_series",
+          "select": [
+            [
+              {
+                "params": [
+                  "completed"
+                ],
+                "type": "field"
+              },
+              {
+                "params": [],
+                "type": "mean"
+              }
+            ]
+          ],
+          "tags": [
+            {
+              "key": "partition_id::tag",
+              "operator": "=",
+              "value": "maroda"
+            }
+          ]
+        }
+      ],
+      "title": "${type}",
+      "transformations": [],
+      "type": "timeseries"
+    },
+    {
+      "collapsed": false,
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 19
       },
       "id": 34,
       "panels": [],
@@ -1491,7 +2072,7 @@
         "h": 8,
         "w": 12,
         "x": 0,
-        "y": 21
+        "y": 20
       },
       "id": 37,
       "options": {
@@ -1811,7 +2392,7 @@
         "h": 8,
         "w": 12,
         "x": 12,
-        "y": 21
+        "y": 20
       },
       "id": 36,
       "options": {
@@ -2100,7 +2681,7 @@
         "h": 8,
         "w": 12,
         "x": 0,
-        "y": 29
+        "y": 28
       },
       "id": 35,
       "options": {
@@ -2279,7 +2860,7 @@
         "h": 8,
         "w": 12,
         "x": 12,
-        "y": 29
+        "y": 28
       },
       "id": 41,
       "options": {
@@ -2303,7 +2884,7 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 37
+        "y": 36
       },
       "id": 38,
       "panels": [],
@@ -2391,7 +2972,7 @@
         "h": 8,
         "w": 12,
         "x": 0,
-        "y": 38
+        "y": 37
       },
       "id": 39,
       "options": {
@@ -2714,7 +3295,7 @@
         "h": 8,
         "w": 12,
         "x": 12,
-        "y": 38
+        "y": 37
       },
       "id": 40,
       "options": {
@@ -2957,281 +3538,281 @@
       "type": "timeseries"
     },
     {
-      "collapsed": true,
+      "collapsed": false,
       "gridPos": {
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 46
+        "y": 45
       },
       "id": 32,
-      "panels": [
-        {
-          "datasource": {
-            "type": "influxdb",
-            "uid": "${influxdb}"
+      "panels": [],
+      "title": "Livetime counter",
+      "type": "row"
+    },
+    {
+      "datasource": {
+        "type": "influxdb",
+        "uid": "${influxdb}"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
           },
-          "fieldConfig": {
-            "defaults": {
-              "color": {
-                "mode": "palette-classic"
-              },
-              "custom": {
-                "axisBorderShow": false,
-                "axisCenteredZero": false,
-                "axisColorMode": "text",
-                "axisLabel": "",
-                "axisPlacement": "auto",
-                "barAlignment": 0,
-                "drawStyle": "line",
-                "fillOpacity": 0,
-                "gradientMode": "none",
-                "hideFrom": {
-                  "legend": false,
-                  "tooltip": false,
-                  "viz": false
-                },
-                "insertNulls": false,
-                "lineInterpolation": "stepBefore",
-                "lineWidth": 1,
-                "pointSize": 5,
-                "scaleDistribution": {
-                  "type": "linear"
-                },
-                "showPoints": "auto",
-                "spanNulls": false,
-                "stacking": {
-                  "group": "A",
-                  "mode": "none"
-                },
-                "thresholdsStyle": {
-                  "mode": "off"
-                }
-              },
-              "mappings": [],
-              "thresholds": {
-                "mode": "absolute",
-                "steps": [
-                  {
-                    "color": "green"
-                  },
-                  {
-                    "color": "red",
-                    "value": 80
-                  }
-                ]
-              },
-              "unit": "ms"
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "drawStyle": "line",
+            "fillOpacity": 0,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
             },
-            "overrides": [
+            "insertNulls": false,
+            "lineInterpolation": "stepBefore",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "auto",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
               {
-                "matcher": {
-                  "id": "byName",
-                  "options": "Total TD rate"
-                },
-                "properties": [
-                  {
-                    "id": "color",
-                    "value": {
-                      "fixedColor": "#73BF69",
-                      "mode": "fixed"
-                    }
-                  }
-                ]
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
               }
             ]
           },
-          "gridPos": {
-            "h": 8,
-            "w": 24,
-            "x": 0,
-            "y": 126
+          "unit": "ms"
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Total TD rate"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "#73BF69",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 24,
+        "x": 0,
+        "y": 46
+      },
+      "id": 33,
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "right",
+          "showLegend": true
+        },
+        "tooltip": {
+          "mode": "multi",
+          "sort": "none"
+        }
+      },
+      "targets": [
+        {
+          "alias": "Live",
+          "datasource": {
+            "uid": "${influxdb}"
           },
-          "id": 33,
-          "options": {
-            "legend": {
-              "calcs": [],
-              "displayMode": "list",
-              "placement": "right",
-              "showLegend": true
-            },
-            "tooltip": {
-              "mode": "multi",
-              "sort": "none"
-            }
-          },
-          "targets": [
+          "groupBy": [
             {
-              "alias": "Live",
-              "datasource": {
-                "uid": "${influxdb}"
-              },
-              "groupBy": [
-                {
-                  "params": [
-                    "$interval"
-                  ],
-                  "type": "time"
-                }
+              "params": [
+                "$interval"
               ],
-              "measurement": "dunedaq.trigger.moduleleveltriggerinfo.Info",
-              "orderByTime": "ASC",
-              "policy": "default",
-              "query": "SELECT mean(\"lc_klive\") FROM \"dunedaq.trigger.opmon.ModuleLevelTriggerInfo\" WHERE \"session\" = '${session}' AND $timeFilter GROUP BY time($__interval) fill(null)",
-              "rawQuery": true,
-              "refId": "A",
-              "resultFormat": "time_series",
-              "select": [
-                [
-                  {
-                    "params": [
-                      "td_total_count"
-                    ],
-                    "type": "field"
-                  },
-                  {
-                    "params": [],
-                    "type": "last"
-                  },
-                  {
-                    "params": [
-                      "1s"
-                    ],
-                    "type": "non_negative_derivative"
-                  }
-                ]
-              ],
-              "tags": [
-                {
-                  "key": "partition_id",
-                  "operator": "=",
-                  "value": "np02-coldbox"
-                },
-                {
-                  "condition": "AND",
-                  "key": "source_id",
-                  "operator": "=",
-                  "value": "np02-coldbox.trigger.mlt"
-                }
-              ]
-            },
-            {
-              "alias": "Paused",
-              "datasource": {
-                "uid": "${influxdb}"
-              },
-              "groupBy": [
-                {
-                  "params": [
-                    "$interval"
-                  ],
-                  "type": "time"
-                }
-              ],
-              "hide": false,
-              "measurement": "dunedaq.trigger.moduleleveltriggerinfo.Info",
-              "orderByTime": "ASC",
-              "policy": "default",
-              "query": "SELECT mean(\"lc_kpaused\") FROM \"dunedaq.trigger.opmon.ModuleLevelTriggerInfo\" WHERE \"session\" = '${session}' AND $timeFilter GROUP BY time($__interval) fill(null)",
-              "rawQuery": true,
-              "refId": "B",
-              "resultFormat": "time_series",
-              "select": [
-                [
-                  {
-                    "params": [
-                      "td_total_count"
-                    ],
-                    "type": "field"
-                  },
-                  {
-                    "params": [],
-                    "type": "last"
-                  },
-                  {
-                    "params": [
-                      "1s"
-                    ],
-                    "type": "non_negative_derivative"
-                  }
-                ]
-              ],
-              "tags": [
-                {
-                  "key": "partition_id",
-                  "operator": "=",
-                  "value": "np02-coldbox"
-                },
-                {
-                  "condition": "AND",
-                  "key": "source_id",
-                  "operator": "=",
-                  "value": "np02-coldbox.trigger.mlt"
-                }
-              ]
-            },
-            {
-              "alias": "Dead",
-              "datasource": {
-                "uid": "${influxdb}"
-              },
-              "groupBy": [
-                {
-                  "params": [
-                    "$interval"
-                  ],
-                  "type": "time"
-                }
-              ],
-              "hide": false,
-              "measurement": "dunedaq.trigger.moduleleveltriggerinfo.Info",
-              "orderByTime": "ASC",
-              "policy": "default",
-              "query": "SELECT mean(\"lc_kdead\") FROM \"dunedaq.trigger.opmon.ModuleLevelTriggerInfo\" WHERE \"session\" = '${session}' AND $timeFilter GROUP BY time($__interval) fill(null)",
-              "rawQuery": true,
-              "refId": "C",
-              "resultFormat": "time_series",
-              "select": [
-                [
-                  {
-                    "params": [
-                      "td_total_count"
-                    ],
-                    "type": "field"
-                  },
-                  {
-                    "params": [],
-                    "type": "last"
-                  },
-                  {
-                    "params": [
-                      "1s"
-                    ],
-                    "type": "non_negative_derivative"
-                  }
-                ]
-              ],
-              "tags": [
-                {
-                  "key": "partition_id",
-                  "operator": "=",
-                  "value": "np02-coldbox"
-                },
-                {
-                  "condition": "AND",
-                  "key": "source_id",
-                  "operator": "=",
-                  "value": "np02-coldbox.trigger.mlt"
-                }
-              ]
+              "type": "time"
             }
           ],
-          "title": "Livetime",
-          "type": "timeseries"
+          "measurement": "dunedaq.trigger.moduleleveltriggerinfo.Info",
+          "orderByTime": "ASC",
+          "policy": "default",
+          "query": "SELECT mean(\"lc_klive\") FROM \"dunedaq.trigger.opmon.ModuleLevelTriggerInfo\" WHERE \"session\" = '${session}' AND $timeFilter GROUP BY time($__interval) fill(null)",
+          "rawQuery": true,
+          "refId": "A",
+          "resultFormat": "time_series",
+          "select": [
+            [
+              {
+                "params": [
+                  "td_total_count"
+                ],
+                "type": "field"
+              },
+              {
+                "params": [],
+                "type": "last"
+              },
+              {
+                "params": [
+                  "1s"
+                ],
+                "type": "non_negative_derivative"
+              }
+            ]
+          ],
+          "tags": [
+            {
+              "key": "partition_id",
+              "operator": "=",
+              "value": "np02-coldbox"
+            },
+            {
+              "condition": "AND",
+              "key": "source_id",
+              "operator": "=",
+              "value": "np02-coldbox.trigger.mlt"
+            }
+          ]
+        },
+        {
+          "alias": "Paused",
+          "datasource": {
+            "uid": "${influxdb}"
+          },
+          "groupBy": [
+            {
+              "params": [
+                "$interval"
+              ],
+              "type": "time"
+            }
+          ],
+          "hide": false,
+          "measurement": "dunedaq.trigger.moduleleveltriggerinfo.Info",
+          "orderByTime": "ASC",
+          "policy": "default",
+          "query": "SELECT mean(\"lc_kpaused\") FROM \"dunedaq.trigger.opmon.ModuleLevelTriggerInfo\" WHERE \"session\" = '${session}' AND $timeFilter GROUP BY time($__interval) fill(null)",
+          "rawQuery": true,
+          "refId": "B",
+          "resultFormat": "time_series",
+          "select": [
+            [
+              {
+                "params": [
+                  "td_total_count"
+                ],
+                "type": "field"
+              },
+              {
+                "params": [],
+                "type": "last"
+              },
+              {
+                "params": [
+                  "1s"
+                ],
+                "type": "non_negative_derivative"
+              }
+            ]
+          ],
+          "tags": [
+            {
+              "key": "partition_id",
+              "operator": "=",
+              "value": "np02-coldbox"
+            },
+            {
+              "condition": "AND",
+              "key": "source_id",
+              "operator": "=",
+              "value": "np02-coldbox.trigger.mlt"
+            }
+          ]
+        },
+        {
+          "alias": "Dead",
+          "datasource": {
+            "uid": "${influxdb}"
+          },
+          "groupBy": [
+            {
+              "params": [
+                "$interval"
+              ],
+              "type": "time"
+            }
+          ],
+          "hide": false,
+          "measurement": "dunedaq.trigger.moduleleveltriggerinfo.Info",
+          "orderByTime": "ASC",
+          "policy": "default",
+          "query": "SELECT mean(\"lc_kdead\") FROM \"dunedaq.trigger.opmon.ModuleLevelTriggerInfo\" WHERE \"session\" = '${session}' AND $timeFilter GROUP BY time($__interval) fill(null)",
+          "rawQuery": true,
+          "refId": "C",
+          "resultFormat": "time_series",
+          "select": [
+            [
+              {
+                "params": [
+                  "td_total_count"
+                ],
+                "type": "field"
+              },
+              {
+                "params": [],
+                "type": "last"
+              },
+              {
+                "params": [
+                  "1s"
+                ],
+                "type": "non_negative_derivative"
+              }
+            ]
+          ],
+          "tags": [
+            {
+              "key": "partition_id",
+              "operator": "=",
+              "value": "np02-coldbox"
+            },
+            {
+              "condition": "AND",
+              "key": "source_id",
+              "operator": "=",
+              "value": "np02-coldbox.trigger.mlt"
+            }
+          ]
         }
       ],
-      "title": "Livetime counter",
-      "type": "row"
+      "title": "Livetime",
+      "type": "timeseries"
     },
     {
       "collapsed": false,
@@ -3239,7 +3820,7 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 47
+        "y": 54
       },
       "id": 18,
       "panels": [],
@@ -3307,7 +3888,7 @@
         "h": 7,
         "w": 8,
         "x": 0,
-        "y": 48
+        "y": 55
       },
       "id": 42,
       "options": {
@@ -3437,7 +4018,7 @@
         "h": 7,
         "w": 8,
         "x": 8,
-        "y": 48
+        "y": 55
       },
       "id": 43,
       "options": {
@@ -3640,7 +4221,7 @@
         "h": 7,
         "w": 8,
         "x": 16,
-        "y": 48
+        "y": 55
       },
       "id": 44,
       "options": {
@@ -3824,8 +4405,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
-                "value": null
+                "color": "green"
               },
               {
                 "color": "red",
@@ -3841,7 +4421,7 @@
         "h": 7,
         "w": 8,
         "x": 0,
-        "y": 55
+        "y": 62
       },
       "id": 45,
       "links": [],
@@ -4155,8 +4735,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
-                "value": null
+                "color": "green"
               },
               {
                 "color": "red",
@@ -4171,7 +4750,7 @@
         "h": 7,
         "w": 8,
         "x": 8,
-        "y": 55
+        "y": 62
       },
       "id": 46,
       "options": {
@@ -4308,8 +4887,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
-                "value": null
+                "color": "green"
               },
               {
                 "color": "red",
@@ -4324,7 +4902,7 @@
         "h": 7,
         "w": 8,
         "x": 16,
-        "y": 55
+        "y": 62
       },
       "id": 47,
       "options": {
@@ -4764,7 +5342,7 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 62
+        "y": 69
       },
       "id": 48,
       "panels": [],
@@ -4819,8 +5397,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
-                "value": null
+                "color": "green"
               },
               {
                 "color": "red",
@@ -4835,7 +5412,7 @@
         "h": 7,
         "w": 8,
         "x": 0,
-        "y": 63
+        "y": 70
       },
       "id": 49,
       "options": {
@@ -5002,8 +5579,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
-                "value": null
+                "color": "green"
               },
               {
                 "color": "red",
@@ -5018,7 +5594,7 @@
         "h": 7,
         "w": 8,
         "x": 8,
-        "y": 63
+        "y": 70
       },
       "id": 50,
       "options": {
@@ -5583,17 +6159,41 @@
         "skipUrlSync": false,
         "sort": 1,
         "type": "query"
+      },
+      {
+        "current": {
+          "selected": false,
+          "text": "All",
+          "value": "$__all"
+        },
+        "datasource": {
+          "type": "influxdb",
+          "uid": "${influxdb}"
+        },
+        "definition": "SELECT type FROM (SELECT received, type FROM \"dunedaq.trigger.opmon.TriggerDecisionInfo\" WHERE session='${session}' AND $timeFilter)",
+        "hide": 0,
+        "includeAll": true,
+        "label": "Trigger Type",
+        "multi": false,
+        "name": "type",
+        "options": [],
+        "query": "SELECT type FROM (SELECT received, type FROM \"dunedaq.trigger.opmon.TriggerDecisionInfo\" WHERE session='${session}' AND $timeFilter)",
+        "refresh": 1,
+        "regex": "k(.*)",
+        "skipUrlSync": false,
+        "sort": 1,
+        "type": "query"
       }
     ]
   },
   "time": {
-    "from": "now-15m",
+    "from": "now-30m",
     "to": "now"
   },
   "timepicker": {},
   "timezone": "",
   "title": "Trigger Flow",
   "uid": "v5_2_0-trigger_flow",
-  "version": 52,
+  "version": 66,
   "weekStart": ""
 }

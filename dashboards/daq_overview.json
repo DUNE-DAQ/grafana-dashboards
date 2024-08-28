@@ -614,7 +614,7 @@
           "measurement": "dunedaq.trigger.moduleleveltriggerinfo.Info",
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "SELECT last(\"data\") FROM (SELECT non_negative_derivative(last(\"td_sent_count\"), 1s) AS \"data\" FROM \"dunedaq.trigger.moduleleveltriggerinfo.Info\" WHERE (\"partition_id\" ='${partition}') AND time > now() - 60s GROUP BY time(500ms) ) ",
+          "query": "SELECT last(\"data\") FROM (SELECT non_negative_derivative(last(\"td_sent_count\"), 1s) AS \"data\" FROM \"dunedaq.trigger.opmon.ModuleLevelTriggerInfo\" WHERE session ='${session}' AND time > now() - 60s GROUP BY time(500ms) ) ",
           "rawQuery": true,
           "refId": "A",
           "resultFormat": "table",
@@ -757,6 +757,7 @@
     },
     {
       "datasource": {
+        "type": "influxdb",
         "uid": "${influxdb}"
       },
       "fieldConfig": {
@@ -843,7 +844,7 @@
           "measurement": "dunedaq.appfwk.appinfo.Info",
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "SELECT last(\"new_td_inhibited_count\"::integer) FROM \"dunedaq.trigger.moduleleveltriggerinfo.Info\" WHERE (\"partition_id\" = '${partition}') AND $timeFilter ",
+          "query": "SELECT last(\"data\") FROM (SELECT non_negative_derivative(last(\"td_inhibited_count\"), 1s) AS \"data\" FROM \"dunedaq.trigger.opmon.ModuleLevelTriggerInfo\" WHERE session ='${session}' AND time > now() - 60s GROUP BY time(500ms) ) ",
           "rawQuery": true,
           "refId": "A",
           "resultFormat": "time_series",
@@ -975,7 +976,7 @@
           "measurement": "dunedaq.trigger.moduleleveltriggerinfo.Info",
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "SELECT last(\"td_sent_count\") FROM \"dunedaq.trigger.moduleleveltriggerinfo.Info\" WHERE (\"partition_id\" ='${partition}' ) AND time > now() - 30s",
+          "query": "SELECT last(\"td_sent_count\") FROM \"dunedaq.trigger.opmon.ModuleLevelTriggerInfo\" WHERE session ='${session}' AND time > now() - 20s",
           "rawQuery": true,
           "refId": "A",
           "resultFormat": "table",
@@ -2442,7 +2443,7 @@
     ]
   },
   "time": {
-    "from": "now-15m",
+    "from": "now-30m",
     "to": "now"
   },
   "timepicker": {
@@ -2473,6 +2474,6 @@
   "timezone": "",
   "title": "DAQ overview",
   "uid": "v5_2_0-overview",
-  "version": 27,
+  "version": 29,
   "weekStart": ""
 }

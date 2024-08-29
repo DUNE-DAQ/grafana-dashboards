@@ -608,7 +608,7 @@
             "axisBorderShow": false,
             "axisCenteredZero": false,
             "axisColorMode": "text",
-            "axisLabel": "",
+            "axisLabel": "TP rate",
             "axisPlacement": "auto",
             "barAlignment": 0,
             "drawStyle": "line",
@@ -636,6 +636,7 @@
               "mode": "off"
             }
           },
+          "fieldMinMax": false,
           "mappings": [],
           "thresholds": {
             "mode": "absolute",
@@ -652,7 +653,24 @@
           },
           "unit": "hertz"
         },
-        "overrides": []
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byRegexp",
+              "options": "TPSet .*"
+            },
+            "properties": [
+              {
+                "id": "custom.axisLabel",
+                "value": "TPSet rate"
+              },
+              {
+                "id": "custom.axisPlacement",
+                "value": "right"
+              }
+            ]
+          }
+        ]
       },
       "gridPos": {
         "h": 7,
@@ -675,7 +693,56 @@
       },
       "targets": [
         {
-          "alias": "$tag_element",
+          "alias": "TP Received",
+          "datasource": {
+            "uid": "${influxdb}"
+          },
+          "groupBy": [
+            {
+              "params": [
+                "$__interval"
+              ],
+              "type": "time"
+            },
+            {
+              "params": [
+                "source_id"
+              ],
+              "type": "tag"
+            }
+          ],
+          "hide": false,
+          "measurement": "dunedaq.datahandlinglibs.readoutinfo.ReadoutInfo",
+          "orderByTime": "ASC",
+          "policy": "default",
+          "query": "SELECT non_negative_derivative(cumulative_sum(sum(\"tp_received\")), 1s) FROM \"dunedaq.dfmodules.opmon.TPStreamWriterInfo\" WHERE session='${session}' AND $timeFilter GROUP BY time($__interval), \"element\"",
+          "rawQuery": true,
+          "refId": "B",
+          "resultFormat": "time_series",
+          "select": [
+            [
+              {
+                "params": [
+                  "rate_payloads_consumed"
+                ],
+                "type": "field"
+              },
+              {
+                "params": [],
+                "type": "mean"
+              }
+            ]
+          ],
+          "tags": [
+            {
+              "key": "source_id",
+              "operator": "=",
+              "value": "maroda_test_ruemu0.datahandler_0"
+            }
+          ]
+        },
+        {
+          "alias": "TP written",
           "datasource": {
             "uid": "${influxdb}"
           },
@@ -696,9 +763,58 @@
           "measurement": "dunedaq.datahandlinglibs.readoutinfo.ReadoutInfo",
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "SELECT non_negative_derivative(cumulative_sum(sum(\"tpset_written\")), 1s) FROM \"dunedaq.dfmodules.opmon.TPStreamWriterInfo\" WHERE session='${session}' AND $timeFilter GROUP BY time($__interval), \"element\"",
+          "query": "SELECT non_negative_derivative(cumulative_sum(sum(\"tp_written\")), 1s) FROM \"dunedaq.dfmodules.opmon.TPStreamWriterInfo\" WHERE session='${session}' AND $timeFilter GROUP BY time($__interval), \"element\"",
           "rawQuery": true,
           "refId": "A",
+          "resultFormat": "time_series",
+          "select": [
+            [
+              {
+                "params": [
+                  "rate_payloads_consumed"
+                ],
+                "type": "field"
+              },
+              {
+                "params": [],
+                "type": "mean"
+              }
+            ]
+          ],
+          "tags": [
+            {
+              "key": "source_id",
+              "operator": "=",
+              "value": "maroda_test_ruemu0.datahandler_0"
+            }
+          ]
+        },
+        {
+          "alias": "TPSet received",
+          "datasource": {
+            "uid": "${influxdb}"
+          },
+          "groupBy": [
+            {
+              "params": [
+                "$__interval"
+              ],
+              "type": "time"
+            },
+            {
+              "params": [
+                "source_id"
+              ],
+              "type": "tag"
+            }
+          ],
+          "hide": false,
+          "measurement": "dunedaq.datahandlinglibs.readoutinfo.ReadoutInfo",
+          "orderByTime": "ASC",
+          "policy": "default",
+          "query": "SELECT non_negative_derivative(cumulative_sum(sum(\"tpset_received\")), 1s) FROM \"dunedaq.dfmodules.opmon.TPStreamWriterInfo\" WHERE session='${session}' AND $timeFilter GROUP BY time($__interval), \"element\"",
+          "rawQuery": true,
+          "refId": "C",
           "resultFormat": "time_series",
           "select": [
             [
@@ -3609,6 +3725,6 @@
   "timezone": "",
   "title": "Trigger Primitives",
   "uid": "v5_2_0-trigger_primitives",
-  "version": 23,
+  "version": 24,
   "weekStart": ""
 }

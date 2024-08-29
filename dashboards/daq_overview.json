@@ -1496,7 +1496,7 @@
             "uid": "${influxdb}"
           },
           "hide": false,
-          "query": "SELECT mean(\"td_sent_count\") FROM \"dunedaq.trigger.moduleleveltriggerinfo.Info\" WHERE (\"partition_id\" = '${partition}') AND $timeFilter GROUP BY time($__interval)",
+          "query": "SELECT mean(\"td_sent_count\") FROM \"dunedaq.trigger.opmon.ModuleLevelTriggerInfo\" WHERE session = '${session}' AND $timeFilter GROUP BY time($__interval)",
           "rawQuery": true,
           "refId": "G",
           "resultFormat": "time_series"
@@ -2475,6 +2475,6 @@
   "timezone": "",
   "title": "DAQ overview",
   "uid": "v5_2_0-overview",
-  "version": 33,
+  "version": 34,
   "weekStart": ""
 }

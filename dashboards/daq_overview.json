@@ -2269,6 +2269,7 @@
     },
     {
       "datasource": {
+        "type": "influxdb",
         "uid": "${influxdb}"
       },
       "fieldConfig": {
@@ -2280,7 +2281,6 @@
             "axisBorderShow": false,
             "axisCenteredZero": false,
             "axisColorMode": "text",
-            "axisLabel": "MiBytes/s",
             "axisPlacement": "auto",
             "barAlignment": 0,
             "drawStyle": "line",
@@ -2322,7 +2322,7 @@
               }
             ]
           },
-          "unit": "none"
+          "unit": "Bps"
         },
         "overrides": []
       },
@@ -2349,7 +2349,7 @@
       "pluginVersion": "8.0.6",
       "targets": [
         {
-          "alias": "$tag_source_id",
+          "alias": "$tag_element ",
           "datasource": {
             "uid": "${influxdb}"
           },
@@ -2357,7 +2357,7 @@
           "measurement": "dunedaq.dfmodules.datawriterinfo.Info",
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "SELECT non_negative_derivative(distinct(\"bytes_output\"), 1s)  / 1048576 FROM \"dunedaq.dfmodules.datawriterinfo.Info\" WHERE (\"partition_id\" = '${partition}') AND $timeFilter GROUP BY time($__interval), \"source_id\"\nfill(null)",
+          "query": "SELECT non_negative_derivative(cumulative_sum(sum(\"new_bytes_output\")), 1s) FROM \"dunedaq.dfmodules.opmon.HDF5DataStoreInfo\" WHERE session = '${session}' AND $timeFilter GROUP BY time($__interval), \"element\"\nfill(null)",
           "rawQuery": true,
           "refId": "C",
           "resultFormat": "time_series",
@@ -2380,7 +2380,7 @@
           ]
         },
         {
-          "alias": "$tag_source_id",
+          "alias": "Total",
           "datasource": {
             "uid": "${influxdb}"
           },
@@ -2389,7 +2389,7 @@
           "measurement": "dunedaq.dfmodules.datawriterinfo.Info",
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "SELECT non_negative_derivative(cumulative_sum(sum(\"bytes_output\")), 1s)  / 1048576 FROM \"dunedaq.dfmodules.tpstreamwriterinfo.Info\" WHERE (\"partition_id\" = '${partition}') AND $timeFilter GROUP BY time($__interval), \"source_id\"\nfill(null)",
+          "query": "SELECT non_negative_derivative(cumulative_sum(sum(\"new_bytes_output\")), 1s) FROM \"dunedaq.dfmodules.opmon.HDF5DataStoreInfo\" WHERE session = '${session}' AND $timeFilter GROUP BY time($__interval)",
           "rawQuery": true,
           "refId": "A",
           "resultFormat": "time_series",
@@ -2413,19 +2413,7 @@
         }
       ],
       "title": "Data Writers Information",
-      "transformations": [
-        {
-          "id": "renameByRegex",
-          "options": {
-            "regex": ".*\\.(.*)\\.(.*)",
-            "renamePattern": "$1 $2"
-          }
-        },
-        {
-          "id": "calculateField",
-          "options": {}
-        }
-      ],
+      "transformations": [],
       "type": "timeseries"
     }
   ],
@@ -2530,6 +2518,6 @@
   "timezone": "",
   "title": "DAQ overview",
   "uid": "v5_2_0-overview",
-  "version": 38,
+  "version": 40,
   "weekStart": ""
 }

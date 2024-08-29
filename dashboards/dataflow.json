@@ -2251,18 +2251,6 @@
       "pluginVersion": "8.0.6",
       "targets": [
         {
-          "alias": "Average",
-          "datasource": {
-            "type": "influxdb",
-            "uid": "${influxdb}"
-          },
-          "hide": false,
-          "query": "SELECT mean(\"completion_time\") FROM \"dunedaq.dfmodules.opmon.TRCompleteInfo\" WHERE \"session\"='${session}' AND $timeFilter GROUP BY time($__interval) fill(null)",
-          "rawQuery": true,
-          "refId": "D",
-          "resultFormat": "time_series"
-        },
-        {
           "alias": "Min",
           "datasource": {
             "type": "influxdb",
@@ -2275,7 +2263,7 @@
           "resultFormat": "time_series"
         },
         {
-          "alias": "max",
+          "alias": "Max",
           "datasource": {
             "type": "influxdb",
             "uid": "${influxdb}"
@@ -2284,6 +2272,30 @@
           "query": "SELECT max(\"completion_time\") FROM \"dunedaq.dfmodules.opmon.TRCompleteInfo\" WHERE \"session\"='${session}' AND $timeFilter GROUP BY time($__interval) fill(null)",
           "rawQuery": true,
           "refId": "F",
+          "resultFormat": "time_series"
+        },
+        {
+          "alias": "$tag_subelement",
+          "datasource": {
+            "type": "influxdb",
+            "uid": "${influxdb}"
+          },
+          "hide": false,
+          "query": "SELECT mean(\"completion_time\") FROM \"dunedaq.dfmodules.opmon.TRCompleteInfo\" WHERE \"session\"='${session}' AND $timeFilter GROUP BY subelement, time($__interval) fill(null)",
+          "rawQuery": true,
+          "refId": "A",
+          "resultFormat": "time_series"
+        },
+        {
+          "alias": "Average",
+          "datasource": {
+            "type": "influxdb",
+            "uid": "${influxdb}"
+          },
+          "hide": false,
+          "query": "SELECT mean(\"completion_time\") FROM \"dunedaq.dfmodules.opmon.TRCompleteInfo\" WHERE \"session\"='${session}' AND $timeFilter GROUP BY time($__interval) fill(null)",
+          "rawQuery": true,
+          "refId": "D",
           "resultFormat": "time_series"
         }
       ],
@@ -2588,7 +2600,7 @@
     ]
   },
   "time": {
-    "from": "now-30m",
+    "from": "now-15m",
     "to": "now"
   },
   "timepicker": {
@@ -2619,6 +2631,6 @@
   "timezone": "",
   "title": "Dataflow",
   "uid": "v5_2_0-dataflow",
-  "version": 39,
+  "version": 41,
   "weekStart": ""
 }

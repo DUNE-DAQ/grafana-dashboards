@@ -209,26 +209,18 @@
       },
       "targets": [
         {
-          "alias": "$tag_source_id",
+          "alias": "det: $tag_detector crt: $tag_crate slt: $tag_slot lnk: $tag_link",
           "datasource": {
             "uid": "${influxdb}"
           },
-          "query": "SELECT non_negative_derivative(last(\"sent_udp_count\"), 1s) FROM \"dunedaq.hermesmodules.hermescontrollerinfo.LinkStats\" WHERE \"partition_id\" = '${partition}' AND \"source_id\" =~ /[^.]+\\.${CRP}\\.${WIB}\\.${link}/ AND $timeFilter GROUP BY time($__interval), \"source_id\" fill(null)",
+          "query": "SELECT non_negative_derivative(last(\"sent_udp_count\"), 1s) FROM \"dunedaq.hermesmodules.opmon.LinkInfo\" WHERE session = '${session}' AND application =~ /${CRP}/ AND element =~ /${WIB}/ AND detector =~ /${detector}/ AND crate =~ /${crate}/ AND slot=~ /${slot}/ AND $timeFilter GROUP BY time($__interval), application, element, detector, crate, slot, link fill(null)",
           "rawQuery": true,
           "refId": "A",
           "resultFormat": "time_series"
         }
       ],
       "title": "TX UDP Sent rate",
-      "transformations": [
-        {
-          "id": "renameByRegex",
-          "options": {
-            "regex": "[^.]+\\.[^.]+\\.[^.]+\\.[^.]+_([a-z]+)([0-9]+)_([a-z]+)([0-9]+)_([a-z]+)([0-9]+)_([a-z]+)([0-9]+)",
-            "renamePattern": "$1:$2 $3:$4 $5:$6 $7:$8"
-          }
-        }
-      ],
+      "transformations": [],
       "type": "timeseries"
     },
     {
@@ -312,26 +304,18 @@
       },
       "targets": [
         {
-          "alias": "$tag_source_id",
+          "alias": "det: $tag_detector crt: $tag_crate slt: $tag_slot lnk: $tag_link",
           "datasource": {
             "uid": "${influxdb}"
           },
-          "query": "SELECT non_negative_derivative(last(\"sent_ping_count\"),1s) FROM \"dunedaq.hermesmodules.hermescontrollerinfo.LinkStats\" WHERE (\"partition_id\" = '${partition}')  AND \"source_id\" =~ /[^.]+\\.${CRP}\\.${WIB}\\.${link}/ AND $timeFilter GROUP BY time($__interval), \"source_id\" fill(null)",
+          "query": "SELECT non_negative_derivative(last(\"sent_ping_count\"),1s) FROM \"dunedaq.hermesmodules.opmon.LinkInfo\" WHERE session = '${session}' AND application =~ /${CRP}/ AND element =~ /${WIB}/ AND detector =~ /${detector}/ AND crate =~ /${crate}/ AND slot=~ /${slot}/ AND $timeFilter GROUP BY time($__interval), application, element, detector, crate, slot, link fill(null)",
           "rawQuery": true,
           "refId": "A",
           "resultFormat": "time_series"
         }
       ],
       "title": "TX Ping Sent",
-      "transformations": [
-        {
-          "id": "renameByRegex",
-          "options": {
-            "regex": "[^.]+\\.[^.]+\\.[^.]+\\.[^.]+_([a-z]+)([0-9]+)_([a-z]+)([0-9]+)_([a-z]+)([0-9]+)_([a-z]+)([0-9]+)",
-            "renamePattern": "$1:$2 $3:$4 $5:$6 $7:$8"
-          }
-        }
-      ],
+      "transformations": [],
       "type": "timeseries"
     },
     {
@@ -415,26 +399,18 @@
       },
       "targets": [
         {
-          "alias": "$tag_source_id",
+          "alias": "det: $tag_detector crt: $tag_crate slt: $tag_slot lnk: $tag_link",
           "datasource": {
             "uid": "${influxdb}"
           },
-          "query": "SELECT non_negative_derivative(last(\"rcvd_udp_count\"), 1s) FROM \"dunedaq.hermesmodules.hermescontrollerinfo.LinkStats\" WHERE (\"partition_id\" = '${partition}')  AND \"source_id\" =~ /[^.]+\\.${CRP}\\.${WIB}\\.${link}/ AND $timeFilter GROUP BY time($__interval), \"source_id\" fill(null)",
+          "query": "SELECT non_negative_derivative(last(\"rcvd_udp_count\"), 1s) FROM \"dunedaq.hermesmodules.opmon.LinkInfo\" WHERE session = '${session}' AND application =~ /${CRP}/ AND element =~ /${WIB}/ AND detector =~ /${detector}/ AND crate =~ /${crate}/ AND slot=~ /${slot}/ AND $timeFilter GROUP BY time($__interval), application, element, detector, crate, slot, link fill(null)",
           "rawQuery": true,
           "refId": "A",
           "resultFormat": "time_series"
         }
       ],
       "title": "TX UDP Received rate",
-      "transformations": [
-        {
-          "id": "renameByRegex",
-          "options": {
-            "regex": "[^.]+\\.[^.]+\\.[^.]+\\.[^.]+_([a-z]+)([0-9]+)_([a-z]+)([0-9]+)_([a-z]+)([0-9]+)_([a-z]+)([0-9]+)",
-            "renamePattern": "$1:$2 $3:$4 $5:$6 $7:$8"
-          }
-        }
-      ],
+      "transformations": [],
       "type": "timeseries"
     },
     {
@@ -518,26 +494,18 @@
       },
       "targets": [
         {
-          "alias": "$tag_source_id",
+          "alias": "det: $tag_detector crt: $tag_crate slt: $tag_slot lnk: $tag_link",
           "datasource": {
             "uid": "${influxdb}"
           },
-          "query": "SELECT  non_negative_derivative(last(\"rcvd_arp_count\"), 1s) FROM \"dunedaq.hermesmodules.hermescontrollerinfo.LinkStats\" WHERE (\"partition_id\" = '${partition}')  AND \"source_id\" =~ /[^.]+\\.${CRP}\\.${WIB}\\.${link}/ AND $timeFilter GROUP BY time($__interval), \"source_id\" fill(null)",
+          "query": "SELECT  non_negative_derivative(last(\"rcvd_arp_count\"), 1s)FROM \"dunedaq.hermesmodules.opmon.LinkInfo\" WHERE session = '${session}' AND application =~ /${CRP}/ AND element =~ /${WIB}/ AND detector =~ /${detector}/ AND crate =~ /${crate}/ AND slot=~ /${slot}/ AND $timeFilter GROUP BY time($__interval), application, element, detector, crate, slot, link fill(null)",
           "rawQuery": true,
           "refId": "A",
           "resultFormat": "time_series"
         }
       ],
       "title": "TX ARP Received",
-      "transformations": [
-        {
-          "id": "renameByRegex",
-          "options": {
-            "regex": "[^.]+\\.[^.]+\\.[^.]+\\.[^.]+_([a-z]+)([0-9]+)_([a-z]+)([0-9]+)_([a-z]+)([0-9]+)_([a-z]+)([0-9]+)",
-            "renamePattern": "$1:$2 $3:$4 $5:$6 $7:$8"
-          }
-        }
-      ],
+      "transformations": [],
       "type": "timeseries"
     },
     {
@@ -621,26 +589,18 @@
       },
       "targets": [
         {
-          "alias": "$tag_source_id",
+          "alias": "det: $tag_detector crt: $tag_crate slt: $tag_slot lnk: $tag_link",
           "datasource": {
             "uid": "${influxdb}"
           },
-          "query": "SELECT  non_negative_derivative(last(\"sent_arp_count\"), 1s) FROM \"dunedaq.hermesmodules.hermescontrollerinfo.LinkStats\" WHERE (\"partition_id\" = '${partition}')  AND \"source_id\" =~ /[^.]+\\.${CRP}\\.${WIB}\\.${link}/ AND $timeFilter GROUP BY time($__interval), \"source_id\" fill(null)",
+          "query": "SELECT  non_negative_derivative(last(\"sent_arp_count\"), 1s) FROM \"dunedaq.hermesmodules.opmon.LinkInfo\" WHERE session = '${session}' AND application =~ /${CRP}/ AND element =~ /${WIB}/ AND detector =~ /${detector}/ AND crate =~ /${crate}/ AND slot=~ /${slot}/ AND $timeFilter GROUP BY time($__interval), application, element, detector, crate, slot, link fill(null)",
           "rawQuery": true,
           "refId": "A",
           "resultFormat": "time_series"
         }
       ],
       "title": "TX ARP Sent",
-      "transformations": [
-        {
-          "id": "renameByRegex",
-          "options": {
-            "regex": "[^.]+\\.[^.]+\\.[^.]+\\.[^.]+_([a-z]+)([0-9]+)_([a-z]+)([0-9]+)_([a-z]+)([0-9]+)_([a-z]+)([0-9]+)",
-            "renamePattern": "$1:$2 $3:$4 $5:$6 $7:$8"
-          }
-        }
-      ],
+      "transformations": [],
       "type": "timeseries"
     },
     {
@@ -727,26 +687,18 @@
       },
       "targets": [
         {
-          "alias": "$tag_source_id",
+          "alias": "det: $tag_detector crt: $tag_crate slt: $tag_slot lnk: $tag_link",
           "datasource": {
             "uid": "${influxdb}"
           },
-          "query": "SELECT non_negative_derivative(last(\"rcvd_ping_count\"),1s) FROM \"dunedaq.hermesmodules.hermescontrollerinfo.LinkStats\" WHERE (\"partition_id\" = '${partition}')  AND \"source_id\" =~ /[^.]+\\.${CRP}\\.${WIB}\\.${link}/ AND $timeFilter GROUP BY time($__interval), \"source_id\" fill(null)",
+          "query": "SELECT non_negative_derivative(last(\"rcvd_ping_count\"),1s) FROM \"dunedaq.hermesmodules.opmon.LinkInfo\" WHERE session = '${session}' AND application =~ /${CRP}/ AND element =~ /${WIB}/ AND detector =~ /${detector}/ AND crate =~ /${crate}/ AND slot=~ /${slot}/ AND $timeFilter GROUP BY time($__interval), application, element, detector, crate, slot, link fill(null)",
           "rawQuery": true,
           "refId": "A",
           "resultFormat": "time_series"
         }
       ],
       "title": "TX Ping Received",
-      "transformations": [
-        {
-          "id": "renameByRegex",
-          "options": {
-            "regex": "[^.]+\\.[^.]+\\.[^.]+\\.[^.]+_([a-z]+)([0-9]+)_([a-z]+)([0-9]+)_([a-z]+)([0-9]+)_([a-z]+)([0-9]+)",
-            "renamePattern": "$1:$2 $3:$4 $5:$6 $7:$8"
-          }
-        }
-      ],
+      "transformations": [],
       "type": "timeseries"
     },
     {
@@ -2009,7 +1961,7 @@
           "datasource": {
             "uid": "${influxdb}"
           },
-          "query": "SELECT sum(\"rx_missed_errors\") FROM \"dunedaq.dpdklibs.opmon.EthXStatsInfo\"  WHERE session = '${session}' AND application =~ /${application}/ AND $timeFilter GROUP BY time($__interval), element fill(null)",
+          "query": "SELECT sum(\"rx_missed_errors\") FROM \"dunedaq.dpdklibs.opmon.EthXStatsErrors\"  WHERE session = '${session}' AND application =~ /${application}/ AND $timeFilter GROUP BY time($__interval), element fill(null)",
           "rawQuery": true,
           "refId": "A",
           "resultFormat": "time_series"
@@ -2107,7 +2059,7 @@
           "datasource": {
             "uid": "${influxdb}"
           },
-          "query": "SELECT sum(\"rx_errors\") FROM \"dunedaq.dpdklibs.opmon.EthXStatsInfo\"  WHERE session = '${session}' AND application =~ /${application}/ AND $timeFilter GROUP BY time($__interval), element fill(null)",
+          "query": "SELECT sum(\"rx_errors\") FROM \"dunedaq.dpdklibs.opmon.EthXStatsErrors\"  WHERE session = '${session}' AND application =~ /${application}/ AND $timeFilter GROUP BY time($__interval), element fill(null)",
           "rawQuery": true,
           "refId": "A",
           "resultFormat": "time_series"
@@ -2205,7 +2157,7 @@
           "datasource": {
             "uid": "${influxdb}"
           },
-          "query": "SELECT sum(\"rx_crc_errors\") FROM \"dunedaq.dpdklibs.opmon.EthXStatsInfo\"  WHERE session = '${session}' AND application =~ /${application}/ AND $timeFilter GROUP BY time($__interval), element fill(null)",
+          "query": "SELECT sum(\"rx_crc_errors\") FROM \"dunedaq.dpdklibs.opmon.EthXStatsErrors\"  WHERE session = '${session}' AND application =~ /${application}/ AND $timeFilter GROUP BY time($__interval), element fill(null)",
           "rawQuery": true,
           "refId": "A",
           "resultFormat": "time_series"
@@ -3318,7 +3270,7 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 81
+        "y": 90
       },
       "id": 22,
       "panels": [],
@@ -3398,7 +3350,7 @@
         "h": 8,
         "w": 6,
         "x": 0,
-        "y": 82
+        "y": 91
       },
       "id": 15,
       "options": {
@@ -3493,7 +3445,7 @@
         "h": 8,
         "w": 6,
         "x": 6,
-        "y": 82
+        "y": 91
       },
       "id": 34,
       "options": {
@@ -3588,7 +3540,7 @@
         "h": 8,
         "w": 6,
         "x": 12,
-        "y": 82
+        "y": 91
       },
       "id": 14,
       "options": {
@@ -3683,7 +3635,7 @@
         "h": 8,
         "w": 6,
         "x": 18,
-        "y": 82
+        "y": 91
       },
       "id": 13,
       "options": {
@@ -3778,7 +3730,7 @@
         "h": 8,
         "w": 12,
         "x": 0,
-        "y": 90
+        "y": 99
       },
       "id": 46,
       "maxPerRow": 4,
@@ -3876,7 +3828,7 @@
         "h": 8,
         "w": 12,
         "x": 12,
-        "y": 90
+        "y": 99
       },
       "id": 35,
       "maxPerRow": 4,
@@ -3994,40 +3946,16 @@
           "type": "influxdb",
           "uid": "${influxdb}"
         },
-        "definition": "SELECT \"source_id\" FROM  (SELECT \"sent_udp_count\", \"source_id\" FROM \"dunedaq.hermesmodules.hermescontrollerinfo.LinkStats\" WHERE \"partition_id\" = '${partition}' AND $timeFilter)",
+        "definition": "SELECT \"application\" FROM  (SELECT \"sent_udp_count\", \"application\" FROM \"dunedaq.hermesmodules.opmon.LinkInfo\" WHERE session = '${session}' AND $timeFilter)",
         "hide": 0,
         "includeAll": true,
-        "label": "CRP",
+        "label": "CRP Controller",
         "multi": true,
         "name": "CRP",
         "options": [],
-        "query": "SELECT \"source_id\" FROM  (SELECT \"sent_udp_count\", \"source_id\" FROM \"dunedaq.hermesmodules.hermescontrollerinfo.LinkStats\" WHERE \"partition_id\" = '${partition}' AND $timeFilter)",
+        "query": "SELECT \"application\" FROM  (SELECT \"sent_udp_count\", \"application\" FROM \"dunedaq.hermesmodules.opmon.LinkInfo\" WHERE session = '${session}' AND $timeFilter)",
         "refresh": 2,
-        "regex": "[^.]+\\.([^.]+)\\.[^.]+\\.[^.]+",
-        "skipUrlSync": false,
-        "sort": 1,
-        "type": "query"
-      },
-      {
-        "current": {
-          "selected": false,
-          "text": "All",
-          "value": "$__all"
-        },
-        "datasource": {
-          "type": "influxdb",
-          "uid": "${influxdb}"
-        },
-        "definition": "SELECT \"source_id\" FROM  (SELECT \"sent_udp_count\", \"source_id\" FROM \"dunedaq.hermesmodules.hermescontrollerinfo.LinkStats\" WHERE \"partition_id\" = '${partition}' AND \"source_id\" =~ /[^.]\\.${CRP}\\.[^.]+\\.[^.]+/ AND $timeFilter)",
-        "hide": 0,
-        "includeAll": true,
-        "label": "WIB",
-        "multi": true,
-        "name": "WIB",
-        "options": [],
-        "query": "SELECT \"source_id\" FROM  (SELECT \"sent_udp_count\", \"source_id\" FROM \"dunedaq.hermesmodules.hermescontrollerinfo.LinkStats\" WHERE \"partition_id\" = '${partition}' AND \"source_id\" =~ /[^.]\\.${CRP}\\.[^.]+\\.[^.]+/ AND $timeFilter)",
-        "refresh": 2,
-        "regex": "[^.]+\\.[^.]+\\.([^.]+)\\.[^.]+",
+        "regex": "",
         "skipUrlSync": false,
         "sort": 1,
         "type": "query"
@@ -4046,16 +3974,128 @@
           "type": "influxdb",
           "uid": "${influxdb}"
         },
-        "definition": "SELECT \"source_id\" FROM  (SELECT \"sent_udp_count\", \"source_id\" FROM \"dunedaq.hermesmodules.hermescontrollerinfo.LinkStats\" WHERE \"partition_id\" = '${partition}' AND \"source_id\" =~ /[^.]\\.${CRP}\\.${WIB}\\.[^.]+/ AND $timeFilter)",
+        "definition": "SELECT element FROM  (SELECT \"sent_udp_count\", \"element\" FROM \"dunedaq.hermesmodules.opmon.LinkInfo\" WHERE session = '${session}' AND application =~ /${CRP}/ AND $timeFilter)",
+        "hide": 0,
+        "includeAll": true,
+        "label": "WIB",
+        "multi": true,
+        "name": "WIB",
+        "options": [],
+        "query": "SELECT element FROM  (SELECT \"sent_udp_count\", \"element\" FROM \"dunedaq.hermesmodules.opmon.LinkInfo\" WHERE session = '${session}' AND application =~ /${CRP}/ AND $timeFilter)",
+        "refresh": 2,
+        "regex": "",
+        "skipUrlSync": false,
+        "sort": 1,
+        "type": "query"
+      },
+      {
+        "current": {
+          "selected": true,
+          "text": [
+            "All"
+          ],
+          "value": [
+            "$__all"
+          ]
+        },
+        "datasource": {
+          "type": "influxdb",
+          "uid": "${influxdb}"
+        },
+        "definition": "SELECT data FROM  (SELECT \"sent_udp_count\", detector AS \"data\" FROM \"dunedaq.hermesmodules.opmon.LinkInfo\" WHERE session = '${session}' AND application =~ /${CRP}/ AND element =~ /${WIB}/ AND $timeFilter)",
+        "hide": 0,
+        "includeAll": true,
+        "label": "Detector",
+        "multi": true,
+        "name": "detector",
+        "options": [],
+        "query": "SELECT data FROM  (SELECT \"sent_udp_count\", detector AS \"data\" FROM \"dunedaq.hermesmodules.opmon.LinkInfo\" WHERE session = '${session}' AND application =~ /${CRP}/ AND element =~ /${WIB}/ AND $timeFilter)",
+        "refresh": 2,
+        "regex": "",
+        "skipUrlSync": false,
+        "sort": 1,
+        "type": "query"
+      },
+      {
+        "current": {
+          "selected": true,
+          "text": [
+            "All"
+          ],
+          "value": [
+            "$__all"
+          ]
+        },
+        "datasource": {
+          "type": "influxdb",
+          "uid": "${influxdb}"
+        },
+        "definition": "SELECT data FROM  (SELECT \"sent_udp_count\", crate AS \"data\" FROM \"dunedaq.hermesmodules.opmon.LinkInfo\" WHERE session = '${session}' AND application =~ /${CRP}/ AND element =~ /${WIB}/ AND detector =~ /${detector}/ AND  $timeFilter)",
+        "hide": 0,
+        "includeAll": true,
+        "label": "Crate",
+        "multi": true,
+        "name": "crate",
+        "options": [],
+        "query": "SELECT data FROM  (SELECT \"sent_udp_count\", crate AS \"data\" FROM \"dunedaq.hermesmodules.opmon.LinkInfo\" WHERE session = '${session}' AND application =~ /${CRP}/ AND element =~ /${WIB}/ AND detector =~ /${detector}/ AND  $timeFilter)",
+        "refresh": 2,
+        "regex": "",
+        "skipUrlSync": false,
+        "sort": 1,
+        "type": "query"
+      },
+      {
+        "current": {
+          "selected": true,
+          "text": [
+            "All"
+          ],
+          "value": [
+            "$__all"
+          ]
+        },
+        "datasource": {
+          "type": "influxdb",
+          "uid": "${influxdb}"
+        },
+        "definition": "SELECT data FROM  (SELECT \"sent_udp_count\", slot AS \"data\" FROM \"dunedaq.hermesmodules.opmon.LinkInfo\" WHERE session = '${session}' AND application =~ /${CRP}/ AND element =~ /${WIB}/ AND detector =~ /${detector}/ AND crate =~ /${crate}/ AND $timeFilter)",
+        "hide": 0,
+        "includeAll": true,
+        "label": "Slot",
+        "multi": true,
+        "name": "slot",
+        "options": [],
+        "query": "SELECT data FROM  (SELECT \"sent_udp_count\", slot AS \"data\" FROM \"dunedaq.hermesmodules.opmon.LinkInfo\" WHERE session = '${session}' AND application =~ /${CRP}/ AND element =~ /${WIB}/ AND detector =~ /${detector}/ AND crate =~ /${crate}/ AND $timeFilter)",
+        "refresh": 2,
+        "regex": "",
+        "skipUrlSync": false,
+        "sort": 1,
+        "type": "query"
+      },
+      {
+        "current": {
+          "selected": true,
+          "text": [
+            "All"
+          ],
+          "value": [
+            "$__all"
+          ]
+        },
+        "datasource": {
+          "type": "influxdb",
+          "uid": "${influxdb}"
+        },
+        "definition": "SELECT link FROM  (SELECT \"sent_udp_count\", \"link\" FROM \"dunedaq.hermesmodules.opmon.LinkInfo\" WHERE session = '${session}' AND application =~ /${CRP}/ AND element =~ /${WIB}/ AND detector =~ /${detector}/ AND crate =~ /${crate}/ AND slot=~ /${slot}/ AND $timeFilter)",
         "hide": 0,
         "includeAll": true,
         "label": "Link",
         "multi": true,
         "name": "link",
         "options": [],
-        "query": "SELECT \"source_id\" FROM  (SELECT \"sent_udp_count\", \"source_id\" FROM \"dunedaq.hermesmodules.hermescontrollerinfo.LinkStats\" WHERE \"partition_id\" = '${partition}' AND \"source_id\" =~ /[^.]\\.${CRP}\\.${WIB}\\.[^.]+/ AND $timeFilter)",
+        "query": "SELECT link FROM  (SELECT \"sent_udp_count\", \"link\" FROM \"dunedaq.hermesmodules.opmon.LinkInfo\" WHERE session = '${session}' AND application =~ /${CRP}/ AND element =~ /${WIB}/ AND detector =~ /${detector}/ AND crate =~ /${crate}/ AND slot=~ /${slot}/ AND $timeFilter)",
         "refresh": 2,
-        "regex": "[^.]+\\.[^.]+\\.[^.]+\\.([^.]+)",
+        "regex": "",
         "skipUrlSync": false,
         "sort": 1,
         "type": "query"
@@ -4178,6 +4218,6 @@
   "timezone": "",
   "title": "Frontend Ethernet",
   "uid": "v5_2_0-frontend_ethernet",
-  "version": 27,
+  "version": 38,
   "weekStart": ""
 }

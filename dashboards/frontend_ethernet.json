@@ -219,7 +219,7 @@
           "resultFormat": "time_series"
         }
       ],
-      "title": "TX UDP Sent rate",
+      "title": "UDP Sent rate",
       "transformations": [],
       "type": "timeseries"
     },
@@ -314,7 +314,7 @@
           "resultFormat": "time_series"
         }
       ],
-      "title": "TX Ping Sent",
+      "title": "Ping Sent",
       "transformations": [],
       "type": "timeseries"
     },
@@ -409,7 +409,7 @@
           "resultFormat": "time_series"
         }
       ],
-      "title": "TX UDP Received rate",
+      "title": "UDP Received rate",
       "transformations": [],
       "type": "timeseries"
     },
@@ -504,7 +504,7 @@
           "resultFormat": "time_series"
         }
       ],
-      "title": "TX ARP Received",
+      "title": "ARP Received",
       "transformations": [],
       "type": "timeseries"
     },
@@ -599,7 +599,7 @@
           "resultFormat": "time_series"
         }
       ],
-      "title": "TX ARP Sent",
+      "title": "ARP Sent",
       "transformations": [],
       "type": "timeseries"
     },
@@ -697,7 +697,7 @@
           "resultFormat": "time_series"
         }
       ],
-      "title": "TX Ping Received",
+      "title": "Ping Received",
       "transformations": [],
       "type": "timeseries"
     },
@@ -865,7 +865,7 @@
               }
             ]
           },
-          "unit": "Bps"
+          "unit": "binBps"
         },
         "overrides": []
       },
@@ -3124,112 +3124,8 @@
         "x": 0,
         "y": 72
       },
-      "id": 70,
-      "options": {
-        "legend": {
-          "calcs": [],
-          "displayMode": "list",
-          "placement": "right",
-          "showLegend": true
-        },
-        "tooltip": {
-          "mode": "multi",
-          "sort": "none"
-        }
-      },
-      "repeat": "application",
-      "repeatDirection": "v",
-      "targets": [
-        {
-          "alias": "$tag_source_id",
-          "datasource": {
-            "uid": "${influxdb}"
-          },
-          "query": "SELECT non_negative_derivative(last(\"processed_frames\"), 1s) FROM \"dunedaq.dpdklibs.nicreaderinfo.SourceStats\" WHERE (\"partition_id\" = '${partition}' AND \"source_id\"=~/[^.]+\\.${application}\\.[^.]+\\.[^.]+/) AND $timeFilter GROUP BY time($__interval), \"source_id\" fill(null)",
-          "rawQuery": true,
-          "refId": "A",
-          "resultFormat": "time_series"
-        }
-      ],
-      "title": "RX Processed Frames rate for ${application}",
-      "transformations": [
-        {
-          "id": "renameByRegex",
-          "options": {
-            "regex": "[^.]+\\.[^.]+\\.([^.-]+)-[^.-]+-(\\d+)\\.([a-z]+)_(\\d+)",
-            "renamePattern": "$1: $2 $3: $4"
-          }
-        }
-      ],
-      "type": "timeseries"
-    },
-    {
-      "datasource": {
-        "type": "influxdb",
-        "uid": "${influxdb}"
-      },
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "mode": "palette-classic"
-          },
-          "custom": {
-            "axisBorderShow": false,
-            "axisCenteredZero": false,
-            "axisColorMode": "text",
-            "axisLabel": "",
-            "axisPlacement": "auto",
-            "barAlignment": 0,
-            "drawStyle": "line",
-            "fillOpacity": 0,
-            "gradientMode": "none",
-            "hideFrom": {
-              "legend": false,
-              "tooltip": false,
-              "viz": false
-            },
-            "insertNulls": false,
-            "lineInterpolation": "linear",
-            "lineWidth": 1,
-            "pointSize": 5,
-            "scaleDistribution": {
-              "type": "linear"
-            },
-            "showPoints": "auto",
-            "spanNulls": false,
-            "stacking": {
-              "group": "A",
-              "mode": "none"
-            },
-            "thresholdsStyle": {
-              "mode": "off"
-            }
-          },
-          "mappings": [],
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "green",
-                "value": null
-              },
-              {
-                "color": "red",
-                "value": 80
-              }
-            ]
-          },
-          "unit": "cps"
-        },
-        "overrides": []
-      },
-      "gridPos": {
-        "h": 9,
-        "w": 12,
-        "x": 12,
-        "y": 72
-      },
       "id": 69,
+      "maxPerRow": 3,
       "options": {
         "legend": {
           "calcs": [],
@@ -3243,7 +3139,7 @@
         }
       },
       "repeat": "application",
-      "repeatDirection": "v",
+      "repeatDirection": "h",
       "targets": [
         {
           "alias": "$tag_subelement",
@@ -3270,7 +3166,7 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 90
+        "y": 81
       },
       "id": 22,
       "panels": [],
@@ -3350,7 +3246,7 @@
         "h": 8,
         "w": 6,
         "x": 0,
-        "y": 91
+        "y": 82
       },
       "id": 15,
       "options": {
@@ -3445,7 +3341,7 @@
         "h": 8,
         "w": 6,
         "x": 6,
-        "y": 91
+        "y": 82
       },
       "id": 34,
       "options": {
@@ -3540,7 +3436,7 @@
         "h": 8,
         "w": 6,
         "x": 12,
-        "y": 91
+        "y": 82
       },
       "id": 14,
       "options": {
@@ -3635,7 +3531,7 @@
         "h": 8,
         "w": 6,
         "x": 18,
-        "y": 91
+        "y": 82
       },
       "id": 13,
       "options": {
@@ -3730,7 +3626,7 @@
         "h": 8,
         "w": 12,
         "x": 0,
-        "y": 99
+        "y": 90
       },
       "id": 46,
       "maxPerRow": 4,
@@ -3828,7 +3724,7 @@
         "h": 8,
         "w": 12,
         "x": 12,
-        "y": 99
+        "y": 90
       },
       "id": 35,
       "maxPerRow": 4,
@@ -3882,7 +3778,7 @@
       "type": "timeseries"
     }
   ],
-  "refresh": "10s",
+  "refresh": "5s",
   "schemaVersion": 38,
   "tags": [
     "Subsystem",
@@ -3962,13 +3858,9 @@
       },
       {
         "current": {
-          "selected": true,
-          "text": [
-            "All"
-          ],
-          "value": [
-            "$__all"
-          ]
+          "selected": false,
+          "text": "All",
+          "value": "$__all"
         },
         "datasource": {
           "type": "influxdb",
@@ -4218,6 +4110,6 @@
   "timezone": "",
   "title": "Frontend Ethernet",
   "uid": "v5_2_0-frontend_ethernet",
-  "version": 38,
+  "version": 42,
   "weekStart": ""
 }

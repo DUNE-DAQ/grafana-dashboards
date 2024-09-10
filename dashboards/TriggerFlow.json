@@ -1490,7 +1490,7 @@
       },
       "gridPos": {
         "h": 7,
-        "w": 8,
+        "w": 24,
         "x": 0,
         "y": 12
       },
@@ -2940,7 +2940,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green"
+                "color": "green",
+                "value": null
               },
               {
                 "color": "red",
@@ -2973,6 +2974,649 @@
         "w": 12,
         "x": 0,
         "y": 37
+      },
+      "id": 60,
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "right",
+          "showLegend": true
+        },
+        "tooltip": {
+          "mode": "multi",
+          "sort": "desc"
+        }
+      },
+      "repeatDirection": "v",
+      "targets": [
+        {
+          "alias": "TP received",
+          "datasource": {
+            "uid": "${influxdb}"
+          },
+          "groupBy": [
+            {
+              "params": [
+                "$interval"
+              ],
+              "type": "time"
+            }
+          ],
+          "hide": false,
+          "measurement": "dunedaq.trigger.moduleleveltriggerinfo.Info",
+          "orderByTime": "ASC",
+          "policy": "default",
+          "query": "SELECT sum(data) FROM (SELECT non_negative_derivative(last(\"tp_received_count\"), 1s) AS \"data\" FROM \"dunedaq.trigger.opmon.TPProcessorInfo\" WHERE \"session\" = '${session}' AND \"element\"=~/${tp_handler}/ AND $timeFilter GROUP BY element, time($__interval) fill(null) ) GROUP BY time($__interval) fill(null)",
+          "rawQuery": true,
+          "refId": "A",
+          "resultFormat": "time_series",
+          "select": [
+            [
+              {
+                "params": [
+                  "td_paused_count"
+                ],
+                "type": "field"
+              },
+              {
+                "params": [],
+                "type": "last"
+              },
+              {
+                "params": [
+                  "1s"
+                ],
+                "type": "non_negative_derivative"
+              }
+            ]
+          ],
+          "tags": [
+            {
+              "key": "partition_id",
+              "operator": "=",
+              "value": "np02-coldbox"
+            },
+            {
+              "condition": "AND",
+              "key": "source_id",
+              "operator": "=",
+              "value": "np02-coldbox.trigger.mlt"
+            }
+          ]
+        },
+        {
+          "alias": "TA made ",
+          "datasource": {
+            "uid": "${influxdb}"
+          },
+          "groupBy": [
+            {
+              "params": [
+                "$interval"
+              ],
+              "type": "time"
+            }
+          ],
+          "hide": false,
+          "measurement": "dunedaq.trigger.moduleleveltriggerinfo.Info",
+          "orderByTime": "ASC",
+          "policy": "default",
+          "query": "SELECT sum(data) FROM ( SELECT non_negative_derivative(last(\"ta_made_count\"), 1s) AS data FROM \"dunedaq.trigger.opmon.TPProcessorInfo\" WHERE \"session\" = '${session}' AND \"element\"=~/${tp_handler}/ AND $timeFilter GROUP BY element, time($__interval) fill(null) ) GROUP BY time($__interval) fill(null)",
+          "rawQuery": true,
+          "refId": "B",
+          "resultFormat": "time_series",
+          "select": [
+            [
+              {
+                "params": [
+                  "td_paused_count"
+                ],
+                "type": "field"
+              },
+              {
+                "params": [],
+                "type": "last"
+              },
+              {
+                "params": [
+                  "1s"
+                ],
+                "type": "non_negative_derivative"
+              }
+            ]
+          ],
+          "tags": [
+            {
+              "key": "partition_id",
+              "operator": "=",
+              "value": "np02-coldbox"
+            },
+            {
+              "condition": "AND",
+              "key": "source_id",
+              "operator": "=",
+              "value": "np02-coldbox.trigger.mlt"
+            }
+          ]
+        },
+        {
+          "alias": "TA sent ",
+          "datasource": {
+            "uid": "${influxdb}"
+          },
+          "groupBy": [
+            {
+              "params": [
+                "$interval"
+              ],
+              "type": "time"
+            }
+          ],
+          "hide": false,
+          "measurement": "dunedaq.trigger.moduleleveltriggerinfo.Info",
+          "orderByTime": "ASC",
+          "policy": "default",
+          "query": "SELECT sum(data) FROM ( SELECT non_negative_derivative(last(\"ta_sent_count\"), 1s) AS data FROM \"dunedaq.trigger.opmon.TPProcessorInfo\" WHERE \"session\" = '${session}' AND \"element\"=~/${tp_handler}/ AND $timeFilter GROUP BY element, time($__interval) fill(null) ) GROUP BY time($__interval) fill(null)",
+          "rawQuery": true,
+          "refId": "C",
+          "resultFormat": "time_series",
+          "select": [
+            [
+              {
+                "params": [
+                  "td_paused_count"
+                ],
+                "type": "field"
+              },
+              {
+                "params": [],
+                "type": "last"
+              },
+              {
+                "params": [
+                  "1s"
+                ],
+                "type": "non_negative_derivative"
+              }
+            ]
+          ],
+          "tags": [
+            {
+              "key": "partition_id",
+              "operator": "=",
+              "value": "np02-coldbox"
+            },
+            {
+              "condition": "AND",
+              "key": "source_id",
+              "operator": "=",
+              "value": "np02-coldbox.trigger.mlt"
+            }
+          ]
+        },
+        {
+          "alias": "TA failed sent",
+          "datasource": {
+            "uid": "${influxdb}"
+          },
+          "groupBy": [
+            {
+              "params": [
+                "$interval"
+              ],
+              "type": "time"
+            }
+          ],
+          "hide": false,
+          "measurement": "dunedaq.trigger.moduleleveltriggerinfo.Info",
+          "orderByTime": "ASC",
+          "policy": "default",
+          "query": "SELECT sum(data) FROM  ( SELECT non_negative_derivative(last(\"ta_failed_sent_count\"), 1s) AS data FROM \"dunedaq.trigger.opmon.TPProcessorInfo\" WHERE \"session\" = '${session}' AND \"element\"=~/${tp_handler}/ AND $timeFilter GROUP BY element, time($__interval) fill(null) ) GROUP BY time($__interval) fill(null)",
+          "rawQuery": true,
+          "refId": "D",
+          "resultFormat": "time_series",
+          "select": [
+            [
+              {
+                "params": [
+                  "td_paused_count"
+                ],
+                "type": "field"
+              },
+              {
+                "params": [],
+                "type": "last"
+              },
+              {
+                "params": [
+                  "1s"
+                ],
+                "type": "non_negative_derivative"
+              }
+            ]
+          ],
+          "tags": [
+            {
+              "key": "partition_id",
+              "operator": "=",
+              "value": "np02-coldbox"
+            },
+            {
+              "condition": "AND",
+              "key": "source_id",
+              "operator": "=",
+              "value": "np02-coldbox.trigger.mlt"
+            }
+          ]
+        }
+      ],
+      "title": "Global TP Processors",
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "influxdb",
+        "uid": "${influxdb}"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "drawStyle": "line",
+            "fillOpacity": 0,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "stepBefore",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "log": 10,
+              "type": "log"
+            },
+            "showPoints": "auto",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "hertz"
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Total TD rate"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "#73BF69",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 12,
+        "y": 37
+      },
+      "id": 40,
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "right",
+          "showLegend": true
+        },
+        "tooltip": {
+          "mode": "multi",
+          "sort": "desc"
+        }
+      },
+      "targets": [
+        {
+          "alias": "TA received",
+          "datasource": {
+            "uid": "${influxdb}"
+          },
+          "groupBy": [
+            {
+              "params": [
+                "$interval"
+              ],
+              "type": "time"
+            }
+          ],
+          "hide": false,
+          "measurement": "dunedaq.trigger.moduleleveltriggerinfo.Info",
+          "orderByTime": "ASC",
+          "policy": "default",
+          "query": "SELECT sum(data) FROM ( SELECT non_negative_derivative(last(\"ta_received_count\"), 1s) AS data FROM \"dunedaq.trigger.opmon.TAProcessorInfo\" WHERE \"session\" = '${session}' AND \"element\"=~/${ta_handler}/ AND $timeFilter GROUP BY element, time($__interval) fill(null) ) GROUP BY time($__interval) fill(null)",
+          "rawQuery": true,
+          "refId": "A",
+          "resultFormat": "time_series",
+          "select": [
+            [
+              {
+                "params": [
+                  "td_paused_count"
+                ],
+                "type": "field"
+              },
+              {
+                "params": [],
+                "type": "last"
+              },
+              {
+                "params": [
+                  "1s"
+                ],
+                "type": "non_negative_derivative"
+              }
+            ]
+          ],
+          "tags": [
+            {
+              "key": "partition_id",
+              "operator": "=",
+              "value": "np02-coldbox"
+            },
+            {
+              "condition": "AND",
+              "key": "source_id",
+              "operator": "=",
+              "value": "np02-coldbox.trigger.mlt"
+            }
+          ]
+        },
+        {
+          "alias": "TC made",
+          "datasource": {
+            "uid": "${influxdb}"
+          },
+          "groupBy": [
+            {
+              "params": [
+                "$interval"
+              ],
+              "type": "time"
+            }
+          ],
+          "hide": false,
+          "measurement": "dunedaq.trigger.moduleleveltriggerinfo.Info",
+          "orderByTime": "ASC",
+          "policy": "default",
+          "query": "SELECT sum(data) FROM  ( SELECT non_negative_derivative(last(\"tc_made_count\"), 1s) AS data FROM \"dunedaq.trigger.opmon.TAProcessorInfo\" WHERE \"session\" = '${session}' AND \"element\"=~/${ta_handler}/ AND $timeFilter GROUP BY element, time($__interval) fill(null) ) GROUP BY time($__interval) fill(null)",
+          "rawQuery": true,
+          "refId": "B",
+          "resultFormat": "time_series",
+          "select": [
+            [
+              {
+                "params": [
+                  "td_paused_count"
+                ],
+                "type": "field"
+              },
+              {
+                "params": [],
+                "type": "last"
+              },
+              {
+                "params": [
+                  "1s"
+                ],
+                "type": "non_negative_derivative"
+              }
+            ]
+          ],
+          "tags": [
+            {
+              "key": "partition_id",
+              "operator": "=",
+              "value": "np02-coldbox"
+            },
+            {
+              "condition": "AND",
+              "key": "source_id",
+              "operator": "=",
+              "value": "np02-coldbox.trigger.mlt"
+            }
+          ]
+        },
+        {
+          "alias": "TC sent",
+          "datasource": {
+            "uid": "${influxdb}"
+          },
+          "groupBy": [
+            {
+              "params": [
+                "$interval"
+              ],
+              "type": "time"
+            }
+          ],
+          "hide": false,
+          "measurement": "dunedaq.trigger.moduleleveltriggerinfo.Info",
+          "orderByTime": "ASC",
+          "policy": "default",
+          "query": "SELECT sum(data) FROM  ( SELECT non_negative_derivative(last(\"tc_sent_count\"), 1s) AS data FROM \"dunedaq.trigger.opmon.TAProcessorInfo\" WHERE \"session\" = '${session}' AND \"element\"=~/${ta_handler}/ AND $timeFilter GROUP BY element, time($__interval) fill(null) ) GROUP BY time($__interval) fill(null)",
+          "rawQuery": true,
+          "refId": "C",
+          "resultFormat": "time_series",
+          "select": [
+            [
+              {
+                "params": [
+                  "td_paused_count"
+                ],
+                "type": "field"
+              },
+              {
+                "params": [],
+                "type": "last"
+              },
+              {
+                "params": [
+                  "1s"
+                ],
+                "type": "non_negative_derivative"
+              }
+            ]
+          ],
+          "tags": [
+            {
+              "key": "partition_id",
+              "operator": "=",
+              "value": "np02-coldbox"
+            },
+            {
+              "condition": "AND",
+              "key": "source_id",
+              "operator": "=",
+              "value": "np02-coldbox.trigger.mlt"
+            }
+          ]
+        },
+        {
+          "alias": "TC failed sent",
+          "datasource": {
+            "uid": "${influxdb}"
+          },
+          "groupBy": [
+            {
+              "params": [
+                "$interval"
+              ],
+              "type": "time"
+            }
+          ],
+          "hide": false,
+          "measurement": "dunedaq.trigger.moduleleveltriggerinfo.Info",
+          "orderByTime": "ASC",
+          "policy": "default",
+          "query": "SELECT sum(data) FROM ( SELECT non_negative_derivative(last(\"tc_failed_sent_count\"), 1s) AS data FROM \"dunedaq.trigger.opmon.TAProcessorInfo\" WHERE \"session\" = '${session}' AND \"element\"=~/${ta_handler}/ AND $timeFilter GROUP BY element, time($__interval) fill(null) ) GROUP BY time($__interval) fill(null)",
+          "rawQuery": true,
+          "refId": "D",
+          "resultFormat": "time_series",
+          "select": [
+            [
+              {
+                "params": [
+                  "td_paused_count"
+                ],
+                "type": "field"
+              },
+              {
+                "params": [],
+                "type": "last"
+              },
+              {
+                "params": [
+                  "1s"
+                ],
+                "type": "non_negative_derivative"
+              }
+            ]
+          ],
+          "tags": [
+            {
+              "key": "partition_id",
+              "operator": "=",
+              "value": "np02-coldbox"
+            },
+            {
+              "condition": "AND",
+              "key": "source_id",
+              "operator": "=",
+              "value": "np02-coldbox.trigger.mlt"
+            }
+          ]
+        }
+      ],
+      "title": "GLOBA TA Processors",
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "influxdb",
+        "uid": "${influxdb}"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "drawStyle": "line",
+            "fillOpacity": 0,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "stepBefore",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "log": 10,
+              "type": "log"
+            },
+            "showPoints": "auto",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "hertz"
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Total TD rate"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "#73BF69",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 0,
+        "y": 45
       },
       "id": 39,
       "options": {
@@ -3262,7 +3906,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green"
+                "color": "green",
+                "value": null
               },
               {
                 "color": "red",
@@ -3294,9 +3939,9 @@
         "h": 8,
         "w": 12,
         "x": 12,
-        "y": 37
+        "y": 45
       },
-      "id": 40,
+      "id": 64,
       "options": {
         "legend": {
           "calcs": [],
@@ -3329,7 +3974,7 @@
           "measurement": "dunedaq.trigger.moduleleveltriggerinfo.Info",
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "SELECT non_negative_derivative(last(\"ta_received_count\"), 1s) FROM \"dunedaq.trigger.opmon.TAProcessorInfo\" WHERE \"session\" = '${session}' AND \"element\"=~/${ta_handler}/ AND $timeFilter GROUP BY time($__interval) fill(null) ",
+          "query": "SELECT non_negative_derivative(last(\"ta_received_count\"), 1s) AS data FROM \"dunedaq.trigger.opmon.TAProcessorInfo\" WHERE \"session\" = '${session}' AND \"element\"=~/${ta_handler}/ AND $timeFilter GROUP BY time($__interval) fill(null) ",
           "rawQuery": true,
           "refId": "A",
           "resultFormat": "time_series",
@@ -3384,7 +4029,7 @@
           "measurement": "dunedaq.trigger.moduleleveltriggerinfo.Info",
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "SELECT non_negative_derivative(last(\"tc_made_count\"), 1s) FROM \"dunedaq.trigger.opmon.TAProcessorInfo\" WHERE \"session\" = '${session}' AND \"element\"=~/${ta_handler}/ AND $timeFilter GROUP BY time($__interval) fill(null) ",
+          "query": "SELECT non_negative_derivative(last(\"tc_made_count\"), 1s) AS data FROM \"dunedaq.trigger.opmon.TAProcessorInfo\" WHERE \"session\" = '${session}' AND \"element\"=~/${ta_handler}/ AND $timeFilter GROUP BY time($__interval) fill(null) ",
           "rawQuery": true,
           "refId": "B",
           "resultFormat": "time_series",
@@ -3439,7 +4084,7 @@
           "measurement": "dunedaq.trigger.moduleleveltriggerinfo.Info",
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "SELECT non_negative_derivative(last(\"tc_sent_count\"), 1s) FROM \"dunedaq.trigger.opmon.TAProcessorInfo\" WHERE \"session\" = '${session}' AND \"element\"=~/${ta_handler}/ AND $timeFilter GROUP BY time($__interval) fill(null) ",
+          "query": "SELECT non_negative_derivative(last(\"tc_sent_count\"), 1s) AS data FROM \"dunedaq.trigger.opmon.TAProcessorInfo\" WHERE \"session\" = '${session}' AND \"element\"=~/${ta_handler}/ AND $timeFilter GROUP BY time($__interval) fill(null) ",
           "rawQuery": true,
           "refId": "C",
           "resultFormat": "time_series",
@@ -3494,7 +4139,7 @@
           "measurement": "dunedaq.trigger.moduleleveltriggerinfo.Info",
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "SELECT non_negative_derivative(last(\"tc_failed_sent_count\"), 1s) FROM \"dunedaq.trigger.opmon.TAProcessorInfo\" WHERE \"session\" = '${session}' AND \"element\"=~/${ta_handler}/ AND $timeFilter GROUP BY time($__interval) fill(null) ",
+          "query": "SELECT non_negative_derivative(last(\"tc_failed_sent_count\"), 1s) AS data FROM \"dunedaq.trigger.opmon.TAProcessorInfo\" WHERE \"session\" = '${session}' AND \"element\"=~/${ta_handler}/ AND $timeFilter GROUP BY time($__interval) fill(null) ",
           "rawQuery": true,
           "refId": "D",
           "resultFormat": "time_series",
@@ -3542,7 +4187,7 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 45
+        "y": 61
       },
       "id": 32,
       "panels": [],
@@ -3596,7 +4241,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green"
+                "color": "green",
+                "value": null
               },
               {
                 "color": "red",
@@ -3628,7 +4274,7 @@
         "h": 8,
         "w": 24,
         "x": 0,
-        "y": 46
+        "y": 62
       },
       "id": 33,
       "options": {
@@ -3818,7 +4464,7 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 54
+        "y": 70
       },
       "id": 18,
       "panels": [],
@@ -3873,7 +4519,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green"
+                "color": "green",
+                "value": null
               }
             ]
           },
@@ -3885,7 +4532,7 @@
         "h": 7,
         "w": 8,
         "x": 0,
-        "y": 55
+        "y": 71
       },
       "id": 42,
       "options": {
@@ -4003,7 +4650,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green"
+                "color": "green",
+                "value": null
               }
             ]
           }
@@ -4014,7 +4662,7 @@
         "h": 7,
         "w": 8,
         "x": 8,
-        "y": 55
+        "y": 71
       },
       "id": 43,
       "options": {
@@ -4201,7 +4849,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green"
+                "color": "green",
+                "value": null
               },
               {
                 "color": "red",
@@ -4216,7 +4865,7 @@
         "h": 7,
         "w": 8,
         "x": 16,
-        "y": 55
+        "y": 71
       },
       "id": 44,
       "options": {
@@ -4400,7 +5049,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green"
+                "color": "green",
+                "value": null
               },
               {
                 "color": "red",
@@ -4416,7 +5066,7 @@
         "h": 7,
         "w": 8,
         "x": 0,
-        "y": 62
+        "y": 78
       },
       "id": 45,
       "links": [],
@@ -4730,7 +5380,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green"
+                "color": "green",
+                "value": null
               },
               {
                 "color": "red",
@@ -4745,7 +5396,7 @@
         "h": 7,
         "w": 8,
         "x": 8,
-        "y": 62
+        "y": 78
       },
       "id": 46,
       "options": {
@@ -4882,7 +5533,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green"
+                "color": "green",
+                "value": null
               },
               {
                 "color": "red",
@@ -4897,7 +5549,7 @@
         "h": 7,
         "w": 8,
         "x": 16,
-        "y": 62
+        "y": 78
       },
       "id": 47,
       "options": {
@@ -5337,7 +5989,7 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 69
+        "y": 85
       },
       "id": 48,
       "panels": [],
@@ -5392,7 +6044,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green"
+                "color": "green",
+                "value": null
               },
               {
                 "color": "red",
@@ -5407,7 +6060,7 @@
         "h": 7,
         "w": 8,
         "x": 0,
-        "y": 70
+        "y": 86
       },
       "id": 49,
       "options": {
@@ -5574,7 +6227,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green"
+                "color": "green",
+                "value": null
               },
               {
                 "color": "red",
@@ -5589,7 +6243,7 @@
         "h": 7,
         "w": 8,
         "x": 8,
-        "y": 70
+        "y": 86
       },
       "id": 50,
       "options": {
@@ -6055,8 +6709,8 @@
       {
         "current": {
           "selected": false,
-          "text": "test-session",
-          "value": "test-session"
+          "text": "np02-oks-session",
+          "value": "np02-oks-session"
         },
         "datasource": {
           "uid": "${influxdb}"
@@ -6077,9 +6731,13 @@
       },
       {
         "current": {
-          "selected": false,
-          "text": "All",
-          "value": "$__all"
+          "selected": true,
+          "text": [
+            "All"
+          ],
+          "value": [
+            "$__all"
+          ]
         },
         "datasource": {
           "type": "influxdb",
@@ -6157,7 +6815,7 @@
       },
       {
         "current": {
-          "selected": true,
+          "selected": false,
           "text": [
             "All"
           ],
@@ -6193,6 +6851,6 @@
   "timezone": "",
   "title": "Trigger Flow",
   "uid": "v5_2_0-trigger_flow",
-  "version": 71,
+  "version": 73,
   "weekStart": ""
 }

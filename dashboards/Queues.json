@@ -18,12 +18,13 @@
   "editable": true,
   "fiscalYearStartMonth": 0,
   "graphTooltip": 0,
-  "id": 148,
+  "id": 246,
   "links": [],
   "liveNow": false,
   "panels": [
     {
       "datasource": {
+        "type": "influxdb",
         "uid": "${influxdb}"
       },
       "fieldConfig": {
@@ -32,9 +33,9 @@
             "mode": "palette-classic"
           },
           "custom": {
+            "axisBorderShow": false,
             "axisCenteredZero": false,
             "axisColorMode": "text",
-            "axisLabel": "%",
             "axisPlacement": "auto",
             "barAlignment": 0,
             "drawStyle": "line",
@@ -45,6 +46,7 @@
               "tooltip": false,
               "viz": false
             },
+            "insertNulls": false,
             "lineInterpolation": "linear",
             "lineWidth": 2,
             "pointSize": 4,
@@ -75,7 +77,7 @@
               }
             ]
           },
-          "unit": "short"
+          "unit": "percentunit"
         },
         "overrides": []
       },
@@ -105,7 +107,7 @@
       "repeatDirection": "h",
       "targets": [
         {
-          "alias": "$tag_source_id",
+          "alias": "$tag_subelement",
           "datasource": {
             "uid": "${influxdb}"
           },
@@ -121,7 +123,7 @@
           "measurement": "dunedaq.appfwk.queueinfo.Info",
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "SELECT mean(\"number_of_elements\")/mean(\"capacity\")  * 100 FROM \"dunedaq.iomanager.queueinfo.Info\" WHERE (\"partition_id\" = '${partition}' AND \"source_id\"=~ /[^.]+\\.${application}\\.[^+]/) AND $timeFilter GROUP BY time($__interval), \"source_id\"",
+          "query": "SELECT mean(\"number_of_elements\")/mean(\"capacity\") FROM \"dunedaq.iomanager.opmon.QueueInfo\" WHERE \"session\" = '${session}' AND \"application\"= '${application}' AND $timeFilter GROUP BY time($__interval), \"subelement\"",
           "rawQuery": true,
           "refId": "C",
           "resultFormat": "time_series",
@@ -169,7 +171,6 @@
   ],
   "refresh": "5s",
   "schemaVersion": 38,
-  "style": "dark",
   "tags": [
     "v5.2.0",
     "Subsystem"
@@ -179,8 +180,8 @@
       {
         "current": {
           "selected": false,
-          "text": "InfluxKafka",
-          "value": "InfluxKafka"
+          "text": "KafkaMonitoring_v5.2",
+          "value": "f68a27a2-f292-478c-8093-2a4adad3be1b"
         },
         "hide": 2,
         "includeAll": false,
@@ -190,28 +191,29 @@
         "options": [],
         "query": "influxdb",
         "refresh": 1,
-        "regex": "",
+        "regex": ".*_v5.2",
         "skipUrlSync": false,
         "type": "datasource"
       },
       {
         "current": {
+          "isNone": true,
           "selected": false,
-          "text": "thea-apa1",
-          "value": "thea-apa1"
+          "text": "None",
+          "value": ""
         },
         "datasource": {
           "type": "influxdb",
           "uid": "${influxdb}"
         },
-        "definition": "SHOW TAG VALUES WITH KEY=\"partition_id\" WHERE $timeFilter",
+        "definition": "SELECT \"session\" FROM (SELECT \"state\",\"session\" FROM \"dunedaq.appfwk.opmon.AppInfo\" WHERE $timeFilter)",
         "hide": 0,
         "includeAll": false,
-        "label": "Partition name",
+        "label": "Session",
         "multi": false,
-        "name": "partition",
+        "name": "session",
         "options": [],
-        "query": "SHOW TAG VALUES WITH KEY=\"partition_id\" WHERE $timeFilter",
+        "query": "SELECT \"session\" FROM (SELECT \"state\",\"session\" FROM \"dunedaq.appfwk.opmon.AppInfo\" WHERE $timeFilter)",
         "refresh": 2,
         "regex": "",
         "skipUrlSync": false,
@@ -232,16 +234,16 @@
           "type": "influxdb",
           "uid": "${influxdb}"
         },
-        "definition": "SHOW TAG VALUES FROM \"dunedaq.iomanager.queueinfo.Info\" WITH KEY=\"source_id\" WHERE \"partition_id\"='${partition}' AND $timeFilter",
+        "definition": "SELECT \"application\" FROM (SELECT \"application\",\"capacity\" FROM \"dunedaq.iomanager.opmon.QueueInfo\" WHERE \"session\"='${session}' AND $timeFilter)",
         "hide": 0,
         "includeAll": true,
         "label": "Application name",
         "multi": true,
         "name": "application",
         "options": [],
-        "query": "SHOW TAG VALUES FROM \"dunedaq.iomanager.queueinfo.Info\" WITH KEY=\"source_id\" WHERE \"partition_id\"='${partition}' AND $timeFilter",
+        "query": "SELECT \"application\" FROM (SELECT \"application\",\"capacity\" FROM \"dunedaq.iomanager.opmon.QueueInfo\" WHERE \"session\"='${session}' AND $timeFilter)",
         "refresh": 1,
-        "regex": "[^.]+\\.([^.]+)\\.[^.]+",
+        "regex": "",
         "skipUrlSync": false,
         "sort": 0,
         "type": "query"
@@ -256,6 +258,6 @@
   "timezone": "",
   "title": "Queues",
   "uid": "v5_2_0-queues",
-  "version": 2,
+  "version": 5,
   "weekStart": ""
 }

@@ -19,12 +19,13 @@
   "editable": true,
   "fiscalYearStartMonth": 0,
   "graphTooltip": 0,
-  "id": 42,
+  "id": 238,
   "links": [],
   "liveNow": false,
   "panels": [
     {
       "datasource": {
+        "type": "influxdb",
         "uid": "${influxdb}"
       },
       "fieldConfig": {
@@ -82,7 +83,7 @@
           }
         ]
       },
-      "pluginVersion": "10.1.4",
+      "pluginVersion": "10.2.2",
       "targets": [
         {
           "datasource": {
@@ -106,7 +107,7 @@
           "measurement": "dunedaq.appfwk.appinfo.Info",
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "SELECT \"host\", last(\"state\"), \"partition_id\" FROM \"dunedaq.appfwk.appinfo.Info\" WHERE time > now() - 30s  GROUP By \"source_id\"",
+          "query": "SELECT \"host\", last(\"state\") AS \"state\", \"session\" FROM \"dunedaq.appfwk.opmon.AppInfo\" WHERE $timeFilter GROUP BY \"application\"",
           "rawQuery": true,
           "refId": "A",
           "resultFormat": "table",
@@ -127,14 +128,13 @@
           "tags": []
         }
       ],
-      "title": "Panel Title",
+      "title": "Applications",
       "transformations": [],
       "type": "table"
     }
   ],
   "refresh": "5s",
   "schemaVersion": 38,
-  "style": "dark",
   "tags": [
     "v5.2.0",
     "Global"
@@ -144,8 +144,8 @@
       {
         "current": {
           "selected": false,
-          "text": "KluInflux",
-          "value": "ffedc550-6555-4a16-a113-aabf2b980c30"
+          "text": "KafkaMonitoring_v5.2",
+          "value": "f68a27a2-f292-478c-8093-2a4adad3be1b"
         },
         "hide": 2,
         "includeAll": false,
@@ -155,20 +155,20 @@
         "options": [],
         "query": "influxdb",
         "refresh": 1,
-        "regex": "",
+        "regex": ".*_v5.2",
         "skipUrlSync": false,
         "type": "datasource"
       }
     ]
   },
   "time": {
-    "from": "now-24h",
+    "from": "now-15m",
     "to": "now"
   },
   "timepicker": {},
   "timezone": "",
   "title": "Applications",
   "uid": "v5_2_0-applications",
-  "version": 1,
+  "version": 7,
   "weekStart": ""
 }

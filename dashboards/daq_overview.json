@@ -194,13 +194,13 @@
       },
       "targets": [
         {
-          "alias": "$partition",
+          "alias": "$session",
           "datasource": {
             "type": "influxdb",
             "uid": "${influxdb}"
           },
           "hide": false,
-          "query": "SELECT \"runno\" FROM \"dunedaq.rcif.runinfo.Info\" WHERE (\"partition_id\" = '${partition}' and \"runno\">0) AND $timeFilter",
+          "query": "SELECT \"run_number\" FROM \"dunedaq.rcif.opmon.RunInfo\" WHERE \"session\" = '${session}' AND \"run_number\" >0 AND $timeFilter",
           "rawQuery": true,
           "refId": "A",
           "resultFormat": "time_series"
@@ -282,7 +282,7 @@
           "measurement": "dunedaq.appfwk.appinfo.Info",
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "SELECT \"state\" FROM \"dunedaq.appfwk.appinfo.Info\" WHERE (\"partition_id\" = '${partition}') AND time > now() - 75s",
+          "query": "SELECT \"state\" FROM \"dunedaq.appfwk.opmon.AppInfo\" WHERE (\"session\" = '${session}') AND time > now() - 15s",
           "rawQuery": true,
           "refId": "A",
           "resultFormat": "table",
@@ -339,120 +339,6 @@
           "mappings": [
             {
               "options": {
-                "0": {
-                  "color": "dark-red",
-                  "index": 1,
-                  "text": "0 Hz"
-                }
-              },
-              "type": "value"
-            },
-            {
-              "options": {
-                "match": "null",
-                "result": {
-                  "index": 0,
-                  "text": "N/A"
-                }
-              },
-              "type": "special"
-            }
-          ],
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "dark-green",
-                "value": null
-              }
-            ]
-          },
-          "unit": "hertz"
-        },
-        "overrides": []
-      },
-      "gridPos": {
-        "h": 4,
-        "w": 3,
-        "x": 3,
-        "y": 3
-      },
-      "id": 34,
-      "links": [],
-      "maxDataPoints": 100,
-      "options": {
-        "colorMode": "value",
-        "graphMode": "none",
-        "justifyMode": "auto",
-        "orientation": "horizontal",
-        "reduceOptions": {
-          "calcs": [],
-          "fields": "",
-          "values": false
-        },
-        "text": {},
-        "textMode": "auto",
-        "wideLayout": true
-      },
-      "pluginVersion": "10.2.2",
-      "targets": [
-        {
-          "datasource": {
-            "uid": "${influxdb}"
-          },
-          "expr": "",
-          "format": "time_series",
-          "groupBy": [],
-          "intervalFactor": 1,
-          "measurement": "dunedaq.trigger.moduleleveltriggerinfo.Info",
-          "orderByTime": "ASC",
-          "policy": "default",
-          "query": "SELECT last(\"data\") FROM (SELECT non_negative_derivative(last(\"td_sent_count\"), 1s) AS \"data\" FROM \"dunedaq.trigger.moduleleveltriggerinfo.Info\" WHERE (\"partition_id\" ='${partition}') AND time > now() - 60s GROUP BY time(500ms) ) ",
-          "rawQuery": true,
-          "refId": "A",
-          "resultFormat": "table",
-          "select": [
-            [
-              {
-                "params": [
-                  "td_sent_count"
-                ],
-                "type": "field"
-              },
-              {
-                "params": [
-                  "1s"
-                ],
-                "type": "non_negative_derivative"
-              }
-            ]
-          ],
-          "tags": [
-            {
-              "key": "source_id",
-              "operator": "=",
-              "value": "maroda_test_trigger.mlt"
-            }
-          ]
-        }
-      ],
-      "title": "Sending triggers at",
-      "transformations": [],
-      "type": "stat"
-    },
-    {
-      "datasource": {
-        "type": "influxdb",
-        "uid": "${influxdb}"
-      },
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "mode": "thresholds"
-          },
-          "mappings": [
-            {
-              "options": {
                 "false": {
                   "color": "semi-dark-green",
                   "index": 1,
@@ -482,7 +368,7 @@
       "gridPos": {
         "h": 4,
         "w": 3,
-        "x": 6,
+        "x": 3,
         "y": 3
       },
       "id": 27,
@@ -495,7 +381,7 @@
           "calcs": [
             "lastNotNull"
           ],
-          "fields": "/^dunedaq\\.appfwk\\.appinfo\\.Info\\.error$/",
+          "fields": "/^dunedaq\\.appfwk\\.opmon\\.AppInfo\\.error$/",
           "values": false
         },
         "text": {},
@@ -512,7 +398,7 @@
           "measurement": "dunedaq.appfwk.appinfo.Info",
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "SELECT \"error\" FROM \"dunedaq.appfwk.appinfo.Info\" WHERE (\"partition_id\" = '${partition}' )AND $timeFilter",
+          "query": "SELECT \"error\" FROM \"dunedaq.appfwk.opmon.AppInfo\" WHERE \"session\" = '${session}' AND time > now() - 15s",
           "rawQuery": true,
           "refId": "A",
           "resultFormat": "time_series",
@@ -583,7 +469,7 @@
       "gridPos": {
         "h": 4,
         "w": 3,
-        "x": 9,
+        "x": 6,
         "y": 3
       },
       "id": 28,
@@ -608,6 +494,7 @@
       "pluginVersion": "10.2.2",
       "targets": [
         {
+          "alias": "",
           "datasource": {
             "uid": "${influxdb}"
           },
@@ -618,7 +505,7 @@
           "measurement": "dunedaq.rcif.runinfo.Info",
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "SELECT max(\"data\") FROM (SELECT last(\"runtime\") AS \"data\" FROM \"dunedaq.rcif.runinfo.Info\" WHERE (\"partition_id\" = '${partition}') AND $timeFilter GROUP BY \"source_id\" )",
+          "query": "SELECT max(\"data\") FROM (SELECT last(\"run_time\") AS \"data\" FROM \"dunedaq.rcif.opmon.RunInfo\" WHERE \"session\" = '${session}' AND $timeFilter GROUP BY \"application\" )",
           "rawQuery": true,
           "refId": "A",
           "resultFormat": "table",
@@ -659,8 +546,133 @@
           "mappings": [
             {
               "options": {
+                "0": {
+                  "color": "dark-red",
+                  "index": 1,
+                  "text": "0 Hz"
+                }
+              },
+              "type": "value"
+            },
+            {
+              "options": {
                 "match": "null",
                 "result": {
+                  "index": 0,
+                  "text": "N/A"
+                }
+              },
+              "type": "special"
+            }
+          ],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "dark-green",
+                "value": null
+              }
+            ]
+          },
+          "unit": "hertz"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 4,
+        "w": 3,
+        "x": 9,
+        "y": 3
+      },
+      "id": 34,
+      "links": [],
+      "maxDataPoints": 100,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "none",
+        "justifyMode": "auto",
+        "orientation": "horizontal",
+        "reduceOptions": {
+          "calcs": [],
+          "fields": "",
+          "values": false
+        },
+        "text": {},
+        "textMode": "auto",
+        "wideLayout": true
+      },
+      "pluginVersion": "10.2.2",
+      "targets": [
+        {
+          "datasource": {
+            "uid": "${influxdb}"
+          },
+          "expr": "",
+          "format": "time_series",
+          "groupBy": [],
+          "intervalFactor": 1,
+          "measurement": "dunedaq.trigger.moduleleveltriggerinfo.Info",
+          "orderByTime": "ASC",
+          "policy": "default",
+          "query": "SELECT last(\"data\") FROM (SELECT non_negative_derivative(last(\"td_sent_count\"), 1s) AS \"data\" FROM \"dunedaq.trigger.opmon.ModuleLevelTriggerInfo\" WHERE session ='${session}' AND time > now() - 60s GROUP BY time(500ms) ) ",
+          "rawQuery": true,
+          "refId": "A",
+          "resultFormat": "table",
+          "select": [
+            [
+              {
+                "params": [
+                  "td_sent_count"
+                ],
+                "type": "field"
+              },
+              {
+                "params": [
+                  "1s"
+                ],
+                "type": "non_negative_derivative"
+              }
+            ]
+          ],
+          "tags": [
+            {
+              "key": "source_id",
+              "operator": "=",
+              "value": "maroda_test_trigger.mlt"
+            }
+          ]
+        }
+      ],
+      "title": "Sending triggers at",
+      "transformations": [],
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "influxdb",
+        "uid": "${influxdb}"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [
+            {
+              "options": {
+                "0": {
+                  "color": "dark-orange",
+                  "index": 1,
+                  "text": "NO RUN"
+                }
+              },
+              "type": "value"
+            },
+            {
+              "options": {
+                "match": "null",
+                "result": {
+                  "index": 0,
                   "text": "N/A"
                 }
               },
@@ -686,7 +698,7 @@
         "x": 12,
         "y": 3
       },
-      "id": 32,
+      "id": 50,
       "links": [],
       "maxDataPoints": 100,
       "options": {
@@ -716,7 +728,7 @@
           "measurement": "dunedaq.rcif.runinfo.Info",
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "SELECT last(\"runno\") FROM \"dunedaq.rcif.runinfo.Info\" WHERE (\"partition_id\" = '${partition}' AND \"runno\" > 0 ) AND $timeFilter",
+          "query": "SELECT last(\"run_number\") FROM \"dunedaq.rcif.opmon.RunInfo\" WHERE \"session\" = '${session}' AND $timeFilter",
           "rawQuery": true,
           "refId": "A",
           "resultFormat": "table",
@@ -740,11 +752,12 @@
           ]
         }
       ],
-      "title": "Latest Run number",
+      "title": "Current Run number",
       "type": "stat"
     },
     {
       "datasource": {
+        "type": "influxdb",
         "uid": "${influxdb}"
       },
       "fieldConfig": {
@@ -767,6 +780,7 @@
               "options": {
                 "match": "empty",
                 "result": {
+                  "color": "dark-blue",
                   "index": 1,
                   "text": "No Data"
                 }
@@ -831,7 +845,7 @@
           "measurement": "dunedaq.appfwk.appinfo.Info",
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "SELECT last(\"new_td_inhibited_count\"::integer) FROM \"dunedaq.trigger.moduleleveltriggerinfo.Info\" WHERE (\"partition_id\" = '${partition}') AND $timeFilter ",
+          "query": "SELECT last(\"data\") FROM (SELECT non_negative_derivative(last(\"td_inhibited_count\"), 1s) AS \"data\" FROM \"dunedaq.trigger.opmon.ModuleLevelTriggerInfo\" WHERE session ='${session}' AND time > now() - 60s GROUP BY time(500ms) ) ",
           "rawQuery": true,
           "refId": "A",
           "resultFormat": "time_series",
@@ -877,6 +891,7 @@
     },
     {
       "datasource": {
+        "type": "influxdb",
         "uid": "${influxdb}"
       },
       "fieldConfig": {
@@ -925,7 +940,7 @@
         "x": 18,
         "y": 3
       },
-      "id": 29,
+      "id": 51,
       "links": [],
       "maxDataPoints": 100,
       "options": {
@@ -962,7 +977,7 @@
           "measurement": "dunedaq.trigger.moduleleveltriggerinfo.Info",
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "SELECT last(\"td_sent_count\") FROM \"dunedaq.trigger.moduleleveltriggerinfo.Info\" WHERE (\"partition_id\" ='${partition}' ) AND $timeFilter",
+          "query": "SELECT last(\"td_sent_count\") FROM \"dunedaq.trigger.opmon.ModuleLevelTriggerInfo\" WHERE session ='${session}' AND time > now() - 20s",
           "rawQuery": true,
           "refId": "A",
           "resultFormat": "table",
@@ -989,7 +1004,7 @@
           ]
         }
       ],
-      "title": "Issued triggers",
+      "title": "Current Issued triggers",
       "transformations": [
         {
           "id": "calculateField",
@@ -1007,6 +1022,7 @@
     },
     {
       "datasource": {
+        "type": "influxdb",
         "uid": "${influxdb}"
       },
       "fieldConfig": {
@@ -1055,7 +1071,7 @@
         "x": 21,
         "y": 3
       },
-      "id": 33,
+      "id": 52,
       "links": [],
       "maxDataPoints": 100,
       "options": {
@@ -1075,7 +1091,7 @@
       "pluginVersion": "10.2.2",
       "targets": [
         {
-          "alias": "$tag_source_id",
+          "alias": "",
           "datasource": {
             "uid": "${influxdb}"
           },
@@ -1086,7 +1102,7 @@
           "measurement": "dunedaq.dfmodules.datawriterinfo.Info",
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "SELECT last(\"records_written\") FROM \"dunedaq.dfmodules.datawriterinfo.Info\" WHERE (\"partition_id\" = '${partition}') AND $timeFilter GROUP BY \"source_id\" fill(null)",
+          "query": "SELECT sum(\"data\") FROM (SELECT last(\"records_written\") AS \"data\", \"source_id\" FROM \"dunedaq.dfmodules.opmon.DataWriterInfo\" WHERE (\"session\" = '${session}') AND time > now() - 30s GROUP BY \"element\" fill(null) )",
           "rawQuery": true,
           "refId": "A",
           "resultFormat": "table",
@@ -1109,19 +1125,8 @@
           ]
         }
       ],
-      "title": "Written TRs",
-      "transformations": [
-        {
-          "id": "reduce",
-          "options": {
-            "includeTimeField": false,
-            "mode": "reduceFields",
-            "reducers": [
-              "sum"
-            ]
-          }
-        }
-      ],
+      "title": "Current Written TRs",
+      "transformations": [],
       "type": "stat"
     },
     {
@@ -1308,7 +1313,7 @@
           "measurement": "dunedaq.trigger.moduleleveltriggerinfo.Info",
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "SELECT non_negative_derivative(cumulative_sum(sum(\"new_td_total_count\")), 1s) FROM \"dunedaq.trigger.moduleleveltriggerinfo.Info\" WHERE (\"partition_id\" ='${partition}') AND $timeFilter GROUP BY time($__interval)",
+          "query": "SELECT non_negative_derivative(distinct(\"td_total_count\"), 1s) FROM \"dunedaq.trigger.opmon.ModuleLevelTriggerInfo\" WHERE session ='${session}' AND $timeFilter GROUP BY time($__interval)",
           "rawQuery": true,
           "refId": "C",
           "resultFormat": "time_series",
@@ -1346,7 +1351,7 @@
           "measurement": "dunedaq.trigger.moduleleveltriggerinfo.Info",
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "SELECT non_negative_derivative(cumulative_sum(sum(\"new_td_sent_count\")), 1s) FROM \"dunedaq.trigger.moduleleveltriggerinfo.Info\" WHERE (\"partition_id\" = '${partition}') AND $timeFilter GROUP BY time($__interval)",
+          "query": "SELECT non_negative_derivative(distinct(\"td_sent_count\"), 1s) FROM \"dunedaq.trigger.opmon.ModuleLevelTriggerInfo\" WHERE session ='${session}' AND $timeFilter GROUP BY time($__interval)",
           "rawQuery": true,
           "refId": "E",
           "resultFormat": "time_series",
@@ -1393,13 +1398,68 @@
               "type": "fill"
             }
           ],
+          "hide": true,
+          "measurement": "dunedaq.dfmodules.datawriterinfo.Info",
+          "orderByTime": "ASC",
+          "policy": "default",
+          "query": "SELECT non_negative_derivative(cumulative_sum(count(\"tr_number\")), 1s) FROM  \"dunedaq.dfmodules.opmon.TRCompleteInfo\" WHERE \"session\" = '${session}' AND $timeFilter GROUP BY time($__interval) fill(null)",
+          "rawQuery": true,
+          "refId": "A",
+          "resultFormat": "time_series",
+          "select": [
+            [
+              {
+                "params": [
+                  "records_received"
+                ],
+                "type": "field"
+              },
+              {
+                "params": [],
+                "type": "mean"
+              },
+              {
+                "params": [
+                  "1s"
+                ],
+                "type": "non_negative_derivative"
+              }
+            ]
+          ],
+          "tags": [
+            {
+              "key": "source_id",
+              "operator": "=",
+              "value": "maroda_test_dataflow.datawriter"
+            }
+          ]
+        },
+        {
+          "alias": "Completed TR",
+          "datasource": {
+            "uid": "${influxdb}"
+          },
+          "groupBy": [
+            {
+              "params": [
+                "$__interval"
+              ],
+              "type": "time"
+            },
+            {
+              "params": [
+                "null"
+              ],
+              "type": "fill"
+            }
+          ],
           "hide": false,
           "measurement": "dunedaq.dfmodules.datawriterinfo.Info",
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "SELECT non_negative_derivative(cumulative_sum(sum(\"tokens_received\")), 1s) FROM \"dunedaq.dfmodules.datafloworchestratorinfo.Info\" WHERE (\"partition_id\" = '${partition}') AND $timeFilter GROUP BY time($__interval) fill(null)",
+          "query": "SELECT non_negative_derivative(cumulative_sum(sum(\"tokens_received\")), 1s) FROM  \"dunedaq.dfmodules.opmon.DFOInfo\" WHERE \"session\" = '${session}' AND $timeFilter GROUP BY time($__interval) fill(null)",
           "rawQuery": true,
-          "refId": "A",
+          "refId": "D",
           "resultFormat": "time_series",
           "select": [
             [
@@ -1452,7 +1512,7 @@
           "measurement": "dunedaq.dfmodules.datawriterinfo.Info",
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "SELECT non_negative_derivative(cumulative_sum(sum(\"new_records_written\")), 1s) FROM \"dunedaq.dfmodules.datawriterinfo.Info\" WHERE (\"partition_id\" = '${partition}') AND $timeFilter GROUP BY time($__interval) fill(null)",
+          "query": "SELECT non_negative_derivative(cumulative_sum(sum(\"new_records_written\")), 1s) FROM \"dunedaq.dfmodules.opmon.DataWriterInfo\" WHERE \"session\" = '${session}' AND $timeFilter AND \"new_records_written\" > 0 GROUP BY time($__interval) fill(null) ",
           "rawQuery": true,
           "refId": "B",
           "resultFormat": "time_series",
@@ -1491,7 +1551,7 @@
             "uid": "${influxdb}"
           },
           "hide": false,
-          "query": "SELECT mean(\"td_sent_count\") FROM \"dunedaq.trigger.moduleleveltriggerinfo.Info\" WHERE (\"partition_id\" = '${partition}') AND $timeFilter GROUP BY time($__interval)",
+          "query": "SELECT mean(\"td_sent_count\") FROM \"dunedaq.trigger.opmon.ModuleLevelTriggerInfo\" WHERE session = '${session}' AND $timeFilter GROUP BY time($__interval)",
           "rawQuery": true,
           "refId": "G",
           "resultFormat": "time_series"
@@ -1567,7 +1627,7 @@
         "x": 6,
         "y": 7
       },
-      "id": 48,
+      "id": 53,
       "options": {
         "legend": {
           "calcs": [],
@@ -1583,7 +1643,7 @@
       "pluginVersion": "10.2.2",
       "targets": [
         {
-          "alias": "$tag_source_id",
+          "alias": "$tag_type",
           "datasource": {
             "type": "influxdb",
             "uid": "${influxdb}"
@@ -1605,7 +1665,7 @@
           "measurement": "dunedaq.dfmodules.datafloworchestratorinfo.TriggerInfo",
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "SELECT non_negative_derivative(cumulative_sum(sum(\"received\")),1s) FROM \"dunedaq.dfmodules.datafloworchestratorinfo.TriggerInfo\" WHERE (\"partition_id\"::tag = '${partition}') AND $timeFilter GROUP BY \"source_id\", time($__interval)  fill(null)",
+          "query": "SELECT non_negative_derivative(cumulative_sum(sum(\"received\")),1s) FROM \"dunedaq.trigger.opmon.TriggerDecisionInfo\" WHERE (\"session\"::tag = '${session}') AND $timeFilter GROUP BY \"type\", time($__interval)  fill(null)",
           "rawQuery": true,
           "refId": "A",
           "resultFormat": "time_series",
@@ -1632,12 +1692,12 @@
           ]
         }
       ],
-      "title": "Trigger rates per type",
+      "title": "Trigger decision rates per type",
       "transformations": [
         {
           "id": "renameByRegex",
           "options": {
-            "regex": "[^.]+\\.[^.]+\\.[^.]+\\.k([^.]+)",
+            "regex": "k(.*)",
             "renamePattern": "$1"
           }
         }
@@ -1828,7 +1888,7 @@
           "group": [],
           "metricColumn": "none",
           "rawQuery": true,
-          "rawSql": "SELECT severity,time/1000000 as time,application_name,message,issue_name,host_name\nFROM \"ERSstream\"\nWHERE session='${partition}' AND time/1000000 >= ${__from} AND time/1000000 <= ${__to}\nORDER BY -time\n",
+          "rawSql": "SELECT severity,time/1000000 as time,application_name,message,issue_name,host_name\nFROM \"ERSstream\"\nWHERE session='${session}' AND time/1000000 >= ${__from} AND time/1000000 <= ${__to}\nORDER BY -time\n",
           "refId": "A",
           "select": [
             [
@@ -2209,6 +2269,7 @@
     },
     {
       "datasource": {
+        "type": "influxdb",
         "uid": "${influxdb}"
       },
       "fieldConfig": {
@@ -2220,7 +2281,6 @@
             "axisBorderShow": false,
             "axisCenteredZero": false,
             "axisColorMode": "text",
-            "axisLabel": "MiBytes/s",
             "axisPlacement": "auto",
             "barAlignment": 0,
             "drawStyle": "line",
@@ -2262,7 +2322,7 @@
               }
             ]
           },
-          "unit": "none"
+          "unit": "Bps"
         },
         "overrides": []
       },
@@ -2289,7 +2349,7 @@
       "pluginVersion": "8.0.6",
       "targets": [
         {
-          "alias": "$tag_source_id",
+          "alias": "$tag_element ",
           "datasource": {
             "uid": "${influxdb}"
           },
@@ -2297,7 +2357,7 @@
           "measurement": "dunedaq.dfmodules.datawriterinfo.Info",
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "SELECT non_negative_derivative(distinct(\"bytes_output\"), 1s)  / 1048576 FROM \"dunedaq.dfmodules.datawriterinfo.Info\" WHERE (\"partition_id\" = '${partition}') AND $timeFilter GROUP BY time($__interval), \"source_id\"\nfill(null)",
+          "query": "SELECT non_negative_derivative(cumulative_sum(sum(\"new_bytes_output\")), 1s) FROM \"dunedaq.dfmodules.opmon.HDF5DataStoreInfo\" WHERE session = '${session}' AND $timeFilter GROUP BY time($__interval), \"element\"\nfill(null)",
           "rawQuery": true,
           "refId": "C",
           "resultFormat": "time_series",
@@ -2320,7 +2380,7 @@
           ]
         },
         {
-          "alias": "$tag_source_id",
+          "alias": "Total",
           "datasource": {
             "uid": "${influxdb}"
           },
@@ -2329,7 +2389,7 @@
           "measurement": "dunedaq.dfmodules.datawriterinfo.Info",
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "SELECT non_negative_derivative(cumulative_sum(sum(\"bytes_output\")), 1s)  / 1048576 FROM \"dunedaq.dfmodules.tpstreamwriterinfo.Info\" WHERE (\"partition_id\" = '${partition}') AND $timeFilter GROUP BY time($__interval), \"source_id\"\nfill(null)",
+          "query": "SELECT non_negative_derivative(cumulative_sum(sum(\"new_bytes_output\")), 1s) FROM \"dunedaq.dfmodules.opmon.HDF5DataStoreInfo\" WHERE session = '${session}' AND $timeFilter GROUP BY time($__interval)",
           "rawQuery": true,
           "refId": "A",
           "resultFormat": "time_series",
@@ -2353,19 +2413,7 @@
         }
       ],
       "title": "Data Writers Information",
-      "transformations": [
-        {
-          "id": "renameByRegex",
-          "options": {
-            "regex": ".*\\.(.*)\\.(.*)",
-            "renamePattern": "$1 $2"
-          }
-        },
-        {
-          "id": "calculateField",
-          "options": {}
-        }
-      ],
+      "transformations": [],
       "type": "timeseries"
     }
   ],
@@ -2380,8 +2428,8 @@
       {
         "current": {
           "selected": false,
-          "text": "KluInflux",
-          "value": "ffedc550-6555-4a16-a113-aabf2b980c30"
+          "text": "KafkaMonitoring_v5.2",
+          "value": "f68a27a2-f292-478c-8093-2a4adad3be1b"
         },
         "hide": 2,
         "includeAll": false,
@@ -2391,7 +2439,7 @@
         "options": [],
         "query": "influxdb",
         "refresh": 1,
-        "regex": "",
+        "regex": ".*_v5.2",
         "skipUrlSync": false,
         "type": "datasource"
       },
@@ -2422,92 +2470,24 @@
         "datasource": {
           "uid": "${influxdb}"
         },
-        "definition": "SELECT \"partition_id\" FROM (SELECT \"state\",\"partition_id\" FROM \"dunedaq.appfwk.appinfo.Info\" WHERE $timeFilter)",
+        "definition": "SELECT \"session\" FROM (SELECT \"state\",\"session\" FROM \"dunedaq.appfwk.opmon.AppInfo\" WHERE $timeFilter)",
         "hide": 0,
         "includeAll": false,
-        "label": "Partition name",
+        "label": "Session",
         "multi": false,
-        "name": "partition",
+        "name": "session",
         "options": [],
-        "query": "SELECT \"partition_id\" FROM (SELECT \"state\",\"partition_id\" FROM \"dunedaq.appfwk.appinfo.Info\" WHERE $timeFilter)",
+        "query": "SELECT \"session\" FROM (SELECT \"state\",\"session\" FROM \"dunedaq.appfwk.opmon.AppInfo\" WHERE $timeFilter)",
         "refresh": 2,
         "regex": "",
         "skipUrlSync": false,
         "sort": 1,
         "type": "query"
-      },
-      {
-        "current": {
-          "isNone": true,
-          "selected": false,
-          "text": "None",
-          "value": ""
-        },
-        "datasource": {
-          "uid": "${influxdb}"
-        },
-        "definition": "SHOW SERIES WHERE \"partition_id\"='${partition}' AND $timeFilter",
-        "hide": 2,
-        "includeAll": false,
-        "multi": false,
-        "name": "hsi_series",
-        "options": [],
-        "query": "SHOW SERIES WHERE \"partition_id\"='${partition}' AND $timeFilter",
-        "refresh": 1,
-        "regex": "dunedaq\\.timinglibs\\.(fakehsieventgeneratorinfo|hsireadoutinfo)\\.Info,.*",
-        "skipUrlSync": false,
-        "sort": 0,
-        "type": "query"
-      },
-      {
-        "current": {
-          "isNone": true,
-          "selected": false,
-          "text": "None",
-          "value": ""
-        },
-        "datasource": {
-          "uid": "${influxdb}"
-        },
-        "definition": "SHOW FIELD KEYS FROM \"dunedaq.timinglibs.${hsi_series}.Info\"",
-        "hide": 2,
-        "includeAll": false,
-        "multi": false,
-        "name": "hsi_field",
-        "options": [],
-        "query": "SHOW FIELD KEYS FROM \"dunedaq.timinglibs.${hsi_series}.Info\"",
-        "refresh": 1,
-        "regex": "(readout|generated)_hsi_events_counter",
-        "skipUrlSync": false,
-        "sort": 0,
-        "type": "query"
-      },
-      {
-        "current": {
-          "selected": false,
-          "text": "0",
-          "value": "0"
-        },
-        "datasource": {
-          "uid": "${influxdb}"
-        },
-        "definition": "SELECT last(\"runtime\") FROM \"dunedaq.rcif.runinfo.Info\" WHERE (\"partition_id\" = '${partition}') AND $timeFilter",
-        "hide": 2,
-        "includeAll": false,
-        "multi": false,
-        "name": "run_time",
-        "options": [],
-        "query": "SELECT last(\"runtime\") FROM \"dunedaq.rcif.runinfo.Info\" WHERE (\"partition_id\" = '${partition}') AND $timeFilter",
-        "refresh": 1,
-        "regex": "",
-        "skipUrlSync": false,
-        "sort": 0,
-        "type": "query"
       }
     ]
   },
   "time": {
-    "from": "now-30m",
+    "from": "now-15m",
     "to": "now"
   },
   "timepicker": {
@@ -2538,6 +2518,6 @@
   "timezone": "",
   "title": "DAQ overview",
   "uid": "v5_2_0-overview",
-  "version": 9,
+  "version": 40,
   "weekStart": ""
 }

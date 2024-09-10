@@ -18,12 +18,13 @@
   "editable": true,
   "fiscalYearStartMonth": 0,
   "graphTooltip": 0,
-  "id": 48,
+  "id": 245,
   "links": [],
   "liveNow": false,
   "panels": [
     {
       "datasource": {
+        "type": "influxdb",
         "uid": "${influxdb}"
       },
       "fieldConfig": {
@@ -32,6 +33,7 @@
             "mode": "palette-classic"
           },
           "custom": {
+            "axisBorderShow": false,
             "axisCenteredZero": false,
             "axisColorMode": "text",
             "axisLabel": "",
@@ -82,8 +84,8 @@
         "overrides": []
       },
       "gridPos": {
-        "h": 6,
-        "w": 6,
+        "h": 7,
+        "w": 8,
         "x": 0,
         "y": 0
       },
@@ -102,7 +104,7 @@
       },
       "targets": [
         {
-          "alias": "$tag_source_id",
+          "alias": "$tag_subelement",
           "datasource": {
             "uid": "${influxdb}"
           },
@@ -123,7 +125,7 @@
           "measurement": "dunedaq.networkmanager.nwmgrsentinfo.Info",
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "SELECT non_negative_derivative(cumulative_sum(sum(\"bytes\")), 1s) FROM \"dunedaq.ipm.senderinfo.Info\" WHERE (\"partition_id\" = '${partition}' ) AND $timeFilter GROUP BY time($__interval), \"source_id\" fill(null)",
+          "query": "SELECT non_negative_derivative(cumulative_sum(sum(\"bytes\")), 1s) FROM \"dunedaq.ipm.opmon.SenderInfo\" WHERE \"session\" = '${session}' AND \"subelement\" =~ /${connection}/ AND $timeFilter GROUP BY time($__interval), \"subelement\" fill(null)",
           "rawQuery": true,
           "refId": "A",
           "resultFormat": "time_series",
@@ -161,19 +163,12 @@
         }
       ],
       "title": "Sent Bytes",
-      "transformations": [
-        {
-          "id": "renameByRegex",
-          "options": {
-            "regex": "[^.]+\\.[^.]+\\.([^.]+)",
-            "renamePattern": "$1"
-          }
-        }
-      ],
+      "transformations": [],
       "type": "timeseries"
     },
     {
       "datasource": {
+        "type": "influxdb",
         "uid": "${influxdb}"
       },
       "fieldConfig": {
@@ -182,6 +177,7 @@
             "mode": "palette-classic"
           },
           "custom": {
+            "axisBorderShow": false,
             "axisCenteredZero": false,
             "axisColorMode": "text",
             "axisLabel": "",
@@ -232,9 +228,9 @@
         "overrides": []
       },
       "gridPos": {
-        "h": 6,
-        "w": 6,
-        "x": 6,
+        "h": 7,
+        "w": 8,
+        "x": 8,
         "y": 0
       },
       "id": 15,
@@ -252,7 +248,7 @@
       },
       "targets": [
         {
-          "alias": "$tag_source_id",
+          "alias": "$tag_subelement",
           "datasource": {
             "uid": "${influxdb}"
           },
@@ -273,7 +269,7 @@
           "measurement": "dunedaq.networkmanager.nwmgrsentinfo.Info",
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "SELECT non_negative_derivative(cumulative_sum(sum(\"bytes\")), 1s) FROM \"dunedaq.ipm.receiverinfo.Info\" WHERE (\"partition_id\" = '${partition}' ) AND $timeFilter GROUP BY time($__interval), \"source_id\" fill(null)",
+          "query": "SELECT non_negative_derivative(cumulative_sum(sum(\"bytes\")), 1s) FROM \"dunedaq.ipm.opmon.ReceiverInfo\" WHERE \"session\" = '${session}' AND \"subelement\" =~ /${connection}/ AND $timeFilter GROUP BY time($__interval), \"subelement\" fill(null)",
           "rawQuery": true,
           "refId": "A",
           "resultFormat": "time_series",
@@ -324,6 +320,7 @@
     },
     {
       "datasource": {
+        "type": "influxdb",
         "uid": "${influxdb}"
       },
       "fieldConfig": {
@@ -332,324 +329,7 @@
             "mode": "palette-classic"
           },
           "custom": {
-            "axisCenteredZero": false,
-            "axisColorMode": "text",
-            "axisLabel": "",
-            "axisPlacement": "auto",
-            "barAlignment": 0,
-            "drawStyle": "line",
-            "fillOpacity": 0,
-            "gradientMode": "none",
-            "hideFrom": {
-              "legend": false,
-              "tooltip": false,
-              "viz": false
-            },
-            "insertNulls": false,
-            "lineInterpolation": "linear",
-            "lineWidth": 1,
-            "pointSize": 5,
-            "scaleDistribution": {
-              "type": "linear"
-            },
-            "showPoints": "auto",
-            "spanNulls": false,
-            "stacking": {
-              "group": "A",
-              "mode": "none"
-            },
-            "thresholdsStyle": {
-              "mode": "off"
-            }
-          },
-          "mappings": [],
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "green",
-                "value": null
-              },
-              {
-                "color": "red",
-                "value": 80
-              }
-            ]
-          },
-          "unit": "percentunit"
-        },
-        "overrides": []
-      },
-      "gridPos": {
-        "h": 6,
-        "w": 6,
-        "x": 12,
-        "y": 0
-      },
-      "id": 22,
-      "options": {
-        "legend": {
-          "calcs": [],
-          "displayMode": "list",
-          "placement": "right",
-          "showLegend": true
-        },
-        "tooltip": {
-          "mode": "single",
-          "sort": "none"
-        }
-      },
-      "targets": [
-        {
-          "alias": "Connections and topics",
-          "datasource": {
-            "uid": "${influxdb}"
-          },
-          "groupBy": [
-            {
-              "params": [
-                "$__interval"
-              ],
-              "type": "time"
-            },
-            {
-              "params": [
-                "null"
-              ],
-              "type": "fill"
-            }
-          ],
-          "hide": false,
-          "measurement": "dunedaq.networkmanager.nwmgrsentinfo.Info",
-          "orderByTime": "ASC",
-          "policy": "default",
-          "query": "SELECT 2*(sum(\"received_bytes\") - sum(\"sent_bytes\"))/(sum(\"sent_bytes\")+sum(\"received_bytes\")) FROM \"dunedaq.networkmanager.connectioninfo.Info\" WHERE (\"partition_id\" = '${partition}' )  AND $timeFilter GROUP BY time($__interval)  fill(null)",
-          "rawQuery": true,
-          "refId": "C",
-          "resultFormat": "time_series",
-          "select": [
-            [
-              {
-                "params": [
-                  "bytes"
-                ],
-                "type": "field"
-              },
-              {
-                "params": [],
-                "type": "sum"
-              },
-              {
-                "params": [],
-                "type": "cumulative_sum"
-              },
-              {
-                "params": [
-                  "1s"
-                ],
-                "type": "non_negative_derivative"
-              }
-            ]
-          ],
-          "tags": [
-            {
-              "key": "partition_id",
-              "operator": "=",
-              "value": "maroda_test"
-            }
-          ]
-        },
-        {
-          "alias": "Connection only",
-          "datasource": {
-            "uid": "${influxdb}"
-          },
-          "groupBy": [
-            {
-              "params": [
-                "$__interval"
-              ],
-              "type": "time"
-            },
-            {
-              "params": [
-                "null"
-              ],
-              "type": "fill"
-            }
-          ],
-          "measurement": "dunedaq.networkmanager.nwmgrsentinfo.Info",
-          "orderByTime": "ASC",
-          "policy": "default",
-          "query": "SELECT 2*(sum(\"received_bytes\") - sum(\"sent_bytes\"))/(sum(\"sent_bytes\") + sum(\"received_bytes\")) FROM \"dunedaq.networkmanager.connectioninfo.Info\" WHERE (\"partition_id\" = '${partition}' AND \"source_id\"=~/[^.]+\\.[^.]+\\.[^.]+\\.[^.]+/)  AND $timeFilter GROUP BY time($__interval)  fill(null)",
-          "rawQuery": true,
-          "refId": "A",
-          "resultFormat": "time_series",
-          "select": [
-            [
-              {
-                "params": [
-                  "bytes"
-                ],
-                "type": "field"
-              },
-              {
-                "params": [],
-                "type": "sum"
-              },
-              {
-                "params": [],
-                "type": "cumulative_sum"
-              },
-              {
-                "params": [
-                  "1s"
-                ],
-                "type": "non_negative_derivative"
-              }
-            ]
-          ],
-          "tags": [
-            {
-              "key": "partition_id",
-              "operator": "=",
-              "value": "maroda_test"
-            }
-          ]
-        },
-        {
-          "alias": "Topics only",
-          "datasource": {
-            "uid": "${influxdb}"
-          },
-          "groupBy": [
-            {
-              "params": [
-                "$__interval"
-              ],
-              "type": "time"
-            },
-            {
-              "params": [
-                "null"
-              ],
-              "type": "fill"
-            }
-          ],
-          "hide": true,
-          "measurement": "dunedaq.networkmanager.nwmgrsentinfo.Info",
-          "orderByTime": "ASC",
-          "policy": "default",
-          "query": "SELECT 2*(sum(\"received_bytes\") - sum(\"sent_bytes\"))/(sum(\"sent_bytes\") + sum(\"received_bytes\")) FROM \"dunedaq.networkmanager.connectioninfo.Info\" WHERE (\"partition_id\" = '${partition}' AND \"source_id\"=~/[^.]+\\.[^.]+\\.[^.]+/)  AND $timeFilter GROUP BY time($__interval)  fill(null)",
-          "rawQuery": true,
-          "refId": "D",
-          "resultFormat": "time_series",
-          "select": [
-            [
-              {
-                "params": [
-                  "bytes"
-                ],
-                "type": "field"
-              },
-              {
-                "params": [],
-                "type": "sum"
-              },
-              {
-                "params": [],
-                "type": "cumulative_sum"
-              },
-              {
-                "params": [
-                  "1s"
-                ],
-                "type": "non_negative_derivative"
-              }
-            ]
-          ],
-          "tags": [
-            {
-              "key": "partition_id",
-              "operator": "=",
-              "value": "maroda_test"
-            }
-          ]
-        },
-        {
-          "alias": "${connection}",
-          "datasource": {
-            "uid": "${influxdb}"
-          },
-          "groupBy": [
-            {
-              "params": [
-                "$__interval"
-              ],
-              "type": "time"
-            },
-            {
-              "params": [
-                "null"
-              ],
-              "type": "fill"
-            }
-          ],
-          "hide": false,
-          "measurement": "dunedaq.networkmanager.nwmgrsentinfo.Info",
-          "orderByTime": "ASC",
-          "policy": "default",
-          "query": "SELECT 2*(sum(\"received_bytes\") - sum(\"sent_bytes\"))/(sum(\"sent_bytes\")+sum(\"received_bytes\")) FROM \"dunedaq.networkmanager.connectioninfo.Info\" WHERE (\"partition_id\" = '${partition}' AND \"source_id\"=~/[^.]+\\.[^.]+\\.[^.]+\\.${connection}/)  AND $timeFilter GROUP BY time($__interval)  fill(null)",
-          "rawQuery": true,
-          "refId": "B",
-          "resultFormat": "time_series",
-          "select": [
-            [
-              {
-                "params": [
-                  "bytes"
-                ],
-                "type": "field"
-              },
-              {
-                "params": [],
-                "type": "sum"
-              },
-              {
-                "params": [],
-                "type": "cumulative_sum"
-              },
-              {
-                "params": [
-                  "1s"
-                ],
-                "type": "non_negative_derivative"
-              }
-            ]
-          ],
-          "tags": [
-            {
-              "key": "partition_id",
-              "operator": "=",
-              "value": "maroda_test"
-            }
-          ]
-        }
-      ],
-      "title": "Relative byte discrepancy",
-      "transformations": [],
-      "type": "timeseries"
-    },
-    {
-      "datasource": {
-        "uid": "${influxdb}"
-      },
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "mode": "palette-classic"
-          },
-          "custom": {
+            "axisBorderShow": false,
             "axisCenteredZero": false,
             "axisColorMode": "text",
             "axisLabel": "",
@@ -695,14 +375,14 @@
               }
             ]
           },
-          "unit": "bytes"
+          "unit": "decbytes"
         },
         "overrides": []
       },
       "gridPos": {
-        "h": 6,
-        "w": 6,
-        "x": 18,
+        "h": 7,
+        "w": 8,
+        "x": 16,
         "y": 0
       },
       "id": 32,
@@ -720,7 +400,7 @@
       },
       "targets": [
         {
-          "alias": "$tag_source_id",
+          "alias": "$tag_subelement",
           "datasource": {
             "uid": "${influxdb}"
           },
@@ -741,7 +421,7 @@
           "measurement": "dunedaq.networkmanager.nwmgrsentinfo.Info",
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "SELECT sum(\"bytes\") / sum(\"messages\") FROM \"dunedaq.ipm.senderinfo.Info\" WHERE (\"partition_id\" = '${partition}' ) AND \"messages\">0 AND $timeFilter GROUP BY time($__interval), \"source_id\" fill(null)",
+          "query": "SELECT sum(\"bytes\") / sum(\"messages\") FROM \"dunedaq.ipm.opmon.SenderInfo\" WHERE \"session\" = '${session}' AND \"subelement\" =~ /${connection}/ AND $timeFilter GROUP BY time($__interval), \"subelement\"",
           "rawQuery": true,
           "refId": "A",
           "resultFormat": "time_series",
@@ -792,6 +472,7 @@
     },
     {
       "datasource": {
+        "type": "influxdb",
         "uid": "${influxdb}"
       },
       "fieldConfig": {
@@ -800,6 +481,7 @@
             "mode": "palette-classic"
           },
           "custom": {
+            "axisBorderShow": false,
             "axisCenteredZero": false,
             "axisColorMode": "text",
             "axisLabel": "",
@@ -850,10 +532,10 @@
         "overrides": []
       },
       "gridPos": {
-        "h": 6,
-        "w": 6,
+        "h": 7,
+        "w": 8,
         "x": 0,
-        "y": 6
+        "y": 7
       },
       "id": 29,
       "options": {
@@ -870,7 +552,7 @@
       },
       "targets": [
         {
-          "alias": "$tag_source_id",
+          "alias": "$tag_subelement",
           "datasource": {
             "uid": "${influxdb}"
           },
@@ -891,7 +573,7 @@
           "measurement": "dunedaq.networkmanager.nwmgrsentinfo.Info",
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "SELECT non_negative_derivative(cumulative_sum(sum(\"messages\")), 1s) FROM \"dunedaq.ipm.senderinfo.Info\" WHERE (\"partition_id\" = '${partition}' ) AND $timeFilter GROUP BY time($__interval), \"source_id\" fill(null)",
+          "query": "SELECT non_negative_derivative(cumulative_sum(sum(\"messages\")), 1s) FROM \"dunedaq.ipm.opmon.SenderInfo\" WHERE \"session\" = '${session}' AND \"subelement\" =~ /${connection}/ AND $timeFilter GROUP BY time($__interval), \"subelement\" fill(null)",
           "rawQuery": true,
           "refId": "A",
           "resultFormat": "time_series",
@@ -942,6 +624,7 @@
     },
     {
       "datasource": {
+        "type": "influxdb",
         "uid": "${influxdb}"
       },
       "fieldConfig": {
@@ -950,6 +633,7 @@
             "mode": "palette-classic"
           },
           "custom": {
+            "axisBorderShow": false,
             "axisCenteredZero": false,
             "axisColorMode": "text",
             "axisLabel": "",
@@ -1000,10 +684,10 @@
         "overrides": []
       },
       "gridPos": {
-        "h": 6,
-        "w": 6,
-        "x": 6,
-        "y": 6
+        "h": 7,
+        "w": 8,
+        "x": 8,
+        "y": 7
       },
       "id": 30,
       "options": {
@@ -1020,7 +704,7 @@
       },
       "targets": [
         {
-          "alias": "$tag_source_id",
+          "alias": "$tag_subelement",
           "datasource": {
             "uid": "${influxdb}"
           },
@@ -1041,7 +725,7 @@
           "measurement": "dunedaq.networkmanager.nwmgrsentinfo.Info",
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "SELECT non_negative_derivative(cumulative_sum(sum(\"messages\")), 1s) FROM \"dunedaq.ipm.receiverinfo.Info\" WHERE (\"partition_id\" = '${partition}' ) AND $timeFilter GROUP BY time($__interval), \"source_id\" fill(null)",
+          "query": "SELECT non_negative_derivative(cumulative_sum(sum(\"messages\")), 1s) FROM \"dunedaq.ipm.opmon.ReceiverInfo\" WHERE \"session\" = '${session}' AND \"subelement\" =~ /${connection}/ AND $timeFilter GROUP BY time($__interval), \"subelement\" fill(null)",
           "rawQuery": true,
           "refId": "A",
           "resultFormat": "time_series",
@@ -1092,6 +776,7 @@
     },
     {
       "datasource": {
+        "type": "influxdb",
         "uid": "${influxdb}"
       },
       "fieldConfig": {
@@ -1100,265 +785,7 @@
             "mode": "palette-classic"
           },
           "custom": {
-            "axisCenteredZero": false,
-            "axisColorMode": "text",
-            "axisLabel": "",
-            "axisPlacement": "auto",
-            "barAlignment": 0,
-            "drawStyle": "line",
-            "fillOpacity": 0,
-            "gradientMode": "none",
-            "hideFrom": {
-              "legend": false,
-              "tooltip": false,
-              "viz": false
-            },
-            "insertNulls": false,
-            "lineInterpolation": "linear",
-            "lineWidth": 1,
-            "pointSize": 5,
-            "scaleDistribution": {
-              "type": "linear"
-            },
-            "showPoints": "auto",
-            "spanNulls": false,
-            "stacking": {
-              "group": "A",
-              "mode": "none"
-            },
-            "thresholdsStyle": {
-              "mode": "off"
-            }
-          },
-          "mappings": [],
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "green",
-                "value": null
-              },
-              {
-                "color": "red",
-                "value": 80
-              }
-            ]
-          },
-          "unit": "percentunit"
-        },
-        "overrides": []
-      },
-      "gridPos": {
-        "h": 6,
-        "w": 6,
-        "x": 12,
-        "y": 6
-      },
-      "id": 31,
-      "options": {
-        "legend": {
-          "calcs": [],
-          "displayMode": "list",
-          "placement": "right",
-          "showLegend": true
-        },
-        "tooltip": {
-          "mode": "single",
-          "sort": "none"
-        }
-      },
-      "targets": [
-        {
-          "alias": "Connection and topics",
-          "datasource": {
-            "uid": "${influxdb}"
-          },
-          "groupBy": [
-            {
-              "params": [
-                "$__interval"
-              ],
-              "type": "time"
-            },
-            {
-              "params": [
-                "null"
-              ],
-              "type": "fill"
-            }
-          ],
-          "measurement": "dunedaq.networkmanager.nwmgrsentinfo.Info",
-          "orderByTime": "ASC",
-          "policy": "default",
-          "query": "SELECT 2*(sum(\"received_messages\") - sum(\"sent_messages\"))/(sum(\"sent_messages\")+sum(\"received_messages\")) FROM \"dunedaq.networkmanager.connectioninfo.Info\" WHERE (\"partition_id\" = '${partition}')  AND $timeFilter GROUP BY time($__interval)  fill(null)",
-          "rawQuery": true,
-          "refId": "A",
-          "resultFormat": "time_series",
-          "select": [
-            [
-              {
-                "params": [
-                  "bytes"
-                ],
-                "type": "field"
-              },
-              {
-                "params": [],
-                "type": "sum"
-              },
-              {
-                "params": [],
-                "type": "cumulative_sum"
-              },
-              {
-                "params": [
-                  "1s"
-                ],
-                "type": "non_negative_derivative"
-              }
-            ]
-          ],
-          "tags": [
-            {
-              "key": "partition_id",
-              "operator": "=",
-              "value": "maroda_test"
-            }
-          ]
-        },
-        {
-          "alias": "Connection only",
-          "datasource": {
-            "uid": "${influxdb}"
-          },
-          "groupBy": [
-            {
-              "params": [
-                "$__interval"
-              ],
-              "type": "time"
-            },
-            {
-              "params": [
-                "null"
-              ],
-              "type": "fill"
-            }
-          ],
-          "hide": false,
-          "measurement": "dunedaq.networkmanager.nwmgrsentinfo.Info",
-          "orderByTime": "ASC",
-          "policy": "default",
-          "query": "SELECT 2*(sum(\"received_messages\") - sum(\"sent_messages\"))/(sum(\"sent_messages\")+sum(\"received_messages\")) FROM \"dunedaq.networkmanager.connectioninfo.Info\" WHERE (\"partition_id\" = '${partition}' AND \"source_id\"=~/[^.]+\\.[^.]+\\.[^.]+\\.[^.]+/)  AND $timeFilter GROUP BY time($__interval)  fill(null)",
-          "rawQuery": true,
-          "refId": "C",
-          "resultFormat": "time_series",
-          "select": [
-            [
-              {
-                "params": [
-                  "bytes"
-                ],
-                "type": "field"
-              },
-              {
-                "params": [],
-                "type": "sum"
-              },
-              {
-                "params": [],
-                "type": "cumulative_sum"
-              },
-              {
-                "params": [
-                  "1s"
-                ],
-                "type": "non_negative_derivative"
-              }
-            ]
-          ],
-          "tags": [
-            {
-              "key": "partition_id",
-              "operator": "=",
-              "value": "maroda_test"
-            }
-          ]
-        },
-        {
-          "alias": "${connection}",
-          "datasource": {
-            "uid": "${influxdb}"
-          },
-          "groupBy": [
-            {
-              "params": [
-                "$__interval"
-              ],
-              "type": "time"
-            },
-            {
-              "params": [
-                "null"
-              ],
-              "type": "fill"
-            }
-          ],
-          "hide": false,
-          "measurement": "dunedaq.networkmanager.nwmgrsentinfo.Info",
-          "orderByTime": "ASC",
-          "policy": "default",
-          "query": "SELECT 2*(sum(\"received_messages\") - sum(\"sent_messages\"))/(sum(\"sent_messages\")+sum(\"received_messages\")) FROM \"dunedaq.networkmanager.connectioninfo.Info\" WHERE (\"partition_id\" = '${partition}' AND \"source_id\"=~/[^.]+\\.[^.]+\\.[^.]+\\.${connection}/)  AND $timeFilter GROUP BY time($__interval)  fill(null)",
-          "rawQuery": true,
-          "refId": "B",
-          "resultFormat": "time_series",
-          "select": [
-            [
-              {
-                "params": [
-                  "bytes"
-                ],
-                "type": "field"
-              },
-              {
-                "params": [],
-                "type": "sum"
-              },
-              {
-                "params": [],
-                "type": "cumulative_sum"
-              },
-              {
-                "params": [
-                  "1s"
-                ],
-                "type": "non_negative_derivative"
-              }
-            ]
-          ],
-          "tags": [
-            {
-              "key": "partition_id",
-              "operator": "=",
-              "value": "maroda_test"
-            }
-          ]
-        }
-      ],
-      "title": "Relative message discrepancy",
-      "transformations": [],
-      "type": "timeseries"
-    },
-    {
-      "datasource": {
-        "uid": "${influxdb}"
-      },
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "mode": "palette-classic"
-          },
-          "custom": {
+            "axisBorderShow": false,
             "axisCenteredZero": false,
             "axisColorMode": "text",
             "axisLabel": "",
@@ -1404,15 +831,15 @@
               }
             ]
           },
-          "unit": "bytes"
+          "unit": "decbytes"
         },
         "overrides": []
       },
       "gridPos": {
-        "h": 6,
-        "w": 6,
-        "x": 18,
-        "y": 6
+        "h": 7,
+        "w": 8,
+        "x": 16,
+        "y": 7
       },
       "id": 33,
       "options": {
@@ -1429,7 +856,7 @@
       },
       "targets": [
         {
-          "alias": "$tag_source_id",
+          "alias": "$tag_subelement",
           "datasource": {
             "uid": "${influxdb}"
           },
@@ -1450,7 +877,7 @@
           "measurement": "dunedaq.networkmanager.nwmgrsentinfo.Info",
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "SELECT sum(\"bytes\") / sum(\"messages\") FROM \"dunedaq.ipm.receiverinfo.Info\" WHERE (\"partition_id\" = '${partition}' ) AND \"messages\" > 0 AND $timeFilter GROUP BY time($__interval), \"source_id\" fill(null)",
+          "query": "SELECT sum(\"bytes\") / sum(\"messages\") FROM \"dunedaq.ipm.opmon.ReceiverInfo\" WHERE \"session\" = '${session}' AND \"subelement\" =~ /${connection}/ AND $timeFilter GROUP BY time($__interval), \"subelement\"",
           "rawQuery": true,
           "refId": "A",
           "resultFormat": "time_series",
@@ -1500,6 +927,7 @@
       "type": "timeseries"
     },
     {
+      "collapsed": true,
       "datasource": {
         "type": "datasource",
         "uid": "grafana"
@@ -1508,9 +936,207 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 12
+        "y": 14
       },
       "id": 47,
+      "panels": [
+        {
+          "datasource": {
+            "type": "influxdb",
+            "uid": "${influxdb}"
+          },
+          "fieldConfig": {
+            "defaults": {
+              "color": {
+                "mode": "palette-classic"
+              },
+              "custom": {
+                "axisBorderShow": false,
+                "axisCenteredZero": false,
+                "axisColorMode": "text",
+                "axisLabel": "",
+                "axisPlacement": "auto",
+                "barAlignment": 0,
+                "drawStyle": "line",
+                "fillOpacity": 0,
+                "gradientMode": "none",
+                "hideFrom": {
+                  "legend": false,
+                  "tooltip": false,
+                  "viz": false
+                },
+                "insertNulls": false,
+                "lineInterpolation": "linear",
+                "lineWidth": 2,
+                "pointSize": 3,
+                "scaleDistribution": {
+                  "log": 10,
+                  "type": "log"
+                },
+                "showPoints": "always",
+                "spanNulls": true,
+                "stacking": {
+                  "group": "A",
+                  "mode": "none"
+                },
+                "thresholdsStyle": {
+                  "mode": "off"
+                }
+              },
+              "mappings": [],
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {
+                    "color": "green"
+                  },
+                  {
+                    "color": "red",
+                    "value": 80
+                  }
+                ]
+              },
+              "unit": "binBps"
+            },
+            "overrides": []
+          },
+          "gridPos": {
+            "h": 6,
+            "w": 6,
+            "x": 0,
+            "y": 23
+          },
+          "id": 2,
+          "links": [],
+          "maxPerRow": 4,
+          "options": {
+            "legend": {
+              "calcs": [],
+              "displayMode": "list",
+              "placement": "right",
+              "showLegend": true
+            },
+            "tooltip": {
+              "mode": "single",
+              "sort": "none"
+            }
+          },
+          "pluginVersion": "8.0.6",
+          "repeat": "application",
+          "repeatDirection": "h",
+          "targets": [
+            {
+              "alias": "To $tag_subelement",
+              "datasource": {
+                "uid": "${influxdb}"
+              },
+              "groupBy": [
+                {
+                  "params": [
+                    "$__interval"
+                  ],
+                  "type": "time"
+                }
+              ],
+              "hide": false,
+              "measurement": "dunedaq.appfwk.queueinfo.Info",
+              "orderByTime": "ASC",
+              "policy": "default",
+              "query": "SELECT non_negative_derivative(cumulative_sum(sum(\"bytes\")), 1s) FROM \"dunedaq.ipm.opmon.SenderInfo\" WHERE \"session\" = '${session}' AND \"subelement\"=~ /${connection}/ AND $timeFilter AND \"messages\">0 GROUP BY time($__interval), \"subelement\"",
+              "rawQuery": true,
+              "refId": "C",
+              "resultFormat": "time_series",
+              "select": [
+                [
+                  {
+                    "params": [
+                      "number_of_elements"
+                    ],
+                    "type": "field"
+                  },
+                  {
+                    "params": [],
+                    "type": "distinct"
+                  },
+                  {
+                    "params": [
+                      " * 100"
+                    ],
+                    "type": "math"
+                  }
+                ]
+              ],
+              "tags": [
+                {
+                  "key": "source_id",
+                  "operator": "=",
+                  "value": "maroda_test_dataflow.trigger_record_q"
+                }
+              ]
+            },
+            {
+              "alias": "From $tag_subelement",
+              "datasource": {
+                "uid": "${influxdb}"
+              },
+              "groupBy": [
+                {
+                  "params": [
+                    "$__interval"
+                  ],
+                  "type": "time"
+                }
+              ],
+              "hide": false,
+              "measurement": "dunedaq.appfwk.queueinfo.Info",
+              "orderByTime": "ASC",
+              "policy": "default",
+              "query": "SELECT non_negative_derivative(cumulative_sum(sum(\"bytes\")), 1s) FROM \"dunedaq.ipm.opmon.ReceiverInfo\" WHERE \"session\" = '${session}' AND \"subelement\"=~ /${connection}/ AND $timeFilter AND \"messages\">0 GROUP BY time($__interval), \"subelement\"",
+              "rawQuery": true,
+              "refId": "A",
+              "resultFormat": "time_series",
+              "select": [
+                [
+                  {
+                    "params": [
+                      "number_of_elements"
+                    ],
+                    "type": "field"
+                  },
+                  {
+                    "params": [],
+                    "type": "distinct"
+                  },
+                  {
+                    "params": [
+                      " * 100"
+                    ],
+                    "type": "math"
+                  }
+                ]
+              ],
+              "tags": [
+                {
+                  "key": "source_id",
+                  "operator": "=",
+                  "value": "maroda_test_dataflow.trigger_record_q"
+                }
+              ]
+            }
+          ],
+          "title": "${application} bytes",
+          "transformations": [
+            {
+              "id": "renameByRegex",
+              "options": {
+                "regex": "(.*) .*\\.([^.]+)",
+                "renamePattern": "$1 $2"
+              }
+            }
+          ],
+          "type": "timeseries"
+        }
+      ],
       "targets": [
         {
           "datasource": {
@@ -1524,201 +1150,7 @@
       "type": "row"
     },
     {
-      "datasource": {
-        "uid": "${influxdb}"
-      },
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "mode": "palette-classic"
-          },
-          "custom": {
-            "axisCenteredZero": false,
-            "axisColorMode": "text",
-            "axisLabel": "",
-            "axisPlacement": "auto",
-            "barAlignment": 0,
-            "drawStyle": "line",
-            "fillOpacity": 0,
-            "gradientMode": "none",
-            "hideFrom": {
-              "legend": false,
-              "tooltip": false,
-              "viz": false
-            },
-            "insertNulls": false,
-            "lineInterpolation": "linear",
-            "lineWidth": 2,
-            "pointSize": 3,
-            "scaleDistribution": {
-              "log": 10,
-              "type": "log"
-            },
-            "showPoints": "always",
-            "spanNulls": true,
-            "stacking": {
-              "group": "A",
-              "mode": "none"
-            },
-            "thresholdsStyle": {
-              "mode": "off"
-            }
-          },
-          "mappings": [],
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "green",
-                "value": null
-              },
-              {
-                "color": "red",
-                "value": 80
-              }
-            ]
-          },
-          "unit": "binBps"
-        },
-        "overrides": []
-      },
-      "gridPos": {
-        "h": 6,
-        "w": 6,
-        "x": 0,
-        "y": 13
-      },
-      "id": 2,
-      "links": [],
-      "maxPerRow": 4,
-      "options": {
-        "legend": {
-          "calcs": [],
-          "displayMode": "list",
-          "placement": "right",
-          "showLegend": true
-        },
-        "tooltip": {
-          "mode": "single",
-          "sort": "none"
-        }
-      },
-      "pluginVersion": "8.0.6",
-      "repeat": "application",
-      "repeatDirection": "h",
-      "targets": [
-        {
-          "alias": "To $tag_source_id",
-          "datasource": {
-            "uid": "${influxdb}"
-          },
-          "groupBy": [
-            {
-              "params": [
-                "$__interval"
-              ],
-              "type": "time"
-            }
-          ],
-          "hide": false,
-          "measurement": "dunedaq.appfwk.queueinfo.Info",
-          "orderByTime": "ASC",
-          "policy": "default",
-          "query": "SELECT non_negative_derivative(cumulative_sum(sum(\"bytes\")), 1s) FROM \"dunedaq.ipm.senderinfo.Info\" WHERE (\"partition_id\" = '${partition}' AND \"source_id\"=~ /.*\\.${application}\\..*/ ) AND $timeFilter GROUP BY time($__interval), \"source_id\"",
-          "rawQuery": true,
-          "refId": "C",
-          "resultFormat": "time_series",
-          "select": [
-            [
-              {
-                "params": [
-                  "number_of_elements"
-                ],
-                "type": "field"
-              },
-              {
-                "params": [],
-                "type": "distinct"
-              },
-              {
-                "params": [
-                  " * 100"
-                ],
-                "type": "math"
-              }
-            ]
-          ],
-          "tags": [
-            {
-              "key": "source_id",
-              "operator": "=",
-              "value": "maroda_test_dataflow.trigger_record_q"
-            }
-          ]
-        },
-        {
-          "alias": "From $tag_source_id",
-          "datasource": {
-            "uid": "${influxdb}"
-          },
-          "groupBy": [
-            {
-              "params": [
-                "$__interval"
-              ],
-              "type": "time"
-            }
-          ],
-          "hide": false,
-          "measurement": "dunedaq.appfwk.queueinfo.Info",
-          "orderByTime": "ASC",
-          "policy": "default",
-          "query": "SELECT non_negative_derivative(cumulative_sum(sum(\"bytes\")), 1s) FROM \"dunedaq.ipm.receiverinfo.Info\" WHERE (\"partition_id\" = '${partition}' AND \"source_id\"=~ /.*\\.${application}\\..*/ ) AND $timeFilter GROUP BY time($__interval), \"source_id\"",
-          "rawQuery": true,
-          "refId": "A",
-          "resultFormat": "time_series",
-          "select": [
-            [
-              {
-                "params": [
-                  "number_of_elements"
-                ],
-                "type": "field"
-              },
-              {
-                "params": [],
-                "type": "distinct"
-              },
-              {
-                "params": [
-                  " * 100"
-                ],
-                "type": "math"
-              }
-            ]
-          ],
-          "tags": [
-            {
-              "key": "source_id",
-              "operator": "=",
-              "value": "maroda_test_dataflow.trigger_record_q"
-            }
-          ]
-        }
-      ],
-      "title": "${application} bytes",
-      "transformations": [
-        {
-          "id": "renameByRegex",
-          "options": {
-            "regex": "(.*) .*\\.([^.]+)",
-            "renamePattern": "$1 $2"
-          }
-        }
-      ],
-      "type": "timeseries"
-    },
-    {
+      "collapsed": true,
       "datasource": {
         "type": "datasource",
         "uid": "grafana"
@@ -1727,9 +1159,207 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 25
+        "y": 15
       },
       "id": 38,
+      "panels": [
+        {
+          "datasource": {
+            "type": "influxdb",
+            "uid": "${influxdb}"
+          },
+          "fieldConfig": {
+            "defaults": {
+              "color": {
+                "mode": "palette-classic"
+              },
+              "custom": {
+                "axisBorderShow": false,
+                "axisCenteredZero": false,
+                "axisColorMode": "text",
+                "axisLabel": "",
+                "axisPlacement": "auto",
+                "barAlignment": 0,
+                "drawStyle": "line",
+                "fillOpacity": 0,
+                "gradientMode": "none",
+                "hideFrom": {
+                  "legend": false,
+                  "tooltip": false,
+                  "viz": false
+                },
+                "insertNulls": false,
+                "lineInterpolation": "linear",
+                "lineWidth": 2,
+                "pointSize": 3,
+                "scaleDistribution": {
+                  "log": 10,
+                  "type": "log"
+                },
+                "showPoints": "always",
+                "spanNulls": true,
+                "stacking": {
+                  "group": "A",
+                  "mode": "none"
+                },
+                "thresholdsStyle": {
+                  "mode": "off"
+                }
+              },
+              "mappings": [],
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {
+                    "color": "green"
+                  },
+                  {
+                    "color": "red",
+                    "value": 80
+                  }
+                ]
+              },
+              "unit": "hertz"
+            },
+            "overrides": []
+          },
+          "gridPos": {
+            "h": 6,
+            "w": 6,
+            "x": 0,
+            "y": 52
+          },
+          "id": 39,
+          "links": [],
+          "maxPerRow": 4,
+          "options": {
+            "legend": {
+              "calcs": [],
+              "displayMode": "list",
+              "placement": "right",
+              "showLegend": true
+            },
+            "tooltip": {
+              "mode": "single",
+              "sort": "none"
+            }
+          },
+          "pluginVersion": "8.0.6",
+          "repeat": "application",
+          "repeatDirection": "h",
+          "targets": [
+            {
+              "alias": "To $tag_subelement",
+              "datasource": {
+                "uid": "${influxdb}"
+              },
+              "groupBy": [
+                {
+                  "params": [
+                    "$__interval"
+                  ],
+                  "type": "time"
+                }
+              ],
+              "hide": false,
+              "measurement": "dunedaq.appfwk.queueinfo.Info",
+              "orderByTime": "ASC",
+              "policy": "default",
+              "query": "SELECT non_negative_derivative(cumulative_sum(sum(\"bytes\")), 1s) FROM \"dunedaq.ipm.opmon.SenderInfo\" WHERE \"session\" = '${session}' AND \"subelement\"=~ /${connection}/ AND $timeFilter AND \"messages\">0 GROUP BY time($__interval), \"subelement\"",
+              "rawQuery": true,
+              "refId": "C",
+              "resultFormat": "time_series",
+              "select": [
+                [
+                  {
+                    "params": [
+                      "number_of_elements"
+                    ],
+                    "type": "field"
+                  },
+                  {
+                    "params": [],
+                    "type": "distinct"
+                  },
+                  {
+                    "params": [
+                      " * 100"
+                    ],
+                    "type": "math"
+                  }
+                ]
+              ],
+              "tags": [
+                {
+                  "key": "source_id",
+                  "operator": "=",
+                  "value": "maroda_test_dataflow.trigger_record_q"
+                }
+              ]
+            },
+            {
+              "alias": "From $tag_subelement",
+              "datasource": {
+                "uid": "${influxdb}"
+              },
+              "groupBy": [
+                {
+                  "params": [
+                    "$__interval"
+                  ],
+                  "type": "time"
+                }
+              ],
+              "hide": false,
+              "measurement": "dunedaq.appfwk.queueinfo.Info",
+              "orderByTime": "ASC",
+              "policy": "default",
+              "query": "SELECT non_negative_derivative(cumulative_sum(sum(\"bytes\")), 1s) FROM \"dunedaq.ipm.opmon.ReceiverInfo\" WHERE \"session\" = '${session}' AND \"subelement\"=~ /${connection}/ AND $timeFilter AND \"messages\">0 GROUP BY time($__interval), \"subelement\"",
+              "rawQuery": true,
+              "refId": "A",
+              "resultFormat": "time_series",
+              "select": [
+                [
+                  {
+                    "params": [
+                      "number_of_elements"
+                    ],
+                    "type": "field"
+                  },
+                  {
+                    "params": [],
+                    "type": "distinct"
+                  },
+                  {
+                    "params": [
+                      " * 100"
+                    ],
+                    "type": "math"
+                  }
+                ]
+              ],
+              "tags": [
+                {
+                  "key": "source_id",
+                  "operator": "=",
+                  "value": "maroda_test_dataflow.trigger_record_q"
+                }
+              ]
+            }
+          ],
+          "title": "${application} messages",
+          "transformations": [
+            {
+              "id": "renameByRegex",
+              "options": {
+                "regex": "(.*) .*\\.([^.]+)",
+                "renamePattern": "$1 $2"
+              }
+            }
+          ],
+          "type": "timeseries"
+        }
+      ],
       "targets": [
         {
           "datasource": {
@@ -1743,203 +1373,428 @@
       "type": "row"
     },
     {
-      "datasource": {
-        "uid": "${influxdb}"
-      },
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "mode": "palette-classic"
-          },
-          "custom": {
-            "axisCenteredZero": false,
-            "axisColorMode": "text",
-            "axisLabel": "",
-            "axisPlacement": "auto",
-            "barAlignment": 0,
-            "drawStyle": "line",
-            "fillOpacity": 0,
-            "gradientMode": "none",
-            "hideFrom": {
-              "legend": false,
-              "tooltip": false,
-              "viz": false
-            },
-            "insertNulls": false,
-            "lineInterpolation": "linear",
-            "lineWidth": 2,
-            "pointSize": 3,
-            "scaleDistribution": {
-              "log": 10,
-              "type": "log"
-            },
-            "showPoints": "always",
-            "spanNulls": true,
-            "stacking": {
-              "group": "A",
-              "mode": "none"
-            },
-            "thresholdsStyle": {
-              "mode": "off"
-            }
-          },
-          "mappings": [],
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "green"
-              },
-              {
-                "color": "red",
-                "value": 80
-              }
-            ]
-          },
-          "unit": "hertz"
-        },
-        "overrides": []
-      },
+      "collapsed": true,
       "gridPos": {
-        "h": 6,
-        "w": 6,
+        "h": 1,
+        "w": 24,
         "x": 0,
-        "y": 26
+        "y": 16
       },
-      "id": 39,
-      "links": [],
-      "maxPerRow": 4,
-      "options": {
-        "legend": {
-          "calcs": [],
-          "displayMode": "list",
-          "placement": "right",
-          "showLegend": true
-        },
-        "tooltip": {
-          "mode": "single",
-          "sort": "none"
-        }
-      },
-      "pluginVersion": "8.0.6",
-      "repeat": "application",
-      "repeatDirection": "h",
-      "targets": [
+      "id": 48,
+      "panels": [
         {
-          "alias": "To $tag_source_id",
           "datasource": {
+            "type": "influxdb",
             "uid": "${influxdb}"
           },
-          "groupBy": [
-            {
-              "params": [
-                "$__interval"
-              ],
-              "type": "time"
-            }
-          ],
-          "hide": false,
-          "measurement": "dunedaq.appfwk.queueinfo.Info",
-          "orderByTime": "ASC",
-          "policy": "default",
-          "query": "SELECT non_negative_derivative(cumulative_sum(sum(\"messages\")), 1s) FROM \"dunedaq.ipm.senderinfo.Info\" WHERE (\"partition_id\" = '${partition}' AND \"source_id\"=~ /.*\\.${application}\\..*/ ) AND $timeFilter GROUP BY time($__interval), \"source_id\"",
-          "rawQuery": true,
-          "refId": "C",
-          "resultFormat": "time_series",
-          "select": [
-            [
-              {
-                "params": [
-                  "number_of_elements"
-                ],
-                "type": "field"
+          "fieldConfig": {
+            "defaults": {
+              "color": {
+                "mode": "palette-classic"
               },
-              {
-                "params": [],
-                "type": "distinct"
+              "custom": {
+                "axisBorderShow": false,
+                "axisCenteredZero": false,
+                "axisColorMode": "text",
+                "axisLabel": "",
+                "axisPlacement": "auto",
+                "barAlignment": 0,
+                "drawStyle": "line",
+                "fillOpacity": 0,
+                "gradientMode": "none",
+                "hideFrom": {
+                  "legend": false,
+                  "tooltip": false,
+                  "viz": false
+                },
+                "insertNulls": false,
+                "lineInterpolation": "linear",
+                "lineWidth": 2,
+                "pointSize": 3,
+                "scaleDistribution": {
+                  "log": 10,
+                  "type": "log"
+                },
+                "showPoints": "always",
+                "spanNulls": true,
+                "stacking": {
+                  "group": "A",
+                  "mode": "none"
+                },
+                "thresholdsStyle": {
+                  "mode": "off"
+                }
               },
-              {
-                "params": [
-                  " * 100"
-                ],
-                "type": "math"
-              }
-            ]
-          ],
-          "tags": [
-            {
-              "key": "source_id",
-              "operator": "=",
-              "value": "maroda_test_dataflow.trigger_record_q"
-            }
-          ]
-        },
-        {
-          "alias": "From $tag_source_id",
-          "datasource": {
-            "uid": "${influxdb}"
+              "mappings": [],
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {
+                    "color": "green"
+                  },
+                  {
+                    "color": "red",
+                    "value": 80
+                  }
+                ]
+              },
+              "unit": "binBps"
+            },
+            "overrides": []
           },
-          "groupBy": [
-            {
-              "params": [
-                "$__interval"
-              ],
-              "type": "time"
-            }
-          ],
-          "hide": false,
-          "measurement": "dunedaq.appfwk.queueinfo.Info",
-          "orderByTime": "ASC",
-          "policy": "default",
-          "query": "SELECT non_negative_derivative(cumulative_sum(sum(\"messages\")), 1s) FROM \"dunedaq.ipm.receiverinfo.Info\" WHERE (\"partition_id\" = '${partition}' AND \"source_id\"=~ /.*\\.${application}\\..*/ ) AND $timeFilter GROUP BY time($__interval), \"source_id\"",
-          "rawQuery": true,
-          "refId": "A",
-          "resultFormat": "time_series",
-          "select": [
-            [
-              {
-                "params": [
-                  "number_of_elements"
-                ],
-                "type": "field"
-              },
-              {
-                "params": [],
-                "type": "distinct"
-              },
-              {
-                "params": [
-                  " * 100"
-                ],
-                "type": "math"
-              }
-            ]
-          ],
-          "tags": [
-            {
-              "key": "source_id",
-              "operator": "=",
-              "value": "maroda_test_dataflow.trigger_record_q"
-            }
-          ]
-        }
-      ],
-      "title": "${application} messages",
-      "transformations": [
-        {
-          "id": "renameByRegex",
+          "gridPos": {
+            "h": 6,
+            "w": 6,
+            "x": 0,
+            "y": 17
+          },
+          "id": 55,
+          "links": [],
+          "maxPerRow": 4,
           "options": {
-            "regex": "(.*) .*\\.([^.]+)",
-            "renamePattern": "$1 $2"
-          }
+            "legend": {
+              "calcs": [],
+              "displayMode": "list",
+              "placement": "right",
+              "showLegend": true
+            },
+            "tooltip": {
+              "mode": "single",
+              "sort": "none"
+            }
+          },
+          "pluginVersion": "8.0.6",
+          "repeat": "connection",
+          "repeatDirection": "h",
+          "targets": [
+            {
+              "alias": "Out of $tag_application",
+              "datasource": {
+                "uid": "${influxdb}"
+              },
+              "groupBy": [
+                {
+                  "params": [
+                    "$__interval"
+                  ],
+                  "type": "time"
+                }
+              ],
+              "hide": false,
+              "measurement": "dunedaq.appfwk.queueinfo.Info",
+              "orderByTime": "ASC",
+              "policy": "default",
+              "query": "SELECT non_negative_derivative(cumulative_sum(sum(\"bytes\")), 1s) FROM \"dunedaq.ipm.opmon.SenderInfo\" WHERE \"session\" = '${session}' AND \"subelement\"=~ /${connection}/ AND \"application\" =~ /${application}/ AND $timeFilter AND \"messages\">0 GROUP BY time($__interval), \"application\"",
+              "rawQuery": true,
+              "refId": "C",
+              "resultFormat": "time_series",
+              "select": [
+                [
+                  {
+                    "params": [
+                      "number_of_elements"
+                    ],
+                    "type": "field"
+                  },
+                  {
+                    "params": [],
+                    "type": "distinct"
+                  },
+                  {
+                    "params": [
+                      " * 100"
+                    ],
+                    "type": "math"
+                  }
+                ]
+              ],
+              "tags": [
+                {
+                  "key": "source_id",
+                  "operator": "=",
+                  "value": "maroda_test_dataflow.trigger_record_q"
+                }
+              ]
+            },
+            {
+              "alias": "Into $tag_application",
+              "datasource": {
+                "uid": "${influxdb}"
+              },
+              "groupBy": [
+                {
+                  "params": [
+                    "$__interval"
+                  ],
+                  "type": "time"
+                }
+              ],
+              "hide": false,
+              "measurement": "dunedaq.appfwk.queueinfo.Info",
+              "orderByTime": "ASC",
+              "policy": "default",
+              "query": "SELECT non_negative_derivative(cumulative_sum(sum(\"bytes\")), 1s) FROM \"dunedaq.ipm.opmon.ReceiverInfo\" WHERE \"session\" = '${session}' AND \"subelement\"=~ /${connection}/ AND \"application\" =~ /${application}/ AND $timeFilter AND \"messages\">0 GROUP BY time($__interval), \"application\"",
+              "rawQuery": true,
+              "refId": "A",
+              "resultFormat": "time_series",
+              "select": [
+                [
+                  {
+                    "params": [
+                      "number_of_elements"
+                    ],
+                    "type": "field"
+                  },
+                  {
+                    "params": [],
+                    "type": "distinct"
+                  },
+                  {
+                    "params": [
+                      " * 100"
+                    ],
+                    "type": "math"
+                  }
+                ]
+              ],
+              "tags": [
+                {
+                  "key": "source_id",
+                  "operator": "=",
+                  "value": "maroda_test_dataflow.trigger_record_q"
+                }
+              ]
+            }
+          ],
+          "title": "Balance for ${connection}",
+          "transformations": [
+            {
+              "id": "renameByRegex",
+              "options": {
+                "regex": "(.*) .*\\.([^.]+)",
+                "renamePattern": "$1 $2"
+              }
+            }
+          ],
+          "type": "timeseries"
         }
       ],
-      "type": "timeseries"
+      "title": "Balance - bytes",
+      "type": "row"
+    },
+    {
+      "collapsed": true,
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 17
+      },
+      "id": 171,
+      "panels": [
+        {
+          "datasource": {
+            "type": "influxdb",
+            "uid": "${influxdb}"
+          },
+          "fieldConfig": {
+            "defaults": {
+              "color": {
+                "mode": "palette-classic"
+              },
+              "custom": {
+                "axisBorderShow": false,
+                "axisCenteredZero": false,
+                "axisColorMode": "text",
+                "axisLabel": "",
+                "axisPlacement": "auto",
+                "barAlignment": 0,
+                "drawStyle": "line",
+                "fillOpacity": 0,
+                "gradientMode": "none",
+                "hideFrom": {
+                  "legend": false,
+                  "tooltip": false,
+                  "viz": false
+                },
+                "insertNulls": false,
+                "lineInterpolation": "linear",
+                "lineWidth": 2,
+                "pointSize": 3,
+                "scaleDistribution": {
+                  "log": 10,
+                  "type": "log"
+                },
+                "showPoints": "always",
+                "spanNulls": true,
+                "stacking": {
+                  "group": "A",
+                  "mode": "none"
+                },
+                "thresholdsStyle": {
+                  "mode": "off"
+                }
+              },
+              "mappings": [],
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {
+                    "color": "green"
+                  },
+                  {
+                    "color": "red",
+                    "value": 80
+                  }
+                ]
+              },
+              "unit": "pps"
+            },
+            "overrides": []
+          },
+          "gridPos": {
+            "h": 6,
+            "w": 6,
+            "x": 0,
+            "y": 18
+          },
+          "id": 281,
+          "links": [],
+          "maxPerRow": 4,
+          "options": {
+            "legend": {
+              "calcs": [],
+              "displayMode": "list",
+              "placement": "right",
+              "showLegend": true
+            },
+            "tooltip": {
+              "mode": "single",
+              "sort": "none"
+            }
+          },
+          "pluginVersion": "8.0.6",
+          "repeat": "connection",
+          "repeatDirection": "h",
+          "targets": [
+            {
+              "alias": "Out of $tag_application",
+              "datasource": {
+                "uid": "${influxdb}"
+              },
+              "groupBy": [
+                {
+                  "params": [
+                    "$__interval"
+                  ],
+                  "type": "time"
+                }
+              ],
+              "hide": false,
+              "measurement": "dunedaq.appfwk.queueinfo.Info",
+              "orderByTime": "ASC",
+              "policy": "default",
+              "query": "SELECT non_negative_derivative(cumulative_sum(sum(\"messages\")), 1s) FROM \"dunedaq.ipm.opmon.SenderInfo\" WHERE \"session\" = '${session}' AND \"subelement\"=~ /${connection}/ AND \"application\" =~ /${application}/ AND $timeFilter AND \"messages\">0 GROUP BY time($__interval), \"application\"",
+              "rawQuery": true,
+              "refId": "C",
+              "resultFormat": "time_series",
+              "select": [
+                [
+                  {
+                    "params": [
+                      "number_of_elements"
+                    ],
+                    "type": "field"
+                  },
+                  {
+                    "params": [],
+                    "type": "distinct"
+                  },
+                  {
+                    "params": [
+                      " * 100"
+                    ],
+                    "type": "math"
+                  }
+                ]
+              ],
+              "tags": [
+                {
+                  "key": "source_id",
+                  "operator": "=",
+                  "value": "maroda_test_dataflow.trigger_record_q"
+                }
+              ]
+            },
+            {
+              "alias": "Into $tag_application",
+              "datasource": {
+                "uid": "${influxdb}"
+              },
+              "groupBy": [
+                {
+                  "params": [
+                    "$__interval"
+                  ],
+                  "type": "time"
+                }
+              ],
+              "hide": false,
+              "measurement": "dunedaq.appfwk.queueinfo.Info",
+              "orderByTime": "ASC",
+              "policy": "default",
+              "query": "SELECT non_negative_derivative(cumulative_sum(sum(\"messages\")), 1s) FROM \"dunedaq.ipm.opmon.ReceiverInfo\" WHERE \"session\" = '${session}' AND \"subelement\"=~ /${connection}/ AND \"application\" =~ /${application}/ AND $timeFilter AND \"messages\">0 GROUP BY time($__interval), \"application\"",
+              "rawQuery": true,
+              "refId": "A",
+              "resultFormat": "time_series",
+              "select": [
+                [
+                  {
+                    "params": [
+                      "number_of_elements"
+                    ],
+                    "type": "field"
+                  },
+                  {
+                    "params": [],
+                    "type": "distinct"
+                  },
+                  {
+                    "params": [
+                      " * 100"
+                    ],
+                    "type": "math"
+                  }
+                ]
+              ],
+              "tags": [
+                {
+                  "key": "source_id",
+                  "operator": "=",
+                  "value": "maroda_test_dataflow.trigger_record_q"
+                }
+              ]
+            }
+          ],
+          "title": "Balance for ${connection}",
+          "transformations": [
+            {
+              "id": "renameByRegex",
+              "options": {
+                "regex": "(.*) .*\\.([^.]+)",
+                "renamePattern": "$1 $2"
+              }
+            }
+          ],
+          "type": "timeseries"
+        }
+      ],
+      "title": "Balance - messages",
+      "type": "row"
     }
   ],
-  "refresh": "",
+  "refresh": "10s",
   "schemaVersion": 38,
-  "style": "dark",
   "tags": [
     "v5.2.0",
     "Subsystem"
@@ -1949,8 +1804,8 @@
       {
         "current": {
           "selected": false,
-          "text": "KluInflux",
-          "value": "ffedc550-6555-4a16-a113-aabf2b980c30"
+          "text": "KafkaMonitoring_v5.2",
+          "value": "f68a27a2-f292-478c-8093-2a4adad3be1b"
         },
         "hide": 2,
         "includeAll": false,
@@ -1960,27 +1815,27 @@
         "options": [],
         "query": "influxdb",
         "refresh": 1,
-        "regex": "",
+        "regex": ".*_v5.2",
         "skipUrlSync": false,
         "type": "datasource"
       },
       {
         "current": {
           "selected": false,
-          "text": "np04hddev",
-          "value": "np04hddev"
+          "text": "test-session",
+          "value": "test-session"
         },
         "datasource": {
           "uid": "${influxdb}"
         },
-        "definition": "SHOW TAG VALUES WITH KEY=\"partition_id\" WHERE $timeFilter",
+        "definition": "SELECT \"session\" FROM (SELECT \"state\",\"session\" FROM \"dunedaq.appfwk.opmon.AppInfo\" WHERE $timeFilter)",
         "hide": 0,
         "includeAll": false,
-        "label": "Partition name",
+        "label": "Session",
         "multi": false,
-        "name": "partition",
+        "name": "session",
         "options": [],
-        "query": "SHOW TAG VALUES WITH KEY=\"partition_id\" WHERE $timeFilter",
+        "query": "SELECT \"session\" FROM (SELECT \"state\",\"session\" FROM \"dunedaq.appfwk.opmon.AppInfo\" WHERE $timeFilter)",
         "refresh": 2,
         "regex": "",
         "skipUrlSync": false,
@@ -2000,65 +1855,44 @@
         "datasource": {
           "uid": "${influxdb}"
         },
-        "definition": "SELECT \"source_id\" FROM (SELECT \"messages\", \"source_id\" FROM \"dunedaq.ipm.senderinfo.Info\",\"dunedaq.ipm.receiverinfo.Info\"  WHERE \"partition_id\"='$partition' AND $timeFilter)",
+        "definition": "SELECT \"application\" FROM (SELECT \"messages\", \"application\" FROM \"dunedaq.ipm.opmon.SenderInfo\",\"dunedaq.ipm.opmon.SenderInfo\"  WHERE \"session\"='${session}' AND $timeFilter)",
         "hide": 0,
         "includeAll": true,
-        "label": "Application name",
+        "label": "Application",
         "multi": true,
         "name": "application",
         "options": [],
-        "query": "SELECT \"source_id\" FROM (SELECT \"messages\", \"source_id\" FROM \"dunedaq.ipm.senderinfo.Info\",\"dunedaq.ipm.receiverinfo.Info\"  WHERE \"partition_id\"='$partition' AND $timeFilter)",
+        "query": "SELECT \"application\" FROM (SELECT \"messages\", \"application\" FROM \"dunedaq.ipm.opmon.SenderInfo\",\"dunedaq.ipm.opmon.SenderInfo\"  WHERE \"session\"='${session}' AND $timeFilter)",
         "refresh": 2,
-        "regex": "[^.]+\\.([^.]+)\\..*",
+        "regex": "",
         "skipUrlSync": false,
         "sort": 0,
         "type": "query"
       },
       {
         "current": {
-          "isNone": true,
-          "selected": false,
-          "text": "None",
-          "value": ""
+          "selected": true,
+          "text": [
+            "All"
+          ],
+          "value": [
+            "$__all"
+          ]
         },
         "datasource": {
           "uid": "${influxdb}"
         },
-        "definition": "SHOW TAG VALUES FROM \"dunedaq.ipm.senderinfo.Info\",\"dunedaq.ipm.receiverinfo.Info\" WITH KEY=\"source_id\"  WHERE \"partition_id\"='$partition' AND $timeFilter",
-        "description": "This selection removes the topics from the source ids, in this way we can setup alarms on the connections",
+        "definition": "SELECT \"subelement\" FROM (SELECT \"messages\", \"subelement\" FROM \"dunedaq.ipm.opmon.SenderInfo\",\"dunedaq.ipm.opmon.SenderInfo\"  WHERE \"session\"='${session}' AND \"application\"=~/${application}/ AND $timeFilter)",
+        "description": "",
         "hide": 0,
-        "includeAll": false,
-        "label": "Connection name",
-        "multi": false,
+        "includeAll": true,
+        "label": "Connection",
+        "multi": true,
         "name": "connection",
         "options": [],
-        "query": "SHOW TAG VALUES FROM \"dunedaq.ipm.senderinfo.Info\",\"dunedaq.ipm.receiverinfo.Info\" WITH KEY=\"source_id\"  WHERE \"partition_id\"='$partition' AND $timeFilter",
+        "query": "SELECT \"subelement\" FROM (SELECT \"messages\", \"subelement\" FROM \"dunedaq.ipm.opmon.SenderInfo\",\"dunedaq.ipm.opmon.SenderInfo\"  WHERE \"session\"='${session}' AND \"application\"=~/${application}/ AND $timeFilter)",
         "refresh": 1,
-        "regex": "[^.]+\\.[^.]+\\.[^.]+\\.([^.]+)$",
-        "skipUrlSync": false,
-        "sort": 0,
-        "type": "query"
-      },
-      {
-        "current": {
-          "selected": false,
-          "text": "fragments_to_dataflow0",
-          "value": "fragments_to_dataflow0"
-        },
-        "datasource": {
-          "uid": "${influxdb}"
-        },
-        "definition": "SHOW TAG VALUES FROM \"dunedaq.ipm.senderinfo.Info\",\"dunedaq.ipm.receiverinfo.Info\" WITH KEY=\"source_id\"  WHERE \"partition_id\"='$partition' AND $timeFilter",
-        "description": "This selection removes the topics from the source ids, in this way we can setup alarms on the connections",
-        "hide": 0,
-        "includeAll": false,
-        "label": "Topic",
-        "multi": false,
-        "name": "topic",
-        "options": [],
-        "query": "SHOW TAG VALUES FROM \"dunedaq.ipm.senderinfo.Info\",\"dunedaq.ipm.receiverinfo.Info\" WITH KEY=\"source_id\"  WHERE \"partition_id\"='$partition' AND $timeFilter",
-        "refresh": 1,
-        "regex": "[^.]+\\.[^.]+\\.([^.]+)$",
+        "regex": "",
         "skipUrlSync": false,
         "sort": 0,
         "type": "query"
@@ -2066,13 +1900,13 @@
     ]
   },
   "time": {
-    "from": "2023-10-25T09:53:36.717Z",
-    "to": "2023-10-25T10:41:18.016Z"
+    "from": "now-15m",
+    "to": "now"
   },
   "timepicker": {},
   "timezone": "",
   "title": "Network Manager",
   "uid": "v5_2_0-network-manager",
-  "version": 1,
+  "version": 25,
   "weekStart": ""
 }

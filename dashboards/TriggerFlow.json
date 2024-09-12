@@ -1490,7 +1490,7 @@
       },
       "gridPos": {
         "h": 7,
-        "w": 24,
+        "w": 8,
         "x": 0,
         "y": 12
       },
@@ -4189,6 +4189,1652 @@
         "x": 0,
         "y": 61
       },
+      "id": 70,
+      "panels": [],
+      "title": "Latency",
+      "type": "row"
+    },
+    {
+      "datasource": {
+        "type": "influxdb",
+        "uid": "${influxdb}"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "drawStyle": "line",
+            "fillOpacity": 0,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "auto",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "ms"
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Difference"
+            },
+            "properties": [
+              {
+                "id": "custom.axisPlacement",
+                "value": "right"
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 9,
+        "w": 8,
+        "x": 0,
+        "y": 62
+      },
+      "id": 76,
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "tooltip": {
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "targets": [
+        {
+          "alias": "in",
+          "datasource": {
+            "type": "influxdb",
+            "uid": "f68a27a2-f292-478c-8093-2a4adad3be1b"
+          },
+          "groupBy": [
+            {
+              "params": [
+                "$__interval"
+              ],
+              "type": "time"
+            },
+            {
+              "params": [
+                "null"
+              ],
+              "type": "fill"
+            }
+          ],
+          "measurement": "dunedaq.trigger.opmon.TriggerLatency",
+          "orderByTime": "ASC",
+          "policy": "default",
+          "query": "SELECT mean(\"latency_in\") FROM \"dunedaq.trigger.opmon.TriggerLatency\" WHERE session::tag = '${session}' AND \"element\"::tag = '${MLT}' AND $timeFilter GROUP BY time($__interval) fill(null)",
+          "rawQuery": true,
+          "refId": "A",
+          "resultFormat": "time_series",
+          "select": [
+            [
+              {
+                "params": [
+                  "latency_in"
+                ],
+                "type": "field"
+              },
+              {
+                "params": [],
+                "type": "mean"
+              }
+            ]
+          ],
+          "tags": [
+            {
+              "key": "element::tag",
+              "operator": "=",
+              "value": "def-mlt-conf"
+            }
+          ]
+        },
+        {
+          "alias": "out",
+          "datasource": {
+            "type": "influxdb",
+            "uid": "f68a27a2-f292-478c-8093-2a4adad3be1b"
+          },
+          "groupBy": [
+            {
+              "params": [
+                "$__interval"
+              ],
+              "type": "time"
+            },
+            {
+              "params": [
+                "null"
+              ],
+              "type": "fill"
+            }
+          ],
+          "hide": false,
+          "measurement": "dunedaq.trigger.opmon.TriggerLatency",
+          "orderByTime": "ASC",
+          "policy": "default",
+          "query": "SELECT mean(\"latency_out\") FROM \"dunedaq.trigger.opmon.TriggerLatency\" WHERE session::tag = '${session}' AND \"element\"::tag = '${MLT}' AND $timeFilter GROUP BY time($__interval) fill(null)",
+          "rawQuery": true,
+          "refId": "B",
+          "resultFormat": "time_series",
+          "select": [
+            [
+              {
+                "params": [
+                  "latency_in"
+                ],
+                "type": "field"
+              },
+              {
+                "params": [],
+                "type": "mean"
+              }
+            ]
+          ],
+          "tags": [
+            {
+              "key": "element::tag",
+              "operator": "=",
+              "value": "def-mlt-conf"
+            }
+          ]
+        },
+        {
+          "alias": "Difference",
+          "datasource": {
+            "type": "influxdb",
+            "uid": "f68a27a2-f292-478c-8093-2a4adad3be1b"
+          },
+          "groupBy": [
+            {
+              "params": [
+                "$__interval"
+              ],
+              "type": "time"
+            },
+            {
+              "params": [
+                "null"
+              ],
+              "type": "fill"
+            }
+          ],
+          "hide": false,
+          "measurement": "dunedaq.trigger.opmon.TriggerLatency",
+          "orderByTime": "ASC",
+          "policy": "default",
+          "query": "SELECT mean(\"latency_out\")-mean(\"latency_in\") FROM \"dunedaq.trigger.opmon.TriggerLatency\" WHERE session::tag = '${session}' AND \"element\"::tag = '${MLT}' AND $timeFilter GROUP BY time($__interval) fill(null)",
+          "rawQuery": true,
+          "refId": "C",
+          "resultFormat": "time_series",
+          "select": [
+            [
+              {
+                "params": [
+                  "latency_in"
+                ],
+                "type": "field"
+              },
+              {
+                "params": [],
+                "type": "mean"
+              }
+            ]
+          ],
+          "tags": [
+            {
+              "key": "element::tag",
+              "operator": "=",
+              "value": "def-mlt-conf"
+            }
+          ]
+        }
+      ],
+      "title": "MLT Latency",
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "influxdb",
+        "uid": "${influxdb}"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "drawStyle": "line",
+            "fillOpacity": 0,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "auto",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "ms"
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byFrameRefID",
+              "options": "C"
+            },
+            "properties": [
+              {
+                "id": "custom.axisPlacement",
+                "value": "right"
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 9,
+        "w": 8,
+        "x": 8,
+        "y": 62
+      },
+      "id": 89,
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "tooltip": {
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "targets": [
+        {
+          "alias": "$tag_element - in",
+          "datasource": {
+            "type": "influxdb",
+            "uid": "f68a27a2-f292-478c-8093-2a4adad3be1b"
+          },
+          "groupBy": [
+            {
+              "params": [
+                "$__interval"
+              ],
+              "type": "time"
+            },
+            {
+              "params": [
+                "null"
+              ],
+              "type": "fill"
+            }
+          ],
+          "measurement": "dunedaq.trigger.opmon.TriggerLatency",
+          "orderByTime": "ASC",
+          "policy": "default",
+          "query": "SELECT mean(\"latency_in\") FROM \"dunedaq.trigger.opmon.TriggerLatency\" WHERE session::tag = '${session}' AND \"subelement\"::tag = 'TCProcessor' AND $timeFilter GROUP BY element, time($__interval) fill(null)",
+          "rawQuery": true,
+          "refId": "A",
+          "resultFormat": "time_series",
+          "select": [
+            [
+              {
+                "params": [
+                  "latency_in"
+                ],
+                "type": "field"
+              },
+              {
+                "params": [],
+                "type": "mean"
+              }
+            ]
+          ],
+          "tags": [
+            {
+              "key": "element::tag",
+              "operator": "=",
+              "value": "def-mlt-conf"
+            }
+          ]
+        },
+        {
+          "alias": "$tag_element - out",
+          "datasource": {
+            "type": "influxdb",
+            "uid": "f68a27a2-f292-478c-8093-2a4adad3be1b"
+          },
+          "groupBy": [
+            {
+              "params": [
+                "$__interval"
+              ],
+              "type": "time"
+            },
+            {
+              "params": [
+                "null"
+              ],
+              "type": "fill"
+            }
+          ],
+          "hide": false,
+          "measurement": "dunedaq.trigger.opmon.TriggerLatency",
+          "orderByTime": "ASC",
+          "policy": "default",
+          "query": "SELECT mean(\"latency_out\") FROM \"dunedaq.trigger.opmon.TriggerLatency\" WHERE session::tag = '${session}' AND \"subelement\"::tag = 'TCProcessor' AND $timeFilter GROUP BY element, time($__interval) fill(null)",
+          "rawQuery": true,
+          "refId": "B",
+          "resultFormat": "time_series",
+          "select": [
+            [
+              {
+                "params": [
+                  "latency_in"
+                ],
+                "type": "field"
+              },
+              {
+                "params": [],
+                "type": "mean"
+              }
+            ]
+          ],
+          "tags": [
+            {
+              "key": "element::tag",
+              "operator": "=",
+              "value": "def-mlt-conf"
+            }
+          ]
+        },
+        {
+          "alias": "$tag_element - Diff",
+          "datasource": {
+            "type": "influxdb",
+            "uid": "f68a27a2-f292-478c-8093-2a4adad3be1b"
+          },
+          "groupBy": [
+            {
+              "params": [
+                "$__interval"
+              ],
+              "type": "time"
+            },
+            {
+              "params": [
+                "null"
+              ],
+              "type": "fill"
+            }
+          ],
+          "hide": false,
+          "measurement": "dunedaq.trigger.opmon.TriggerLatency",
+          "orderByTime": "ASC",
+          "policy": "default",
+          "query": "SELECT mean(\"latency_out\")-mean(\"latency_in\") FROM \"dunedaq.trigger.opmon.TriggerLatency\" WHERE session::tag = '${session}' AND \"subelement\"::tag = 'TCProcessor' AND $timeFilter GROUP BY element, time($__interval) fill(null)",
+          "rawQuery": true,
+          "refId": "C",
+          "resultFormat": "time_series",
+          "select": [
+            [
+              {
+                "params": [
+                  "latency_in"
+                ],
+                "type": "field"
+              },
+              {
+                "params": [],
+                "type": "mean"
+              }
+            ]
+          ],
+          "tags": [
+            {
+              "key": "element::tag",
+              "operator": "=",
+              "value": "def-mlt-conf"
+            }
+          ]
+        }
+      ],
+      "title": "TC Processor Latencies",
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "influxdb",
+        "uid": "${influxdb}"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "drawStyle": "line",
+            "fillOpacity": 0,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "auto",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "ms"
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byFrameRefID",
+              "options": "C"
+            },
+            "properties": [
+              {
+                "id": "custom.axisPlacement",
+                "value": "right"
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 9,
+        "w": 8,
+        "x": 16,
+        "y": 62
+      },
+      "id": 95,
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "tooltip": {
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "targets": [
+        {
+          "alias": "$tag_element - in",
+          "datasource": {
+            "type": "influxdb",
+            "uid": "f68a27a2-f292-478c-8093-2a4adad3be1b"
+          },
+          "groupBy": [
+            {
+              "params": [
+                "$__interval"
+              ],
+              "type": "time"
+            },
+            {
+              "params": [
+                "null"
+              ],
+              "type": "fill"
+            }
+          ],
+          "measurement": "dunedaq.trigger.opmon.TriggerLatency",
+          "orderByTime": "ASC",
+          "policy": "default",
+          "query": "SELECT mean(\"latency_in\") FROM \"dunedaq.trigger.opmon.TriggerLatency\" WHERE session::tag = '${session}' AND \"element\"::tag =~ /${ta_handler}/ AND $timeFilter GROUP BY element, time($__interval) fill(null)",
+          "rawQuery": true,
+          "refId": "A",
+          "resultFormat": "time_series",
+          "select": [
+            [
+              {
+                "params": [
+                  "latency_in"
+                ],
+                "type": "field"
+              },
+              {
+                "params": [],
+                "type": "mean"
+              }
+            ]
+          ],
+          "tags": [
+            {
+              "key": "element::tag",
+              "operator": "=",
+              "value": "def-mlt-conf"
+            }
+          ]
+        },
+        {
+          "alias": "$tag_element - out",
+          "datasource": {
+            "type": "influxdb",
+            "uid": "f68a27a2-f292-478c-8093-2a4adad3be1b"
+          },
+          "groupBy": [
+            {
+              "params": [
+                "$__interval"
+              ],
+              "type": "time"
+            },
+            {
+              "params": [
+                "null"
+              ],
+              "type": "fill"
+            }
+          ],
+          "hide": false,
+          "measurement": "dunedaq.trigger.opmon.TriggerLatency",
+          "orderByTime": "ASC",
+          "policy": "default",
+          "query": "SELECT mean(\"latency_out\") FROM \"dunedaq.trigger.opmon.TriggerLatency\" WHERE session::tag = '${session}'  AND \"element\"::tag =~ /${ta_handler}/ AND $timeFilter GROUP BY element, time($__interval) fill(null)",
+          "rawQuery": true,
+          "refId": "B",
+          "resultFormat": "time_series",
+          "select": [
+            [
+              {
+                "params": [
+                  "latency_in"
+                ],
+                "type": "field"
+              },
+              {
+                "params": [],
+                "type": "mean"
+              }
+            ]
+          ],
+          "tags": [
+            {
+              "key": "element::tag",
+              "operator": "=",
+              "value": "def-mlt-conf"
+            }
+          ]
+        },
+        {
+          "alias": "$tag_element - Diff",
+          "datasource": {
+            "type": "influxdb",
+            "uid": "f68a27a2-f292-478c-8093-2a4adad3be1b"
+          },
+          "groupBy": [
+            {
+              "params": [
+                "$__interval"
+              ],
+              "type": "time"
+            },
+            {
+              "params": [
+                "null"
+              ],
+              "type": "fill"
+            }
+          ],
+          "hide": false,
+          "measurement": "dunedaq.trigger.opmon.TriggerLatency",
+          "orderByTime": "ASC",
+          "policy": "default",
+          "query": "SELECT mean(\"latency_out\")-mean(\"latency_in\") FROM \"dunedaq.trigger.opmon.TriggerLatency\" WHERE session::tag = '${session}'  AND \"element\"::tag =~ /${ta_handler}/ AND $timeFilter GROUP BY element, time($__interval) fill(null)",
+          "rawQuery": true,
+          "refId": "C",
+          "resultFormat": "time_series",
+          "select": [
+            [
+              {
+                "params": [
+                  "latency_in"
+                ],
+                "type": "field"
+              },
+              {
+                "params": [],
+                "type": "mean"
+              }
+            ]
+          ],
+          "tags": [
+            {
+              "key": "element::tag",
+              "operator": "=",
+              "value": "def-mlt-conf"
+            }
+          ]
+        }
+      ],
+      "title": "TA Processor Latencies",
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "influxdb",
+        "uid": "${influxdb}"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "drawStyle": "line",
+            "fillOpacity": 0,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "auto",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "ms"
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "start"
+            },
+            "properties": [
+              {
+                "id": "custom.fillBelowTo",
+                "value": "end"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Difference"
+            },
+            "properties": [
+              {
+                "id": "custom.axisPlacement",
+                "value": "right"
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 9,
+        "w": 8,
+        "x": 0,
+        "y": 71
+      },
+      "id": 83,
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "tooltip": {
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "targets": [
+        {
+          "alias": "end",
+          "datasource": {
+            "type": "influxdb",
+            "uid": "${influxdb}"
+          },
+          "groupBy": [
+            {
+              "params": [
+                "$__interval"
+              ],
+              "type": "time"
+            },
+            {
+              "params": [
+                "null"
+              ],
+              "type": "fill"
+            }
+          ],
+          "hide": false,
+          "measurement": "dunedaq.trigger.opmon.ModuleLevelTriggerRequestLatency",
+          "orderByTime": "ASC",
+          "policy": "default",
+          "query": "SELECT mean(\"latency_window_end\") FROM \"dunedaq.trigger.opmon.ModuleLevelTriggerRequestLatency\" WHERE session::tag = '${session}' AND $timeFilter GROUP BY time($__interval) fill(null)",
+          "rawQuery": true,
+          "refId": "A",
+          "resultFormat": "time_series",
+          "select": [
+            [
+              {
+                "params": [
+                  "latency_window_end"
+                ],
+                "type": "field"
+              },
+              {
+                "params": [],
+                "type": "mean"
+              }
+            ]
+          ],
+          "tags": []
+        },
+        {
+          "alias": "start",
+          "datasource": {
+            "type": "influxdb",
+            "uid": "${influxdb}"
+          },
+          "groupBy": [
+            {
+              "params": [
+                "$__interval"
+              ],
+              "type": "time"
+            },
+            {
+              "params": [
+                "null"
+              ],
+              "type": "fill"
+            }
+          ],
+          "hide": false,
+          "measurement": "dunedaq.trigger.opmon.ModuleLevelTriggerRequestLatency",
+          "orderByTime": "ASC",
+          "policy": "default",
+          "query": "SELECT mean(\"latency_window_start\") FROM \"dunedaq.trigger.opmon.ModuleLevelTriggerRequestLatency\" WHERE session::tag = '${session}' AND $timeFilter GROUP BY time($__interval) fill(null)",
+          "rawQuery": true,
+          "refId": "B",
+          "resultFormat": "time_series",
+          "select": [
+            [
+              {
+                "params": [
+                  "latency_window_end"
+                ],
+                "type": "field"
+              },
+              {
+                "params": [],
+                "type": "mean"
+              }
+            ]
+          ],
+          "tags": []
+        },
+        {
+          "alias": "Difference",
+          "datasource": {
+            "type": "influxdb",
+            "uid": "${influxdb}"
+          },
+          "groupBy": [
+            {
+              "params": [
+                "$__interval"
+              ],
+              "type": "time"
+            },
+            {
+              "params": [
+                "null"
+              ],
+              "type": "fill"
+            }
+          ],
+          "hide": false,
+          "measurement": "dunedaq.trigger.opmon.ModuleLevelTriggerRequestLatency",
+          "orderByTime": "ASC",
+          "policy": "default",
+          "query": "SELECT mean(\"latency_window_start\") - mean(\"latency_window_end\") FROM \"dunedaq.trigger.opmon.ModuleLevelTriggerRequestLatency\" WHERE session::tag = '${session}' AND $timeFilter GROUP BY time($__interval) fill(null)",
+          "rawQuery": true,
+          "refId": "C",
+          "resultFormat": "time_series",
+          "select": [
+            [
+              {
+                "params": [
+                  "latency_window_end"
+                ],
+                "type": "field"
+              },
+              {
+                "params": [],
+                "type": "mean"
+              }
+            ]
+          ],
+          "tags": []
+        }
+      ],
+      "title": "TD window boundaries vs system time",
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "influxdb",
+        "uid": "${influxdb}"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "drawStyle": "line",
+            "fillOpacity": 0,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "auto",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "ms"
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byFrameRefID",
+              "options": "C"
+            },
+            "properties": [
+              {
+                "id": "custom.axisPlacement",
+                "value": "right"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byFrameRefID",
+              "options": "F"
+            },
+            "properties": [
+              {
+                "id": "custom.axisPlacement",
+                "value": "right"
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 9,
+        "w": 8,
+        "x": 8,
+        "y": 71
+      },
+      "id": 107,
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "tooltip": {
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "targets": [
+        {
+          "alias": "$tag_element - in",
+          "datasource": {
+            "type": "influxdb",
+            "uid": "f68a27a2-f292-478c-8093-2a4adad3be1b"
+          },
+          "groupBy": [
+            {
+              "params": [
+                "$__interval"
+              ],
+              "type": "time"
+            },
+            {
+              "params": [
+                "null"
+              ],
+              "type": "fill"
+            }
+          ],
+          "measurement": "dunedaq.trigger.opmon.TriggerLatency",
+          "orderByTime": "ASC",
+          "policy": "default",
+          "query": "SELECT mean(\"latency_in\") FROM \"dunedaq.trigger.opmon.TriggerLatency\" WHERE session::tag = '${session}' AND \"element\"::tag =~ /${HSI}/ AND $timeFilter GROUP BY element, time($__interval) fill(null)",
+          "rawQuery": true,
+          "refId": "A",
+          "resultFormat": "time_series",
+          "select": [
+            [
+              {
+                "params": [
+                  "latency_in"
+                ],
+                "type": "field"
+              },
+              {
+                "params": [],
+                "type": "mean"
+              }
+            ]
+          ],
+          "tags": [
+            {
+              "key": "element::tag",
+              "operator": "=",
+              "value": "def-mlt-conf"
+            }
+          ]
+        },
+        {
+          "alias": "$tag_element - out",
+          "datasource": {
+            "type": "influxdb",
+            "uid": "f68a27a2-f292-478c-8093-2a4adad3be1b"
+          },
+          "groupBy": [
+            {
+              "params": [
+                "$__interval"
+              ],
+              "type": "time"
+            },
+            {
+              "params": [
+                "null"
+              ],
+              "type": "fill"
+            }
+          ],
+          "hide": false,
+          "measurement": "dunedaq.trigger.opmon.TriggerLatency",
+          "orderByTime": "ASC",
+          "policy": "default",
+          "query": "SELECT mean(\"latency_out\") FROM \"dunedaq.trigger.opmon.TriggerLatency\" WHERE session::tag = '${session}' AND \"element\"::tag =~ /${HSI}/ AND $timeFilter GROUP BY element, time($__interval) fill(null)",
+          "rawQuery": true,
+          "refId": "B",
+          "resultFormat": "time_series",
+          "select": [
+            [
+              {
+                "params": [
+                  "latency_in"
+                ],
+                "type": "field"
+              },
+              {
+                "params": [],
+                "type": "mean"
+              }
+            ]
+          ],
+          "tags": [
+            {
+              "key": "element::tag",
+              "operator": "=",
+              "value": "def-mlt-conf"
+            }
+          ]
+        },
+        {
+          "alias": "$tag_element - Diff",
+          "datasource": {
+            "type": "influxdb",
+            "uid": "f68a27a2-f292-478c-8093-2a4adad3be1b"
+          },
+          "groupBy": [
+            {
+              "params": [
+                "$__interval"
+              ],
+              "type": "time"
+            },
+            {
+              "params": [
+                "null"
+              ],
+              "type": "fill"
+            }
+          ],
+          "hide": false,
+          "measurement": "dunedaq.trigger.opmon.TriggerLatency",
+          "orderByTime": "ASC",
+          "policy": "default",
+          "query": "SELECT mean(\"latency_out\")-mean(\"latency_in\") FROM \"dunedaq.trigger.opmon.TriggerLatency\" WHERE session::tag = '${session}' AND \"element\"::tag =~ /${HSI}/ AND  $timeFilter GROUP BY element, time($__interval) fill(null)",
+          "rawQuery": true,
+          "refId": "C",
+          "resultFormat": "time_series",
+          "select": [
+            [
+              {
+                "params": [
+                  "latency_in"
+                ],
+                "type": "field"
+              },
+              {
+                "params": [],
+                "type": "mean"
+              }
+            ]
+          ],
+          "tags": [
+            {
+              "key": "element::tag",
+              "operator": "=",
+              "value": "def-mlt-conf"
+            }
+          ]
+        },
+        {
+          "alias": "RandomTCM - in",
+          "datasource": {
+            "type": "influxdb",
+            "uid": "f68a27a2-f292-478c-8093-2a4adad3be1b"
+          },
+          "groupBy": [
+            {
+              "params": [
+                "$__interval"
+              ],
+              "type": "time"
+            },
+            {
+              "params": [
+                "null"
+              ],
+              "type": "fill"
+            }
+          ],
+          "hide": false,
+          "measurement": "dunedaq.trigger.opmon.TriggerLatency",
+          "orderByTime": "ASC",
+          "policy": "default",
+          "query": "SELECT mean(\"latency_in\") FROM \"dunedaq.trigger.opmon.TriggerLatency\" WHERE session::tag = '${session}' AND \"element\"::tag = '${RandomTCM}' AND $timeFilter GROUP BY time($__interval) fill(null)",
+          "rawQuery": true,
+          "refId": "D",
+          "resultFormat": "time_series",
+          "select": [
+            [
+              {
+                "params": [
+                  "latency_in"
+                ],
+                "type": "field"
+              },
+              {
+                "params": [],
+                "type": "mean"
+              }
+            ]
+          ],
+          "tags": [
+            {
+              "key": "element::tag",
+              "operator": "=",
+              "value": "def-mlt-conf"
+            }
+          ]
+        },
+        {
+          "alias": "RandomTCM - out",
+          "datasource": {
+            "type": "influxdb",
+            "uid": "f68a27a2-f292-478c-8093-2a4adad3be1b"
+          },
+          "groupBy": [
+            {
+              "params": [
+                "$__interval"
+              ],
+              "type": "time"
+            },
+            {
+              "params": [
+                "null"
+              ],
+              "type": "fill"
+            }
+          ],
+          "hide": false,
+          "measurement": "dunedaq.trigger.opmon.TriggerLatency",
+          "orderByTime": "ASC",
+          "policy": "default",
+          "query": "SELECT mean(\"latency_out\") FROM \"dunedaq.trigger.opmon.TriggerLatency\" WHERE session::tag = '${session}' AND \"element\"::tag = '${RandomTCM}' AND $timeFilter GROUP BY time($__interval) fill(null)",
+          "rawQuery": true,
+          "refId": "E",
+          "resultFormat": "time_series",
+          "select": [
+            [
+              {
+                "params": [
+                  "latency_in"
+                ],
+                "type": "field"
+              },
+              {
+                "params": [],
+                "type": "mean"
+              }
+            ]
+          ],
+          "tags": [
+            {
+              "key": "element::tag",
+              "operator": "=",
+              "value": "def-mlt-conf"
+            }
+          ]
+        },
+        {
+          "alias": "RandomTCM - Diff",
+          "datasource": {
+            "type": "influxdb",
+            "uid": "f68a27a2-f292-478c-8093-2a4adad3be1b"
+          },
+          "groupBy": [
+            {
+              "params": [
+                "$__interval"
+              ],
+              "type": "time"
+            },
+            {
+              "params": [
+                "null"
+              ],
+              "type": "fill"
+            }
+          ],
+          "hide": false,
+          "measurement": "dunedaq.trigger.opmon.TriggerLatency",
+          "orderByTime": "ASC",
+          "policy": "default",
+          "query": "SELECT mean(\"latency_out\") - mean(\"latency_in\") FROM \"dunedaq.trigger.opmon.TriggerLatency\" WHERE session::tag = '${session}' AND \"element\"::tag = '${RandomTCM}' AND $timeFilter GROUP BY time($__interval) fill(null)",
+          "rawQuery": true,
+          "refId": "F",
+          "resultFormat": "time_series",
+          "select": [
+            [
+              {
+                "params": [
+                  "latency_in"
+                ],
+                "type": "field"
+              },
+              {
+                "params": [],
+                "type": "mean"
+              }
+            ]
+          ],
+          "tags": [
+            {
+              "key": "element::tag",
+              "operator": "=",
+              "value": "def-mlt-conf"
+            }
+          ]
+        }
+      ],
+      "title": "TC Plugin Latencies",
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "influxdb",
+        "uid": "${influxdb}"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "drawStyle": "line",
+            "fillOpacity": 0,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "auto",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "ms"
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byFrameRefID",
+              "options": "C"
+            },
+            "properties": [
+              {
+                "id": "custom.axisPlacement",
+                "value": "right"
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 9,
+        "w": 8,
+        "x": 16,
+        "y": 71
+      },
+      "id": 101,
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "tooltip": {
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "targets": [
+        {
+          "alias": "$tag_element - in",
+          "datasource": {
+            "type": "influxdb",
+            "uid": "f68a27a2-f292-478c-8093-2a4adad3be1b"
+          },
+          "groupBy": [
+            {
+              "params": [
+                "$__interval"
+              ],
+              "type": "time"
+            },
+            {
+              "params": [
+                "null"
+              ],
+              "type": "fill"
+            }
+          ],
+          "measurement": "dunedaq.trigger.opmon.TriggerLatency",
+          "orderByTime": "ASC",
+          "policy": "default",
+          "query": "SELECT mean(\"latency_in\") FROM \"dunedaq.trigger.opmon.TriggerLatency\" WHERE session::tag = '${session}' AND \"element\"::tag =~ /${tp_handler}/ AND $timeFilter GROUP BY element, time($__interval) fill(null)",
+          "rawQuery": true,
+          "refId": "A",
+          "resultFormat": "time_series",
+          "select": [
+            [
+              {
+                "params": [
+                  "latency_in"
+                ],
+                "type": "field"
+              },
+              {
+                "params": [],
+                "type": "mean"
+              }
+            ]
+          ],
+          "tags": [
+            {
+              "key": "element::tag",
+              "operator": "=",
+              "value": "def-mlt-conf"
+            }
+          ]
+        },
+        {
+          "alias": "$tag_element - out",
+          "datasource": {
+            "type": "influxdb",
+            "uid": "f68a27a2-f292-478c-8093-2a4adad3be1b"
+          },
+          "groupBy": [
+            {
+              "params": [
+                "$__interval"
+              ],
+              "type": "time"
+            },
+            {
+              "params": [
+                "null"
+              ],
+              "type": "fill"
+            }
+          ],
+          "hide": false,
+          "measurement": "dunedaq.trigger.opmon.TriggerLatency",
+          "orderByTime": "ASC",
+          "policy": "default",
+          "query": "SELECT mean(\"latency_out\") FROM \"dunedaq.trigger.opmon.TriggerLatency\" WHERE session::tag = '${session}'  AND \"element\"::tag =~ /${tp_handler}/ AND $timeFilter GROUP BY element, time($__interval) fill(null)",
+          "rawQuery": true,
+          "refId": "B",
+          "resultFormat": "time_series",
+          "select": [
+            [
+              {
+                "params": [
+                  "latency_in"
+                ],
+                "type": "field"
+              },
+              {
+                "params": [],
+                "type": "mean"
+              }
+            ]
+          ],
+          "tags": [
+            {
+              "key": "element::tag",
+              "operator": "=",
+              "value": "def-mlt-conf"
+            }
+          ]
+        },
+        {
+          "alias": "$tag_element - Diff",
+          "datasource": {
+            "type": "influxdb",
+            "uid": "f68a27a2-f292-478c-8093-2a4adad3be1b"
+          },
+          "groupBy": [
+            {
+              "params": [
+                "$__interval"
+              ],
+              "type": "time"
+            },
+            {
+              "params": [
+                "null"
+              ],
+              "type": "fill"
+            }
+          ],
+          "hide": false,
+          "measurement": "dunedaq.trigger.opmon.TriggerLatency",
+          "orderByTime": "ASC",
+          "policy": "default",
+          "query": "SELECT mean(\"latency_out\")-mean(\"latency_in\") FROM \"dunedaq.trigger.opmon.TriggerLatency\" WHERE session::tag = '${session}'  AND \"element\"::tag =~ /${tp_handler}/ AND $timeFilter GROUP BY element, time($__interval) fill(null)",
+          "rawQuery": true,
+          "refId": "C",
+          "resultFormat": "time_series",
+          "select": [
+            [
+              {
+                "params": [
+                  "latency_in"
+                ],
+                "type": "field"
+              },
+              {
+                "params": [],
+                "type": "mean"
+              }
+            ]
+          ],
+          "tags": [
+            {
+              "key": "element::tag",
+              "operator": "=",
+              "value": "def-mlt-conf"
+            }
+          ]
+        }
+      ],
+      "title": "TP Processor Latencies",
+      "type": "timeseries"
+    },
+    {
+      "collapsed": false,
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 80
+      },
       "id": 32,
       "panels": [],
       "title": "Livetime counter",
@@ -4274,7 +5920,7 @@
         "h": 8,
         "w": 24,
         "x": 0,
-        "y": 62
+        "y": 81
       },
       "id": 33,
       "options": {
@@ -4464,7 +6110,7 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 70
+        "y": 89
       },
       "id": 18,
       "panels": [],
@@ -4532,7 +6178,7 @@
         "h": 7,
         "w": 8,
         "x": 0,
-        "y": 71
+        "y": 90
       },
       "id": 42,
       "options": {
@@ -4662,7 +6308,7 @@
         "h": 7,
         "w": 8,
         "x": 8,
-        "y": 71
+        "y": 90
       },
       "id": 43,
       "options": {
@@ -4865,7 +6511,7 @@
         "h": 7,
         "w": 8,
         "x": 16,
-        "y": 71
+        "y": 90
       },
       "id": 44,
       "options": {
@@ -5066,7 +6712,7 @@
         "h": 7,
         "w": 8,
         "x": 0,
-        "y": 78
+        "y": 97
       },
       "id": 45,
       "links": [],
@@ -5396,7 +7042,7 @@
         "h": 7,
         "w": 8,
         "x": 8,
-        "y": 78
+        "y": 97
       },
       "id": 46,
       "options": {
@@ -5549,7 +7195,7 @@
         "h": 7,
         "w": 8,
         "x": 16,
-        "y": 78
+        "y": 97
       },
       "id": 47,
       "options": {
@@ -5989,7 +7635,7 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 85
+        "y": 104
       },
       "id": 48,
       "panels": [],
@@ -6060,7 +7706,7 @@
         "h": 7,
         "w": 8,
         "x": 0,
-        "y": 86
+        "y": 105
       },
       "id": 49,
       "options": {
@@ -6243,7 +7889,7 @@
         "h": 7,
         "w": 8,
         "x": 8,
-        "y": 86
+        "y": 105
       },
       "id": 50,
       "options": {
@@ -6709,8 +8355,8 @@
       {
         "current": {
           "selected": false,
-          "text": "np02-oks-session",
-          "value": "np02-oks-session"
+          "text": "michal-session",
+          "value": "michal-session"
         },
         "datasource": {
           "uid": "${influxdb}"
@@ -6815,7 +8461,7 @@
       },
       {
         "current": {
-          "selected": false,
+          "selected": true,
           "text": [
             "All"
           ],
@@ -6840,6 +8486,85 @@
         "skipUrlSync": false,
         "sort": 1,
         "type": "query"
+      },
+      {
+        "current": {
+          "selected": false,
+          "text": "def-mlt-conf",
+          "value": "def-mlt-conf"
+        },
+        "datasource": {
+          "type": "influxdb",
+          "uid": "${influxdb}"
+        },
+        "definition": "SELECT last(element) FROM (SELECT \"td_total_count\", \"element\"FROM \"dunedaq.trigger.opmon.ModuleLevelTriggerInfo\" WHERE \"session\" = '${session}' AND $timeFilter )",
+        "description": "Used to extract the MLT module name",
+        "hide": 2,
+        "includeAll": false,
+        "label": "MLT module name",
+        "multi": false,
+        "name": "MLT",
+        "options": [],
+        "query": "SELECT last(element) FROM (SELECT \"td_total_count\", \"element\"FROM \"dunedaq.trigger.opmon.ModuleLevelTriggerInfo\" WHERE \"session\" = '${session}' AND $timeFilter )",
+        "refresh": 1,
+        "regex": "",
+        "skipUrlSync": false,
+        "sort": 0,
+        "type": "query"
+      },
+      {
+        "current": {
+          "selected": false,
+          "text": "random-tc-generator",
+          "value": "random-tc-generator"
+        },
+        "datasource": {
+          "type": "influxdb",
+          "uid": "${influxdb}"
+        },
+        "definition": "SELECT last(element) FROM (SELECT \"tc_sent_count\", \"element\"FROM \"dunedaq.trigger.opmon.RandomTCMakerInfo\" WHERE \"session\" = '${session}' AND $timeFilter )",
+        "description": "Used to extract the Random TC Maker module name",
+        "hide": 2,
+        "includeAll": false,
+        "label": "Random TC Maker name",
+        "multi": false,
+        "name": "RandomTCM",
+        "options": [],
+        "query": "SELECT last(element) FROM (SELECT \"tc_sent_count\", \"element\"FROM \"dunedaq.trigger.opmon.RandomTCMakerInfo\" WHERE \"session\" = '${session}' AND $timeFilter )",
+        "refresh": 1,
+        "regex": "",
+        "skipUrlSync": false,
+        "sort": 0,
+        "type": "query"
+      },
+      {
+        "current": {
+          "selected": true,
+          "text": [
+            "module-hsi-to-tc-app"
+          ],
+          "value": [
+            "module-hsi-to-tc-app"
+          ]
+        },
+        "datasource": {
+          "type": "influxdb",
+          "uid": "${influxdb}"
+        },
+        "definition": "SELECT last(element) FROM (SELECT \"received_events_count\", \"element\" FROM \"dunedaq.trigger.opmon.HSISourceModelInfo\" WHERE \"session\" = '${session}' AND $timeFilter )",
+        "description": "Used to extract the HSI module name",
+        "hide": 2,
+        "includeAll": true,
+        "label": "HSI name",
+        "multi": true,
+        "name": "HSI",
+        "options": [],
+        "query": "SELECT last(element) FROM (SELECT \"received_events_count\", \"element\" FROM \"dunedaq.trigger.opmon.HSISourceModelInfo\" WHERE \"session\" = '${session}' AND $timeFilter )",
+        "refresh": 1,
+        "regex": "",
+        "skipUrlSync": false,
+        "sort": 0,
+        "type": "query"
       }
     ]
   },
@@ -6851,6 +8576,6 @@
   "timezone": "",
   "title": "Trigger Flow",
   "uid": "v5_2_0-trigger_flow",
-  "version": 74,
+  "version": 85,
   "weekStart": ""
 }

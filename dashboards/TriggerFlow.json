@@ -4187,7 +4187,7 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 69
+        "y": 53
       },
       "id": 70,
       "panels": [],
@@ -4271,7 +4271,7 @@
         "h": 9,
         "w": 8,
         "x": 0,
-        "y": 70
+        "y": 54
       },
       "id": 76,
       "options": {
@@ -4517,7 +4517,7 @@
         "h": 9,
         "w": 8,
         "x": 8,
-        "y": 70
+        "y": 54
       },
       "id": 89,
       "options": {
@@ -4763,7 +4763,7 @@
         "h": 9,
         "w": 8,
         "x": 16,
-        "y": 70
+        "y": 54
       },
       "id": 95,
       "options": {
@@ -4971,7 +4971,7 @@
         "h": 9,
         "w": 8,
         "x": 0,
-        "y": 79
+        "y": 63
       },
       "id": 83,
       "options": {
@@ -5181,38 +5181,13 @@
           },
           "unit": "µs"
         },
-        "overrides": [
-          {
-            "matcher": {
-              "id": "byFrameRefID",
-              "options": "C"
-            },
-            "properties": [
-              {
-                "id": "custom.axisPlacement",
-                "value": "right"
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byFrameRefID",
-              "options": "F"
-            },
-            "properties": [
-              {
-                "id": "custom.axisPlacement",
-                "value": "right"
-              }
-            ]
-          }
-        ]
+        "overrides": []
       },
       "gridPos": {
         "h": 9,
         "w": 8,
         "x": 8,
-        "y": 79
+        "y": 63
       },
       "id": 107,
       "options": {
@@ -5328,7 +5303,7 @@
           ]
         },
         {
-          "alias": "RandomTCM - in",
+          "alias": "RandomTCM - out",
           "datasource": {
             "type": "influxdb",
             "uid": "f68a27a2-f292-478c-8093-2a4adad3be1b"
@@ -5347,13 +5322,13 @@
               "type": "fill"
             }
           ],
-          "hide": false,
+          "hide": true,
           "measurement": "dunedaq.trigger.opmon.TriggerLatency",
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "SELECT mean(\"latency_in\") FROM \"dunedaq.trigger.opmon.TriggerLatency\" WHERE session::tag = '${session}' AND \"element\"::tag = '${RandomTCM}' AND $timeFilter GROUP BY time($__interval) fill(null)",
+          "query": "SELECT mean(\"latency_out\") FROM \"dunedaq.trigger.opmon.TriggerLatencyStandalone\" WHERE session::tag = '${session}' AND \"element\"::tag = '${RandomTCM}' AND $timeFilter GROUP BY time($__interval) fill(null)",
           "rawQuery": true,
-          "refId": "D",
+          "refId": "E",
           "resultFormat": "time_series",
           "select": [
             [
@@ -5378,7 +5353,7 @@
           ]
         },
         {
-          "alias": "RandomTCM - out",
+          "alias": "$tag_element - out",
           "datasource": {
             "type": "influxdb",
             "uid": "f68a27a2-f292-478c-8093-2a4adad3be1b"
@@ -5401,9 +5376,9 @@
           "measurement": "dunedaq.trigger.opmon.TriggerLatency",
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "SELECT mean(\"latency_out\") FROM \"dunedaq.trigger.opmon.TriggerLatency\" WHERE session::tag = '${session}' AND \"element\"::tag = '${RandomTCM}' AND $timeFilter GROUP BY time($__interval) fill(null)",
+          "query": "SELECT mean(\"latency_out\") FROM \"dunedaq.trigger.opmon.TriggerLatencyStandalone\" WHERE session::tag = '${session}' AND $timeFilter GROUP BY element, time($__interval) fill(null)",
           "rawQuery": true,
-          "refId": "E",
+          "refId": "C",
           "resultFormat": "time_series",
           "select": [
             [
@@ -5508,7 +5483,7 @@
         "h": 9,
         "w": 8,
         "x": 16,
-        "y": 79
+        "y": 63
       },
       "id": 101,
       "options": {
@@ -5633,7 +5608,7 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 88
+        "y": 72
       },
       "id": 32,
       "panels": [],
@@ -5721,7 +5696,7 @@
         "h": 8,
         "w": 24,
         "x": 0,
-        "y": 89
+        "y": 73
       },
       "id": 33,
       "options": {
@@ -5911,7 +5886,7 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 97
+        "y": 81
       },
       "id": 18,
       "panels": [],
@@ -5979,7 +5954,7 @@
         "h": 7,
         "w": 8,
         "x": 0,
-        "y": 98
+        "y": 82
       },
       "id": 42,
       "options": {
@@ -6109,7 +6084,7 @@
         "h": 7,
         "w": 8,
         "x": 8,
-        "y": 98
+        "y": 82
       },
       "id": 43,
       "options": {
@@ -6312,7 +6287,7 @@
         "h": 7,
         "w": 8,
         "x": 16,
-        "y": 98
+        "y": 82
       },
       "id": 44,
       "options": {
@@ -6513,7 +6488,7 @@
         "h": 7,
         "w": 8,
         "x": 0,
-        "y": 105
+        "y": 89
       },
       "id": 45,
       "links": [],
@@ -6843,7 +6818,7 @@
         "h": 7,
         "w": 8,
         "x": 8,
-        "y": 105
+        "y": 89
       },
       "id": 46,
       "options": {
@@ -6996,7 +6971,7 @@
         "h": 7,
         "w": 8,
         "x": 16,
-        "y": 105
+        "y": 89
       },
       "id": 47,
       "options": {
@@ -7436,7 +7411,7 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 112
+        "y": 96
       },
       "id": 48,
       "panels": [],
@@ -7491,8 +7466,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
-                "value": null
+                "color": "green"
               },
               {
                 "color": "red",
@@ -7507,7 +7481,7 @@
         "h": 7,
         "w": 8,
         "x": 0,
-        "y": 113
+        "y": 97
       },
       "id": 49,
       "options": {
@@ -7674,8 +7648,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
-                "value": null
+                "color": "green"
               },
               {
                 "color": "red",
@@ -7690,7 +7663,7 @@
         "h": 7,
         "w": 8,
         "x": 8,
-        "y": 113
+        "y": 97
       },
       "id": 50,
       "options": {
@@ -8323,7 +8296,7 @@
           "type": "influxdb",
           "uid": "${influxdb}"
         },
-        "definition": "SELECT last(element) FROM (SELECT \"tc_sent_count\", \"element\"FROM \"dunedaq.trigger.opmon.RandomTCMakerInfo\" WHERE \"session\" = '${session}' AND $timeFilter )",
+        "definition": "SELECT last(element) FROM (SELECT \"tc_sent_count\", \"element\" FROM \"dunedaq.trigger.opmon.RandomTCMakerInfo\" WHERE \"session\" = '${session}' AND $timeFilter )",
         "description": "Used to extract the Random TC Maker module name",
         "hide": 2,
         "includeAll": false,
@@ -8331,7 +8304,7 @@
         "multi": false,
         "name": "RandomTCM",
         "options": [],
-        "query": "SELECT last(element) FROM (SELECT \"tc_sent_count\", \"element\"FROM \"dunedaq.trigger.opmon.RandomTCMakerInfo\" WHERE \"session\" = '${session}' AND $timeFilter )",
+        "query": "SELECT last(element) FROM (SELECT \"tc_sent_count\", \"element\" FROM \"dunedaq.trigger.opmon.RandomTCMakerInfo\" WHERE \"session\" = '${session}' AND $timeFilter )",
         "refresh": 1,
         "regex": "",
         "skipUrlSync": false,
@@ -8373,6 +8346,6 @@
   "timezone": "",
   "title": "Trigger Flow",
   "uid": "v5_2_0-trigger_flow",
-  "version": 93,
+  "version": 96,
   "weekStart": ""
 }

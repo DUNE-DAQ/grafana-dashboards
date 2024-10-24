@@ -624,7 +624,8 @@
             "lineWidth": 1,
             "pointSize": 5,
             "scaleDistribution": {
-              "type": "linear"
+              "log": 10,
+              "type": "log"
             },
             "showPoints": "auto",
             "spanNulls": false,
@@ -656,17 +657,27 @@
         "overrides": [
           {
             "matcher": {
-              "id": "byRegexp",
-              "options": "TPSet .*"
+              "id": "byName",
+              "options": "Max tardiness"
             },
             "properties": [
               {
-                "id": "custom.axisLabel",
-                "value": "TPSet rate"
-              },
-              {
                 "id": "custom.axisPlacement",
                 "value": "right"
+              },
+              {
+                "id": "custom.axisLabel",
+                "value": "Latency"
+              },
+              {
+                "id": "custom.scaleDistribution",
+                "value": {
+                  "type": "linear"
+                }
+              },
+              {
+                "id": "unit",
+                "value": "s"
               }
             ]
           }
@@ -815,6 +826,104 @@
           "query": "SELECT non_negative_derivative(cumulative_sum(sum(\"tpsets_with_tps_received\")), 1s) FROM \"dunedaq.dfmodules.opmon.TPStreamWriterInfo\" WHERE session='${session}' AND $timeFilter GROUP BY time($__interval), \"element\"",
           "rawQuery": true,
           "refId": "C",
+          "resultFormat": "time_series",
+          "select": [
+            [
+              {
+                "params": [
+                  "rate_payloads_consumed"
+                ],
+                "type": "field"
+              },
+              {
+                "params": [],
+                "type": "mean"
+              }
+            ]
+          ],
+          "tags": [
+            {
+              "key": "source_id",
+              "operator": "=",
+              "value": "maroda_test_ruemu0.datahandler_0"
+            }
+          ]
+        },
+        {
+          "alias": "Timeslices written",
+          "datasource": {
+            "uid": "${influxdb}"
+          },
+          "groupBy": [
+            {
+              "params": [
+                "$__interval"
+              ],
+              "type": "time"
+            },
+            {
+              "params": [
+                "source_id"
+              ],
+              "type": "tag"
+            }
+          ],
+          "hide": false,
+          "measurement": "dunedaq.datahandlinglibs.readoutinfo.ReadoutInfo",
+          "orderByTime": "ASC",
+          "policy": "default",
+          "query": "SELECT non_negative_derivative(cumulative_sum(sum(\"timeslices_written\")), 1s) FROM \"dunedaq.dfmodules.opmon.TPStreamWriterInfo\" WHERE session='${session}' AND $timeFilter GROUP BY time($__interval), \"element\"",
+          "rawQuery": true,
+          "refId": "D",
+          "resultFormat": "time_series",
+          "select": [
+            [
+              {
+                "params": [
+                  "rate_payloads_consumed"
+                ],
+                "type": "field"
+              },
+              {
+                "params": [],
+                "type": "mean"
+              }
+            ]
+          ],
+          "tags": [
+            {
+              "key": "source_id",
+              "operator": "=",
+              "value": "maroda_test_ruemu0.datahandler_0"
+            }
+          ]
+        },
+        {
+          "alias": "Max tardiness",
+          "datasource": {
+            "uid": "${influxdb}"
+          },
+          "groupBy": [
+            {
+              "params": [
+                "$__interval"
+              ],
+              "type": "time"
+            },
+            {
+              "params": [
+                "source_id"
+              ],
+              "type": "tag"
+            }
+          ],
+          "hide": false,
+          "measurement": "dunedaq.datahandlinglibs.readoutinfo.ReadoutInfo",
+          "orderByTime": "ASC",
+          "policy": "default",
+          "query": "SELECT max(\"tardy_timeslice_max_seconds\") FROM \"dunedaq.dfmodules.opmon.TPStreamWriterInfo\" WHERE session='${session}' AND $timeFilter GROUP BY time($__interval), \"element\"",
+          "rawQuery": true,
+          "refId": "E",
           "resultFormat": "time_series",
           "select": [
             [
@@ -3720,6 +3829,6 @@
   "timezone": "",
   "title": "Trigger Primitives",
   "uid": "v5_2_0-trigger_primitives",
-  "version": 29,
+  "version": 31,
   "weekStart": ""
 }

@@ -221,7 +221,7 @@
               "tooltip": false,
               "viz": false
             },
-            "insertNulls": false,
+            "insertNulls": 1000,
             "lineInterpolation": "linear",
             "lineWidth": 1,
             "pointSize": 5,
@@ -715,7 +715,7 @@
           "measurement": "dunedaq.datahandlinglibs.readoutinfo.ReadoutInfo",
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "SELECT non_negative_derivative(cumulative_sum(sum(\"tp_received\")), 1s) FROM \"dunedaq.dfmodules.opmon.TPStreamWriterInfo\" WHERE session='${session}' AND $timeFilter GROUP BY time($__interval), \"element\"",
+          "query": "SELECT non_negative_derivative(cumulative_sum(sum(\"tps_received\")), 1s) FROM \"dunedaq.dfmodules.opmon.TPStreamWriterInfo\" WHERE session='${session}' AND $timeFilter GROUP BY time($__interval), \"element\"",
           "rawQuery": true,
           "refId": "B",
           "resultFormat": "time_series",
@@ -763,7 +763,7 @@
           "measurement": "dunedaq.datahandlinglibs.readoutinfo.ReadoutInfo",
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "SELECT non_negative_derivative(cumulative_sum(sum(\"tp_written\")), 1s) FROM \"dunedaq.dfmodules.opmon.TPStreamWriterInfo\" WHERE session='${session}' AND $timeFilter GROUP BY time($__interval), \"element\"",
+          "query": "SELECT non_negative_derivative(cumulative_sum(sum(\"tps_written\")), 1s) FROM \"dunedaq.dfmodules.opmon.TPStreamWriterInfo\" WHERE session='${session}' AND $timeFilter GROUP BY time($__interval), \"element\"",
           "rawQuery": true,
           "refId": "A",
           "resultFormat": "time_series",
@@ -812,7 +812,7 @@
           "measurement": "dunedaq.datahandlinglibs.readoutinfo.ReadoutInfo",
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "SELECT non_negative_derivative(cumulative_sum(sum(\"tpset_received\")), 1s) FROM \"dunedaq.dfmodules.opmon.TPStreamWriterInfo\" WHERE session='${session}' AND $timeFilter GROUP BY time($__interval), \"element\"",
+          "query": "SELECT non_negative_derivative(cumulative_sum(sum(\"tpsets_with_tps_received\")), 1s) FROM \"dunedaq.dfmodules.opmon.TPStreamWriterInfo\" WHERE session='${session}' AND $timeFilter GROUP BY time($__interval), \"element\"",
           "rawQuery": true,
           "refId": "C",
           "resultFormat": "time_series",
@@ -1917,8 +1917,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
-                "value": null
+                "color": "green"
               },
               {
                 "color": "red",
@@ -2248,8 +2247,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
-                "value": null
+                "color": "green"
               },
               {
                 "color": "red",
@@ -2401,8 +2399,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
-                "value": null
+                "color": "green"
               },
               {
                 "color": "red",
@@ -2925,8 +2922,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
-                "value": null
+                "color": "green"
               },
               {
                 "color": "red",
@@ -3108,8 +3104,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
-                "value": null
+                "color": "green"
               },
               {
                 "color": "red",
@@ -3590,8 +3585,8 @@
       {
         "current": {
           "selected": false,
-          "text": "np02-oks-session",
-          "value": "np02-oks-session"
+          "text": "np02-session",
+          "value": "np02-session"
         },
         "datasource": {
           "uid": "${influxdb}"
@@ -3725,6 +3720,6 @@
   "timezone": "",
   "title": "Trigger Primitives",
   "uid": "v5_2_0-trigger_primitives",
-  "version": 26,
+  "version": 29,
   "weekStart": ""
 }

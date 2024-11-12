@@ -799,7 +799,7 @@
           "datasource": {
             "uid": "${influxdb}"
           },
-          "query": "SELECT mean(\"ipackets\") FROM  \"dunedaq.dpdklibs.opmon.EthStats\"  WHERE session = '${session}' AND application =~ /${application}/ AND $timeFilter GROUP BY time($__interval), element fill(null)",
+          "query": "SELECT non_negative_derivative(cumulative_sum(sum(\"ipackets\")), 1s) FROM  \"dunedaq.dpdklibs.opmon.EthStats\"  WHERE session = '${session}' AND application =~ /${application}/ AND $timeFilter GROUP BY time($__interval), element fill(null)",
           "rawQuery": true,
           "refId": "A",
           "resultFormat": "time_series"
@@ -865,7 +865,7 @@
               }
             ]
           },
-          "unit": "binBps"
+          "unit": "Bps"
         },
         "overrides": []
       },
@@ -894,7 +894,7 @@
           "datasource": {
             "uid": "${influxdb}"
           },
-          "query": "SELECT mean(\"ibytes\") FROM  \"dunedaq.dpdklibs.opmon.EthStats\"  WHERE session = '${session}' AND application =~ /${application}/ AND $timeFilter GROUP BY time($__interval), element fill(null) ",
+          "query": "SELECT  non_negative_derivative(cumulative_sum(sum(\"ibytes\")), 1s) FROM  \"dunedaq.dpdklibs.opmon.EthStats\"  WHERE session = '${session}' AND application =~ /${application}/ AND $timeFilter GROUP BY time($__interval), element fill(null) ",
           "rawQuery": true,
           "refId": "A",
           "resultFormat": "time_series"
@@ -989,7 +989,7 @@
           "datasource": {
             "uid": "${influxdb}"
           },
-          "query": "SELECT mean(\"opackets\") FROM  \"dunedaq.dpdklibs.opmon.EthStats\"  WHERE session = '${session}' AND application =~ /${application}/ AND $timeFilter GROUP BY time($__interval), element fill(null) ",
+          "query": "SELECT  non_negative_derivative(cumulative_sum(sum(\"opackets\")), 1s) FROM  \"dunedaq.dpdklibs.opmon.EthStats\"  WHERE session = '${session}' AND application =~ /${application}/ AND $timeFilter GROUP BY time($__interval), element fill(null) ",
           "rawQuery": true,
           "refId": "A",
           "resultFormat": "time_series"
@@ -1084,7 +1084,7 @@
           "datasource": {
             "uid": "${influxdb}"
           },
-          "query": "SELECT mean(\"obytes\") FROM  \"dunedaq.dpdklibs.opmon.EthStats\"  WHERE session = '${session}' AND application =~ /${application}/ AND $timeFilter GROUP BY time($__interval), element fill(null)",
+          "query": "SELECT  non_negative_derivative(cumulative_sum(sum(\"obytes\")), 1s) FROM  \"dunedaq.dpdklibs.opmon.EthStats\"  WHERE session = '${session}' AND application =~ /${application}/ AND $timeFilter GROUP BY time($__interval), element fill(null)",
           "rawQuery": true,
           "refId": "A",
           "resultFormat": "time_series"
@@ -1179,7 +1179,7 @@
           "datasource": {
             "uid": "${influxdb}"
           },
-          "query": "SELECT mean(\"imissed\") FROM  \"dunedaq.dpdklibs.opmon.EthStats\"  WHERE session = '${session}' AND application =~ /${application}/ AND $timeFilter GROUP BY time($__interval), element fill(null)",
+          "query": "SELECT  non_negative_derivative(cumulative_sum(sum(\"imissed\")), 1s) FROM  \"dunedaq.dpdklibs.opmon.EthStats\"  WHERE session = '${session}' AND application =~ /${application}/ AND $timeFilter GROUP BY time($__interval), element fill(null)",
           "rawQuery": true,
           "refId": "A",
           "resultFormat": "time_series"
@@ -1245,7 +1245,7 @@
               }
             ]
           },
-          "unit": "pps"
+          "unit": "cps"
         },
         "overrides": []
       },
@@ -1274,7 +1274,7 @@
           "datasource": {
             "uid": "${influxdb}"
           },
-          "query": "SELECT mean(\"ierrors\") FROM  \"dunedaq.dpdklibs.opmon.EthStats\"  WHERE session = '${session}' AND application =~ /${application}/ AND $timeFilter GROUP BY time($__interval), element fill(null)",
+          "query": "SELECT  non_negative_derivative(cumulative_sum(sum(\"ierrors\")), 1s) FROM  \"dunedaq.dpdklibs.opmon.EthStats\"  WHERE session = '${session}' AND application =~ /${application}/ AND $timeFilter GROUP BY time($__interval), element fill(null)",
           "rawQuery": true,
           "refId": "A",
           "resultFormat": "time_series"
@@ -1340,7 +1340,7 @@
               }
             ]
           },
-          "unit": "pps"
+          "unit": "cps"
         },
         "overrides": []
       },
@@ -1369,7 +1369,7 @@
           "datasource": {
             "uid": "${influxdb}"
           },
-          "query": "SELECT mean(\"oerrors\") FROM  \"dunedaq.dpdklibs.opmon.EthStats\"  WHERE session = '${session}' AND application =~ /${application}/ AND $timeFilter GROUP BY time($__interval), element fill(null)",
+          "query": "SELECT  non_negative_derivative(cumulative_sum(sum(\"oerrors\")), 1s) FROM  \"dunedaq.dpdklibs.opmon.EthStats\"  WHERE session = '${session}' AND application =~ /${application}/ AND $timeFilter GROUP BY time($__interval), element fill(null)",
           "rawQuery": true,
           "refId": "A",
           "resultFormat": "time_series"
@@ -1435,7 +1435,7 @@
               }
             ]
           },
-          "unit": "pps"
+          "unit": "cps"
         },
         "overrides": []
       },
@@ -1464,7 +1464,7 @@
           "datasource": {
             "uid": "${influxdb}"
           },
-          "query": "SELECT mean(\"rx_nombuf\") FROM  \"dunedaq.dpdklibs.opmon.EthStats\"  WHERE session = '${session}' AND application =~ /${application}/ AND $timeFilter GROUP BY time($__interval), element fill(null)",
+          "query": "SELECT  non_negative_derivative(cumulative_sum(sum(\"rx_nombuf\")), 1s) FROM  \"dunedaq.dpdklibs.opmon.EthStats\"  WHERE session = '${session}' AND application =~ /${application}/ AND $timeFilter GROUP BY time($__interval), element fill(null)",
           "rawQuery": true,
           "refId": "A",
           "resultFormat": "time_series"
@@ -1572,7 +1572,7 @@
           "datasource": {
             "uid": "${influxdb}"
           },
-          "query": "SELECT mean(\"rx_good_packets\") FROM \"dunedaq.dpdklibs.opmon.EthXStatsInfo\"  WHERE session = '${session}' AND application =~ /${application}/ AND $timeFilter GROUP BY time($__interval), element fill(null)",
+          "query": "SELECT  non_negative_derivative(cumulative_sum(sum(\"rx_good_packets\")), 1s) FROM \"dunedaq.dpdklibs.opmon.EthXStatsInfo\"  WHERE session = '${session}' AND application =~ /${application}/ AND $timeFilter GROUP BY time($__interval), element fill(null)",
           "rawQuery": true,
           "refId": "A",
           "resultFormat": "time_series"
@@ -1638,7 +1638,7 @@
               }
             ]
           },
-          "unit": "binbps"
+          "unit": "Bps"
         },
         "overrides": []
       },
@@ -1667,7 +1667,7 @@
           "datasource": {
             "uid": "${influxdb}"
           },
-          "query": "SELECT mean(\"rx_good_bytes\") FROM \"dunedaq.dpdklibs.opmon.EthXStatsInfo\"  WHERE session = '${session}' AND application =~ /${application}/ AND $timeFilter GROUP BY time($__interval), element fill(null)",
+          "query": "SELECT  non_negative_derivative(cumulative_sum(sum(\"rx_good_bytes\")), 1s) FROM \"dunedaq.dpdklibs.opmon.EthXStatsInfo\"  WHERE session = '${session}' AND application =~ /${application}/ AND $timeFilter GROUP BY time($__interval), element fill(null)",
           "rawQuery": true,
           "refId": "A",
           "resultFormat": "time_series"
@@ -1765,7 +1765,7 @@
           "datasource": {
             "uid": "${influxdb}"
           },
-          "query": "SELECT mean(\"rx_size_1523_to_max_packets\") FROM \"dunedaq.dpdklibs.opmon.EthXStatsInfo\"  WHERE session = '${session}' AND application =~ /${application}/ AND $timeFilter GROUP BY time($__interval), element fill(null) ",
+          "query": "SELECT  non_negative_derivative(cumulative_sum(sum(\"rx_size_1523_to_max_packets\")), 1s) FROM \"dunedaq.dpdklibs.opmon.EthXStatsInfo\"  WHERE session = '${session}' AND application =~ /${application}/ AND $timeFilter GROUP BY time($__interval), element fill(null) ",
           "rawQuery": true,
           "refId": "A",
           "resultFormat": "time_series"
@@ -2119,8 +2119,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
-                "value": null
+                "color": "green"
               },
               {
                 "color": "red",
@@ -2157,7 +2156,7 @@
           "datasource": {
             "uid": "${influxdb}"
           },
-          "query": "SELECT sum(\"rx_dropped_packets\") FROM \"dunedaq.dpdklibs.opmon.EthXStatsInfo\"  WHERE session = '${session}' AND application =~ /${application}/ AND $timeFilter GROUP BY time($__interval), element fill(null)",
+          "query": "SELECT  non_negative_derivative(cumulative_sum(sum(\"rx_dropped_packets\")), 1s) FROM \"dunedaq.dpdklibs.opmon.EthXStatsInfo\"  WHERE session = '${session}' AND application =~ /${application}/ AND $timeFilter GROUP BY time($__interval), element fill(null)",
           "rawQuery": true,
           "refId": "A",
           "resultFormat": "time_series"
@@ -2217,8 +2216,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
-                "value": null
+                "color": "green"
               },
               {
                 "color": "red",
@@ -2255,7 +2253,7 @@
           "datasource": {
             "uid": "${influxdb}"
           },
-          "query": "SELECT sum(\"rx_errors\") FROM \"dunedaq.dpdklibs.opmon.EthXStatsErrors\"  WHERE session = '${session}' AND application =~ /${application}/ AND $timeFilter GROUP BY time($__interval), element fill(null)",
+          "query": "SELECT  non_negative_derivative(cumulative_sum(sum(\"rx_errors\")), 1s) FROM \"dunedaq.dpdklibs.opmon.EthXStatsErrors\"  WHERE session = '${session}' AND application =~ /${application}/ AND $timeFilter GROUP BY time($__interval), element fill(null)",
           "rawQuery": true,
           "refId": "A",
           "resultFormat": "time_series"
@@ -2315,8 +2313,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
-                "value": null
+                "color": "green"
               },
               {
                 "color": "red",
@@ -2353,7 +2350,7 @@
           "datasource": {
             "uid": "${influxdb}"
           },
-          "query": "SELECT sum(\"rx_crc_errors\") FROM \"dunedaq.dpdklibs.opmon.EthXStatsErrors\"  WHERE session = '${session}' AND application =~ /${application}/ AND $timeFilter GROUP BY time($__interval), element fill(null)",
+          "query": "SELECT  non_negative_derivative(cumulative_sum(sum(\"rx_crc_errors\")), 1s) FROM \"dunedaq.dpdklibs.opmon.EthXStatsErrors\"  WHERE session = '${session}' AND application =~ /${application}/ AND $timeFilter GROUP BY time($__interval), element fill(null)",
           "rawQuery": true,
           "refId": "A",
           "resultFormat": "time_series"
@@ -2413,8 +2410,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
-                "value": null
+                "color": "green"
               },
               {
                 "color": "red",
@@ -2451,7 +2447,7 @@
           "datasource": {
             "uid": "${influxdb}"
           },
-          "query": "SELECT sum(\"rx_illegal_byte_errors\") FROM \"dunedaq.dpdklibs.opmon.EthXStatsErrors\"  WHERE session = '${session}' AND application =~ /${application}/ AND $timeFilter GROUP BY time($__interval), element fill(null)",
+          "query": "SELECT  non_negative_derivative(cumulative_sum(sum(\"rx_illegal_byte_errors\")), 1s) FROM \"dunedaq.dpdklibs.opmon.EthXStatsErrors\"  WHERE session = '${session}' AND application =~ /${application}/ AND $timeFilter GROUP BY time($__interval), element fill(null)",
           "rawQuery": true,
           "refId": "A",
           "resultFormat": "time_series"
@@ -2511,8 +2507,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
-                "value": null
+                "color": "green"
               },
               {
                 "color": "red",
@@ -2549,7 +2544,7 @@
           "datasource": {
             "uid": "${influxdb}"
           },
-          "query": "SELECT sum(\"rx_missed_errors\") FROM \"dunedaq.dpdklibs.opmon.EthXStatsErrors\"  WHERE session = '${session}' AND application =~ /${application}/ AND $timeFilter GROUP BY time($__interval), element fill(null)",
+          "query": "SELECT  non_negative_derivative(cumulative_sum(sum(\"rx_missed_errors\")), 1s) FROM \"dunedaq.dpdklibs.opmon.EthXStatsErrors\"  WHERE session = '${session}' AND application =~ /${application}/ AND $timeFilter GROUP BY time($__interval), element fill(null)",
           "rawQuery": true,
           "refId": "A",
           "resultFormat": "time_series"
@@ -2609,8 +2604,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
-                "value": null
+                "color": "green"
               },
               {
                 "color": "red",
@@ -2647,7 +2641,7 @@
           "datasource": {
             "uid": "${influxdb}"
           },
-          "query": "SELECT sum(\"rx_jabber_errors\") FROM \"dunedaq.dpdklibs.opmon.EthXStatsErrors\"  WHERE session = '${session}' AND application =~ /${application}/ AND $timeFilter GROUP BY time($__interval), element fill(null) ",
+          "query": "SELECT  non_negative_derivative(cumulative_sum(sum(\"rx_jabber_errors\")), 1s) FROM \"dunedaq.dpdklibs.opmon.EthXStatsErrors\"  WHERE session = '${session}' AND application =~ /${application}/ AND $timeFilter GROUP BY time($__interval), element fill(null) ",
           "rawQuery": true,
           "refId": "A",
           "resultFormat": "time_series"
@@ -2717,8 +2711,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
-                "value": null
+                "color": "green"
               },
               {
                 "color": "red",
@@ -2820,8 +2813,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
-                "value": null
+                "color": "green"
               },
               {
                 "color": "red",
@@ -2915,8 +2907,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
-                "value": null
+                "color": "green"
               },
               {
                 "color": "red",
@@ -3010,8 +3001,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
-                "value": null
+                "color": "green"
               },
               {
                 "color": "red",
@@ -3105,8 +3095,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
-                "value": null
+                "color": "green"
               },
               {
                 "color": "red",
@@ -3229,8 +3218,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
-                "value": null
+                "color": "green"
               },
               {
                 "color": "red",
@@ -3324,8 +3312,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
-                "value": null
+                "color": "green"
               },
               {
                 "color": "red",
@@ -3419,8 +3406,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
-                "value": null
+                "color": "green"
               },
               {
                 "color": "red",
@@ -3514,8 +3500,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
-                "value": null
+                "color": "green"
               },
               {
                 "color": "red",
@@ -3805,8 +3790,8 @@
       {
         "current": {
           "selected": false,
-          "text": "np02-oks-session",
-          "value": "np02-oks-session"
+          "text": "np02-session",
+          "value": "np02-session"
         },
         "datasource": {
           "type": "influxdb",
@@ -4077,7 +4062,7 @@
     ]
   },
   "time": {
-    "from": "now-15m",
+    "from": "now-1h",
     "to": "now"
   },
   "timepicker": {
@@ -4108,6 +4093,6 @@
   "timezone": "",
   "title": "Frontend Ethernet",
   "uid": "v5_2_0-frontend_ethernet",
-  "version": 46,
+  "version": 51,
   "weekStart": ""
 }

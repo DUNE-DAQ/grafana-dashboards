@@ -24,7 +24,7 @@
   "editable": true,
   "fiscalYearStartMonth": 0,
   "graphTooltip": 0,
-  "id": 46,
+  "id": 284,
   "links": [],
   "liveNow": false,
   "panels": [
@@ -68,7 +68,7 @@
         "x": 0,
         "y": 0
       },
-      "id": 54,
+      "id": 55,
       "options": {
         "alignValue": "center",
         "legend": {
@@ -86,13 +86,13 @@
       },
       "targets": [
         {
-          "alias": "$partition",
+          "alias": "$session",
           "datasource": {
             "type": "influxdb",
             "uid": "${influxdb}"
           },
           "hide": false,
-          "query": "SELECT \"runno\" FROM \"dunedaq.rcif.runinfo.Info\" WHERE (\"partition_id\" = '${partition}' AND \"runno\" > 0) AND $timeFilter",
+          "query": "SELECT \"run_number\" FROM \"dunedaq.rcif.opmon.RunInfo\" WHERE \"session\" = '${session}' AND \"run_number\" >0 AND $timeFilter",
           "rawQuery": true,
           "refId": "A",
           "resultFormat": "time_series"
@@ -104,6 +104,7 @@
     },
     {
       "datasource": {
+        "type": "influxdb",
         "uid": "${influxdb}"
       },
       "fieldConfig": {
@@ -288,7 +289,7 @@
           }
         ]
       },
-      "pluginVersion": "10.1.4",
+      "pluginVersion": "10.2.2",
       "targets": [
         {
           "datasource": {
@@ -311,57 +312,9 @@
           "measurement": "dunedaq.flxlibs.felixcardcontrollerinfo.LinkInfo",
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "SELECT \"device_id\", \"link_id\", \"aligned\" FROM \"dunedaq.flxlibs.felixcardcontrollerinfo.LinkInfo\" WHERE (\"partition_id\" = '${partition}') AND $timeFilter AND \"enabled\"=true GROUP BY \"source_id\" ORDER BY DESC LIMIT 1\n",
+          "query": "SELECT last(\"aligned\") AS \"aligned\" FROM \"dunedaq.flxlibs.opmon.LinkInfo\" WHERE \"session\" = '${session}' AND $timeFilter AND \"enabled\"=true GROUP BY \"element\", \"device\", \"link\" ORDER BY DESC LIMIT 1\n",
           "rawQuery": true,
           "refId": "A",
-          "resultFormat": "table",
-          "select": [
-            [
-              {
-                "params": [
-                  "link_id"
-                ],
-                "type": "field"
-              },
-              {
-                "params": [],
-                "type": "last"
-              }
-            ]
-          ],
-          "tags": [
-            {
-              "key": "partition_id",
-              "operator": "=",
-              "value": "gio_test"
-            }
-          ]
-        },
-        {
-          "datasource": {
-            "uid": "${influxdb}"
-          },
-          "groupBy": [
-            {
-              "params": [
-                "$__interval"
-              ],
-              "type": "time"
-            },
-            {
-              "params": [
-                "null"
-              ],
-              "type": "fill"
-            }
-          ],
-          "hide": true,
-          "measurement": "dunedaq.flxlibs.felixcardcontrollerinfo.LinkInfo",
-          "orderByTime": "ASC",
-          "policy": "default",
-          "query": "SELECT \"link_id\", \"enabled\", \"aligned\" FROM \"dunedaq.flxlibs.felixcardcontrollerinfo.LinkInfo\" WHERE (\"partition_id\" = '${partition}') GROUP BY \"source_id\" ORDER BY DESC LIMIT 1\n",
-          "rawQuery": false,
-          "refId": "B",
           "resultFormat": "table",
           "select": [
             [
@@ -393,13 +346,15 @@
           "options": {
             "excludeByName": {},
             "indexByName": {
-              "Time": 4,
-              "aligned": 3,
-              "device_id": 1,
-              "link_id": 2,
-              "source_id": 0
+              "Time": 0,
+              "aligned": 4,
+              "device": 2,
+              "element": 1,
+              "link": 3
             },
-            "renameByName": {}
+            "renameByName": {
+              "device": ""
+            }
           }
         }
       ],
@@ -407,6 +362,7 @@
     },
     {
       "datasource": {
+        "type": "influxdb",
         "uid": "${influxdb}"
       },
       "description": "",
@@ -416,6 +372,7 @@
             "mode": "palette-classic"
           },
           "custom": {
+            "axisBorderShow": false,
             "axisCenteredZero": false,
             "axisColorMode": "text",
             "axisLabel": "",
@@ -484,7 +441,7 @@
       },
       "targets": [
         {
-          "alias": "$tag_source_id",
+          "alias": "$tag_element $tag_subelement card: $tag_card $tag_logical_unit link: $tag_link $tag_tag",
           "datasource": {
             "uid": "${influxdb}"
           },
@@ -506,7 +463,7 @@
           "measurement": "dunedaq.flxlibs.felixcardreaderinfo.ELinkInfo",
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "SELECT sum(\"num_blocks_processed_with_error\") FROM \"dunedaq.flxlibs.felixcardreaderinfo.ELinkInfo\" WHERE (\"partition_id\" = '${partition}') AND $timeFilter GROUP BY time($__interval), \"source_id\" fill(null)",
+          "query": "SELECT sum(\"num_blocks_processed_with_error\") FROM \"dunedaq.flxlibs.opmon.CardReaderInfo\" WHERE \"session\" = '${session}' AND $timeFilter GROUP BY time($__interval), \"element\", \"subelement\", \"card\", \"logical_unit\", \"link\", \"tag\" fill(null)",
           "rawQuery": true,
           "refId": "B",
           "resultFormat": "time_series",
@@ -544,19 +501,12 @@
         }
       ],
       "title": "Felix counters - Blocks with errors",
-      "transformations": [
-        {
-          "id": "renameByRegex",
-          "options": {
-            "regex": ".*\\.(.*)\\.(.*)\\.(.*)",
-            "renamePattern": "$1 $2 $3"
-          }
-        }
-      ],
+      "transformations": [],
       "type": "timeseries"
     },
     {
       "datasource": {
+        "type": "influxdb",
         "uid": "${influxdb}"
       },
       "description": "",
@@ -566,6 +516,7 @@
             "mode": "palette-classic"
           },
           "custom": {
+            "axisBorderShow": false,
             "axisCenteredZero": false,
             "axisColorMode": "text",
             "axisLabel": "",
@@ -634,7 +585,7 @@
       },
       "targets": [
         {
-          "alias": "$tag_source_id",
+          "alias": "$tag_element $tag_subelement card: $tag_card $tag_logical_unit link: $tag_link $tag_tag",
           "datasource": {
             "uid": "${influxdb}"
           },
@@ -656,7 +607,7 @@
           "measurement": "dunedaq.flxlibs.felixcardreaderinfo.ELinkInfo",
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "SELECT sum(\"num_blocks_processed\") FROM \"dunedaq.flxlibs.felixcardreaderinfo.ELinkInfo\" WHERE (\"partition_id\" = '${partition}' ) AND $timeFilter GROUP BY time($__interval), \"source_id\"",
+          "query": "SELECT sum(\"num_blocks_processed\") FROM \"dunedaq.flxlibs.opmon.CardReaderInfo\" WHERE \"session\" = '${session}' AND $timeFilter GROUP BY time($__interval), \"element\", \"subelement\", \"card\", \"logical_unit\", \"link\", \"tag\" fill(null)",
           "rawQuery": true,
           "refId": "C",
           "resultFormat": "time_series",
@@ -694,19 +645,12 @@
         }
       ],
       "title": "Felix counters - Blocks",
-      "transformations": [
-        {
-          "id": "renameByRegex",
-          "options": {
-            "regex": ".*\\.(.*)\\.(.*)\\.(.*)",
-            "renamePattern": "$1 $2 $3"
-          }
-        }
-      ],
+      "transformations": [],
       "type": "timeseries"
     },
     {
       "datasource": {
+        "type": "influxdb",
         "uid": "${influxdb}"
       },
       "description": "",
@@ -716,6 +660,7 @@
             "mode": "palette-classic"
           },
           "custom": {
+            "axisBorderShow": false,
             "axisCenteredZero": false,
             "axisColorMode": "text",
             "axisLabel": "",
@@ -784,7 +729,7 @@
       },
       "targets": [
         {
-          "alias": "generic $tag_source_id",
+          "alias": "$tag_element $tag_subelement card: $tag_card $tag_logical_unit link: $tag_link $tag_tag",
           "datasource": {
             "uid": "${influxdb}"
           },
@@ -806,7 +751,7 @@
           "measurement": "dunedaq.flxlibs.felixcardreaderinfo.ELinkInfo",
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "SELECT sum(\"num_chunks_processed_with_error\") FROM \"dunedaq.flxlibs.felixcardreaderinfo.ELinkInfo\" WHERE (\"partition_id\" = '${partition}') AND $timeFilter GROUP BY time($__interval), \"source_id\" fill(null)",
+          "query": "SELECT sum(\"num_chunks_processed_with_error\") FROM \"dunedaq.flxlibs.opmon.CardReaderInfo\" WHERE \"session\" = '${session}' AND $timeFilter GROUP BY time($__interval), \"element\", \"subelement\", \"card\", \"logical_unit\", \"link\", \"tag\" fill(null)",
           "rawQuery": true,
           "refId": "B",
           "resultFormat": "time_series",
@@ -843,7 +788,7 @@
           ]
         },
         {
-          "alias": "crc $tag_source_id",
+          "alias": "crc $tag_element $tag_subelement card: $tag_card $tag_logical_unit link: $tag_link $tag_tag ",
           "datasource": {
             "uid": "${influxdb}"
           },
@@ -865,7 +810,7 @@
           "measurement": "dunedaq.flxlibs.felixcardreaderinfo.ELinkInfo",
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "SELECT sum(\"num_subchunk_crc_errors\") FROM \"dunedaq.flxlibs.felixcardreaderinfo.ELinkInfo\" WHERE (\"partition_id\" = '${partition}') AND $timeFilter GROUP BY time($__interval), \"source_id\" fill(null)",
+          "query": "SELECT sum(\"num_subchunk_crc_errors\") FROM \"dunedaq.flxlibs.opmon.CardReaderInfo\" WHERE \"session\" = '${session}' AND $timeFilter GROUP BY time($__interval), \"element\", \"subelement\", \"card\", \"logical_unit\", \"link\", \"tag\" fill(null)",
           "rawQuery": true,
           "refId": "A",
           "resultFormat": "time_series",
@@ -902,7 +847,7 @@
           ]
         },
         {
-          "alias": "trunc $tag_source_id",
+          "alias": "trunc $tag_element $tag_subelement card: $tag_card $tag_logical_unit link: $tag_link $tag_tag",
           "datasource": {
             "uid": "${influxdb}"
           },
@@ -924,7 +869,7 @@
           "measurement": "dunedaq.flxlibs.felixcardreaderinfo.ELinkInfo",
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "SELECT sum(\"num_subchunk_trunc_errors\") FROM \"dunedaq.flxlibs.felixcardreaderinfo.ELinkInfo\" WHERE (\"partition_id\" = '${partition}') AND $timeFilter GROUP BY time($__interval), \"source_id\" fill(null)",
+          "query": "SELECT sum(\"num_subchunk_trunc_errors\") FROM \"dunedaq.flxlibs.opmon.CardReaderInfo\" WHERE \"session\" = '${session}' AND $timeFilter GROUP BY time($__interval), \"element\", \"subelement\", \"card\", \"logical_unit\", \"link\", \"tag\" fill(null)",
           "rawQuery": true,
           "refId": "C",
           "resultFormat": "time_series",
@@ -975,6 +920,7 @@
     },
     {
       "datasource": {
+        "type": "influxdb",
         "uid": "${influxdb}"
       },
       "description": "",
@@ -984,6 +930,7 @@
             "mode": "palette-classic"
           },
           "custom": {
+            "axisBorderShow": false,
             "axisCenteredZero": false,
             "axisColorMode": "text",
             "axisLabel": "counters",
@@ -1052,7 +999,7 @@
       },
       "targets": [
         {
-          "alias": "$tag_source_id",
+          "alias": "$tag_element $tag_subelement card: $tag_card $tag_logical_unit link: $tag_link $tag_tag",
           "datasource": {
             "uid": "${influxdb}"
           },
@@ -1074,7 +1021,7 @@
           "measurement": "dunedaq.flxlibs.felixcardreaderinfo.ELinkInfo",
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "SELECT sum(\"num_chunks_processed\") FROM \"dunedaq.flxlibs.felixcardreaderinfo.ELinkInfo\" WHERE (\"partition_id\"='${partition}' ) AND $timeFilter GROUP BY time($__interval), \"source_id\"",
+          "query": "SELECT sum(\"num_chunks_processed\") FROM \"dunedaq.flxlibs.opmon.CardReaderInfo\" WHERE \"session\" = '${session}' AND $timeFilter GROUP BY time($__interval), \"element\", \"subelement\", \"card\", \"logical_unit\", \"link\", \"tag\" fill(null) ",
           "rawQuery": true,
           "refId": "C",
           "resultFormat": "time_series",
@@ -1126,7 +1073,6 @@
   ],
   "refresh": "5s",
   "schemaVersion": 38,
-  "style": "dark",
   "tags": [
     "Subsystem",
     "v5.3.0"
@@ -1136,8 +1082,8 @@
       {
         "current": {
           "selected": false,
-          "text": "KluInflux",
-          "value": "ffedc550-6555-4a16-a113-aabf2b980c30"
+          "text": "KafkaMonitoring_v5.2",
+          "value": "f68a27a2-f292-478c-8093-2a4adad3be1b"
         },
         "hide": 2,
         "includeAll": false,
@@ -1147,27 +1093,27 @@
         "options": [],
         "query": "influxdb",
         "refresh": 1,
-        "regex": "",
+        "regex": ".*_v5\\.2",
         "skipUrlSync": false,
         "type": "datasource"
       },
       {
         "current": {
           "selected": false,
-          "text": "np02vdcoldbox",
-          "value": "np02vdcoldbox"
+          "text": "np04-pds-session",
+          "value": "np04-pds-session"
         },
         "datasource": {
           "uid": "${influxdb}"
         },
-        "definition": "SHOW TAG VALUES WITH KEY=\"partition_id\" where $timeFilter",
+        "definition": "SELECT \"session\" FROM (SELECT \"state\",\"session\" FROM \"dunedaq.appfwk.opmon.AppInfo\" WHERE $timeFilter)",
         "hide": 0,
         "includeAll": false,
         "label": "Partition name",
         "multi": false,
-        "name": "partition",
+        "name": "session",
         "options": [],
-        "query": "SHOW TAG VALUES WITH KEY=\"partition_id\" where $timeFilter",
+        "query": "SELECT \"session\" FROM (SELECT \"state\",\"session\" FROM \"dunedaq.appfwk.opmon.AppInfo\" WHERE $timeFilter)",
         "refresh": 1,
         "regex": "",
         "skipUrlSync": false,
@@ -1177,7 +1123,7 @@
     ]
   },
   "time": {
-    "from": "now-30m",
+    "from": "now-1h",
     "to": "now"
   },
   "timepicker": {
@@ -1208,6 +1154,6 @@
   "timezone": "",
   "title": "Frontend Felix",
   "uid": "v5_3_0-frontend-felix",
-  "version": 2,
+  "version": 19,
   "weekStart": ""
 }

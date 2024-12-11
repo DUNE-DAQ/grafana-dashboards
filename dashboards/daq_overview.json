@@ -24,7 +24,7 @@
   "editable": true,
   "fiscalYearStartMonth": 0,
   "graphTooltip": 0,
-  "id": 239,
+  "id": 279,
   "links": [
     {
       "asDropdown": true,
@@ -2281,6 +2281,7 @@
             "axisBorderShow": false,
             "axisCenteredZero": false,
             "axisColorMode": "text",
+            "axisLabel": "",
             "axisPlacement": "auto",
             "barAlignment": 0,
             "drawStyle": "line",
@@ -2349,7 +2350,7 @@
       "pluginVersion": "8.0.6",
       "targets": [
         {
-          "alias": "$tag_element ",
+          "alias": "$tag_application - $tag_element ",
           "datasource": {
             "uid": "${influxdb}"
           },
@@ -2357,7 +2358,7 @@
           "measurement": "dunedaq.dfmodules.datawriterinfo.Info",
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "SELECT non_negative_derivative(cumulative_sum(sum(\"new_bytes_output\")), 1s) FROM \"dunedaq.dfmodules.opmon.HDF5DataStoreInfo\" WHERE session = '${session}' AND $timeFilter GROUP BY time($__interval), \"element\"\nfill(null)",
+          "query": "SELECT non_negative_derivative(cumulative_sum(sum(\"new_bytes_output\")), 1s) FROM \"dunedaq.dfmodules.opmon.HDF5DataStoreInfo\" WHERE session = '${session}' AND $timeFilter GROUP BY time($__interval), \"application\", \"element\"\nfill(null)",
           "rawQuery": true,
           "refId": "C",
           "resultFormat": "time_series",
@@ -2464,8 +2465,8 @@
       {
         "current": {
           "selected": false,
-          "text": "test-session",
-          "value": "test-session"
+          "text": "michal-test-config",
+          "value": "michal-test-config"
         },
         "datasource": {
           "uid": "${influxdb}"
@@ -2518,6 +2519,6 @@
   "timezone": "",
   "title": "DAQ overview",
   "uid": "v5_3_0-overview",
-  "version": 40,
+  "version": 3,
   "weekStart": ""
 }

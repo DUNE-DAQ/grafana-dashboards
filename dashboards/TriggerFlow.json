@@ -18,7 +18,7 @@
   "editable": true,
   "fiscalYearStartMonth": 0,
   "graphTooltip": 0,
-  "id": 251,
+  "id": 291,
   "links": [],
   "liveNow": false,
   "panels": [
@@ -1490,7 +1490,7 @@
       },
       "gridPos": {
         "h": 7,
-        "w": 8,
+        "w": 24,
         "x": 0,
         "y": 12
       },
@@ -2071,7 +2071,7 @@
       },
       "gridPos": {
         "h": 8,
-        "w": 12,
+        "w": 8,
         "x": 0,
         "y": 20
       },
@@ -2391,8 +2391,8 @@
       },
       "gridPos": {
         "h": 8,
-        "w": 12,
-        "x": 12,
+        "w": 8,
+        "x": 8,
         "y": 20
       },
       "id": 36,
@@ -2639,40 +2639,21 @@
         "overrides": [
           {
             "matcher": {
-              "id": "byName",
-              "options": "Total TD rate"
+              "id": "byRegexp",
+              "options": "/.*vector.*/"
             },
             "properties": [
               {
-                "id": "color",
-                "value": {
-                  "fixedColor": "#73BF69",
-                  "mode": "fixed"
-                }
-              }
-            ]
-          },
-          {
-            "__systemRef": "hideSeriesFrom",
-            "matcher": {
-              "id": "byNames",
-              "options": {
-                "mode": "exclude",
-                "names": [
-                  "TD sent"
-                ],
-                "prefix": "All except:",
-                "readOnly": true
-              }
-            },
-            "properties": [
+                "id": "custom.axisPlacement",
+                "value": "right"
+              },
               {
-                "id": "custom.hideFrom",
-                "value": {
-                  "legend": false,
-                  "tooltip": false,
-                  "viz": true
-                }
+                "id": "custom.axisLabel",
+                "value": "Vector rates"
+              },
+              {
+                "id": "custom.axisGridShow",
+                "value": true
               }
             ]
           }
@@ -2680,16 +2661,16 @@
       },
       "gridPos": {
         "h": 8,
-        "w": 12,
-        "x": 0,
-        "y": 28
+        "w": 8,
+        "x": 16,
+        "y": 20
       },
-      "id": 35,
+      "id": 41,
       "options": {
         "legend": {
           "calcs": [],
           "displayMode": "list",
-          "placement": "right",
+          "placement": "bottom",
           "showLegend": true
         },
         "tooltip": {
@@ -2699,183 +2680,41 @@
       },
       "targets": [
         {
-          "alias": "TC Made",
+          "alias": "TP read",
           "datasource": {
-            "uid": "${influxdb}"
+            "type": "influxdb",
+            "uid": "f68a27a2-f292-478c-8093-2a4adad3be1b"
           },
-          "groupBy": [
-            {
-              "params": [
-                "$interval"
-              ],
-              "type": "time"
-            }
-          ],
-          "hide": false,
-          "measurement": "dunedaq.trigger.moduleleveltriggerinfo.Info",
-          "orderByTime": "ASC",
-          "policy": "default",
-          "query": "SELECT non_negative_derivative(last(\"tc_made_count\"), 1s) FROM \"dunedaq.trigger.opmon.CustomTCMakerInfo\" WHERE \"session\" = '${session}' AND $timeFilter GROUP BY time($__interval) fill(null) ",
+          "query": "SELECT non_negative_derivative(last(\"tp_made_count\"), 1s) FROM \"dunedaq.trigger.opmon.TriggerPrimitiveMakerInfo\" WHERE \"session\" = '${session}' AND $timeFilter GROUP BY time($__interval) fill(null)",
           "rawQuery": true,
-          "refId": "F",
-          "resultFormat": "time_series",
-          "select": [
-            [
-              {
-                "params": [
-                  "td_paused_count"
-                ],
-                "type": "field"
-              },
-              {
-                "params": [],
-                "type": "last"
-              },
-              {
-                "params": [
-                  "1s"
-                ],
-                "type": "non_negative_derivative"
-              }
-            ]
-          ],
-          "tags": [
-            {
-              "key": "partition_id",
-              "operator": "=",
-              "value": "np02-coldbox"
-            },
-            {
-              "condition": "AND",
-              "key": "source_id",
-              "operator": "=",
-              "value": "np02-coldbox.trigger.mlt"
-            }
-          ]
+          "refId": "A",
+          "resultFormat": "time_series"
+        },
+        {
+          "alias": "TP vector made",
+          "datasource": {
+            "type": "influxdb",
+            "uid": "f68a27a2-f292-478c-8093-2a4adad3be1b"
+          },
+          "hide": false,
+          "query": "SELECT non_negative_derivative(last(\"tpv_made_count\"), 1s) FROM \"dunedaq.trigger.opmon.TriggerPrimitiveMakerInfo\" WHERE \"session\" = '${session}' AND $timeFilter GROUP BY time($__interval) fill(null)",
+          "rawQuery": true,
+          "refId": "B",
+          "resultFormat": "time_series"
+        },
+        {
+          "alias": "TP vector failed sent",
+          "datasource": {
+            "type": "influxdb",
+            "uid": "f68a27a2-f292-478c-8093-2a4adad3be1b"
+          },
+          "hide": false,
+          "query": "SELECT non_negative_derivative(last(\"tpv_failed_sent_count\"), 1s) FROM \"dunedaq.trigger.opmon.TriggerPrimitiveMakerInfo\" WHERE \"session\" = '${session}' AND $timeFilter GROUP BY time($__interval) fill(null)",
+          "rawQuery": true,
+          "refId": "C",
+          "resultFormat": "time_series"
         }
       ],
-      "title": "Custom TC Maker",
-      "type": "timeseries"
-    },
-    {
-      "datasource": {
-        "type": "influxdb",
-        "uid": "${influxdb}"
-      },
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "mode": "palette-classic"
-          },
-          "custom": {
-            "axisBorderShow": false,
-            "axisCenteredZero": false,
-            "axisColorMode": "text",
-            "axisLabel": "Rate",
-            "axisPlacement": "auto",
-            "barAlignment": 0,
-            "drawStyle": "line",
-            "fillOpacity": 0,
-            "gradientMode": "none",
-            "hideFrom": {
-              "legend": false,
-              "tooltip": false,
-              "viz": false
-            },
-            "insertNulls": false,
-            "lineInterpolation": "stepBefore",
-            "lineWidth": 1,
-            "pointSize": 5,
-            "scaleDistribution": {
-              "type": "linear"
-            },
-            "showPoints": "auto",
-            "spanNulls": false,
-            "stacking": {
-              "group": "A",
-              "mode": "none"
-            },
-            "thresholdsStyle": {
-              "mode": "off"
-            }
-          },
-          "mappings": [],
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "green",
-                "value": null
-              },
-              {
-                "color": "red",
-                "value": 80
-              }
-            ]
-          },
-          "unit": "hertz"
-        },
-        "overrides": [
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "Total TD rate"
-            },
-            "properties": [
-              {
-                "id": "color",
-                "value": {
-                  "fixedColor": "#73BF69",
-                  "mode": "fixed"
-                }
-              }
-            ]
-          },
-          {
-            "__systemRef": "hideSeriesFrom",
-            "matcher": {
-              "id": "byNames",
-              "options": {
-                "mode": "exclude",
-                "names": [
-                  "TD sent"
-                ],
-                "prefix": "All except:",
-                "readOnly": true
-              }
-            },
-            "properties": [
-              {
-                "id": "custom.hideFrom",
-                "value": {
-                  "legend": false,
-                  "tooltip": false,
-                  "viz": true
-                }
-              }
-            ]
-          }
-        ]
-      },
-      "gridPos": {
-        "h": 8,
-        "w": 12,
-        "x": 12,
-        "y": 28
-      },
-      "id": 41,
-      "options": {
-        "legend": {
-          "calcs": [],
-          "displayMode": "list",
-          "placement": "right",
-          "showLegend": true
-        },
-        "tooltip": {
-          "mode": "multi",
-          "sort": "none"
-        }
-      },
       "title": "TP Maker",
       "type": "timeseries"
     },
@@ -2885,7 +2724,7 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 36
+        "y": 28
       },
       "id": 38,
       "panels": [],
@@ -2973,7 +2812,7 @@
         "h": 8,
         "w": 12,
         "x": 0,
-        "y": 37
+        "y": 29
       },
       "id": 60,
       "options": {
@@ -3295,7 +3134,7 @@
         "h": 8,
         "w": 12,
         "x": 12,
-        "y": 37
+        "y": 29
       },
       "id": 40,
       "options": {
@@ -3616,7 +3455,7 @@
         "h": 8,
         "w": 12,
         "x": 0,
-        "y": 45
+        "y": 37
       },
       "id": 39,
       "options": {
@@ -3939,7 +3778,7 @@
         "h": 8,
         "w": 12,
         "x": 12,
-        "y": 45
+        "y": 37
       },
       "id": 64,
       "options": {
@@ -4187,7 +4026,7 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 53
+        "y": 45
       },
       "id": 70,
       "panels": [],
@@ -4262,6 +4101,10 @@
               {
                 "id": "custom.axisPlacement",
                 "value": "right"
+              },
+              {
+                "id": "custom.axisGridShow",
+                "value": true
               }
             ]
           }
@@ -4271,7 +4114,7 @@
         "h": 9,
         "w": 8,
         "x": 0,
-        "y": 54
+        "y": 46
       },
       "id": 76,
       "options": {
@@ -4508,6 +4351,10 @@
               {
                 "id": "custom.axisPlacement",
                 "value": "right"
+              },
+              {
+                "id": "custom.axisGridShow",
+                "value": true
               }
             ]
           }
@@ -4517,7 +4364,7 @@
         "h": 9,
         "w": 8,
         "x": 8,
-        "y": 54
+        "y": 46
       },
       "id": 89,
       "options": {
@@ -4763,7 +4610,7 @@
         "h": 9,
         "w": 8,
         "x": 16,
-        "y": 54
+        "y": 46
       },
       "id": 95,
       "options": {
@@ -4962,6 +4809,10 @@
               {
                 "id": "custom.axisPlacement",
                 "value": "right"
+              },
+              {
+                "id": "custom.axisGridShow",
+                "value": true
               }
             ]
           }
@@ -4971,7 +4822,7 @@
         "h": 9,
         "w": 8,
         "x": 0,
-        "y": 63
+        "y": 55
       },
       "id": 83,
       "options": {
@@ -5187,7 +5038,7 @@
         "h": 9,
         "w": 8,
         "x": 8,
-        "y": 63
+        "y": 55
       },
       "id": 107,
       "options": {
@@ -5483,7 +5334,7 @@
         "h": 9,
         "w": 8,
         "x": 16,
-        "y": 63
+        "y": 55
       },
       "id": 101,
       "options": {
@@ -5608,7 +5459,7 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 72
+        "y": 64
       },
       "id": 32,
       "panels": [],
@@ -5696,7 +5547,7 @@
         "h": 8,
         "w": 24,
         "x": 0,
-        "y": 73
+        "y": 65
       },
       "id": 33,
       "options": {
@@ -5886,7 +5737,7 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 81
+        "y": 73
       },
       "id": 18,
       "panels": [],
@@ -5954,7 +5805,7 @@
         "h": 7,
         "w": 8,
         "x": 0,
-        "y": 82
+        "y": 74
       },
       "id": 42,
       "options": {
@@ -6084,7 +5935,7 @@
         "h": 7,
         "w": 8,
         "x": 8,
-        "y": 82
+        "y": 74
       },
       "id": 43,
       "options": {
@@ -6287,7 +6138,7 @@
         "h": 7,
         "w": 8,
         "x": 16,
-        "y": 82
+        "y": 74
       },
       "id": 44,
       "options": {
@@ -6488,7 +6339,7 @@
         "h": 7,
         "w": 8,
         "x": 0,
-        "y": 89
+        "y": 81
       },
       "id": 45,
       "links": [],
@@ -6818,7 +6669,7 @@
         "h": 7,
         "w": 8,
         "x": 8,
-        "y": 89
+        "y": 81
       },
       "id": 46,
       "options": {
@@ -6971,7 +6822,7 @@
         "h": 7,
         "w": 8,
         "x": 16,
-        "y": 89
+        "y": 81
       },
       "id": 47,
       "options": {
@@ -7411,7 +7262,7 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 96
+        "y": 88
       },
       "id": 48,
       "panels": [],
@@ -7466,7 +7317,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green"
+                "color": "green",
+                "value": null
               },
               {
                 "color": "red",
@@ -7481,7 +7333,7 @@
         "h": 7,
         "w": 8,
         "x": 0,
-        "y": 97
+        "y": 89
       },
       "id": 49,
       "options": {
@@ -7648,7 +7500,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green"
+                "color": "green",
+                "value": null
               },
               {
                 "color": "red",
@@ -7663,7 +7516,7 @@
         "h": 7,
         "w": 8,
         "x": 8,
-        "y": 97
+        "y": 89
       },
       "id": 50,
       "options": {
@@ -8100,7 +7953,7 @@
       "type": "timeseries"
     }
   ],
-  "refresh": "10s",
+  "refresh": false,
   "schemaVersion": 38,
   "tags": [
     "v5.3.0",
@@ -8129,8 +7982,8 @@
       {
         "current": {
           "selected": true,
-          "text": "ehn1-local-1x1-config",
-          "value": "ehn1-local-1x1-config"
+          "text": "michal-test-config",
+          "value": "michal-test-config"
         },
         "datasource": {
           "uid": "${influxdb}"
@@ -8288,9 +8141,10 @@
       },
       {
         "current": {
+          "isNone": true,
           "selected": false,
-          "text": "random-tc-generator",
-          "value": "random-tc-generator"
+          "text": "None",
+          "value": ""
         },
         "datasource": {
           "type": "influxdb",
@@ -8339,13 +8193,13 @@
     ]
   },
   "time": {
-    "from": "now-15m",
+    "from": "now-30m",
     "to": "now"
   },
   "timepicker": {},
   "timezone": "",
   "title": "Trigger Flow",
   "uid": "v5_3_0-trigger_flow",
-  "version": 96,
+  "version": 9,
   "weekStart": ""
 }

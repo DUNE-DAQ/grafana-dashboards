@@ -24,7 +24,7 @@
   "editable": true,
   "fiscalYearStartMonth": 0,
   "graphTooltip": 0,
-  "id": 252,
+  "id": 292,
   "links": [],
   "liveNow": false,
   "panels": [
@@ -673,6 +673,115 @@
         "type": "influxdb",
         "uid": "${influxdb}"
       },
+      "fieldConfig": {
+        "defaults": {
+          "custom": {
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "scaleDistribution": {
+              "type": "linear"
+            }
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 12,
+        "y": 12
+      },
+      "id": 115,
+      "options": {
+        "calculate": false,
+        "cellGap": 1,
+        "color": {
+          "exponent": 0.5,
+          "fill": "dark-orange",
+          "mode": "scheme",
+          "reverse": false,
+          "scale": "exponential",
+          "scheme": "Oranges",
+          "steps": 64
+        },
+        "exemplars": {
+          "color": "rgba(255,0,255,0.7)"
+        },
+        "filterValues": {
+          "le": 1e-9
+        },
+        "legend": {
+          "show": true
+        },
+        "rowsFrame": {
+          "layout": "auto"
+        },
+        "tooltip": {
+          "show": true,
+          "yHistogram": false
+        },
+        "yAxis": {
+          "axisPlacement": "left",
+          "reverse": false
+        }
+      },
+      "pluginVersion": "10.2.2",
+      "targets": [
+        {
+          "alias": "$tag_channel",
+          "datasource": {
+            "uid": "${influxdb}"
+          },
+          "groupBy": [
+            {
+              "params": [
+                "$__interval"
+              ],
+              "type": "time"
+            },
+            {
+              "params": [
+                "null"
+              ],
+              "type": "fill"
+            }
+          ],
+          "measurement": "dunedaq.datahandlinglibs.readoutinfo.TPChannelInfo",
+          "orderByTime": "ASC",
+          "policy": "default",
+          "query": "SELECT non_negative_derivative(cumulative_sum(sum(\"number_of_tps\")), 1s) FROM \"dunedaq.datahandlinglibs.opmon.TPChannelInfo\" WHERE \"session\"='${session}' AND \"element\" =~/${DLH}/ AND $timeFilter GROUP BY time($__interval), \"channel\" fill(null)",
+          "rawQuery": true,
+          "refId": "A",
+          "resultFormat": "time_series",
+          "select": [
+            [
+              {
+                "params": [
+                  "num_tp"
+                ],
+                "type": "field"
+              },
+              {
+                "params": [],
+                "type": "mean"
+              }
+            ]
+          ],
+          "tags": []
+        }
+      ],
+      "title": "Highest TP rates per channel",
+      "transformations": [],
+      "type": "heatmap"
+    },
+    {
+      "datasource": {
+        "type": "influxdb",
+        "uid": "${influxdb}"
+      },
       "description": "",
       "fieldConfig": {
         "defaults": {
@@ -762,7 +871,7 @@
         "h": 7,
         "w": 6,
         "x": 12,
-        "y": 12
+        "y": 20
       },
       "id": 81,
       "options": {
@@ -1092,7 +1201,7 @@
         "h": 7,
         "w": 6,
         "x": 18,
-        "y": 12
+        "y": 20
       },
       "id": 48,
       "options": {
@@ -1224,7 +1333,7 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 19
+        "y": 27
       },
       "id": 59,
       "panels": [
@@ -1504,7 +1613,7 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 20
+        "y": 28
       },
       "id": 73,
       "panels": [],
@@ -1576,7 +1685,7 @@
         "h": 7,
         "w": 8,
         "x": 0,
-        "y": 21
+        "y": 29
       },
       "id": 28,
       "options": {
@@ -1658,54 +1767,18 @@
         "type": "influxdb",
         "uid": "${influxdb}"
       },
-      "description": "",
+      "description": "This should only contain the rates for TP DLHs",
       "fieldConfig": {
         "defaults": {
-          "color": {
-            "mode": "palette-classic"
-          },
           "custom": {
-            "axisBorderShow": false,
-            "axisCenteredZero": false,
-            "axisColorMode": "text",
-            "axisLabel": "",
-            "axisPlacement": "auto",
-            "barAlignment": 0,
-            "drawStyle": "line",
-            "fillOpacity": 0,
-            "gradientMode": "none",
             "hideFrom": {
               "legend": false,
               "tooltip": false,
               "viz": false
             },
-            "insertNulls": 15000,
-            "lineInterpolation": "linear",
-            "lineWidth": 1,
-            "pointSize": 5,
             "scaleDistribution": {
-              "log": 10,
-              "type": "log"
-            },
-            "showPoints": "auto",
-            "spanNulls": 15000,
-            "stacking": {
-              "group": "A",
-              "mode": "none"
-            },
-            "thresholdsStyle": {
-              "mode": "off"
+              "type": "linear"
             }
-          },
-          "mappings": [],
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "green",
-                "value": null
-              }
-            ]
           }
         },
         "overrides": []
@@ -1714,21 +1787,43 @@
         "h": 7,
         "w": 8,
         "x": 8,
-        "y": 21
+        "y": 29
       },
-      "id": 74,
+      "id": 138,
       "options": {
+        "calculate": false,
+        "cellGap": 1,
+        "color": {
+          "exponent": 0.5,
+          "fill": "dark-orange",
+          "mode": "scheme",
+          "reverse": false,
+          "scale": "exponential",
+          "scheme": "Oranges",
+          "steps": 64
+        },
+        "exemplars": {
+          "color": "rgba(255,0,255,0.7)"
+        },
+        "filterValues": {
+          "le": 1e-9
+        },
         "legend": {
-          "calcs": [],
-          "displayMode": "list",
-          "placement": "bottom",
-          "showLegend": true
+          "show": true
+        },
+        "rowsFrame": {
+          "layout": "auto"
         },
         "tooltip": {
-          "mode": "multi",
-          "sort": "desc"
+          "show": true,
+          "yHistogram": false
+        },
+        "yAxis": {
+          "axisPlacement": "left",
+          "reverse": false
         }
       },
+      "pluginVersion": "10.2.2",
       "targets": [
         {
           "alias": "$tag_element",
@@ -1747,19 +1842,12 @@
                 "source_id"
               ],
               "type": "tag"
-            },
-            {
-              "params": [
-                "null"
-              ],
-              "type": "fill"
             }
           ],
-          "hide": false,
           "measurement": "dunedaq.datahandlinglibs.readoutinfo.ReadoutInfo",
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "SELECT mean(\"num_buffer_elements\") FROM \"dunedaq.datahandlinglibs.opmon.LatencyBufferInfo\" WHERE \"session\"='${session}' AND \"element\" =~ /${tp_handler}/ AND $timeFilter GROUP BY time($__interval), \"element\" fill(null)",
+          "query": "SELECT mean(\"rate_payloads_consumed\")*1000 FROM \"dunedaq.datahandlinglibs.opmon.DataHandlerInfo\" WHERE session='${session}' AND \"element\" =~ /${tp_handler}/ AND $timeFilter GROUP BY time($__interval), \"element\"",
           "rawQuery": true,
           "refId": "A",
           "resultFormat": "time_series",
@@ -1767,7 +1855,7 @@
             [
               {
                 "params": [
-                  "num_buffer_elements"
+                  "rate_payloads_consumed"
                 ],
                 "type": "field"
               },
@@ -1781,67 +1869,12 @@
             {
               "key": "source_id",
               "operator": "=",
-              "value": "maroda_test_ruemu0.datahandler_1"
-            }
-          ]
-        },
-        {
-          "alias": "Total",
-          "datasource": {
-            "uid": "${influxdb}"
-          },
-          "groupBy": [
-            {
-              "params": [
-                "$__interval"
-              ],
-              "type": "time"
-            },
-            {
-              "params": [
-                "source_id"
-              ],
-              "type": "tag"
-            },
-            {
-              "params": [
-                "null"
-              ],
-              "type": "fill"
-            }
-          ],
-          "hide": false,
-          "measurement": "dunedaq.datahandlinglibs.readoutinfo.ReadoutInfo",
-          "orderByTime": "ASC",
-          "policy": "default",
-          "query": "SELECT sum(\"data\") FROM ( SELECT mean(\"num_buffer_elements\") AS \"data\" FROM \"dunedaq.datahandlinglibs.opmon.LatencyBufferInfo\" WHERE  \"session\"='${session}' AND \"element\" =~ /${tp_handler}/ AND $timeFilter GROUP BY time($__interval), \"element\" fill(null) ) GROUP BY time($__interval)",
-          "rawQuery": true,
-          "refId": "B",
-          "resultFormat": "time_series",
-          "select": [
-            [
-              {
-                "params": [
-                  "num_buffer_elements"
-                ],
-                "type": "field"
-              },
-              {
-                "params": [],
-                "type": "mean"
-              }
-            ]
-          ],
-          "tags": [
-            {
-              "key": "source_id",
-              "operator": "=",
-              "value": "maroda_test_ruemu0.datahandler_1"
+              "value": "maroda_test_ruemu0.datahandler_0"
             }
           ]
         }
       ],
-      "title": "Buffers - Number of elements",
+      "title": "Processors - TP receiving rates",
       "transformations": [
         {
           "id": "renameByRegex",
@@ -1851,7 +1884,7 @@
           }
         }
       ],
-      "type": "timeseries"
+      "type": "heatmap"
     },
     {
       "datasource": {
@@ -1917,7 +1950,7 @@
         "h": 7,
         "w": 8,
         "x": 16,
-        "y": 21
+        "y": 29
       },
       "id": 75,
       "options": {
@@ -2118,7 +2151,7 @@
         "h": 7,
         "w": 8,
         "x": 0,
-        "y": 28
+        "y": 36
       },
       "id": 76,
       "links": [],
@@ -2390,6 +2423,7 @@
         "type": "influxdb",
         "uid": "${influxdb}"
       },
+      "description": "",
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -2403,22 +2437,23 @@
             "axisPlacement": "auto",
             "barAlignment": 0,
             "drawStyle": "line",
-            "fillOpacity": 13,
-            "gradientMode": "opacity",
+            "fillOpacity": 0,
+            "gradientMode": "none",
             "hideFrom": {
               "legend": false,
               "tooltip": false,
               "viz": false
             },
-            "insertNulls": false,
+            "insertNulls": 15000,
             "lineInterpolation": "linear",
             "lineWidth": 1,
             "pointSize": 5,
             "scaleDistribution": {
-              "type": "linear"
+              "log": 10,
+              "type": "log"
             },
             "showPoints": "auto",
-            "spanNulls": false,
+            "spanNulls": 15000,
             "stacking": {
               "group": "A",
               "mode": "none"
@@ -2434,10 +2469,6 @@
               {
                 "color": "green",
                 "value": null
-              },
-              {
-                "color": "red",
-                "value": 80
               }
             ]
           }
@@ -2448,9 +2479,9 @@
         "h": 7,
         "w": 8,
         "x": 8,
-        "y": 28
+        "y": 36
       },
-      "id": 77,
+      "id": 74,
       "options": {
         "legend": {
           "calcs": [],
@@ -2460,10 +2491,9 @@
         },
         "tooltip": {
           "mode": "multi",
-          "sort": "none"
+          "sort": "desc"
         }
       },
-      "pluginVersion": "8.0.6",
       "targets": [
         {
           "alias": "$tag_element",
@@ -2479,40 +2509,36 @@
             },
             {
               "params": [
+                "source_id"
+              ],
+              "type": "tag"
+            },
+            {
+              "params": [
                 "null"
               ],
               "type": "fill"
             }
           ],
           "hide": false,
-          "measurement": "dunedaq.datahandlinglibs.readoutinfo.RequestHandlerInfo",
+          "measurement": "dunedaq.datahandlinglibs.readoutinfo.ReadoutInfo",
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "SELECT sum(\"num_requests_waiting\") FROM \"dunedaq.datahandlinglibs.opmon.RequestHandlerInfo\" WHERE \"session\"='${session}' AND \"element\" =~ /${tp_handler}/ AND $timeFilter GROUP BY time($__interval), \"element\"",
+          "query": "SELECT mean(\"num_buffer_elements\") FROM \"dunedaq.datahandlinglibs.opmon.LatencyBufferInfo\" WHERE \"session\"='${session}' AND \"element\" =~ /${tp_handler}/ AND $timeFilter GROUP BY time($__interval), \"element\" fill(null)",
           "rawQuery": true,
-          "refId": "E",
+          "refId": "A",
           "resultFormat": "time_series",
           "select": [
             [
               {
                 "params": [
-                  "num_requests_waiting"
+                  "num_buffer_elements"
                 ],
                 "type": "field"
               },
               {
                 "params": [],
-                "type": "sum"
-              },
-              {
-                "params": [],
-                "type": "cumulative_sum"
-              },
-              {
-                "params": [
-                  "1s"
-                ],
-                "type": "non_negative_derivative"
+                "type": "mean"
               }
             ]
           ],
@@ -2520,12 +2546,67 @@
             {
               "key": "source_id",
               "operator": "=",
-              "value": "maroda_test_ruemu0.datahandler_0"
+              "value": "maroda_test_ruemu0.datahandler_1"
+            }
+          ]
+        },
+        {
+          "alias": "Total",
+          "datasource": {
+            "uid": "${influxdb}"
+          },
+          "groupBy": [
+            {
+              "params": [
+                "$__interval"
+              ],
+              "type": "time"
+            },
+            {
+              "params": [
+                "source_id"
+              ],
+              "type": "tag"
+            },
+            {
+              "params": [
+                "null"
+              ],
+              "type": "fill"
+            }
+          ],
+          "hide": false,
+          "measurement": "dunedaq.datahandlinglibs.readoutinfo.ReadoutInfo",
+          "orderByTime": "ASC",
+          "policy": "default",
+          "query": "SELECT sum(\"data\") FROM ( SELECT mean(\"num_buffer_elements\") AS \"data\" FROM \"dunedaq.datahandlinglibs.opmon.LatencyBufferInfo\" WHERE  \"session\"='${session}' AND \"element\" =~ /${tp_handler}/ AND $timeFilter GROUP BY time($__interval), \"element\" fill(null) ) GROUP BY time($__interval)",
+          "rawQuery": true,
+          "refId": "B",
+          "resultFormat": "time_series",
+          "select": [
+            [
+              {
+                "params": [
+                  "num_buffer_elements"
+                ],
+                "type": "field"
+              },
+              {
+                "params": [],
+                "type": "mean"
+              }
+            ]
+          ],
+          "tags": [
+            {
+              "key": "source_id",
+              "operator": "=",
+              "value": "maroda_test_ruemu0.datahandler_1"
             }
           ]
         }
       ],
-      "title": "Waiting requests",
+      "title": "Buffers - Number of elements",
       "transformations": [
         {
           "id": "renameByRegex",
@@ -2601,7 +2682,7 @@
         "h": 7,
         "w": 8,
         "x": 16,
-        "y": 28
+        "y": 36
       },
       "id": 78,
       "options": {
@@ -3036,6 +3117,158 @@
       "type": "timeseries"
     },
     {
+      "datasource": {
+        "type": "influxdb",
+        "uid": "${influxdb}"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "drawStyle": "line",
+            "fillOpacity": 13,
+            "gradientMode": "opacity",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "auto",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 7,
+        "w": 8,
+        "x": 8,
+        "y": 43
+      },
+      "id": 77,
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "tooltip": {
+          "mode": "multi",
+          "sort": "none"
+        }
+      },
+      "pluginVersion": "8.0.6",
+      "targets": [
+        {
+          "alias": "$tag_element",
+          "datasource": {
+            "uid": "${influxdb}"
+          },
+          "groupBy": [
+            {
+              "params": [
+                "$__interval"
+              ],
+              "type": "time"
+            },
+            {
+              "params": [
+                "null"
+              ],
+              "type": "fill"
+            }
+          ],
+          "hide": false,
+          "measurement": "dunedaq.datahandlinglibs.readoutinfo.RequestHandlerInfo",
+          "orderByTime": "ASC",
+          "policy": "default",
+          "query": "SELECT sum(\"num_requests_waiting\") FROM \"dunedaq.datahandlinglibs.opmon.RequestHandlerInfo\" WHERE \"session\"='${session}' AND \"element\" =~ /${tp_handler}/ AND $timeFilter GROUP BY time($__interval), \"element\"",
+          "rawQuery": true,
+          "refId": "E",
+          "resultFormat": "time_series",
+          "select": [
+            [
+              {
+                "params": [
+                  "num_requests_waiting"
+                ],
+                "type": "field"
+              },
+              {
+                "params": [],
+                "type": "sum"
+              },
+              {
+                "params": [],
+                "type": "cumulative_sum"
+              },
+              {
+                "params": [
+                  "1s"
+                ],
+                "type": "non_negative_derivative"
+              }
+            ]
+          ],
+          "tags": [
+            {
+              "key": "source_id",
+              "operator": "=",
+              "value": "maroda_test_ruemu0.datahandler_0"
+            }
+          ]
+        }
+      ],
+      "title": "Waiting requests",
+      "transformations": [
+        {
+          "id": "renameByRegex",
+          "options": {
+            "regex": ".*\\.(.*)\\.(.*)",
+            "renamePattern": "$1 $2"
+          }
+        }
+      ],
+      "type": "timeseries"
+    },
+    {
       "collapsed": false,
       "datasource": {
         "type": "datasource",
@@ -3045,7 +3278,7 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 35
+        "y": 50
       },
       "id": 33,
       "panels": [],
@@ -3109,8 +3342,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
-                "value": null
+                "color": "green"
               },
               {
                 "color": "red",
@@ -3125,7 +3357,7 @@
         "h": 7,
         "w": 8,
         "x": 0,
-        "y": 36
+        "y": 51
       },
       "id": 79,
       "options": {
@@ -3292,8 +3524,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
-                "value": null
+                "color": "green"
               },
               {
                 "color": "red",
@@ -3308,7 +3539,7 @@
         "h": 7,
         "w": 8,
         "x": 8,
-        "y": 36
+        "y": 51
       },
       "id": 80,
       "options": {
@@ -3774,8 +4005,8 @@
       {
         "current": {
           "selected": false,
-          "text": "np02-session",
-          "value": "np02-session"
+          "text": "main-np04-session",
+          "value": "main-np04-session"
         },
         "datasource": {
           "uid": "${influxdb}"
@@ -3909,6 +4140,6 @@
   "timezone": "",
   "title": "Trigger Primitives",
   "uid": "v5_3_0-trigger_primitives",
-  "version": 35,
+  "version": 4,
   "weekStart": ""
 }

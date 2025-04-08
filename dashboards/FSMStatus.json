@@ -70,8 +70,8 @@
         "overrides": []
       },
       "gridPos": {
-        "h": 4,
-        "w": 4,
+        "h": 5,
+        "w": 5,
         "x": 0,
         "y": 1
       },
@@ -94,7 +94,7 @@
       "pluginVersion": "10.2.2",
       "targets": [
         {
-          "alias": "Run number",
+          "alias": "",
           "datasource": {
             "type": "influxdb",
             "uid": "${influx}"
@@ -116,10 +116,10 @@
           "measurement": "dunedaq.opmon.RunInfo",
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "SELECT \"run_number\" AS \"Run number\" FROM \"dunedaq.drunc.opmon.RunInfo\" WHERE \"session\"='${session}' AND $timeFilter GROUP BY \"application\" ",
+          "query": "SELECT last(\"run_number\") FROM \"dunedaq.drunc.opmon.RunInfo\" WHERE \"session\"='${session}' AND $timeFilter ",
           "rawQuery": true,
           "refId": "A",
-          "resultFormat": "time_series",
+          "resultFormat": "table",
           "select": [
             [
               {
@@ -164,9 +164,9 @@
         "overrides": []
       },
       "gridPos": {
-        "h": 4,
-        "w": 3,
-        "x": 4,
+        "h": 5,
+        "w": 6,
+        "x": 5,
         "y": 1
       },
       "id": 3,
@@ -188,6 +188,7 @@
       "pluginVersion": "10.2.2",
       "targets": [
         {
+          "alias": "$tag_application",
           "datasource": {
             "type": "influxdb",
             "uid": "f68a27a2-f292-478c-8093-2a4adad3be1b"
@@ -196,10 +197,10 @@
           "measurement": "dunedaq.opmon.RunInfo",
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "SELECT last(\"run_type\") AS \"Run Type\" FROM \"dunedaq.drunc.opmon.RunInfo\" WHERE (\"session\"::tag =~ /^$session$/) AND $timeFilter GROUP BY \"application\" ",
+          "query": "SELECT last(\"run_type\")  FROM \"dunedaq.drunc.opmon.RunInfo\" WHERE \"session\"::tag ='${session}' AND $timeFilter GROUP BY \"application\" ",
           "rawQuery": true,
           "refId": "A",
-          "resultFormat": "time_series",
+          "resultFormat": "table",
           "select": [
             [
               {
@@ -244,9 +245,9 @@
         "overrides": []
       },
       "gridPos": {
-        "h": 4,
-        "w": 4,
-        "x": 7,
+        "h": 5,
+        "w": 5,
+        "x": 11,
         "y": 1
       },
       "id": 4,
@@ -276,10 +277,10 @@
           "measurement": "dunedaq.opmon.RunInfo",
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "SELECT last(\"disable_data_storage\") AS \"Data Storage Disabled?\" FROM \"dunedaq.drunc.opmon.RunInfo\" WHERE (\"session\"::tag =~ /^$session$/) AND $timeFilter GROUP BY \"application\" ",
+          "query": "SELECT last(\"disable_data_storage\") FROM \"dunedaq.drunc.opmon.RunInfo\" WHERE \"session\"::tag = '${session}' AND $timeFilter GROUP BY \"application\" ",
           "rawQuery": true,
           "refId": "A",
-          "resultFormat": "time_series",
+          "resultFormat": "table",
           "select": [
             [
               {
@@ -295,279 +296,6 @@
       ],
       "title": "Disable Data Storage",
       "type": "stat"
-    },
-    {
-      "datasource": {
-        "type": "influxdb",
-        "uid": "${influx}"
-      },
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "mode": "palette-classic"
-          },
-          "custom": {
-            "axisBorderShow": false,
-            "axisCenteredZero": false,
-            "axisColorMode": "text",
-            "axisLabel": "",
-            "axisPlacement": "auto",
-            "barAlignment": 0,
-            "drawStyle": "line",
-            "fillOpacity": 0,
-            "gradientMode": "none",
-            "hideFrom": {
-              "legend": false,
-              "tooltip": false,
-              "viz": false
-            },
-            "insertNulls": false,
-            "lineInterpolation": "linear",
-            "lineWidth": 1,
-            "pointSize": 5,
-            "scaleDistribution": {
-              "type": "linear"
-            },
-            "showPoints": "auto",
-            "spanNulls": false,
-            "stacking": {
-              "group": "A",
-              "mode": "none"
-            },
-            "thresholdsStyle": {
-              "mode": "off"
-            }
-          },
-          "decimals": 0,
-          "displayName": "number of session",
-          "mappings": [],
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "green",
-                "value": null
-              },
-              {
-                "color": "red",
-                "value": 80
-              }
-            ]
-          }
-        },
-        "overrides": []
-      },
-      "gridPos": {
-        "h": 4,
-        "w": 6,
-        "x": 11,
-        "y": 1
-      },
-      "id": 7,
-      "options": {
-        "legend": {
-          "calcs": [
-            "lastNotNull"
-          ],
-          "displayMode": "list",
-          "placement": "bottom",
-          "showLegend": true
-        },
-        "tooltip": {
-          "mode": "single",
-          "sort": "none"
-        }
-      },
-      "pluginVersion": "10.2.2",
-      "targets": [
-        {
-          "datasource": {
-            "type": "influxdb",
-            "uid": "f68a27a2-f292-478c-8093-2a4adad3be1b"
-          },
-          "groupBy": [],
-          "measurement": "dunedaq.drunc.opmon.ProcessStatus",
-          "orderByTime": "DESC",
-          "policy": "default",
-          "refId": "A",
-          "resultFormat": "time_series",
-          "select": [
-            [
-              {
-                "params": [
-                  "n_session"
-                ],
-                "type": "field"
-              }
-            ]
-          ],
-          "tags": []
-        }
-      ],
-      "title": "Number of Session",
-      "type": "timeseries"
-    },
-    {
-      "datasource": {
-        "type": "influxdb",
-        "uid": "${influx}"
-      },
-      "description": "\n",
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "fixedColor": "#73BF69",
-            "mode": "palette-classic"
-          },
-          "custom": {
-            "axisBorderShow": false,
-            "axisCenteredZero": false,
-            "axisColorMode": "text",
-            "axisLabel": "",
-            "axisPlacement": "auto",
-            "barAlignment": 0,
-            "drawStyle": "line",
-            "fillOpacity": 0,
-            "gradientMode": "none",
-            "hideFrom": {
-              "legend": false,
-              "tooltip": false,
-              "viz": false
-            },
-            "insertNulls": false,
-            "lineInterpolation": "linear",
-            "lineWidth": 1,
-            "pointSize": 5,
-            "scaleDistribution": {
-              "type": "linear"
-            },
-            "showPoints": "auto",
-            "spanNulls": false,
-            "stacking": {
-              "group": "A",
-              "mode": "none"
-            },
-            "thresholdsStyle": {
-              "mode": "off"
-            }
-          },
-          "mappings": [],
-          "noValue": "no process",
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "green",
-                "value": null
-              },
-              {
-                "color": "red",
-                "value": 80
-              }
-            ]
-          }
-        },
-        "overrides": [
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "dunedaq.drunc.opmon.ProcessStatus.n_running"
-            },
-            "properties": [
-              {
-                "id": "color",
-                "value": {
-                  "fixedColor": "green",
-                  "mode": "fixed"
-                }
-              },
-              {
-                "id": "displayName",
-                "value": "Running processes"
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "dunedaq.drunc.opmon.ProcessStatus.n_dead"
-            },
-            "properties": [
-              {
-                "id": "displayName",
-                "value": "Dead processes"
-              },
-              {
-                "id": "color",
-                "value": {
-                  "fixedColor": "red",
-                  "mode": "fixed"
-                }
-              }
-            ]
-          }
-        ]
-      },
-      "gridPos": {
-        "h": 9,
-        "w": 7,
-        "x": 17,
-        "y": 1
-      },
-      "id": 6,
-      "options": {
-        "legend": {
-          "calcs": [
-            "last"
-          ],
-          "displayMode": "list",
-          "placement": "bottom",
-          "showLegend": true
-        },
-        "tooltip": {
-          "mode": "single",
-          "sort": "none"
-        }
-      },
-      "pluginVersion": "10.2.2",
-      "targets": [
-        {
-          "datasource": {
-            "type": "influxdb",
-            "uid": "${influx}"
-          },
-          "groupBy": [],
-          "hide": false,
-          "measurement": "dunedaq.drunc.opmon.ProcessStatus",
-          "orderByTime": "DESC",
-          "policy": "default",
-          "query": "SELECT \"n_running\", \"n_dead\" FROM \"dunedaq.drunc.opmon.ProcessStatus\" WHERE $timeFilter GROUP BY \"session\" ORDER BY time DESC",
-          "rawQuery": true,
-          "refId": "A",
-          "resultFormat": "time_series",
-          "select": [
-            [
-              {
-                "params": [
-                  "n_running"
-                ],
-                "type": "field"
-              }
-            ],
-            [
-              {
-                "params": [
-                  "n_dead"
-                ],
-                "type": "field"
-              }
-            ]
-          ],
-          "tags": []
-        }
-      ],
-      "title": "Process State",
-      "type": "timeseries"
     },
     {
       "datasource": {
@@ -621,50 +349,23 @@
               }
             ]
           },
-          "unit": "none"
+          "unit": "hertz"
         },
-        "overrides": [
-          {
-            "__systemRef": "hideSeriesFrom",
-            "matcher": {
-              "id": "byNames",
-              "options": {
-                "mode": "exclude",
-                "names": [
-                  "dunedaq.opmon.drunc.RunInfo.trigger_rate {application: root-controller}"
-                ],
-                "prefix": "All except:",
-                "readOnly": true
-              }
-            },
-            "properties": [
-              {
-                "id": "custom.hideFrom",
-                "value": {
-                  "legend": false,
-                  "tooltip": false,
-                  "viz": true
-                }
-              }
-            ]
-          }
-        ]
+        "overrides": []
       },
       "gridPos": {
         "h": 5,
-        "w": 17,
-        "x": 0,
-        "y": 5
+        "w": 8,
+        "x": 16,
+        "y": 1
       },
       "id": 2,
       "options": {
         "legend": {
-          "calcs": [
-            "lastNotNull"
-          ],
+          "calcs": [],
           "displayMode": "list",
           "placement": "bottom",
-          "showLegend": true
+          "showLegend": false
         },
         "tooltip": {
           "mode": "single",
@@ -681,7 +382,7 @@
           "measurement": "dunedaq.opmon.RunInfo",
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "SELECT \"trigger_rate\"FROM \"dunedaq.drunc.opmon.RunInfo\" WHERE (\"session\"::tag =~ /^$session$/) AND $timeFilter GROUP BY \"application\" ",
+          "query": "SELECT distinct(\"trigger_rate\") FROM \"dunedaq.drunc.opmon.RunInfo\" WHERE \"session\"::tag = '${session}' AND $timeFilter GROUP BY time($__interval)",
           "rawQuery": true,
           "refId": "A",
           "resultFormat": "time_series",
@@ -750,9 +451,9 @@
       },
       "gridPos": {
         "h": 7,
-        "w": 20,
+        "w": 24,
         "x": 0,
-        "y": 10
+        "y": 6
       },
       "id": 5,
       "options": {
@@ -848,7 +549,7 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 17
+        "y": 13
       },
       "id": 11,
       "panels": [],
@@ -885,7 +586,8 @@
             "lineWidth": 1,
             "pointSize": 5,
             "scaleDistribution": {
-              "type": "linear"
+              "log": 10,
+              "type": "log"
             },
             "showPoints": "auto",
             "spanNulls": false,
@@ -915,7 +617,7 @@
         "h": 8,
         "w": 12,
         "x": 0,
-        "y": 18
+        "y": 14
       },
       "id": 8,
       "options": {
@@ -1030,7 +732,7 @@
         "h": 8,
         "w": 12,
         "x": 12,
-        "y": 18
+        "y": 14
       },
       "id": 9,
       "options": {
@@ -1086,7 +788,7 @@
       "type": "timeseries"
     }
   ],
-  "refresh": "5s",
+  "refresh": "10s",
   "schemaVersion": 38,
   "tags": [
     "Subsystem",
@@ -1114,9 +816,10 @@
       },
       {
         "current": {
+          "isNone": true,
           "selected": false,
-          "text": "main-np02-session",
-          "value": "main-np02-session"
+          "text": "None",
+          "value": ""
         },
         "datasource": {
           "type": "influxdb",
@@ -1138,9 +841,13 @@
       },
       {
         "current": {
-          "selected": false,
-          "text": "All",
-          "value": "$__all"
+          "selected": true,
+          "text": [
+            "All"
+          ],
+          "value": [
+            "$__all"
+          ]
         },
         "datasource": {
           "type": "influxdb",
@@ -1149,7 +856,7 @@
         "definition": "SELECT \"application\" FROM (SELECT \"state\", \"application\" FROM \"dunedaq.drunc.opmon.FSMStatus\" WHERE $timeFilter AND session='$session')",
         "hide": 0,
         "includeAll": true,
-        "label": "Controller",
+        "label": "Controllers",
         "multi": true,
         "name": "controller",
         "options": [],
@@ -1162,9 +869,13 @@
       },
       {
         "current": {
-          "selected": false,
-          "text": "All",
-          "value": "$__all"
+          "selected": true,
+          "text": [
+            "All"
+          ],
+          "value": [
+            "$__all"
+          ]
         },
         "datasource": {
           "type": "influxdb",
@@ -1173,7 +884,7 @@
         "definition": "SELECT \"Command\" FROM (SELECT \"execution_time_ns\", \"Command\" FROM \"dunedaq.drunc.opmon.CommandTime\" WHERE $timeFilter AND session='$session')",
         "hide": 0,
         "includeAll": true,
-        "label": "Command",
+        "label": "Commands",
         "multi": true,
         "name": "command",
         "options": [],
@@ -1187,13 +898,13 @@
     ]
   },
   "time": {
-    "from": "now-15m",
+    "from": "now-30m",
     "to": "now"
   },
   "timepicker": {},
   "timezone": "",
   "title": "FSM status",
   "uid": "fsm-status-v5_3_1",
-  "version": 1,
+  "version": 8,
   "weekStart": ""
 }

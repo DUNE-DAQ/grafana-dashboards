@@ -96,8 +96,8 @@
         "overrides": []
       },
       "gridPos": {
-        "h": 13,
-        "w": 11,
+        "h": 5,
+        "w": 24,
         "x": 0,
         "y": 1
       },
@@ -204,35 +204,25 @@
                 "value": 80
               }
             ]
-          }
+          },
+          "unit": "none"
         },
-        "overrides": [
-          {
-            "matcher": {
-              "id": "byRegexp",
-              "options": "/Dead .*/"
-            },
-            "properties": [
-              {
-                "id": "custom.axisPlacement",
-                "value": "right"
-              }
-            ]
-          }
-        ]
+        "overrides": []
       },
       "gridPos": {
         "h": 13,
-        "w": 13,
-        "x": 11,
-        "y": 1
+        "w": 12,
+        "x": 0,
+        "y": 6
       },
       "id": 6,
       "options": {
         "legend": {
-          "calcs": [],
-          "displayMode": "list",
-          "placement": "bottom",
+          "calcs": [
+            "lastNotNull"
+          ],
+          "displayMode": "table",
+          "placement": "right",
           "showLegend": true
         },
         "tooltip": {
@@ -243,7 +233,7 @@
       "pluginVersion": "10.2.2",
       "targets": [
         {
-          "alias": "Running processes for $tag_session",
+          "alias": "$tag_session",
           "datasource": {
             "type": "influxdb",
             "uid": "${influx}"
@@ -253,7 +243,7 @@
           "measurement": "dunedaq.drunc.opmon.ProcessStatus",
           "orderByTime": "DESC",
           "policy": "default",
-          "query": "SELECT mean(\"n_running\") FROM \"dunedaq.drunc.opmon.ProcessStatus\" WHERE session=~/${session}/ AND $timeFilter GROUP BY \"session\", time($__interval) fill(null)",
+          "query": "SELECT mean(\"n_running\") FROM \"dunedaq.drunc.opmon.ProcessStatus\" WHERE session=~/${user}/ AND $timeFilter GROUP BY \"session\", time($__interval) fill(null)",
           "rawQuery": true,
           "refId": "A",
           "resultFormat": "time_series",
@@ -278,7 +268,7 @@
           "tags": []
         },
         {
-          "alias": "Total running processes",
+          "alias": "Total",
           "datasource": {
             "type": "influxdb",
             "uid": "${influx}"
@@ -288,7 +278,7 @@
           "measurement": "dunedaq.drunc.opmon.ProcessStatus",
           "orderByTime": "DESC",
           "policy": "default",
-          "query": "SELECT sum(\"data\") FROM (SELECT mean(\"n_running\") AS \"data\" FROM \"dunedaq.drunc.opmon.ProcessStatus\" WHERE session=~/${session}/ AND $timeFilter GROUP BY \"session\", time($__interval) fill(null) ) GROUP BY time($__interval) fill(null)",
+          "query": "SELECT sum(\"data\") FROM (SELECT mean(\"n_running\") AS \"data\" FROM \"dunedaq.drunc.opmon.ProcessStatus\" WHERE session=~/${user}/ AND $timeFilter GROUP BY \"session\", time($__interval) fill(null) ) GROUP BY time($__interval) fill(null)",
           "rawQuery": true,
           "refId": "C",
           "resultFormat": "time_series",
@@ -311,9 +301,112 @@
             ]
           ],
           "tags": []
+        }
+      ],
+      "title": "Running processes",
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "influxdb",
+        "uid": "${influx}"
+      },
+      "description": "\n",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "fixedColor": "#73BF69",
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "drawStyle": "line",
+            "fillOpacity": 0,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "auto",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "noValue": "no process",
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "none"
         },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byRegexp",
+              "options": "/Dead .*/"
+            },
+            "properties": [
+              {
+                "id": "custom.axisPlacement",
+                "value": "right"
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 13,
+        "w": 12,
+        "x": 12,
+        "y": 6
+      },
+      "id": 11,
+      "options": {
+        "legend": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "displayMode": "table",
+          "placement": "right",
+          "showLegend": true
+        },
+        "tooltip": {
+          "mode": "multi",
+          "sort": "desc"
+        }
+      },
+      "pluginVersion": "10.2.2",
+      "targets": [
         {
-          "alias": "Dead processes for $tag_session",
+          "alias": "$tag_session",
           "datasource": {
             "type": "influxdb",
             "uid": "${influx}"
@@ -323,7 +416,7 @@
           "measurement": "dunedaq.drunc.opmon.ProcessStatus",
           "orderByTime": "DESC",
           "policy": "default",
-          "query": "SELECT mean(\"n_dead\") FROM \"dunedaq.drunc.opmon.ProcessStatus\" WHERE session=~/${session}/ AND $timeFilter GROUP BY \"session\", time($__interval) fill(null)",
+          "query": "SELECT mean(\"n_dead\") FROM \"dunedaq.drunc.opmon.ProcessStatus\" WHERE session=~/${user}/ AND $timeFilter GROUP BY \"session\", time($__interval) fill(null)",
           "rawQuery": true,
           "refId": "B",
           "resultFormat": "time_series",
@@ -346,13 +439,48 @@
             ]
           ],
           "tags": []
+        },
+        {
+          "alias": "Total",
+          "datasource": {
+            "type": "influxdb",
+            "uid": "${influx}"
+          },
+          "groupBy": [],
+          "hide": false,
+          "measurement": "dunedaq.drunc.opmon.ProcessStatus",
+          "orderByTime": "DESC",
+          "policy": "default",
+          "query": "SELECT mean(\"n_dead\") FROM \"dunedaq.drunc.opmon.ProcessStatus\" WHERE session=~/${user}/ AND $timeFilter GROUP BY time($__interval) fill(null)",
+          "rawQuery": true,
+          "refId": "A",
+          "resultFormat": "time_series",
+          "select": [
+            [
+              {
+                "params": [
+                  "n_running"
+                ],
+                "type": "field"
+              }
+            ],
+            [
+              {
+                "params": [
+                  "n_dead"
+                ],
+                "type": "field"
+              }
+            ]
+          ],
+          "tags": []
         }
       ],
-      "title": "Process State",
+      "title": "Dead processes",
       "type": "timeseries"
     }
   ],
-  "refresh": false,
+  "refresh": "10s",
   "schemaVersion": 38,
   "tags": [
     "v5.3.1",
@@ -395,9 +523,9 @@
         "definition": "SELECT \"session\" FROM (SELECT \"n_running\", \"session\" FROM \"dunedaq.drunc.opmon.ProcessStatus\" WHERE $timeFilter)",
         "hide": 0,
         "includeAll": true,
-        "label": "Session",
+        "label": "User",
         "multi": true,
-        "name": "session",
+        "name": "user",
         "options": [],
         "query": "SELECT \"session\" FROM (SELECT \"n_running\", \"session\" FROM \"dunedaq.drunc.opmon.ProcessStatus\" WHERE $timeFilter)",
         "refresh": 2,
@@ -416,6 +544,6 @@
   "timezone": "",
   "title": "Process Management",
   "uid": "process-management-v5_3_1",
-  "version": 11,
+  "version": 17,
   "weekStart": ""
 }

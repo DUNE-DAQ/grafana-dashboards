@@ -24,7 +24,7 @@
   "editable": true,
   "fiscalYearStartMonth": 0,
   "graphTooltip": 0,
-  "id": 289,
+  "id": 344,
   "links": [],
   "liveNow": false,
   "panels": [
@@ -153,7 +153,7 @@
           "measurement": "dunedaq.datahandlinglibs.readoutinfo.ReadoutInfo",
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "SELECT mean(\"rate_payloads_consumed\")*1000 FROM \"dunedaq.datahandlinglibs.opmon.DataHandlerInfo\" WHERE \"session\" = '${session}' AND \"application\"=~ /${application}/ AND \"element\" =~ /${DLH}/ AND $timeFilter GROUP BY time($__interval), \"element\"",
+          "query": "SELECT mean(\"rate_payloads_consumed\")*1000 FROM \"dunedaq.datahandlinglibs.opmon.DataHandlerInfo\" WHERE \"session\" = '${session}' AND \"application\"=~ /${application}/ AND \"element\" =~ /^${DLH}$/ AND $timeFilter GROUP BY time($__interval), \"element\"",
           "rawQuery": true,
           "refId": "A",
           "resultFormat": "time_series",
@@ -2019,7 +2019,7 @@
           "measurement": "dunedaq.datahandlinglibs.readoutinfo.RequestHandlerInfo",
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "SELECT non_negative_derivative(cumulative_sum(sum(\"num_buffer_cleanups\")), 1s) FROM \"dunedaq.datahandlinglibs.opmon.RequestHandlerInfo\" WHERE \"session\"='${session}' AND \"element\" =~ /${DLH}/  AND $timeFilter GROUP BY time($__interval) fill(null)",
+          "query": "SELECT non_negative_derivative(cumulative_sum(sum(\"num_buffer_cleanups\")), 1s) FROM \"dunedaq.datahandlinglibs.opmon.RequestHandlerInfo\" WHERE \"session\"='${session}' AND \"element\" =~ /^${DLH}$/  AND $timeFilter GROUP BY time($__interval) fill(null)",
           "rawQuery": true,
           "refId": "A",
           "resultFormat": "time_series",
@@ -2068,7 +2068,7 @@
           "measurement": "dunedaq.datahandlinglibs.readoutinfo.ReadoutInfo",
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "SELECT non_negative_derivative(cumulative_sum(sum(\"num_payloads_overwritten\")), 1s) FROM \"dunedaq.datahandlinglibs.opmon.DataHandlerInfo\" WHERE \"session\"='${session}' AND \"element\" =~ /${DLH}/  AND $timeFilter GROUP BY time($__interval) fill(null) ",
+          "query": "SELECT non_negative_derivative(cumulative_sum(sum(\"num_payloads_overwritten\")), 1s) FROM \"dunedaq.datahandlinglibs.opmon.DataHandlerInfo\" WHERE \"session\"='${session}' AND \"element\" =~ /^${DLH}$/  AND $timeFilter GROUP BY time($__interval) fill(null) ",
           "rawQuery": true,
           "refId": "B",
           "resultFormat": "time_series",
@@ -2628,8 +2628,8 @@
       {
         "current": {
           "selected": false,
-          "text": "main-np02-session",
-          "value": "main-np02-session"
+          "text": "sbhuller-test",
+          "value": "sbhuller-test"
         },
         "datasource": {
           "type": "influxdb",
@@ -2739,6 +2739,6 @@
   "timezone": "",
   "title": "Readout",
   "uid": "v5_3_2-readout",
-  "version": 5,
+  "version": 3,
   "weekStart": ""
 }

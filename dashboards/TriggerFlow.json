@@ -18,7 +18,7 @@
   "editable": true,
   "fiscalYearStartMonth": 0,
   "graphTooltip": 0,
-  "id": 291,
+  "id": 346,
   "links": [],
   "liveNow": false,
   "panels": [
@@ -1490,7 +1490,7 @@
       },
       "gridPos": {
         "h": 7,
-        "w": 12,
+        "w": 24,
         "x": 0,
         "y": 12
       },
@@ -4080,7 +4080,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green"
+                "color": "green",
+                "value": null
               },
               {
                 "color": "red",
@@ -4329,7 +4330,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green"
+                "color": "green",
+                "value": null
               },
               {
                 "color": "red",
@@ -4578,7 +4580,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green"
+                "color": "green",
+                "value": null
               },
               {
                 "color": "red",
@@ -4773,7 +4776,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green"
+                "color": "green",
+                "value": null
               },
               {
                 "color": "red",
@@ -5017,7 +5021,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green"
+                "color": "green",
+                "value": null
               },
               {
                 "color": "red",
@@ -5299,7 +5304,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green"
+                "color": "green",
+                "value": null
               },
               {
                 "color": "red",
@@ -5508,7 +5514,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green"
+                "color": "green",
+                "value": null
               },
               {
                 "color": "red",
@@ -5785,7 +5792,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green"
+                "color": "green",
+                "value": null
               }
             ]
           },
@@ -5835,7 +5843,7 @@
           "measurement": "dunedaq.datahandlinglibs.readoutinfo.ReadoutInfo",
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "SELECT mean(\"rate_payloads_consumed\")*1000 FROM \"dunedaq.datahandlinglibs.opmon.DataHandlerInfo\" WHERE \"session\" = '${session}' AND \"element\" =~ /${element}/ AND $timeFilter GROUP BY time($__interval), \"element\"",
+          "query": "SELECT mean(\"rate_payloads_consumed\")*1000 FROM \"dunedaq.datahandlinglibs.opmon.DataHandlerInfo\" WHERE \"session\" = '${session}' AND \"element\" =~ /^${element}$/ AND $timeFilter GROUP BY time($__interval), \"element\"",
           "rawQuery": true,
           "refId": "A",
           "resultFormat": "time_series",
@@ -5915,7 +5923,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green"
+                "color": "green",
+                "value": null
               }
             ]
           }
@@ -5971,7 +5980,7 @@
           "measurement": "dunedaq.datahandlinglibs.readoutinfo.ReadoutInfo",
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "SELECT mean(\"num_buffer_elements\") FROM \"dunedaq.datahandlinglibs.opmon.LatencyBufferInfo\" WHERE \"session\"='${session}' AND \"element\" =~ /${element}/ AND $timeFilter GROUP BY time($__interval), \"element\" fill(null)",
+          "query": "SELECT mean(\"num_buffer_elements\") FROM \"dunedaq.datahandlinglibs.opmon.LatencyBufferInfo\" WHERE \"session\"='${session}' AND \"element\" =~ /^${element}$/ AND $timeFilter GROUP BY time($__interval), \"element\" fill(null)",
           "rawQuery": true,
           "refId": "A",
           "resultFormat": "time_series",
@@ -6026,7 +6035,7 @@
           "measurement": "dunedaq.datahandlinglibs.readoutinfo.ReadoutInfo",
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "SELECT sum(\"data\") FROM ( SELECT mean(\"num_buffer_elements\") AS \"data\" FROM \"dunedaq.datahandlinglibs.opmon.LatencyBufferInfo\" WHERE  \"session\"='${session}' AND \"element\" =~ /${element}/ AND $timeFilter GROUP BY time($__interval), \"element\" fill(null) ) GROUP BY time($__interval)",
+          "query": "SELECT sum(\"data\") FROM ( SELECT mean(\"num_buffer_elements\") AS \"data\" FROM \"dunedaq.datahandlinglibs.opmon.LatencyBufferInfo\" WHERE  \"session\"='${session}' AND \"element\" =~ /^${element}$/ AND $timeFilter GROUP BY time($__interval), \"element\" fill(null) ) GROUP BY time($__interval)",
           "rawQuery": true,
           "refId": "B",
           "resultFormat": "time_series",
@@ -6113,7 +6122,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green"
+                "color": "green",
+                "value": null
               },
               {
                 "color": "red",
@@ -6166,7 +6176,7 @@
           "measurement": "dunedaq.datahandlinglibs.readoutinfo.RequestHandlerInfo",
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "SELECT non_negative_derivative(cumulative_sum(sum(\"num_buffer_cleanups\")), 1s) FROM \"dunedaq.datahandlinglibs.opmon.RequestHandlerInfo\" WHERE \"session\"='${session}' AND \"element\" =~ /${element}/  AND $timeFilter GROUP BY time($__interval) fill(null)",
+          "query": "SELECT non_negative_derivative(cumulative_sum(sum(\"num_buffer_cleanups\")), 1s) FROM \"dunedaq.datahandlinglibs.opmon.RequestHandlerInfo\" WHERE \"session\"='${session}' AND \"element\" =~ /^${element}$/  AND $timeFilter GROUP BY time($__interval) fill(null)",
           "rawQuery": true,
           "refId": "A",
           "resultFormat": "time_series",
@@ -6225,7 +6235,7 @@
           "measurement": "dunedaq.datahandlinglibs.readoutinfo.ReadoutInfo",
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "SELECT non_negative_derivative(cumulative_sum(sum(\"num_payloads_overwritten\")), 1s) FROM \"dunedaq.datahandlinglibs.opmon.DataHandlerInfo\" WHERE \"session\"='${session}' AND \"element\" =~ /${element}/  AND $timeFilter GROUP BY time($__interval) fill(null) ",
+          "query": "SELECT non_negative_derivative(cumulative_sum(sum(\"num_payloads_overwritten\")), 1s) FROM \"dunedaq.datahandlinglibs.opmon.DataHandlerInfo\" WHERE \"session\"='${session}' AND \"element\" =~ /^${element}$/  AND $timeFilter GROUP BY time($__interval) fill(null) ",
           "rawQuery": true,
           "refId": "B",
           "resultFormat": "time_series",
@@ -6312,7 +6322,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green"
+                "color": "green",
+                "value": null
               },
               {
                 "color": "red",
@@ -6369,7 +6380,7 @@
           "measurement": "dunedaq.datahandlinglibs.readoutinfo.RawDataProcessorInfo",
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "SELECT sum(\"tot_request_response_time\")/sum(\"num_requests_handled\") FROM \"dunedaq.datahandlinglibs.opmon.RequestHandlerInfo\" WHERE \"session\"='${session}' AND \"element\" =~ /${element}/ AND \"num_requests_handled\">0 AND  $timeFilter GROUP BY time($__interval) fill(null)",
+          "query": "SELECT sum(\"tot_request_response_time\")/sum(\"num_requests_handled\") FROM \"dunedaq.datahandlinglibs.opmon.RequestHandlerInfo\" WHERE \"session\"='${session}' AND \"element\" =~ /^${element}$/ AND \"num_requests_handled\">0 AND  $timeFilter GROUP BY time($__interval) fill(null)",
           "rawQuery": true,
           "refId": "D",
           "resultFormat": "time_series",
@@ -6428,7 +6439,7 @@
           "measurement": "dunedaq.datahandlinglibs.readoutinfo.RawDataProcessorInfo",
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "SELECT sum(\"tot_request_response_time\")/sum(\"num_requests_handled\") FROM \"dunedaq.datahandlinglibs.opmon.RequestHandlerInfo\" WHERE \"session\"='${session}' AND \"element\" =~ /${element}/ AND \"num_requests_handled\">0 AND $timeFilter GROUP BY \"element\", time($__interval) fill(null)",
+          "query": "SELECT sum(\"tot_request_response_time\")/sum(\"num_requests_handled\") FROM \"dunedaq.datahandlinglibs.opmon.RequestHandlerInfo\" WHERE \"session\"='${session}' AND \"element\" =~ /^${element}$/ AND \"num_requests_handled\">0 AND $timeFilter GROUP BY \"element\", time($__interval) fill(null)",
           "rawQuery": true,
           "refId": "A",
           "resultFormat": "time_series",
@@ -6487,7 +6498,7 @@
           "measurement": "dunedaq.datahandlinglibs.readoutinfo.RawDataProcessorInfo",
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "SELECT min(\"min_request_response_time\") FROM \"dunedaq.datahandlinglibs.opmon.RequestHandlerInfo\" WHERE \"session\"='${session}' AND \"element\" =~ /${element}/ AND \"num_requests_handled\">0 AND $timeFilter GROUP BY time($__interval) fill(null)",
+          "query": "SELECT min(\"min_request_response_time\") FROM \"dunedaq.datahandlinglibs.opmon.RequestHandlerInfo\" WHERE \"session\"='${session}' AND \"element\" =~ /^${element}$/ AND \"num_requests_handled\">0 AND $timeFilter GROUP BY time($__interval) fill(null)",
           "rawQuery": true,
           "refId": "B",
           "resultFormat": "time_series",
@@ -6546,7 +6557,7 @@
           "measurement": "dunedaq.datahandlinglibs.readoutinfo.RawDataProcessorInfo",
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "SELECT max(\"max_request_response_time\") FROM \"dunedaq.datahandlinglibs.opmon.RequestHandlerInfo\" WHERE \"session\"='${session}' AND \"element\" =~ /${element}/ AND \"num_requests_handled\">0 AND $timeFilter GROUP BY time($__interval) fill(null)",
+          "query": "SELECT max(\"max_request_response_time\") FROM \"dunedaq.datahandlinglibs.opmon.RequestHandlerInfo\" WHERE \"session\"='${session}' AND \"element\" =~ /^${element}$/ AND \"num_requests_handled\">0 AND $timeFilter GROUP BY time($__interval) fill(null)",
           "rawQuery": true,
           "refId": "C",
           "resultFormat": "time_series",
@@ -6642,7 +6653,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green"
+                "color": "green",
+                "value": null
               },
               {
                 "color": "red",
@@ -6697,7 +6709,7 @@
           "measurement": "dunedaq.datahandlinglibs.readoutinfo.RequestHandlerInfo",
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "SELECT sum(\"num_requests_waiting\") FROM \"dunedaq.datahandlinglibs.opmon.RequestHandlerInfo\" WHERE \"session\"='${session}' AND \"element\" =~ /${element}/ AND $timeFilter GROUP BY time($__interval), \"element\"",
+          "query": "SELECT sum(\"num_requests_waiting\") FROM \"dunedaq.datahandlinglibs.opmon.RequestHandlerInfo\" WHERE \"session\"='${session}' AND \"element\" =~ /^${element}$/ AND $timeFilter GROUP BY time($__interval), \"element\"",
           "rawQuery": true,
           "refId": "E",
           "resultFormat": "time_series",
@@ -6794,7 +6806,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green"
+                "color": "green",
+                "value": null
               },
               {
                 "color": "red",
@@ -6849,7 +6862,7 @@
           "measurement": "dunedaq.datahandlinglibs.readoutinfo.ReadoutInfo",
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "SELECT non_negative_derivative(cumulative_sum(sum(\"num_requests\")), 1s) FROM \"dunedaq.datahandlinglibs.opmon.DataHandlerInfo\" WHERE \"session\"='${session}' AND \"element\" =~ /${element}/ AND $timeFilter GROUP BY time($__interval) fill(null)",
+          "query": "SELECT non_negative_derivative(cumulative_sum(sum(\"num_requests\")), 1s) FROM \"dunedaq.datahandlinglibs.opmon.DataHandlerInfo\" WHERE \"session\"='${session}' AND \"element\" =~ /^${element}$/ AND $timeFilter GROUP BY time($__interval) fill(null)",
           "rawQuery": true,
           "refId": "A",
           "resultFormat": "time_series",
@@ -6908,7 +6921,7 @@
           "measurement": "dunedaq.datahandlinglibs.readoutinfo.RequestHandlerInfo",
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "SELECT non_negative_derivative(cumulative_sum(sum(\"num_requests_found\")), 1s) FROM \"dunedaq.datahandlinglibs.opmon.RequestHandlerInfo\" WHERE \"session\"='${session}' AND \"element\" =~ /${element}/ AND $timeFilter GROUP BY time($__interval) fill(null)",
+          "query": "SELECT non_negative_derivative(cumulative_sum(sum(\"num_requests_found\")), 1s) FROM \"dunedaq.datahandlinglibs.opmon.RequestHandlerInfo\" WHERE \"session\"='${session}' AND \"element\" =~ /^${element}$/ AND $timeFilter GROUP BY time($__interval) fill(null)",
           "rawQuery": true,
           "refId": "G",
           "resultFormat": "time_series",
@@ -6967,7 +6980,7 @@
           "measurement": "dunedaq.datahandlinglibs.readoutinfo.RequestHandlerInfo",
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "SELECT non_negative_derivative(cumulative_sum(sum(\"num_requests_delayed\")), 1s) FROM \"dunedaq.datahandlinglibs.opmon.RequestHandlerInfo\" WHERE \"session\"='${session}' AND \"element\" =~ /${element}/ AND $timeFilter GROUP BY time($__interval) fill(null)",
+          "query": "SELECT non_negative_derivative(cumulative_sum(sum(\"num_requests_delayed\")), 1s) FROM \"dunedaq.datahandlinglibs.opmon.RequestHandlerInfo\" WHERE \"session\"='${session}' AND \"element\" =~ /^${element}$/ AND $timeFilter GROUP BY time($__interval) fill(null)",
           "rawQuery": true,
           "refId": "B",
           "resultFormat": "time_series",
@@ -7026,7 +7039,7 @@
           "measurement": "dunedaq.datahandlinglibs.readoutinfo.RequestHandlerInfo",
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "SELECT non_negative_derivative(cumulative_sum(sum(\"num_requests_bad\")), 1s) FROM \"dunedaq.datahandlinglibs.opmon.RequestHandlerInfo\" WHERE \"session\"='${session}' AND \"element\" =~ /${element}/ AND $timeFilter GROUP BY time($__interval) fill(null)",
+          "query": "SELECT non_negative_derivative(cumulative_sum(sum(\"num_requests_bad\")), 1s) FROM \"dunedaq.datahandlinglibs.opmon.RequestHandlerInfo\" WHERE \"session\"='${session}' AND \"element\" =~ /^${element}$/ AND $timeFilter GROUP BY time($__interval) fill(null)",
           "rawQuery": true,
           "refId": "J",
           "resultFormat": "time_series",
@@ -7085,7 +7098,7 @@
           "measurement": "dunedaq.datahandlinglibs.readoutinfo.ReadoutInfo",
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "SELECT non_negative_derivative(cumulative_sum(sum(\"num_requests_old_window\")), 1s) FROM \"dunedaq.datahandlinglibs.opmon.RequestHandlerInfo\" WHERE \"session\"='${session}' AND \"element\" =~ /${element}/ AND $timeFilter GROUP BY time($__interval) fill(null)",
+          "query": "SELECT non_negative_derivative(cumulative_sum(sum(\"num_requests_old_window\")), 1s) FROM \"dunedaq.datahandlinglibs.opmon.RequestHandlerInfo\" WHERE \"session\"='${session}' AND \"element\" =~ /^${element}$/ AND $timeFilter GROUP BY time($__interval) fill(null)",
           "rawQuery": true,
           "refId": "C",
           "resultFormat": "time_series",
@@ -7144,7 +7157,7 @@
           "measurement": "dunedaq.datahandlinglibs.readoutinfo.ReadoutInfo",
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "SELECT non_negative_derivative(cumulative_sum(sum(\"num_requests_timed_out\")), 1s) FROM \"dunedaq.datahandlinglibs.opmon.RequestHandlerInfo\" WHERE \"session\"='${session}' AND \"element\" =~ /${element}/ AND $timeFilter GROUP BY time($__interval) fill(null)",
+          "query": "SELECT non_negative_derivative(cumulative_sum(sum(\"num_requests_timed_out\")), 1s) FROM \"dunedaq.datahandlinglibs.opmon.RequestHandlerInfo\" WHERE \"session\"='${session}' AND \"element\" =~ /^${element}$/ AND $timeFilter GROUP BY time($__interval) fill(null)",
           "rawQuery": true,
           "refId": "D",
           "resultFormat": "time_series",
@@ -7203,7 +7216,7 @@
           "measurement": "dunedaq.datahandlinglibs.readoutinfo.RequestHandlerInfo",
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "SELECT non_negative_derivative(cumulative_sum(sum(\"num_requests_uncategorized\")), 1s) FROM \"dunedaq.datahandlinglibs.opmon.RequestHandlerInfo\" WHERE \"session\"='${session}' AND \"element\" =~ /${element}/ AND $timeFilter GROUP BY time($__interval) fill(null)",
+          "query": "SELECT non_negative_derivative(cumulative_sum(sum(\"num_requests_uncategorized\")), 1s) FROM \"dunedaq.datahandlinglibs.opmon.RequestHandlerInfo\" WHERE \"session\"='${session}' AND \"element\" =~ /^${element}$/ AND $timeFilter GROUP BY time($__interval) fill(null)",
           "rawQuery": true,
           "refId": "F",
           "resultFormat": "time_series",
@@ -7304,7 +7317,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green"
+                "color": "green",
+                "value": null
               },
               {
                 "color": "red",
@@ -7359,7 +7373,7 @@
           "measurement": "dunedaq.datahandlinglibs.readoutinfo.RequestHandlerInfo",
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "SELECT non_negative_derivative(cumulative_sum(sum(\"num_buffer_cleanups\")), 1s) FROM \"dunedaq.datahandlinglibs.opmon.RequestHandlerInfo\" WHERE \"session\"='${session}' AND \"element\" =~ /${element}/  AND $timeFilter GROUP BY time($__interval) fill(null)",
+          "query": "SELECT non_negative_derivative(cumulative_sum(sum(\"num_buffer_cleanups\")), 1s) FROM \"dunedaq.datahandlinglibs.opmon.RequestHandlerInfo\" WHERE \"session\"='${session}' AND \"element\" =~ /^${element}$/  AND $timeFilter GROUP BY time($__interval) fill(null)",
           "rawQuery": true,
           "refId": "A",
           "resultFormat": "time_series",
@@ -7408,7 +7422,7 @@
           "measurement": "dunedaq.datahandlinglibs.readoutinfo.ReadoutInfo",
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "SELECT non_negative_derivative(cumulative_sum(sum(\"num_payloads_overwritten\")), 1s) FROM \"dunedaq.datahandlinglibs.opmon.DataHandlerInfo\" WHERE \"session\"='${session}' AND \"element\" =~ /${element}/  AND $timeFilter GROUP BY time($__interval) fill(null) ",
+          "query": "SELECT non_negative_derivative(cumulative_sum(sum(\"num_payloads_overwritten\")), 1s) FROM \"dunedaq.datahandlinglibs.opmon.DataHandlerInfo\" WHERE \"session\"='${session}' AND \"element\" =~ /^${element}$/  AND $timeFilter GROUP BY time($__interval) fill(null) ",
           "rawQuery": true,
           "refId": "B",
           "resultFormat": "time_series",
@@ -7486,7 +7500,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green"
+                "color": "green",
+                "value": null
               },
               {
                 "color": "red",
@@ -7543,7 +7558,7 @@
           "measurement": "dunedaq.datahandlinglibs.readoutinfo.ReadoutInfo",
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "SELECT non_negative_derivative(cumulative_sum(sum(\"num_requests\")), 1s) FROM \"dunedaq.datahandlinglibs.opmon.DataHandlerInfo\" WHERE \"session\"='${session}' AND \"element\" =~ /${element}/ AND $timeFilter GROUP BY time($__interval) fill(null)",
+          "query": "SELECT non_negative_derivative(cumulative_sum(sum(\"num_requests\")), 1s) FROM \"dunedaq.datahandlinglibs.opmon.DataHandlerInfo\" WHERE \"session\"='${session}' AND \"element\" =~ /^${element}$/ AND $timeFilter GROUP BY time($__interval) fill(null)",
           "rawQuery": true,
           "refId": "A",
           "resultFormat": "time_series",
@@ -7602,7 +7617,7 @@
           "measurement": "dunedaq.datahandlinglibs.readoutinfo.RequestHandlerInfo",
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "SELECT non_negative_derivative(cumulative_sum(sum(\"num_requests_found\")), 1s)  FROM \"dunedaq.datahandlinglibs.opmon.RequestHandlerInfo\" WHERE \"session\"='${session}' AND \"element\" =~ /${element}/ AND $timeFilter GROUP BY time($__interval) fill(null)",
+          "query": "SELECT non_negative_derivative(cumulative_sum(sum(\"num_requests_found\")), 1s)  FROM \"dunedaq.datahandlinglibs.opmon.RequestHandlerInfo\" WHERE \"session\"='${session}' AND \"element\" =~ /^${element}$/ AND $timeFilter GROUP BY time($__interval) fill(null)",
           "rawQuery": true,
           "refId": "G",
           "resultFormat": "time_series",
@@ -7661,7 +7676,7 @@
           "measurement": "dunedaq.datahandlinglibs.readoutinfo.RequestHandlerInfo",
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "SELECT non_negative_derivative(cumulative_sum(sum(\"num_requests_delayed\")), 1s)  FROM \"dunedaq.datahandlinglibs.opmon.RequestHandlerInfo\" WHERE \"session\"='${session}' AND \"element\" =~ /${element}/ AND $timeFilter GROUP BY time($__interval) fill(null)",
+          "query": "SELECT non_negative_derivative(cumulative_sum(sum(\"num_requests_delayed\")), 1s)  FROM \"dunedaq.datahandlinglibs.opmon.RequestHandlerInfo\" WHERE \"session\"='${session}' AND \"element\" =~ /^${element}$/ AND $timeFilter GROUP BY time($__interval) fill(null)",
           "rawQuery": true,
           "refId": "B",
           "resultFormat": "time_series",
@@ -7720,7 +7735,7 @@
           "measurement": "dunedaq.datahandlinglibs.readoutinfo.RequestHandlerInfo",
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "SELECT non_negative_derivative(cumulative_sum(sum(\"num_requests_bad\")), 1s)  FROM \"dunedaq.datahandlinglibs.opmon.RequestHandlerInfo\" WHERE \"session\"='${session}' AND \"element\" =~ /${element}/ AND $timeFilter GROUP BY time($__interval) fill(null)",
+          "query": "SELECT non_negative_derivative(cumulative_sum(sum(\"num_requests_bad\")), 1s)  FROM \"dunedaq.datahandlinglibs.opmon.RequestHandlerInfo\" WHERE \"session\"='${session}' AND \"element\" =~ /^${element}$/ AND $timeFilter GROUP BY time($__interval) fill(null)",
           "rawQuery": true,
           "refId": "J",
           "resultFormat": "time_series",
@@ -7779,7 +7794,7 @@
           "measurement": "dunedaq.datahandlinglibs.readoutinfo.ReadoutInfo",
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "SELECT non_negative_derivative(cumulative_sum(sum(\"num_requests_old_window\")), 1s)  FROM \"dunedaq.datahandlinglibs.opmon.RequestHandlerInfo\" WHERE \"session\"='${session}' AND \"element\" =~ /${element}/ AND $timeFilter GROUP BY time($__interval) fill(null)",
+          "query": "SELECT non_negative_derivative(cumulative_sum(sum(\"num_requests_old_window\")), 1s)  FROM \"dunedaq.datahandlinglibs.opmon.RequestHandlerInfo\" WHERE \"session\"='${session}' AND \"element\" =~ /^${element}$/ AND $timeFilter GROUP BY time($__interval) fill(null)",
           "rawQuery": true,
           "refId": "C",
           "resultFormat": "time_series",
@@ -7838,7 +7853,7 @@
           "measurement": "dunedaq.datahandlinglibs.readoutinfo.ReadoutInfo",
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "SELECT non_negative_derivative(cumulative_sum(sum(\"num_requests_timed_out\")), 1s)  FROM \"dunedaq.datahandlinglibs.opmon.RequestHandlerInfo\" WHERE \"session\"='${session}' AND \"element\" =~ /${element}/ AND $timeFilter GROUP BY time($__interval) fill(null)",
+          "query": "SELECT non_negative_derivative(cumulative_sum(sum(\"num_requests_timed_out\")), 1s)  FROM \"dunedaq.datahandlinglibs.opmon.RequestHandlerInfo\" WHERE \"session\"='${session}' AND \"element\" =~ /^${element}$/ AND $timeFilter GROUP BY time($__interval) fill(null)",
           "rawQuery": true,
           "refId": "D",
           "resultFormat": "time_series",
@@ -7897,7 +7912,7 @@
           "measurement": "dunedaq.datahandlinglibs.readoutinfo.RequestHandlerInfo",
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "SELECT non_negative_derivative(cumulative_sum(sum(\"num_requests_uncategorized\")), 1s)  FROM \"dunedaq.datahandlinglibs.opmon.RequestHandlerInfo\" WHERE \"session\"='${session}' AND \"element\" =~ /${element}/ AND $timeFilter GROUP BY time($__interval) fill(null)",
+          "query": "SELECT non_negative_derivative(cumulative_sum(sum(\"num_requests_uncategorized\")), 1s)  FROM \"dunedaq.datahandlinglibs.opmon.RequestHandlerInfo\" WHERE \"session\"='${session}' AND \"element\" =~ /^${element}$/ AND $timeFilter GROUP BY time($__interval) fill(null)",
           "rawQuery": true,
           "refId": "F",
           "resultFormat": "time_series",
@@ -7966,9 +7981,9 @@
       },
       {
         "current": {
-          "selected": false,
-          "text": "ehn1-tpreplay-config",
-          "value": "ehn1-tpreplay-config"
+          "selected": true,
+          "text": "maroda-ctb",
+          "value": "maroda-ctb"
         },
         "datasource": {
           "uid": "${influxdb}"
@@ -8126,9 +8141,10 @@
       },
       {
         "current": {
+          "isNone": true,
           "selected": false,
-          "text": "random-tc-generator",
-          "value": "random-tc-generator"
+          "text": "None",
+          "value": ""
         },
         "datasource": {
           "type": "influxdb",
@@ -8184,6 +8200,6 @@
   "timezone": "",
   "title": "Trigger Flow",
   "uid": "v5_3_2-trigger_flow",
-  "version": 12,
+  "version": 3,
   "weekStart": ""
 }

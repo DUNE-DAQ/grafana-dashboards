@@ -24,7 +24,7 @@
   "editable": true,
   "fiscalYearStartMonth": 0,
   "graphTooltip": 0,
-  "id": 242,
+  "id": 335,
   "links": [],
   "liveNow": false,
   "panels": [
@@ -795,11 +795,11 @@
       },
       "targets": [
         {
-          "alias": "$tag_element",
+          "alias": "$tag_element: $tag_subelement",
           "datasource": {
             "uid": "${influxdb}"
           },
-          "query": "SELECT non_negative_derivative(cumulative_sum(sum(\"ipackets\")), 1s) FROM  \"dunedaq.dpdklibs.opmon.EthStats\"  WHERE session = '${session}' AND application =~ /${application}/ AND $timeFilter GROUP BY time($__interval), element fill(null)",
+          "query": "SELECT non_negative_derivative(cumulative_sum(sum(\"ipackets\")), 1s) FROM  \"dunedaq.dpdklibs.opmon.EthStats\"  WHERE session = '${session}' AND element=~/^${module}$/ AND subelement=~/^${wrapper}$/ AND $timeFilter GROUP BY time($__interval), element, subelement fill(null)",
           "rawQuery": true,
           "refId": "A",
           "resultFormat": "time_series"
@@ -890,11 +890,11 @@
       },
       "targets": [
         {
-          "alias": "$tag_element",
+          "alias": "$tag_element: $tag_subelement",
           "datasource": {
             "uid": "${influxdb}"
           },
-          "query": "SELECT  non_negative_derivative(cumulative_sum(sum(\"ibytes\")), 1s) FROM  \"dunedaq.dpdklibs.opmon.EthStats\"  WHERE session = '${session}' AND application =~ /${application}/ AND $timeFilter GROUP BY time($__interval), element fill(null) ",
+          "query": "SELECT  non_negative_derivative(cumulative_sum(sum(\"ibytes\")), 1s) FROM  \"dunedaq.dpdklibs.opmon.EthStats\" WHERE session = '${session}' AND element=~/^${module}$/ AND subelement=~/^${wrapper}$/ AND $timeFilter GROUP BY time($__interval), element, subelement fill(null) ",
           "rawQuery": true,
           "refId": "A",
           "resultFormat": "time_series"
@@ -985,11 +985,11 @@
       },
       "targets": [
         {
-          "alias": "$tag_element",
+          "alias": "$tag_element: $tag_subelement",
           "datasource": {
             "uid": "${influxdb}"
           },
-          "query": "SELECT  non_negative_derivative(cumulative_sum(sum(\"opackets\")), 1s) FROM  \"dunedaq.dpdklibs.opmon.EthStats\"  WHERE session = '${session}' AND application =~ /${application}/ AND $timeFilter GROUP BY time($__interval), element fill(null) ",
+          "query": "SELECT  non_negative_derivative(cumulative_sum(sum(\"opackets\")), 1s) FROM  \"dunedaq.dpdklibs.opmon.EthStats\"  WHERE session = '${session}' AND element=~/^${module}$/ AND subelement=~/^${wrapper}$/ AND $timeFilter GROUP BY time($__interval), element, subelement fill(null) ",
           "rawQuery": true,
           "refId": "A",
           "resultFormat": "time_series"
@@ -1080,11 +1080,11 @@
       },
       "targets": [
         {
-          "alias": "$tag_element",
+          "alias": "$tag_element: $tag_subelement",
           "datasource": {
             "uid": "${influxdb}"
           },
-          "query": "SELECT  non_negative_derivative(cumulative_sum(sum(\"obytes\")), 1s) FROM  \"dunedaq.dpdklibs.opmon.EthStats\"  WHERE session = '${session}' AND application =~ /${application}/ AND $timeFilter GROUP BY time($__interval), element fill(null)",
+          "query": "SELECT  non_negative_derivative(cumulative_sum(sum(\"obytes\")), 1s) FROM  \"dunedaq.dpdklibs.opmon.EthStats\" WHERE session = '${session}' AND element=~/^${module}$/ AND subelement=~/^${wrapper}$/ AND $timeFilter GROUP BY time($__interval), element, subelement fill(null) ",
           "rawQuery": true,
           "refId": "A",
           "resultFormat": "time_series"
@@ -1175,11 +1175,11 @@
       },
       "targets": [
         {
-          "alias": "$tag_element",
+          "alias": "$tag_element: $tag_subelement",
           "datasource": {
             "uid": "${influxdb}"
           },
-          "query": "SELECT  non_negative_derivative(cumulative_sum(sum(\"imissed\")), 1s) FROM  \"dunedaq.dpdklibs.opmon.EthStats\"  WHERE session = '${session}' AND application =~ /${application}/ AND $timeFilter GROUP BY time($__interval), element fill(null)",
+          "query": "SELECT  non_negative_derivative(cumulative_sum(sum(\"imissed\")), 1s) FROM  \"dunedaq.dpdklibs.opmon.EthStats\"  WHERE session = '${session}' AND element=~/^${module}$/ AND subelement=~/^${wrapper}$/ AND $timeFilter GROUP BY time($__interval), element, subelement fill(null) ",
           "rawQuery": true,
           "refId": "A",
           "resultFormat": "time_series"
@@ -1270,11 +1270,11 @@
       },
       "targets": [
         {
-          "alias": "$tag_element",
+          "alias": "$tag_element: $tag_subelement",
           "datasource": {
             "uid": "${influxdb}"
           },
-          "query": "SELECT  non_negative_derivative(cumulative_sum(sum(\"ierrors\")), 1s) FROM  \"dunedaq.dpdklibs.opmon.EthStats\"  WHERE session = '${session}' AND application =~ /${application}/ AND $timeFilter GROUP BY time($__interval), element fill(null)",
+          "query": "SELECT  non_negative_derivative(cumulative_sum(sum(\"ierrors\")), 1s) FROM  \"dunedaq.dpdklibs.opmon.EthStats\"  WHERE session = '${session}' AND element=~/^${module}$/ AND subelement=~/^${wrapper}$/ AND $timeFilter GROUP BY time($__interval), element, subelement fill(null) ",
           "rawQuery": true,
           "refId": "A",
           "resultFormat": "time_series"
@@ -1365,11 +1365,11 @@
       },
       "targets": [
         {
-          "alias": "$tag_element",
+          "alias": "$tag_element: $tag_subelement",
           "datasource": {
             "uid": "${influxdb}"
           },
-          "query": "SELECT  non_negative_derivative(cumulative_sum(sum(\"oerrors\")), 1s) FROM  \"dunedaq.dpdklibs.opmon.EthStats\"  WHERE session = '${session}' AND application =~ /${application}/ AND $timeFilter GROUP BY time($__interval), element fill(null)",
+          "query": "SELECT  non_negative_derivative(cumulative_sum(sum(\"oerrors\")), 1s) FROM  \"dunedaq.dpdklibs.opmon.EthStats\"  WHERE session = '${session}' AND element=~/^${module}$/ AND subelement=~/^${wrapper}$/ AND $timeFilter GROUP BY time($__interval), element, subelement fill(null) ",
           "rawQuery": true,
           "refId": "A",
           "resultFormat": "time_series"
@@ -1460,11 +1460,11 @@
       },
       "targets": [
         {
-          "alias": "$tag_element",
+          "alias": "$tag_element: $tag_subelement",
           "datasource": {
             "uid": "${influxdb}"
           },
-          "query": "SELECT  non_negative_derivative(cumulative_sum(sum(\"rx_nombuf\")), 1s) FROM  \"dunedaq.dpdklibs.opmon.EthStats\"  WHERE session = '${session}' AND application =~ /${application}/ AND $timeFilter GROUP BY time($__interval), element fill(null)",
+          "query": "SELECT  non_negative_derivative(cumulative_sum(sum(\"rx_nombuf\")), 1s) FROM  \"dunedaq.dpdklibs.opmon.EthStats\"  WHERE session = '${session}' AND element=~/^${module}$/ AND subelement=~/^${wrapper}$/ AND $timeFilter GROUP BY time($__interval), element, subelement fill(null) ",
           "rawQuery": true,
           "refId": "A",
           "resultFormat": "time_series"
@@ -1568,11 +1568,11 @@
       },
       "targets": [
         {
-          "alias": "$tag_element",
+          "alias": "$tag_element: $tag_subelement",
           "datasource": {
             "uid": "${influxdb}"
           },
-          "query": "SELECT  non_negative_derivative(cumulative_sum(sum(\"rx_good_packets\")), 1s) FROM \"dunedaq.dpdklibs.opmon.EthXStatsInfo\"  WHERE session = '${session}' AND application =~ /${application}/ AND $timeFilter GROUP BY time($__interval), element fill(null)",
+          "query": "SELECT  non_negative_derivative(cumulative_sum(sum(\"rx_good_packets\")), 1s) FROM \"dunedaq.dpdklibs.opmon.EthXStatsInfo\"  WHERE session = '${session}' AND element=~/^${module}$/ AND subelement=~/^${wrapper}$/ AND $timeFilter GROUP BY time($__interval), element, subelement fill(null)",
           "rawQuery": true,
           "refId": "A",
           "resultFormat": "time_series"
@@ -1663,11 +1663,11 @@
       },
       "targets": [
         {
-          "alias": "$tag_element",
+          "alias": "$tag_element: $tag_subelement",
           "datasource": {
             "uid": "${influxdb}"
           },
-          "query": "SELECT  non_negative_derivative(cumulative_sum(sum(\"rx_good_bytes\")), 1s) FROM \"dunedaq.dpdklibs.opmon.EthXStatsInfo\"  WHERE session = '${session}' AND application =~ /${application}/ AND $timeFilter GROUP BY time($__interval), element fill(null)",
+          "query": "SELECT  non_negative_derivative(cumulative_sum(sum(\"rx_good_bytes\")), 1s) FROM \"dunedaq.dpdklibs.opmon.EthXStatsInfo\"  WHERE session = '${session}' AND element=~/^${module}$/ AND subelement=~/^${wrapper}$/ AND $timeFilter GROUP BY time($__interval), element, subelement fill(null) ",
           "rawQuery": true,
           "refId": "A",
           "resultFormat": "time_series"
@@ -1761,11 +1761,11 @@
       },
       "targets": [
         {
-          "alias": "$tag_element",
+          "alias": "$tag_element: $tag_subelement",
           "datasource": {
             "uid": "${influxdb}"
           },
-          "query": "SELECT  non_negative_derivative(cumulative_sum(sum(\"rx_size_1523_to_max_packets\")), 1s) FROM \"dunedaq.dpdklibs.opmon.EthXStatsInfo\"  WHERE session = '${session}' AND application =~ /${application}/ AND $timeFilter GROUP BY time($__interval), element fill(null) ",
+          "query": "SELECT  non_negative_derivative(cumulative_sum(sum(\"rx_size_1523_to_max_packets\")), 1s) FROM \"dunedaq.dpdklibs.opmon.EthXStatsInfo\" WHERE session = '${session}' AND element=~/^${module}$/ AND subelement=~/^${wrapper}$/ AND $timeFilter GROUP BY time($__interval), element, subelement fill(null) ",
           "rawQuery": true,
           "refId": "A",
           "resultFormat": "time_series"
@@ -1859,11 +1859,11 @@
       },
       "targets": [
         {
-          "alias": "$tag_element - $tag_queue",
+          "alias": "$tag_element: $tag_subelement, $tag_queue",
           "datasource": {
             "uid": "${influxdb}"
           },
-          "query": "SELECT sum(\"packets\") FROM \"dunedaq.dpdklibs.opmon.QueueEthXStats\" WHERE session = '${session}' AND application=~/${application}/ AND queue=~/rx-${queue}/ AND $timeFilter GROUP BY element, queue, time($__interval) fill(null)",
+          "query": "SELECT sum(\"packets\") FROM \"dunedaq.dpdklibs.opmon.QueueEthXStats\" WHERE session = '${session}' AND element=~/^${module}$/ AND subelement=~/^${wrapper}$/ AND queue=~/rx-${queue}/ AND $timeFilter GROUP BY element, subelement, queue, time($__interval) fill(null)",
           "rawQuery": true,
           "refId": "A",
           "resultFormat": "time_series"
@@ -1957,11 +1957,11 @@
       },
       "targets": [
         {
-          "alias": "$tag_element - $tag_queue",
+          "alias": "$tag_element: $tag_subelement, $tag_queue",
           "datasource": {
             "uid": "${influxdb}"
           },
-          "query": "SELECT sum(\"errors\") FROM \"dunedaq.dpdklibs.opmon.QueueEthXStats\" WHERE session = '${session}' AND application=~/${application}/ AND queue=~/rx-${queue}/ AND $timeFilter GROUP BY element, queue, time($__interval) fill(null)",
+          "query": "SELECT sum(\"errors\") FROM \"dunedaq.dpdklibs.opmon.QueueEthXStats\" WHERE session = '${session}' AND element=~/^${module}$/ AND subelement=~/^${wrapper}$/ AND queue=~/rx-${queue}/ AND $timeFilter GROUP BY element, subelement, queue, time($__interval) fill(null) ",
           "rawQuery": true,
           "refId": "A",
           "resultFormat": "time_series"
@@ -2055,11 +2055,11 @@
       },
       "targets": [
         {
-          "alias": "$tag_element - $tag_queue",
+          "alias": "$tag_element: $tag_subelement, $tag_queue",
           "datasource": {
             "uid": "${influxdb}"
           },
-          "query": "SELECT sum(\"bytes\") FROM \"dunedaq.dpdklibs.opmon.QueueEthXStats\" WHERE session = '${session}' AND application=~/${application}/ AND queue=~/rx-${queue}/ AND $timeFilter GROUP BY element, queue, time($__interval) fill(null)",
+          "query": "SELECT sum(\"bytes\") FROM \"dunedaq.dpdklibs.opmon.QueueEthXStats\" WHERE session = '${session}' AND element=~/^${module}$/ AND subelement=~/^${wrapper}$/ AND queue=~/rx-${queue}/ AND $timeFilter GROUP BY element, subelement, queue, time($__interval) fill(null) ",
           "rawQuery": true,
           "refId": "A",
           "resultFormat": "time_series"
@@ -2119,7 +2119,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green"
+                "color": "green",
+                "value": null
               },
               {
                 "color": "red",
@@ -2152,11 +2153,11 @@
       },
       "targets": [
         {
-          "alias": "$tag_element",
+          "alias": "$tag_element: $tag_subelement",
           "datasource": {
             "uid": "${influxdb}"
           },
-          "query": "SELECT  non_negative_derivative(cumulative_sum(sum(\"rx_dropped_packets\")), 1s) FROM \"dunedaq.dpdklibs.opmon.EthXStatsInfo\"  WHERE session = '${session}' AND application =~ /${application}/ AND $timeFilter GROUP BY time($__interval), element fill(null)",
+          "query": "SELECT  non_negative_derivative(cumulative_sum(sum(\"rx_dropped_packets\")), 1s) FROM \"dunedaq.dpdklibs.opmon.EthXStatsInfo\"  WHERE session = '${session}' AND element=~/^${module}$/ AND subelement=~/^${wrapper}$/ AND $timeFilter GROUP BY time($__interval), element, subelement fill(null) ",
           "rawQuery": true,
           "refId": "A",
           "resultFormat": "time_series"
@@ -2216,7 +2217,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green"
+                "color": "green",
+                "value": null
               },
               {
                 "color": "red",
@@ -2249,11 +2251,11 @@
       },
       "targets": [
         {
-          "alias": "$tag_element",
+          "alias": "$tag_element: $tag_subelement",
           "datasource": {
             "uid": "${influxdb}"
           },
-          "query": "SELECT  non_negative_derivative(cumulative_sum(sum(\"rx_errors\")), 1s) FROM \"dunedaq.dpdklibs.opmon.EthXStatsErrors\"  WHERE session = '${session}' AND application =~ /${application}/ AND $timeFilter GROUP BY time($__interval), element fill(null)",
+          "query": "SELECT  non_negative_derivative(cumulative_sum(sum(\"rx_errors\")), 1s) FROM \"dunedaq.dpdklibs.opmon.EthXStatsErrors\"  WHERE session = '${session}' AND element=~/^${module}$/ AND subelement=~/^${wrapper}$/ AND $timeFilter GROUP BY time($__interval), element, subelement fill(null) ",
           "rawQuery": true,
           "refId": "A",
           "resultFormat": "time_series"
@@ -2313,7 +2315,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green"
+                "color": "green",
+                "value": null
               },
               {
                 "color": "red",
@@ -2346,11 +2349,11 @@
       },
       "targets": [
         {
-          "alias": "$tag_element",
+          "alias": "$tag_element: $tag_subelement",
           "datasource": {
             "uid": "${influxdb}"
           },
-          "query": "SELECT  non_negative_derivative(cumulative_sum(sum(\"rx_crc_errors\")), 1s) FROM \"dunedaq.dpdklibs.opmon.EthXStatsErrors\"  WHERE session = '${session}' AND application =~ /${application}/ AND $timeFilter GROUP BY time($__interval), element fill(null)",
+          "query": "SELECT  non_negative_derivative(cumulative_sum(sum(\"rx_crc_errors\")), 1s) FROM \"dunedaq.dpdklibs.opmon.EthXStatsErrors\"  WHERE session = '${session}' AND element=~/^${module}$/ AND subelement=~/^${wrapper}$/ AND $timeFilter GROUP BY time($__interval), element, subelement fill(null) ",
           "rawQuery": true,
           "refId": "A",
           "resultFormat": "time_series"
@@ -2410,7 +2413,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green"
+                "color": "green",
+                "value": null
               },
               {
                 "color": "red",
@@ -2443,11 +2447,11 @@
       },
       "targets": [
         {
-          "alias": "$tag_element",
+          "alias": "$tag_element: $tag_subelement",
           "datasource": {
             "uid": "${influxdb}"
           },
-          "query": "SELECT  non_negative_derivative(cumulative_sum(sum(\"rx_illegal_byte_errors\")), 1s) FROM \"dunedaq.dpdklibs.opmon.EthXStatsErrors\"  WHERE session = '${session}' AND application =~ /${application}/ AND $timeFilter GROUP BY time($__interval), element fill(null)",
+          "query": "SELECT  non_negative_derivative(cumulative_sum(sum(\"rx_illegal_byte_errors\")), 1s) FROM \"dunedaq.dpdklibs.opmon.EthXStatsErrors\"  WHERE session = '${session}' AND element=~/^${module}$/ AND subelement=~/^${wrapper}$/ AND $timeFilter GROUP BY time($__interval), element, subelement fill(null) ",
           "rawQuery": true,
           "refId": "A",
           "resultFormat": "time_series"
@@ -2507,7 +2511,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green"
+                "color": "green",
+                "value": null
               },
               {
                 "color": "red",
@@ -2540,11 +2545,11 @@
       },
       "targets": [
         {
-          "alias": "$tag_element",
+          "alias": "$tag_element: $tag_subelement",
           "datasource": {
             "uid": "${influxdb}"
           },
-          "query": "SELECT  non_negative_derivative(cumulative_sum(sum(\"rx_missed_errors\")), 1s) FROM \"dunedaq.dpdklibs.opmon.EthXStatsErrors\"  WHERE session = '${session}' AND application =~ /${application}/ AND $timeFilter GROUP BY time($__interval), element fill(null)",
+          "query": "SELECT  non_negative_derivative(cumulative_sum(sum(\"rx_missed_errors\")), 1s) FROM \"dunedaq.dpdklibs.opmon.EthXStatsErrors\" WHERE session = '${session}' AND element=~/^${module}$/ AND subelement=~/^${wrapper}$/ AND $timeFilter GROUP BY time($__interval), element, subelement fill(null) ",
           "rawQuery": true,
           "refId": "A",
           "resultFormat": "time_series"
@@ -2604,7 +2609,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green"
+                "color": "green",
+                "value": null
               },
               {
                 "color": "red",
@@ -2637,11 +2643,11 @@
       },
       "targets": [
         {
-          "alias": "$tag_element",
+          "alias": "$tag_element: $tag_subelement",
           "datasource": {
             "uid": "${influxdb}"
           },
-          "query": "SELECT  non_negative_derivative(cumulative_sum(sum(\"rx_jabber_errors\")), 1s) FROM \"dunedaq.dpdklibs.opmon.EthXStatsErrors\"  WHERE session = '${session}' AND application =~ /${application}/ AND $timeFilter GROUP BY time($__interval), element fill(null) ",
+          "query": "SELECT  non_negative_derivative(cumulative_sum(sum(\"rx_jabber_errors\")), 1s) FROM \"dunedaq.dpdklibs.opmon.EthXStatsErrors\"  WHERE session = '${session}' AND element=~/^${module}$/ AND subelement=~/^${wrapper}$/ AND $timeFilter GROUP BY time($__interval), element, subelement fill(null) ",
           "rawQuery": true,
           "refId": "A",
           "resultFormat": "time_series"
@@ -2711,7 +2717,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green"
+                "color": "green",
+                "value": null
               },
               {
                 "color": "red",
@@ -2744,11 +2751,11 @@
       },
       "targets": [
         {
-          "alias": "$tag_application - $tag_queue",
+          "alias": "$tag_element: $tag_subelement, Queue $tag_queue",
           "datasource": {
             "uid": "${influxdb}"
           },
-          "query": "SELECT non_negative_derivative(last(\"packets_received\"), 1s) FROM \"dunedaq.dpdklibs.opmon.QueueInfo\" WHERE session = '${session}' AND application =~ /${application}/ AND queue =~ /${queue}/ AND $timeFilter GROUP BY time($__interval), application, \"queue\" fill(null)",
+          "query": "SELECT non_negative_derivative(last(\"packets_received\"), 1s) FROM \"dunedaq.dpdklibs.opmon.QueueInfo\" WHERE session = '${session}' AND element=~/^${module}$/ AND subelement=~/^${wrapper}$/ AND queue =~ /${queue}/ AND $timeFilter GROUP BY time($__interval), element, subelement, \"queue\" fill(null)",
           "rawQuery": true,
           "refId": "A",
           "resultFormat": "time_series"
@@ -2813,7 +2820,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green"
+                "color": "green",
+                "value": null
               },
               {
                 "color": "red",
@@ -2846,11 +2854,11 @@
       },
       "targets": [
         {
-          "alias": "$tag_application - $tag_queue",
+          "alias": "$tag_element: $tag_subelement, Queue $tag_queue",
           "datasource": {
             "uid": "${influxdb}"
           },
-          "query": "SELECT non_negative_derivative(last(\"bytes_received\"), 1s) FROM \"dunedaq.dpdklibs.opmon.QueueInfo\" WHERE session = '${session}' AND application =~ /${application}/ AND queue =~ /${queue}/ AND $timeFilter GROUP BY time($__interval), application, \"queue\" fill(null)",
+          "query": "SELECT non_negative_derivative(last(\"bytes_received\"), 1s) FROM \"dunedaq.dpdklibs.opmon.QueueInfo\" WHERE session = '${session}' AND element=~/^${module}$/ AND subelement=~/^${wrapper}$/ AND queue =~ /${queue}/ AND $timeFilter GROUP BY time($__interval), element, subelement, \"queue\" fill(null) ",
           "rawQuery": true,
           "refId": "A",
           "resultFormat": "time_series"
@@ -2907,7 +2915,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green"
+                "color": "green",
+                "value": null
               },
               {
                 "color": "red",
@@ -2940,11 +2949,11 @@
       },
       "targets": [
         {
-          "alias": "$tag_application - $tag_queue",
+          "alias": "$tag_element: $tag_subelement, Queue $tag_queue",
           "datasource": {
             "uid": "${influxdb}"
           },
-          "query": "SELECT non_negative_derivative(last(\"full_rx_burst\"), 1s) FROM \"dunedaq.dpdklibs.opmon.QueueInfo\" WHERE session = '${session}' AND application =~ /${application}/ AND queue =~ /${queue}/ AND $timeFilter GROUP BY time($__interval), application, \"queue\" fill(null)",
+          "query": "SELECT non_negative_derivative(last(\"full_rx_burst\"), 1s) FROM \"dunedaq.dpdklibs.opmon.QueueInfo\" WHERE session = '${session}' AND element=~/^${module}$/ AND subelement=~/^${wrapper}$/ AND queue =~ /${queue}/ AND $timeFilter GROUP BY time($__interval), element, subelement, \"queue\" fill(null) ",
           "rawQuery": true,
           "refId": "A",
           "resultFormat": "time_series"
@@ -3001,7 +3010,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green"
+                "color": "green",
+                "value": null
               },
               {
                 "color": "red",
@@ -3034,11 +3044,11 @@
       },
       "targets": [
         {
-          "alias": "$tag_application - $tag_queue",
+          "alias": "$tag_element: $tag_subelement, Queue $tag_queue",
           "datasource": {
             "uid": "${influxdb}"
           },
-          "query": "SELECT mean(\"max_burst_size\") FROM \"dunedaq.dpdklibs.opmon.QueueInfo\" WHERE session = '${session}' AND application =~ /${application}/ AND queue =~ /${queue}/ AND $timeFilter GROUP BY time($__interval), application, \"queue\" fill(null) ",
+          "query": "SELECT mean(\"max_burst_size\") FROM \"dunedaq.dpdklibs.opmon.QueueInfo\" WHERE session = '${session}' AND element=~/^${module}$/ AND subelement=~/^${wrapper}$/ AND queue =~ /${queue}/ AND $timeFilter GROUP BY time($__interval), element, subelement, \"queue\" fill(null) ",
           "rawQuery": true,
           "refId": "A",
           "resultFormat": "time_series"
@@ -3095,7 +3105,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green"
+                "color": "green",
+                "value": null
               },
               {
                 "color": "red",
@@ -3109,7 +3120,7 @@
       },
       "gridPos": {
         "h": 9,
-        "w": 12,
+        "w": 24,
         "x": 0,
         "y": 72
       },
@@ -3127,7 +3138,7 @@
           "sort": "none"
         }
       },
-      "repeat": "application",
+      "repeat": "module",
       "repeatDirection": "h",
       "targets": [
         {
@@ -3135,13 +3146,13 @@
           "datasource": {
             "uid": "${influxdb}"
           },
-          "query": "SELECT non_negative_derivative(last(\"dropped_frames\"), 1s) FROM \"dunedaq.dpdklibs.opmon.SourceInfo\" WHERE session = '${session}' AND application=~/${application}/ AND $timeFilter GROUP BY time($__interval), \"subelement\" fill(null)",
+          "query": "SELECT non_negative_derivative(last(\"dropped_frames\"), 1s) FROM \"dunedaq.dpdklibs.opmon.SourceInfo\" WHERE session = '${session}' AND element=~/^${module}$/ AND $timeFilter GROUP BY time($__interval), \"subelement\" fill(null)",
           "rawQuery": true,
           "refId": "A",
           "resultFormat": "time_series"
         }
       ],
-      "title": "RX Dropped Frames rate for ${application}",
+      "title": "RX Dropped Frames rate for ${module}",
       "transformations": [],
       "type": "timeseries"
     },
@@ -3155,7 +3166,7 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 81
+        "y": 90
       },
       "id": 22,
       "panels": [],
@@ -3218,7 +3229,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green"
+                "color": "green",
+                "value": null
               },
               {
                 "color": "red",
@@ -3234,7 +3246,7 @@
         "h": 8,
         "w": 6,
         "x": 0,
-        "y": 82
+        "y": 91
       },
       "id": 15,
       "options": {
@@ -3312,7 +3324,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green"
+                "color": "green",
+                "value": null
               },
               {
                 "color": "red",
@@ -3328,7 +3341,7 @@
         "h": 8,
         "w": 6,
         "x": 6,
-        "y": 82
+        "y": 91
       },
       "id": 34,
       "options": {
@@ -3406,7 +3419,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green"
+                "color": "green",
+                "value": null
               },
               {
                 "color": "red",
@@ -3422,7 +3436,7 @@
         "h": 8,
         "w": 6,
         "x": 12,
-        "y": 82
+        "y": 91
       },
       "id": 14,
       "options": {
@@ -3500,7 +3514,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green"
+                "color": "green",
+                "value": null
               },
               {
                 "color": "red",
@@ -3516,7 +3531,7 @@
         "h": 8,
         "w": 6,
         "x": 18,
-        "y": 82
+        "y": 91
       },
       "id": 13,
       "options": {
@@ -3594,7 +3609,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green"
+                "color": "green",
+                "value": null
               },
               {
                 "color": "red",
@@ -3610,7 +3626,7 @@
         "h": 8,
         "w": 12,
         "x": 0,
-        "y": 90
+        "y": 99
       },
       "id": 46,
       "maxPerRow": 4,
@@ -3691,7 +3707,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green"
+                "color": "green",
+                "value": null
               },
               {
                 "color": "red",
@@ -3707,7 +3724,7 @@
         "h": 8,
         "w": 12,
         "x": 12,
-        "y": 90
+        "y": 99
       },
       "id": 35,
       "maxPerRow": 4,
@@ -3790,8 +3807,8 @@
       {
         "current": {
           "selected": false,
-          "text": "np02-session",
-          "value": "np02-session"
+          "text": "sbhuller-np02app-test",
+          "value": "sbhuller-np02app-test"
         },
         "datasource": {
           "type": "influxdb",
@@ -3841,22 +3858,26 @@
       },
       {
         "current": {
-          "selected": false,
-          "text": "All",
-          "value": "$__all"
+          "selected": true,
+          "text": [
+            "All"
+          ],
+          "value": [
+            "$__all"
+          ]
         },
         "datasource": {
           "type": "influxdb",
           "uid": "${influxdb}"
         },
-        "definition": "SELECT element FROM  (SELECT \"sent_udp_count\", \"element\" FROM \"dunedaq.hermesmodules.opmon.LinkInfo\" WHERE session = '${session}' AND application =~ /${CRP}/ AND $timeFilter)",
+        "definition": "SELECT element FROM  (SELECT \"sent_udp_count\", \"element\" FROM \"dunedaq.hermesmodules.opmon.LinkInfo\" WHERE session = '${session}' AND application =~ /^${CRP}$/ AND $timeFilter)",
         "hide": 0,
         "includeAll": true,
         "label": "WIB",
         "multi": true,
         "name": "WIB",
         "options": [],
-        "query": "SELECT element FROM  (SELECT \"sent_udp_count\", \"element\" FROM \"dunedaq.hermesmodules.opmon.LinkInfo\" WHERE session = '${session}' AND application =~ /${CRP}/ AND $timeFilter)",
+        "query": "SELECT element FROM  (SELECT \"sent_udp_count\", \"element\" FROM \"dunedaq.hermesmodules.opmon.LinkInfo\" WHERE session = '${session}' AND application =~ /^${CRP}$/ AND $timeFilter)",
         "refresh": 2,
         "regex": "",
         "skipUrlSync": false,
@@ -3877,14 +3898,14 @@
           "type": "influxdb",
           "uid": "${influxdb}"
         },
-        "definition": "SELECT data FROM  (SELECT \"sent_udp_count\", detector AS \"data\" FROM \"dunedaq.hermesmodules.opmon.LinkInfo\" WHERE session = '${session}' AND application =~ /${CRP}/ AND element =~ /${WIB}/ AND $timeFilter)",
+        "definition": "SELECT data FROM  (SELECT \"sent_udp_count\", detector AS \"data\" FROM \"dunedaq.hermesmodules.opmon.LinkInfo\" WHERE session = '${session}' AND application =~ /^${CRP}$/ AND element =~ /^${WIB}$/ AND $timeFilter)",
         "hide": 0,
         "includeAll": true,
         "label": "Detector",
         "multi": true,
         "name": "detector",
         "options": [],
-        "query": "SELECT data FROM  (SELECT \"sent_udp_count\", detector AS \"data\" FROM \"dunedaq.hermesmodules.opmon.LinkInfo\" WHERE session = '${session}' AND application =~ /${CRP}/ AND element =~ /${WIB}/ AND $timeFilter)",
+        "query": "SELECT data FROM  (SELECT \"sent_udp_count\", detector AS \"data\" FROM \"dunedaq.hermesmodules.opmon.LinkInfo\" WHERE session = '${session}' AND application =~ /^${CRP}$/ AND element =~ /^${WIB}$/ AND $timeFilter)",
         "refresh": 2,
         "regex": "",
         "skipUrlSync": false,
@@ -3905,14 +3926,14 @@
           "type": "influxdb",
           "uid": "${influxdb}"
         },
-        "definition": "SELECT data FROM  (SELECT \"sent_udp_count\", crate AS \"data\" FROM \"dunedaq.hermesmodules.opmon.LinkInfo\" WHERE session = '${session}' AND application =~ /${CRP}/ AND element =~ /${WIB}/ AND detector =~ /${detector}/ AND  $timeFilter)",
+        "definition": "SELECT data FROM  (SELECT \"sent_udp_count\", crate AS \"data\" FROM \"dunedaq.hermesmodules.opmon.LinkInfo\" WHERE session = '${session}' AND application =~ /^${CRP}$/ AND element =~ /^${WIB}$/ AND detector =~ /^${detector}$/ AND  $timeFilter)",
         "hide": 0,
         "includeAll": true,
         "label": "Crate",
         "multi": true,
         "name": "crate",
         "options": [],
-        "query": "SELECT data FROM  (SELECT \"sent_udp_count\", crate AS \"data\" FROM \"dunedaq.hermesmodules.opmon.LinkInfo\" WHERE session = '${session}' AND application =~ /${CRP}/ AND element =~ /${WIB}/ AND detector =~ /${detector}/ AND  $timeFilter)",
+        "query": "SELECT data FROM  (SELECT \"sent_udp_count\", crate AS \"data\" FROM \"dunedaq.hermesmodules.opmon.LinkInfo\" WHERE session = '${session}' AND application =~ /^${CRP}$/ AND element =~ /^${WIB}$/ AND detector =~ /^${detector}$/ AND  $timeFilter)",
         "refresh": 2,
         "regex": "",
         "skipUrlSync": false,
@@ -3933,14 +3954,14 @@
           "type": "influxdb",
           "uid": "${influxdb}"
         },
-        "definition": "SELECT data FROM  (SELECT \"sent_udp_count\", slot AS \"data\" FROM \"dunedaq.hermesmodules.opmon.LinkInfo\" WHERE session = '${session}' AND application =~ /${CRP}/ AND element =~ /${WIB}/ AND detector =~ /${detector}/ AND crate =~ /${crate}/ AND $timeFilter)",
+        "definition": "SELECT data FROM  (SELECT \"sent_udp_count\", slot AS \"data\" FROM \"dunedaq.hermesmodules.opmon.LinkInfo\" WHERE session = '${session}' AND application =~ /^${CRP}$/ AND element =~ /^${WIB}$/ AND detector =~ /^${detector}$/ AND crate =~ /^${crate}$/ AND $timeFilter)",
         "hide": 0,
         "includeAll": true,
         "label": "Slot",
         "multi": true,
         "name": "slot",
         "options": [],
-        "query": "SELECT data FROM  (SELECT \"sent_udp_count\", slot AS \"data\" FROM \"dunedaq.hermesmodules.opmon.LinkInfo\" WHERE session = '${session}' AND application =~ /${CRP}/ AND element =~ /${WIB}/ AND detector =~ /${detector}/ AND crate =~ /${crate}/ AND $timeFilter)",
+        "query": "SELECT data FROM  (SELECT \"sent_udp_count\", slot AS \"data\" FROM \"dunedaq.hermesmodules.opmon.LinkInfo\" WHERE session = '${session}' AND application =~ /^${CRP}$/ AND element =~ /^${WIB}$/ AND detector =~ /^${detector}$/ AND crate =~ /^${crate}$/ AND $timeFilter)",
         "refresh": 2,
         "regex": "",
         "skipUrlSync": false,
@@ -3961,14 +3982,14 @@
           "type": "influxdb",
           "uid": "${influxdb}"
         },
-        "definition": "SELECT link FROM  (SELECT \"sent_udp_count\", \"link\" FROM \"dunedaq.hermesmodules.opmon.LinkInfo\" WHERE session = '${session}' AND application =~ /${CRP}/ AND element =~ /${WIB}/ AND detector =~ /${detector}/ AND crate =~ /${crate}/ AND slot=~ /${slot}/ AND $timeFilter)",
+        "definition": "SELECT link FROM  (SELECT \"sent_udp_count\", \"link\" FROM \"dunedaq.hermesmodules.opmon.LinkInfo\" WHERE session = '${session}' AND application =~ /^${CRP}$/ AND element =~ /^${WIB}$/ AND detector =~ /^${detector}$/ AND crate =~ /^${crate}$/ AND slot=~ /^${slot}$/ AND $timeFilter)",
         "hide": 0,
         "includeAll": true,
         "label": "Link",
         "multi": true,
         "name": "link",
         "options": [],
-        "query": "SELECT link FROM  (SELECT \"sent_udp_count\", \"link\" FROM \"dunedaq.hermesmodules.opmon.LinkInfo\" WHERE session = '${session}' AND application =~ /${CRP}/ AND element =~ /${WIB}/ AND detector =~ /${detector}/ AND crate =~ /${crate}/ AND slot=~ /${slot}/ AND $timeFilter)",
+        "query": "SELECT link FROM  (SELECT \"sent_udp_count\", \"link\" FROM \"dunedaq.hermesmodules.opmon.LinkInfo\" WHERE session = '${session}' AND application =~ /^${CRP}$/ AND element =~ /^${WIB}$/ AND detector =~ /^${detector}$/ AND crate =~ /^${crate}$/ AND slot=~ /^${slot}$/ AND $timeFilter)",
         "refresh": 2,
         "regex": "",
         "skipUrlSync": false,
@@ -4017,15 +4038,39 @@
           "type": "influxdb",
           "uid": "${influxdb}"
         },
-        "definition": "SELECT queue FROM (SELECT \"packets_received\", \"queue\" FROM \"dunedaq.dpdklibs.opmon.QueueInfo\" WHERE session = '${session}' AND application =~ /${application}/ AND $timeFilter )",
+        "definition": "SELECT element FROM (SELECT \"ipackets\", \"element\" FROM \"dunedaq.dpdklibs.opmon.EthStats\" WHERE session = '${session}' AND application=~/^${application}$/ AND $timeFilter )",
         "hide": 0,
         "includeAll": true,
-        "label": "Queue",
+        "label": "Module",
         "multi": true,
-        "name": "queue",
+        "name": "module",
         "options": [],
-        "query": "SELECT queue FROM (SELECT \"packets_received\", \"queue\" FROM \"dunedaq.dpdklibs.opmon.QueueInfo\" WHERE session = '${session}' AND application =~ /${application}/ AND $timeFilter )",
-        "refresh": 1,
+        "query": "SELECT element FROM (SELECT \"ipackets\", \"element\" FROM \"dunedaq.dpdklibs.opmon.EthStats\" WHERE session = '${session}' AND application=~/^${application}$/ AND $timeFilter )",
+        "refresh": 2,
+        "regex": "",
+        "skipUrlSync": false,
+        "sort": 1,
+        "type": "query"
+      },
+      {
+        "current": {
+          "selected": false,
+          "text": "All",
+          "value": "$__all"
+        },
+        "datasource": {
+          "type": "influxdb",
+          "uid": "${influxdb}"
+        },
+        "definition": "SELECT subelement FROM (SELECT \"ipackets\", \"subelement\" FROM \"dunedaq.dpdklibs.opmon.EthStats\" WHERE session = '${session}' AND application=~/^${application}$/ AND element=~/^${module}$/ AND $timeFilter )",
+        "hide": 0,
+        "includeAll": true,
+        "label": "Wrapper",
+        "multi": true,
+        "name": "wrapper",
+        "options": [],
+        "query": "SELECT subelement FROM (SELECT \"ipackets\", \"subelement\" FROM \"dunedaq.dpdklibs.opmon.EthStats\" WHERE session = '${session}' AND application=~/^${application}$/ AND element=~/^${module}$/ AND $timeFilter )",
+        "refresh": 2,
         "regex": "",
         "skipUrlSync": false,
         "sort": 1,
@@ -4045,14 +4090,42 @@
           "type": "influxdb",
           "uid": "${influxdb}"
         },
-        "definition": "SELECT element FROM (SELECT num_seq_id_errors, element FROM \"dunedaq.datahandlinglibs.opmon.FixedRateDataProcessorInfo\" WHERE session = '${session}' AND application =~ /${application}/ AND $timeFilter )",
+        "definition": "SELECT queue FROM (SELECT \"packets_received\", \"queue\" FROM \"dunedaq.dpdklibs.opmon.QueueInfo\" WHERE session = '${session}' AND application =~ /^${application}$/ AND element=~/^${module}$/ AND subelement=~/^${wrapper}$/ AND $timeFilter )",
+        "hide": 0,
+        "includeAll": true,
+        "label": "Queue",
+        "multi": true,
+        "name": "queue",
+        "options": [],
+        "query": "SELECT queue FROM (SELECT \"packets_received\", \"queue\" FROM \"dunedaq.dpdklibs.opmon.QueueInfo\" WHERE session = '${session}' AND application =~ /^${application}$/ AND element=~/^${module}$/ AND subelement=~/^${wrapper}$/ AND $timeFilter )",
+        "refresh": 2,
+        "regex": "",
+        "skipUrlSync": false,
+        "sort": 1,
+        "type": "query"
+      },
+      {
+        "current": {
+          "selected": true,
+          "text": [
+            "All"
+          ],
+          "value": [
+            "$__all"
+          ]
+        },
+        "datasource": {
+          "type": "influxdb",
+          "uid": "${influxdb}"
+        },
+        "definition": "SELECT element FROM (SELECT num_seq_id_errors, element FROM \"dunedaq.datahandlinglibs.opmon.FixedRateDataProcessorInfo\" WHERE session = '${session}' AND application =~ /^${application}$/ AND $timeFilter )",
         "hide": 0,
         "includeAll": true,
         "label": "DLH",
         "multi": true,
         "name": "DLH",
         "options": [],
-        "query": "SELECT element FROM (SELECT num_seq_id_errors, element FROM \"dunedaq.datahandlinglibs.opmon.FixedRateDataProcessorInfo\" WHERE session = '${session}' AND application =~ /${application}/ AND $timeFilter )",
+        "query": "SELECT element FROM (SELECT num_seq_id_errors, element FROM \"dunedaq.datahandlinglibs.opmon.FixedRateDataProcessorInfo\" WHERE session = '${session}' AND application =~ /^${application}$/ AND $timeFilter )",
         "refresh": 1,
         "regex": "",
         "skipUrlSync": false,
@@ -4062,7 +4135,7 @@
     ]
   },
   "time": {
-    "from": "now-1h",
+    "from": "now-30m",
     "to": "now"
   },
   "timepicker": {
@@ -4093,6 +4166,6 @@
   "timezone": "",
   "title": "Frontend Ethernet",
   "uid": "v5_3_2-frontend_ethernet",
-  "version": 51,
+  "version": 23,
   "weekStart": ""
 }

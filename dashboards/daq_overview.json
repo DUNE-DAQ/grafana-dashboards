@@ -24,7 +24,7 @@
   "editable": true,
   "fiscalYearStartMonth": 0,
   "graphTooltip": 0,
-  "id": 279,
+  "id": 331,
   "links": [
     {
       "asDropdown": true,
@@ -261,7 +261,7 @@
         "orientation": "horizontal",
         "reduceOptions": {
           "calcs": [],
-          "fields": "/^state$/",
+          "fields": "/^last$/",
           "values": false
         },
         "text": {},
@@ -282,7 +282,7 @@
           "measurement": "dunedaq.appfwk.appinfo.Info",
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "SELECT \"state\" FROM \"dunedaq.appfwk.opmon.AppInfo\" WHERE (\"session\" = '${session}') AND time > now() - 15s",
+          "query": "SELECT last(\"state\") FROM \"dunedaq.drunc.opmon.FSMStatus\" WHERE \"session\" = '${session}' AND application='${controller}' AND $timeFilter",
           "rawQuery": true,
           "refId": "A",
           "resultFormat": "table",
@@ -311,19 +311,114 @@
           ]
         }
       ],
-      "title": "Current Status",
-      "transformations": [
-        {
-          "id": "reduce",
-          "options": {
-            "includeTimeField": false,
-            "mode": "reduceFields",
-            "reducers": [
-              "last"
+      "title": "State",
+      "transformations": [],
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "influxdb",
+        "uid": "${influxdb}"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [
+            {
+              "options": {
+                "match": "null",
+                "result": {
+                  "color": "dark-red",
+                  "index": 0,
+                  "text": "SHUTDOWN"
+                }
+              },
+              "type": "special"
+            }
+          ],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "blue",
+                "value": null
+              }
             ]
-          }
+          },
+          "unit": "none"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 4,
+        "w": 1,
+        "x": 3,
+        "y": 3
+      },
+      "id": 54,
+      "links": [],
+      "maxDataPoints": 100,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "none",
+        "justifyMode": "auto",
+        "orientation": "horizontal",
+        "reduceOptions": {
+          "calcs": [],
+          "fields": "/^last$/",
+          "values": false
+        },
+        "text": {},
+        "textMode": "auto",
+        "wideLayout": true
+      },
+      "pluginVersion": "10.2.2",
+      "targets": [
+        {
+          "alias": "",
+          "datasource": {
+            "uid": "${influxdb}"
+          },
+          "expr": "",
+          "format": "time_series",
+          "groupBy": [],
+          "intervalFactor": 1,
+          "measurement": "dunedaq.appfwk.appinfo.Info",
+          "orderByTime": "ASC",
+          "policy": "default",
+          "query": "SELECT last(\"sub_state\") FROM \"dunedaq.drunc.opmon.FSMStatus\" WHERE \"session\" = '${session}' AND application='${controller}' AND $timeFilter",
+          "rawQuery": true,
+          "refId": "A",
+          "resultFormat": "table",
+          "select": [
+            [
+              {
+                "params": [
+                  "state"
+                ],
+                "type": "field"
+              }
+            ]
+          ],
+          "tags": [
+            {
+              "key": "source_id",
+              "operator": "=",
+              "value": "maroda_test_trigger"
+            },
+            {
+              "condition": "OR",
+              "key": "source_id",
+              "operator": "=",
+              "value": "maroda_test_dataflow"
+            }
+          ]
         }
       ],
+      "title": "Substate",
+      "transformations": [],
       "type": "stat"
     },
     {
@@ -367,8 +462,8 @@
       },
       "gridPos": {
         "h": 4,
-        "w": 3,
-        "x": 3,
+        "w": 2,
+        "x": 4,
         "y": 3
       },
       "id": 27,
@@ -381,7 +476,7 @@
           "calcs": [
             "lastNotNull"
           ],
-          "fields": "/^dunedaq\\.appfwk\\.opmon\\.AppInfo\\.error$/",
+          "fields": "/^dunedaq\\.drunc\\.opmon\\.FSMStatus\\.last$/",
           "values": false
         },
         "text": {},
@@ -398,7 +493,7 @@
           "measurement": "dunedaq.appfwk.appinfo.Info",
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "SELECT \"error\" FROM \"dunedaq.appfwk.opmon.AppInfo\" WHERE \"session\" = '${session}' AND time > now() - 15s",
+          "query": "SELECT last(\"in_error\") FROM \"dunedaq.drunc.opmon.FSMStatus\" WHERE \"session\" = '${session}' AND application='${controller}' AND $timeFilter",
           "rawQuery": true,
           "refId": "A",
           "resultFormat": "time_series",
@@ -444,6 +539,116 @@
           "mappings": [
             {
               "options": {
+                "match": "empty",
+                "result": {
+                  "color": "dark-red",
+                  "index": 0,
+                  "text": "Not running"
+                }
+              },
+              "type": "special"
+            },
+            {
+              "options": {
+                "match": "null",
+                "result": {
+                  "color": "dark-red",
+                  "index": 1,
+                  "text": "Not running"
+                }
+              },
+              "type": "special"
+            }
+          ],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 4,
+        "w": 2,
+        "x": 6,
+        "y": 3
+      },
+      "id": 55,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "area",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [],
+          "fields": "/^dunedaq\\.drunc\\.opmon\\.RunInfo\\.last$/",
+          "values": false
+        },
+        "textMode": "value",
+        "wideLayout": true
+      },
+      "pluginVersion": "10.2.2",
+      "targets": [
+        {
+          "datasource": {
+            "type": "influxdb",
+            "uid": "${influxdb}"
+          },
+          "groupBy": [
+            {
+              "params": [
+                "$__interval"
+              ],
+              "type": "time"
+            },
+            {
+              "params": [
+                "null"
+              ],
+              "type": "fill"
+            }
+          ],
+          "measurement": "dunedaq.drunc.opmon.RunInfo",
+          "orderByTime": "ASC",
+          "policy": "default",
+          "query": "SELECT last(\"run_type\") FROM \"dunedaq.drunc.opmon.RunInfo\" WHERE session='${session}' AND application='${controller}' AND $timeFilter ",
+          "rawQuery": true,
+          "refId": "A",
+          "resultFormat": "time_series",
+          "select": [
+            [
+              {
+                "params": [
+                  "run_type"
+                ],
+                "type": "field"
+              }
+            ]
+          ],
+          "tags": []
+        }
+      ],
+      "title": "Run Type",
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "influxdb",
+        "uid": "${influxdb}"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [
+            {
+              "options": {
                 "match": "null",
                 "result": {
                   "text": "N/A"
@@ -468,8 +673,8 @@
       },
       "gridPos": {
         "h": 4,
-        "w": 3,
-        "x": 6,
+        "w": 2,
+        "x": 8,
         "y": 3
       },
       "id": 28,
@@ -505,7 +710,7 @@
           "measurement": "dunedaq.rcif.runinfo.Info",
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "SELECT max(\"data\") FROM (SELECT last(\"run_time\") AS \"data\" FROM \"dunedaq.rcif.opmon.RunInfo\" WHERE \"session\" = '${session}' AND $timeFilter GROUP BY \"application\" )",
+          "query": "SELECT last(\"run_time_since_start\") FROM \"dunedaq.drunc.opmon.RunInfo\" WHERE \"session\" = '${session}' AND $timeFilter AND \"application\" = '${controller}' AND run_time_since_start>0",
           "rawQuery": true,
           "refId": "A",
           "resultFormat": "table",
@@ -530,120 +735,6 @@
         }
       ],
       "title": "Run time",
-      "transformations": [],
-      "type": "stat"
-    },
-    {
-      "datasource": {
-        "type": "influxdb",
-        "uid": "${influxdb}"
-      },
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "mode": "thresholds"
-          },
-          "mappings": [
-            {
-              "options": {
-                "0": {
-                  "color": "dark-red",
-                  "index": 1,
-                  "text": "0 Hz"
-                }
-              },
-              "type": "value"
-            },
-            {
-              "options": {
-                "match": "null",
-                "result": {
-                  "index": 0,
-                  "text": "N/A"
-                }
-              },
-              "type": "special"
-            }
-          ],
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "dark-green",
-                "value": null
-              }
-            ]
-          },
-          "unit": "hertz"
-        },
-        "overrides": []
-      },
-      "gridPos": {
-        "h": 4,
-        "w": 3,
-        "x": 9,
-        "y": 3
-      },
-      "id": 34,
-      "links": [],
-      "maxDataPoints": 100,
-      "options": {
-        "colorMode": "value",
-        "graphMode": "none",
-        "justifyMode": "auto",
-        "orientation": "horizontal",
-        "reduceOptions": {
-          "calcs": [],
-          "fields": "",
-          "values": false
-        },
-        "text": {},
-        "textMode": "auto",
-        "wideLayout": true
-      },
-      "pluginVersion": "10.2.2",
-      "targets": [
-        {
-          "datasource": {
-            "uid": "${influxdb}"
-          },
-          "expr": "",
-          "format": "time_series",
-          "groupBy": [],
-          "intervalFactor": 1,
-          "measurement": "dunedaq.trigger.moduleleveltriggerinfo.Info",
-          "orderByTime": "ASC",
-          "policy": "default",
-          "query": "SELECT last(\"data\") FROM (SELECT non_negative_derivative(last(\"td_sent_count\"), 1s) AS \"data\" FROM \"dunedaq.trigger.opmon.ModuleLevelTriggerInfo\" WHERE session ='${session}' AND time > now() - 60s GROUP BY time(500ms) ) ",
-          "rawQuery": true,
-          "refId": "A",
-          "resultFormat": "table",
-          "select": [
-            [
-              {
-                "params": [
-                  "td_sent_count"
-                ],
-                "type": "field"
-              },
-              {
-                "params": [
-                  "1s"
-                ],
-                "type": "non_negative_derivative"
-              }
-            ]
-          ],
-          "tags": [
-            {
-              "key": "source_id",
-              "operator": "=",
-              "value": "maroda_test_trigger.mlt"
-            }
-          ]
-        }
-      ],
-      "title": "Sending triggers at",
       "transformations": [],
       "type": "stat"
     },
@@ -694,8 +785,8 @@
       },
       "gridPos": {
         "h": 4,
-        "w": 3,
-        "x": 12,
+        "w": 4,
+        "x": 10,
         "y": 3
       },
       "id": 50,
@@ -728,7 +819,7 @@
           "measurement": "dunedaq.rcif.runinfo.Info",
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "SELECT last(\"run_number\") FROM \"dunedaq.rcif.opmon.RunInfo\" WHERE \"session\" = '${session}' AND $timeFilter",
+          "query": "SELECT last(\"run_number\") FROM \"dunedaq.drunc.opmon.RunInfo\" WHERE \"session\"='${session}' AND application='${controller}' AND $timeFilter AND run_number>0",
           "rawQuery": true,
           "refId": "A",
           "resultFormat": "table",
@@ -752,7 +843,7 @@
           ]
         }
       ],
-      "title": "Current Run number",
+      "title": "Run number",
       "type": "stat"
     },
     {
@@ -814,8 +905,8 @@
       },
       "gridPos": {
         "h": 4,
-        "w": 3,
-        "x": 15,
+        "w": 2,
+        "x": 14,
         "y": 3
       },
       "id": 45,
@@ -887,6 +978,120 @@
           }
         }
       ],
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "influxdb",
+        "uid": "${influxdb}"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [
+            {
+              "options": {
+                "0": {
+                  "color": "dark-red",
+                  "index": 1,
+                  "text": "0 Hz"
+                }
+              },
+              "type": "value"
+            },
+            {
+              "options": {
+                "match": "null",
+                "result": {
+                  "index": 0,
+                  "text": "N/A"
+                }
+              },
+              "type": "special"
+            }
+          ],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "dark-green",
+                "value": null
+              }
+            ]
+          },
+          "unit": "hertz"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 4,
+        "w": 2,
+        "x": 16,
+        "y": 3
+      },
+      "id": 34,
+      "links": [],
+      "maxDataPoints": 100,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "none",
+        "justifyMode": "auto",
+        "orientation": "horizontal",
+        "reduceOptions": {
+          "calcs": [],
+          "fields": "",
+          "values": false
+        },
+        "text": {},
+        "textMode": "auto",
+        "wideLayout": true
+      },
+      "pluginVersion": "10.2.2",
+      "targets": [
+        {
+          "datasource": {
+            "uid": "${influxdb}"
+          },
+          "expr": "",
+          "format": "time_series",
+          "groupBy": [],
+          "intervalFactor": 1,
+          "measurement": "dunedaq.trigger.moduleleveltriggerinfo.Info",
+          "orderByTime": "ASC",
+          "policy": "default",
+          "query": "SELECT last(\"data\") FROM (SELECT non_negative_derivative(last(\"td_sent_count\"), 1s) AS \"data\" FROM \"dunedaq.trigger.opmon.ModuleLevelTriggerInfo\" WHERE session ='${session}' AND time > now() - 60s GROUP BY time(500ms) ) ",
+          "rawQuery": true,
+          "refId": "A",
+          "resultFormat": "table",
+          "select": [
+            [
+              {
+                "params": [
+                  "td_sent_count"
+                ],
+                "type": "field"
+              },
+              {
+                "params": [
+                  "1s"
+                ],
+                "type": "non_negative_derivative"
+              }
+            ]
+          ],
+          "tags": [
+            {
+              "key": "source_id",
+              "operator": "=",
+              "value": "maroda_test_trigger.mlt"
+            }
+          ]
+        }
+      ],
+      "title": "Sending triggers at",
+      "transformations": [],
       "type": "stat"
     },
     {
@@ -2418,7 +2623,7 @@
       "type": "timeseries"
     }
   ],
-  "refresh": "10s",
+  "refresh": "5s",
   "schemaVersion": 38,
   "tags": [
     "v5.3.2",
@@ -2465,8 +2670,8 @@
       {
         "current": {
           "selected": false,
-          "text": "michal-test-config",
-          "value": "michal-test-config"
+          "text": "main-np02-operation",
+          "value": "main-np02-operation"
         },
         "datasource": {
           "uid": "${influxdb}"
@@ -2484,6 +2689,14 @@
         "skipUrlSync": false,
         "sort": 1,
         "type": "query"
+      },
+      {
+        "description": "Variable to set from which controller to take RunInfo information",
+        "hide": 2,
+        "name": "controller",
+        "query": "root-controller",
+        "skipUrlSync": false,
+        "type": "constant"
       }
     ]
   },
@@ -2519,6 +2732,6 @@
   "timezone": "",
   "title": "DAQ overview",
   "uid": "v5_3_2-overview",
-  "version": 3,
+  "version": 14,
   "weekStart": ""
 }

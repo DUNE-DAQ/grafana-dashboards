@@ -24,7 +24,7 @@
   "editable": true,
   "fiscalYearStartMonth": 0,
   "graphTooltip": 0,
-  "id": 331,
+  "id": 351,
   "links": [
     {
       "asDropdown": true,
@@ -33,7 +33,7 @@
       "keepTime": true,
       "tags": [
         "Subsystem",
-        "v5.3.2"
+        "v5.3.3"
       ],
       "targetBlank": true,
       "title": "Subsystems",
@@ -48,7 +48,7 @@
       "keepTime": true,
       "tags": [
         "Global",
-        "v5.3.2"
+        "v5.3.3"
       ],
       "targetBlank": true,
       "title": "Global",
@@ -62,7 +62,7 @@
       "includeVars": true,
       "keepTime": true,
       "tags": [
-        "v5.3.2",
+        "v5.3.3",
         "RunInfo"
       ],
       "targetBlank": true,
@@ -2268,7 +2268,7 @@
           "measurement": "dunedaq.trigger.moduleleveltriggerinfo.Info",
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "SELECT non_negative_derivative(cumulative_sum(sum(\"count\")), 1s) FROM \"dunedaq.ctbmodules.ctbmoduleinfo.LevelTriggerInfo\" WHERE (\"partition_id\" = '${partition}') AND $timeFilter AND \"source_id\"=~ /[^.]+\\.[^.]+\\.[^.]+\\.llt_1$/ GROUP BY \"source_id\", time($__interval) fill(null)",
+          "query": "SELECT non_negative_derivative(cumulative_sum(sum(\"count\")), 1s) FROM \"dunedaq.ctbmodules.opmon.TriggerInfo\" WHERE \"session\" = '${session}' AND trigger='LLT_9' AND $timeFilter  GROUP BY time($__interval) fill(null)",
           "rawQuery": true,
           "refId": "A",
           "resultFormat": "time_series",
@@ -2306,7 +2306,7 @@
           "measurement": "dunedaq.trigger.moduleleveltriggerinfo.Info",
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "SELECT non_negative_derivative(cumulative_sum(sum(\"count\")), 1s) FROM \"dunedaq.ctbmodules.ctbmoduleinfo.LevelTriggerInfo\" WHERE (\"partition_id\" = '${partition}') AND $timeFilter AND \"source_id\"=~ /[^.]+\\.[^.]+\\.[^.]+\\.hlt_1$/ GROUP BY \"source_id\", time($__interval) fill(null)",
+          "query": "SELECT non_negative_derivative(cumulative_sum(sum(\"count\")), 1s) FROM \"dunedaq.ctbmodules.opmon.TriggerInfo\" WHERE \"session\" = '${session}' AND $timeFilter AND \"trigger\"='HLT_1' GROUP BY time($__interval) fill(null)",
           "rawQuery": true,
           "refId": "B",
           "resultFormat": "time_series",
@@ -2344,7 +2344,7 @@
           "measurement": "dunedaq.trigger.moduleleveltriggerinfo.Info",
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "SELECT non_negative_derivative(cumulative_sum(sum(\"count\")), 1s) FROM \"dunedaq.ctbmodules.ctbmoduleinfo.LevelTriggerInfo\" WHERE (\"partition_id\" = '${partition}') AND $timeFilter AND \"source_id\"=~ /[^.]+\\.[^.]+\\.[^.]+\\.hlt_10$/ GROUP BY \"source_id\", time($__interval) fill(null)",
+          "query": "SELECT non_negative_derivative(cumulative_sum(sum(\"count\")), 1s) FROM \"dunedaq.ctbmodules.opmon.TriggerInfo\"  WHERE \"session\" = '${session}' AND $timeFilter AND \"trigger\"='HLT_8' GROUP BY time($__interval) fill(null)",
           "rawQuery": true,
           "refId": "C",
           "resultFormat": "time_series",
@@ -2378,98 +2378,14 @@
             "type": "__expr__",
             "uid": "__expr__"
           },
-          "expression": "$D/$E",
+          "expression": "$A/$B",
           "hide": false,
           "refId": "Beam prescale ratio",
           "type": "math"
-        },
-        {
-          "alias": "",
-          "datasource": {
-            "uid": "${influxdb}"
-          },
-          "groupBy": [],
-          "hide": true,
-          "measurement": "dunedaq.trigger.moduleleveltriggerinfo.Info",
-          "orderByTime": "ASC",
-          "policy": "default",
-          "query": "SELECT sum(\"count\") FROM \"dunedaq.ctbmodules.ctbmoduleinfo.LevelTriggerInfo\" WHERE (\"partition_id\" = '${partition}') AND $timeFilter AND \"source_id\"=~ /[^.]+\\.[^.]+\\.[^.]+\\.llt_1$/ GROUP BY \"source_id\", time($__interval) fill(null)",
-          "rawQuery": true,
-          "refId": "D",
-          "resultFormat": "time_series",
-          "select": [
-            [
-              {
-                "params": [
-                  "td_sent_count"
-                ],
-                "type": "field"
-              },
-              {
-                "params": [
-                  "1s"
-                ],
-                "type": "non_negative_derivative"
-              }
-            ]
-          ],
-          "tags": [
-            {
-              "key": "source_id",
-              "operator": "=",
-              "value": "${partition}_trigger.mlt"
-            }
-          ]
-        },
-        {
-          "alias": "",
-          "datasource": {
-            "uid": "${influxdb}"
-          },
-          "groupBy": [],
-          "hide": true,
-          "measurement": "dunedaq.trigger.moduleleveltriggerinfo.Info",
-          "orderByTime": "ASC",
-          "policy": "default",
-          "query": "SELECT sum(\"count\") FROM \"dunedaq.ctbmodules.ctbmoduleinfo.LevelTriggerInfo\" WHERE (\"partition_id\" = '${partition}') AND $timeFilter AND \"source_id\"=~ /[^.]+\\.[^.]+\\.[^.]+\\.hlt_1$/ GROUP BY \"source_id\", time($__interval) fill(null)",
-          "rawQuery": true,
-          "refId": "E",
-          "resultFormat": "time_series",
-          "select": [
-            [
-              {
-                "params": [
-                  "td_sent_count"
-                ],
-                "type": "field"
-              },
-              {
-                "params": [
-                  "1s"
-                ],
-                "type": "non_negative_derivative"
-              }
-            ]
-          ],
-          "tags": [
-            {
-              "key": "source_id",
-              "operator": "=",
-              "value": "${partition}_trigger.mlt"
-            }
-          ]
         }
       ],
       "title": "CTB Beam triggers",
-      "transformations": [
-        {
-          "id": "renameByRegex",
-          "options": {
-            "regex": "[^.]+\\.[^.]+\\.[^.]+\\.llt_(\\d+)",
-            "renamePattern": "LLT $1"
-          }
-        }
-      ],
+      "transformations": [],
       "type": "timeseries"
     },
     {
@@ -2626,7 +2542,7 @@
   "refresh": "5s",
   "schemaVersion": 38,
   "tags": [
-    "v5.3.2",
+    "v5.3.3",
     "Main"
   ],
   "templating": {
@@ -2670,8 +2586,8 @@
       {
         "current": {
           "selected": false,
-          "text": "main-np02-operation",
-          "value": "main-np02-operation"
+          "text": "main-np02-beam",
+          "value": "main-np02-beam"
         },
         "datasource": {
           "uid": "${influxdb}"
@@ -2731,7 +2647,7 @@
   },
   "timezone": "",
   "title": "DAQ overview",
-  "uid": "v5_3_2-overview",
-  "version": 14,
+  "uid": "v5_3_3-overview",
+  "version": 6,
   "weekStart": ""
 }

@@ -18,7 +18,7 @@
   "editable": true,
   "fiscalYearStartMonth": 0,
   "graphTooltip": 0,
-  "id": 337,
+  "id": 378,
   "links": [],
   "liveNow": false,
   "panels": [
@@ -578,7 +578,7 @@
           "measurement": "dunedaq.opmon.Status",
           "orderByTime": "DESC",
           "policy": "default",
-          "query": "SELECT last(\"state\") AS \"State\", \"sub_state\" AS \"Substate\", \"in_error\" AS \"In error\", \"included\" AS \"Included\" FROM \"dunedaq.drunc.opmon.FSMStatus\" WHERE \"session\" = '$session' GROUP BY \"application\"::tag ORDER BY time DESC ",
+          "query": "SELECT last(\"state\") AS \"State\", \"sub_state\" AS \"Substate\", \"in_error\" AS \"In error\", \"included\" AS \"Included\" FROM \"dunedaq.drunc.opmon.FSMStatus\" WHERE \"session\" = '$session' AND $timeFilter GROUP BY \"application\"::tag ORDER BY time DESC ",
           "rawQuery": true,
           "refId": "A",
           "resultFormat": "table",
@@ -902,8 +902,8 @@
       {
         "current": {
           "selected": false,
-          "text": "ehn1-local-1x1-config-wsu",
-          "value": "ehn1-local-1x1-config-wsu"
+          "text": "mrigan-replay",
+          "value": "mrigan-replay"
         },
         "datasource": {
           "type": "influxdb",
@@ -925,13 +925,9 @@
       },
       {
         "current": {
-          "selected": true,
-          "text": [
-            "All"
-          ],
-          "value": [
-            "$__all"
-          ]
+          "selected": false,
+          "text": "All",
+          "value": "$__all"
         },
         "datasource": {
           "type": "influxdb",
@@ -982,13 +978,13 @@
     ]
   },
   "time": {
-    "from": "now-30m",
+    "from": "now-15m",
     "to": "now"
   },
   "timepicker": {},
   "timezone": "",
   "title": "FSM status",
   "uid": "fsm-status-v5_4_0",
-  "version": 5,
+  "version": 2,
   "weekStart": ""
 }

@@ -24,7 +24,7 @@
   "editable": true,
   "fiscalYearStartMonth": 0,
   "graphTooltip": 0,
-  "id": 351,
+  "id": 371,
   "links": [
     {
       "asDropdown": true,
@@ -2586,8 +2586,8 @@
       {
         "current": {
           "selected": false,
-          "text": "main-np02-beam",
-          "value": "main-np02-beam"
+          "text": "mrigan-replay",
+          "value": "mrigan-replay"
         },
         "datasource": {
           "uid": "${influxdb}"
@@ -2607,12 +2607,28 @@
         "type": "query"
       },
       {
+        "current": {
+          "selected": false,
+          "text": "tpreplay-root-controller",
+          "value": "tpreplay-root-controller"
+        },
+        "datasource": {
+          "type": "influxdb",
+          "uid": "${influxdb}"
+        },
+        "definition": "SELECT \"application\" FROM (SELECT \"state\", \"application\" FROM \"dunedaq.drunc.opmon.FSMStatus\" WHERE $timeFilter AND session='$session')",
         "description": "Variable to set from which controller to take RunInfo information",
         "hide": 2,
+        "includeAll": false,
+        "multi": false,
         "name": "controller",
-        "query": "root-controller",
+        "options": [],
+        "query": "SELECT \"application\" FROM (SELECT \"state\", \"application\" FROM \"dunedaq.drunc.opmon.FSMStatus\" WHERE $timeFilter AND session='$session')",
+        "refresh": 2,
+        "regex": ".*root.*",
         "skipUrlSync": false,
-        "type": "constant"
+        "sort": 1,
+        "type": "query"
       }
     ]
   },
@@ -2648,6 +2664,6 @@
   "timezone": "",
   "title": "DAQ overview",
   "uid": "v5_4_0-overview",
-  "version": 6,
+  "version": 3,
   "weekStart": ""
 }

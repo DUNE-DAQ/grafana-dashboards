@@ -3200,7 +3200,8 @@
             "lineWidth": 1,
             "pointSize": 5,
             "scaleDistribution": {
-              "type": "linear"
+              "log": 10,
+              "type": "log"
             },
             "showPoints": "auto",
             "spanNulls": false,
@@ -3228,15 +3229,38 @@
           },
           "unit": "cps"
         },
-        "overrides": []
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Total Failed"
+            },
+            "properties": [
+              {
+                "id": "custom.axisPlacement",
+                "value": "right"
+              },
+              {
+                "id": "custom.scaleDistribution",
+                "value": {
+                  "type": "linear"
+                }
+              },
+              {
+                "id": "unit",
+                "value": "none"
+              }
+            ]
+          }
+        ]
       },
       "gridPos": {
         "h": 8,
-        "w": 4,
+        "w": 5,
         "x": 0,
         "y": 27
       },
-      "id": 55,
+      "id": 51,
       "options": {
         "legend": {
           "calcs": [],
@@ -3251,7 +3275,7 @@
       },
       "targets": [
         {
-          "alias": "Emtpy fragment rate",
+          "alias": "Total Received rate",
           "datasource": {
             "type": "influxdb",
             "uid": "${influxdb}"
@@ -3274,7 +3298,7 @@
           "measurement": "dunedaq.dfmodules.opmon.TRBInfo",
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "SELECT non_negative_derivative(cumulative_sum(sum(\"fragments_empty\")), 1s)  FROM \"dunedaq.dfmodules.opmon.FAFragmentsCounterInfo\" WHERE session='${session}' AND application=~/^${readout}$/ AND $timeFilter GROUP BY time($__interval) fill(null)",
+          "query": "SELECT non_negative_derivative(cumulative_sum(sum(\"data_requests_received\")), 1s)  FROM \"dunedaq.dfmodules.opmon.FADataRequestsCounterInfo\" WHERE session='${session}' AND application=~/^${readout}$/ AND $timeFilter GROUP BY time($__interval) fill(null)",
           "rawQuery": true,
           "refId": "B",
           "resultFormat": "time_series",
@@ -3295,7 +3319,7 @@
           "tags": []
         },
         {
-          "alias": "Incomplete fragment rates",
+          "alias": "Total Sent rate",
           "datasource": {
             "type": "influxdb",
             "uid": "${influxdb}"
@@ -3318,7 +3342,7 @@
           "measurement": "dunedaq.dfmodules.opmon.TRBInfo",
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "SELECT non_negative_derivative(cumulative_sum(sum(\"fragments_incomplete\")), 1s)  FROM \"dunedaq.dfmodules.opmon.FAFragmentsCounterInfo\" WHERE session='${session}' AND application=~/^${readout}$/ AND $timeFilter GROUP BY time($__interval) fill(null)",
+          "query": "SELECT non_negative_derivative(cumulative_sum(sum(\"data_requests_processed\")), 1s)  FROM \"dunedaq.dfmodules.opmon.FADataRequestsCounterInfo\" WHERE session='${session}' AND application=~/^${readout}$/ AND $timeFilter GROUP BY time($__interval) fill(null)",
           "rawQuery": true,
           "refId": "A",
           "resultFormat": "time_series",
@@ -3339,7 +3363,7 @@
           "tags": []
         },
         {
-          "alias": "Invalid fragment rates",
+          "alias": "Total Failed",
           "datasource": {
             "type": "influxdb",
             "uid": "${influxdb}"
@@ -3362,7 +3386,7 @@
           "measurement": "dunedaq.dfmodules.opmon.TRBInfo",
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "SELECT sum(\"data\") FROM (SELECT last(\"fragments_invalid\") AS \"data\"  FROM \"dunedaq.dfmodules.opmon.FAFragmentsCounterInfo\" WHERE session='${session}' AND application=~/^${readout}$/ AND $timeFilter )GROUP BY time($__interval) fill(null)",
+          "query": "SELECT sum(\"data\") FROM (SELECT last(\"data_requests_failed\") AS \"data\"  FROM \"dunedaq.dfmodules.opmon.FADataRequestsCounterInfo\" WHERE session='${session}' AND application=~/^${readout}$/ AND $timeFilter )GROUP BY time($__interval) fill(null)",
           "rawQuery": true,
           "refId": "C",
           "resultFormat": "time_series",
@@ -3381,53 +3405,9 @@
             ]
           ],
           "tags": []
-        },
-        {
-          "alias": "Total error for $tag_application",
-          "datasource": {
-            "type": "influxdb",
-            "uid": "${influxdb}"
-          },
-          "groupBy": [
-            {
-              "params": [
-                "$__interval"
-              ],
-              "type": "time"
-            },
-            {
-              "params": [
-                "null"
-              ],
-              "type": "fill"
-            }
-          ],
-          "hide": false,
-          "measurement": "dunedaq.dfmodules.opmon.TRBInfo",
-          "orderByTime": "ASC",
-          "policy": "default",
-          "query": "SELECT non_negative_derivative(cumulative_sum(sum(\"fragments_empty\")), 1s) + non_negative_derivative(cumulative_sum(sum(\"fragments_invalid\")), 1s) + non_negative_derivative(cumulative_sum(sum(\"fragments_incomplete\")), 1s) FROM \"dunedaq.dfmodules.opmon.FAFragmentsCounterInfo\" WHERE session='${session}' AND application=~/^${readout}$/ AND $timeFilter GROUP BY \"application\", time($__interval) fill(null)",
-          "rawQuery": true,
-          "refId": "D",
-          "resultFormat": "time_series",
-          "select": [
-            [
-              {
-                "params": [
-                  "value"
-                ],
-                "type": "field"
-              },
-              {
-                "params": [],
-                "type": "mean"
-              }
-            ]
-          ],
-          "tags": []
         }
       ],
-      "title": "Fragment Errors",
+      "title": "Data requests",
       "type": "timeseries"
     },
     {
@@ -3517,7 +3497,7 @@
       "gridPos": {
         "h": 8,
         "w": 5,
-        "x": 4,
+        "x": 5,
         "y": 27
       },
       "id": 52,
@@ -3801,7 +3781,7 @@
       "gridPos": {
         "h": 8,
         "w": 5,
-        "x": 9,
+        "x": 10,
         "y": 27
       },
       "id": 54,
@@ -4011,246 +3991,6 @@
               }
             ]
           },
-          "unit": "cps"
-        },
-        "overrides": [
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "Total Failed"
-            },
-            "properties": [
-              {
-                "id": "custom.axisPlacement",
-                "value": "right"
-              },
-              {
-                "id": "custom.scaleDistribution",
-                "value": {
-                  "type": "linear"
-                }
-              },
-              {
-                "id": "unit",
-                "value": "none"
-              }
-            ]
-          }
-        ]
-      },
-      "gridPos": {
-        "h": 8,
-        "w": 5,
-        "x": 14,
-        "y": 27
-      },
-      "id": 51,
-      "options": {
-        "legend": {
-          "calcs": [],
-          "displayMode": "list",
-          "placement": "bottom",
-          "showLegend": true
-        },
-        "tooltip": {
-          "mode": "single",
-          "sort": "none"
-        }
-      },
-      "targets": [
-        {
-          "alias": "Total Received rate",
-          "datasource": {
-            "type": "influxdb",
-            "uid": "${influxdb}"
-          },
-          "groupBy": [
-            {
-              "params": [
-                "$__interval"
-              ],
-              "type": "time"
-            },
-            {
-              "params": [
-                "null"
-              ],
-              "type": "fill"
-            }
-          ],
-          "hide": false,
-          "measurement": "dunedaq.dfmodules.opmon.TRBInfo",
-          "orderByTime": "ASC",
-          "policy": "default",
-          "query": "SELECT non_negative_derivative(cumulative_sum(sum(\"data_requests_received\")), 1s)  FROM \"dunedaq.dfmodules.opmon.FADataRequestsCounterInfo\" WHERE session='${session}' AND application=~/^${readout}$/ AND $timeFilter GROUP BY time($__interval) fill(null)",
-          "rawQuery": true,
-          "refId": "B",
-          "resultFormat": "time_series",
-          "select": [
-            [
-              {
-                "params": [
-                  "value"
-                ],
-                "type": "field"
-              },
-              {
-                "params": [],
-                "type": "mean"
-              }
-            ]
-          ],
-          "tags": []
-        },
-        {
-          "alias": "Total Sent rate",
-          "datasource": {
-            "type": "influxdb",
-            "uid": "${influxdb}"
-          },
-          "groupBy": [
-            {
-              "params": [
-                "$__interval"
-              ],
-              "type": "time"
-            },
-            {
-              "params": [
-                "null"
-              ],
-              "type": "fill"
-            }
-          ],
-          "hide": false,
-          "measurement": "dunedaq.dfmodules.opmon.TRBInfo",
-          "orderByTime": "ASC",
-          "policy": "default",
-          "query": "SELECT non_negative_derivative(cumulative_sum(sum(\"data_requests_processed\")), 1s)  FROM \"dunedaq.dfmodules.opmon.FADataRequestsCounterInfo\" WHERE session='${session}' AND application=~/^${readout}$/ AND $timeFilter GROUP BY time($__interval) fill(null)",
-          "rawQuery": true,
-          "refId": "A",
-          "resultFormat": "time_series",
-          "select": [
-            [
-              {
-                "params": [
-                  "value"
-                ],
-                "type": "field"
-              },
-              {
-                "params": [],
-                "type": "mean"
-              }
-            ]
-          ],
-          "tags": []
-        },
-        {
-          "alias": "Total Failed",
-          "datasource": {
-            "type": "influxdb",
-            "uid": "${influxdb}"
-          },
-          "groupBy": [
-            {
-              "params": [
-                "$__interval"
-              ],
-              "type": "time"
-            },
-            {
-              "params": [
-                "null"
-              ],
-              "type": "fill"
-            }
-          ],
-          "hide": false,
-          "measurement": "dunedaq.dfmodules.opmon.TRBInfo",
-          "orderByTime": "ASC",
-          "policy": "default",
-          "query": "SELECT sum(\"data\") FROM (SELECT last(\"data_requests_failed\") AS \"data\"  FROM \"dunedaq.dfmodules.opmon.FADataRequestsCounterInfo\" WHERE session='${session}' AND application=~/^${readout}$/ AND $timeFilter )GROUP BY time($__interval) fill(null)",
-          "rawQuery": true,
-          "refId": "C",
-          "resultFormat": "time_series",
-          "select": [
-            [
-              {
-                "params": [
-                  "value"
-                ],
-                "type": "field"
-              },
-              {
-                "params": [],
-                "type": "mean"
-              }
-            ]
-          ],
-          "tags": []
-        }
-      ],
-      "title": "Data requests",
-      "type": "timeseries"
-    },
-    {
-      "datasource": {
-        "type": "influxdb",
-        "uid": "${influxdb}"
-      },
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "mode": "palette-classic"
-          },
-          "custom": {
-            "axisBorderShow": false,
-            "axisCenteredZero": false,
-            "axisColorMode": "text",
-            "axisLabel": "",
-            "axisPlacement": "auto",
-            "barAlignment": 0,
-            "drawStyle": "line",
-            "fillOpacity": 0,
-            "gradientMode": "none",
-            "hideFrom": {
-              "legend": false,
-              "tooltip": false,
-              "viz": false
-            },
-            "insertNulls": false,
-            "lineInterpolation": "linear",
-            "lineWidth": 1,
-            "pointSize": 5,
-            "scaleDistribution": {
-              "log": 10,
-              "type": "log"
-            },
-            "showPoints": "auto",
-            "spanNulls": false,
-            "stacking": {
-              "group": "A",
-              "mode": "none"
-            },
-            "thresholdsStyle": {
-              "mode": "off"
-            }
-          },
-          "mappings": [],
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "green",
-                "value": null
-              },
-              {
-                "color": "red",
-                "value": 80
-              }
-            ]
-          },
           "unit": "µs"
         },
         "overrides": [
@@ -4281,7 +4021,7 @@
       "gridPos": {
         "h": 8,
         "w": 5,
-        "x": 19,
+        "x": 15,
         "y": 27
       },
       "id": 53,
@@ -4477,6 +4217,266 @@
       ],
       "title": "Fragment time",
       "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "influxdb",
+        "uid": "${influxdb}"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "drawStyle": "line",
+            "fillOpacity": 0,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "auto",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "cps"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 4,
+        "x": 20,
+        "y": 27
+      },
+      "id": 55,
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "tooltip": {
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "targets": [
+        {
+          "alias": "Emtpy fragment rate",
+          "datasource": {
+            "type": "influxdb",
+            "uid": "${influxdb}"
+          },
+          "groupBy": [
+            {
+              "params": [
+                "$__interval"
+              ],
+              "type": "time"
+            },
+            {
+              "params": [
+                "null"
+              ],
+              "type": "fill"
+            }
+          ],
+          "hide": false,
+          "measurement": "dunedaq.dfmodules.opmon.TRBInfo",
+          "orderByTime": "ASC",
+          "policy": "default",
+          "query": "SELECT non_negative_derivative(cumulative_sum(sum(\"fragments_empty\")), 1s)  FROM \"dunedaq.dfmodules.opmon.FAFragmentsCounterInfo\" WHERE session='${session}' AND application=~/^${readout}$/ AND $timeFilter GROUP BY time($__interval) fill(null)",
+          "rawQuery": true,
+          "refId": "B",
+          "resultFormat": "time_series",
+          "select": [
+            [
+              {
+                "params": [
+                  "value"
+                ],
+                "type": "field"
+              },
+              {
+                "params": [],
+                "type": "mean"
+              }
+            ]
+          ],
+          "tags": []
+        },
+        {
+          "alias": "Incomplete fragment rates",
+          "datasource": {
+            "type": "influxdb",
+            "uid": "${influxdb}"
+          },
+          "groupBy": [
+            {
+              "params": [
+                "$__interval"
+              ],
+              "type": "time"
+            },
+            {
+              "params": [
+                "null"
+              ],
+              "type": "fill"
+            }
+          ],
+          "hide": false,
+          "measurement": "dunedaq.dfmodules.opmon.TRBInfo",
+          "orderByTime": "ASC",
+          "policy": "default",
+          "query": "SELECT non_negative_derivative(cumulative_sum(sum(\"fragments_incomplete\")), 1s)  FROM \"dunedaq.dfmodules.opmon.FAFragmentsCounterInfo\" WHERE session='${session}' AND application=~/^${readout}$/ AND $timeFilter GROUP BY time($__interval) fill(null)",
+          "rawQuery": true,
+          "refId": "A",
+          "resultFormat": "time_series",
+          "select": [
+            [
+              {
+                "params": [
+                  "value"
+                ],
+                "type": "field"
+              },
+              {
+                "params": [],
+                "type": "mean"
+              }
+            ]
+          ],
+          "tags": []
+        },
+        {
+          "alias": "Invalid fragment rates",
+          "datasource": {
+            "type": "influxdb",
+            "uid": "${influxdb}"
+          },
+          "groupBy": [
+            {
+              "params": [
+                "$__interval"
+              ],
+              "type": "time"
+            },
+            {
+              "params": [
+                "null"
+              ],
+              "type": "fill"
+            }
+          ],
+          "hide": false,
+          "measurement": "dunedaq.dfmodules.opmon.TRBInfo",
+          "orderByTime": "ASC",
+          "policy": "default",
+          "query": "SELECT sum(\"data\") FROM (SELECT last(\"fragments_invalid\") AS \"data\"  FROM \"dunedaq.dfmodules.opmon.FAFragmentsCounterInfo\" WHERE session='${session}' AND application=~/^${readout}$/ AND $timeFilter )GROUP BY time($__interval) fill(null)",
+          "rawQuery": true,
+          "refId": "C",
+          "resultFormat": "time_series",
+          "select": [
+            [
+              {
+                "params": [
+                  "value"
+                ],
+                "type": "field"
+              },
+              {
+                "params": [],
+                "type": "mean"
+              }
+            ]
+          ],
+          "tags": []
+        },
+        {
+          "alias": "Total error for $tag_application",
+          "datasource": {
+            "type": "influxdb",
+            "uid": "${influxdb}"
+          },
+          "groupBy": [
+            {
+              "params": [
+                "$__interval"
+              ],
+              "type": "time"
+            },
+            {
+              "params": [
+                "null"
+              ],
+              "type": "fill"
+            }
+          ],
+          "hide": false,
+          "measurement": "dunedaq.dfmodules.opmon.TRBInfo",
+          "orderByTime": "ASC",
+          "policy": "default",
+          "query": "SELECT non_negative_derivative(cumulative_sum(sum(\"fragments_empty\")), 1s) + non_negative_derivative(cumulative_sum(sum(\"fragments_invalid\")), 1s) + non_negative_derivative(cumulative_sum(sum(\"fragments_incomplete\")), 1s) FROM \"dunedaq.dfmodules.opmon.FAFragmentsCounterInfo\" WHERE session='${session}' AND application=~/^${readout}$/ AND $timeFilter GROUP BY \"application\", time($__interval) fill(null)",
+          "rawQuery": true,
+          "refId": "D",
+          "resultFormat": "time_series",
+          "select": [
+            [
+              {
+                "params": [
+                  "value"
+                ],
+                "type": "field"
+              },
+              {
+                "params": [],
+                "type": "mean"
+              }
+            ]
+          ],
+          "tags": []
+        }
+      ],
+      "title": "Fragment Errors",
+      "type": "timeseries"
     }
   ],
   "refresh": "10s",
@@ -4507,9 +4507,9 @@
       },
       {
         "current": {
-          "selected": true,
-          "text": "main-np02-operation",
-          "value": "main-np02-operation"
+          "selected": false,
+          "text": "CRP8",
+          "value": "CRP8"
         },
         "datasource": {
           "uid": "${influxdb}"
@@ -4630,6 +4630,6 @@
   "timezone": "",
   "title": "Dataflow",
   "uid": "v5_4_0-dataflow",
-  "version": 3,
+  "version": 5,
   "weekStart": ""
 }

@@ -268,7 +268,7 @@
         "textMode": "auto",
         "wideLayout": true
       },
-      "pluginVersion": "10.2.2",
+      "pluginVersion": "",
       "targets": [
         {
           "alias": "",
@@ -374,7 +374,7 @@
         "textMode": "auto",
         "wideLayout": true
       },
-      "pluginVersion": "10.2.2",
+      "pluginVersion": "",
       "targets": [
         {
           "alias": "",
@@ -483,7 +483,7 @@
         "textMode": "auto",
         "wideLayout": true
       },
-      "pluginVersion": "10.2.2",
+      "pluginVersion": "",
       "targets": [
         {
           "datasource": {
@@ -592,7 +592,7 @@
         "textMode": "value",
         "wideLayout": true
       },
-      "pluginVersion": "10.2.2",
+      "pluginVersion": "",
       "targets": [
         {
           "datasource": {
@@ -696,7 +696,7 @@
         "textMode": "auto",
         "wideLayout": true
       },
-      "pluginVersion": "10.2.2",
+      "pluginVersion": "",
       "targets": [
         {
           "alias": "",
@@ -806,7 +806,7 @@
         "textMode": "auto",
         "wideLayout": true
       },
-      "pluginVersion": "10.2.2",
+      "pluginVersion": "",
       "targets": [
         {
           "datasource": {
@@ -926,7 +926,7 @@
         "textMode": "auto",
         "wideLayout": true
       },
-      "pluginVersion": "10.2.2",
+      "pluginVersion": "",
       "targets": [
         {
           "datasource": {
@@ -1048,7 +1048,7 @@
         "textMode": "auto",
         "wideLayout": true
       },
-      "pluginVersion": "10.2.2",
+      "pluginVersion": "",
       "targets": [
         {
           "datasource": {
@@ -1162,7 +1162,7 @@
         "textMode": "auto",
         "wideLayout": true
       },
-      "pluginVersion": "10.2.2",
+      "pluginVersion": "",
       "targets": [
         {
           "datasource": {
@@ -1293,7 +1293,7 @@
         "textMode": "auto",
         "wideLayout": true
       },
-      "pluginVersion": "10.2.2",
+      "pluginVersion": "",
       "targets": [
         {
           "alias": "",
@@ -1824,7 +1824,24 @@
           },
           "unit": "hertz"
         },
-        "overrides": []
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Total Beam triggers"
+            },
+            "properties": [
+              {
+                "id": "custom.axisPlacement",
+                "value": "right"
+              },
+              {
+                "id": "unit",
+                "value": "none"
+              }
+            ]
+          }
+        ]
       },
       "gridPos": {
         "h": 7,
@@ -1895,6 +1912,18 @@
               "value": "maroda"
             }
           ]
+        },
+        {
+          "alias": "Total Beam triggers",
+          "datasource": {
+            "type": "influxdb",
+            "uid": "${influxdb}"
+          },
+          "hide": false,
+          "query": "SELECT cumulative_sum(sum(\"received\")) FROM \"dunedaq.trigger.opmon.TriggerDecisionInfo\" WHERE (\"session\"::tag = '${session}') AND $timeFilter AND type=~/^kCTBBeamChkv(HL|HxL|HLx|HxLx)$/ GROUP BY time($__interval)  fill(null)",
+          "rawQuery": true,
+          "refId": "B",
+          "resultFormat": "time_series"
         }
       ],
       "title": "Trigger decision rates per type",
@@ -2082,7 +2111,7 @@
         "showHeader": true,
         "sortBy": []
       },
-      "pluginVersion": "10.2.2",
+      "pluginVersion": "",
       "targets": [
         {
           "datasource": {
@@ -2249,7 +2278,7 @@
           "measurement": "dunedaq.trigger.moduleleveltriggerinfo.Info",
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "SELECT non_negative_derivative(cumulative_sum(sum(\"count\")), 1s) FROM \"dunedaq.ctbmodules.opmon.TriggerInfo\" WHERE \"session\" = '${session}' AND trigger='LLT_9' AND $timeFilter  GROUP BY time($__interval) fill(null)",
+          "query": "SELECT non_negative_derivative(cumulative_sum(sum(\"count\")), 1s) FROM \"dunedaq.ctbmodules.opmon.TriggerInfo\" WHERE \"session\" = '${session}' AND trigger='LLT_1' AND $timeFilter  GROUP BY time($__interval) fill(null)",
           "rawQuery": true,
           "refId": "A",
           "resultFormat": "time_series",
@@ -2401,7 +2430,7 @@
           "measurement": "dunedaq.trigger.moduleleveltriggerinfo.Info",
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "SELECT sum(\"count\") FROM \"dunedaq.ctbmodules.opmon.TriggerInfo\" WHERE \"session\" = '${session}' AND trigger='LLT_9' AND $timeFilter  GROUP BY time($__interval) fill(null)",
+          "query": "SELECT sum(\"count\") FROM \"dunedaq.ctbmodules.opmon.TriggerInfo\" WHERE \"session\" = '${session}' AND trigger='LLT_1' AND $timeFilter  GROUP BY time($__interval) fill(null)",
           "rawQuery": true,
           "refId": "D",
           "resultFormat": "time_series",
@@ -2719,8 +2748,8 @@
       {
         "current": {
           "selected": false,
-          "text": "CRP8",
-          "value": "CRP8"
+          "text": "main-np02-beam",
+          "value": "main-np02-beam"
         },
         "datasource": {
           "uid": "${influxdb}"
@@ -2797,6 +2826,6 @@
   "timezone": "",
   "title": "DAQ overview",
   "uid": "v5_4_0-overview",
-  "version": 4,
+  "version": 9,
   "weekStart": ""
 }

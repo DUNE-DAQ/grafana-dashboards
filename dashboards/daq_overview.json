@@ -24,7 +24,7 @@
   "editable": true,
   "fiscalYearStartMonth": 0,
   "graphTooltip": 0,
-  "id": 351,
+  "id": 371,
   "links": [
     {
       "asDropdown": true,
@@ -33,7 +33,7 @@
       "keepTime": true,
       "tags": [
         "Subsystem",
-        "v5.3.3"
+        "v5.4.0"
       ],
       "targetBlank": true,
       "title": "Subsystems",
@@ -48,7 +48,7 @@
       "keepTime": true,
       "tags": [
         "Global",
-        "v5.3.3"
+        "v5.4.0"
       ],
       "targetBlank": true,
       "title": "Global",
@@ -62,7 +62,7 @@
       "includeVars": true,
       "keepTime": true,
       "tags": [
-        "v5.3.3",
+        "v5.4.0",
         "RunInfo"
       ],
       "targetBlank": true,
@@ -268,7 +268,7 @@
         "textMode": "auto",
         "wideLayout": true
       },
-      "pluginVersion": "10.2.2",
+      "pluginVersion": "",
       "targets": [
         {
           "alias": "",
@@ -374,7 +374,7 @@
         "textMode": "auto",
         "wideLayout": true
       },
-      "pluginVersion": "10.2.2",
+      "pluginVersion": "",
       "targets": [
         {
           "alias": "",
@@ -483,7 +483,7 @@
         "textMode": "auto",
         "wideLayout": true
       },
-      "pluginVersion": "10.2.2",
+      "pluginVersion": "",
       "targets": [
         {
           "datasource": {
@@ -592,7 +592,7 @@
         "textMode": "value",
         "wideLayout": true
       },
-      "pluginVersion": "10.2.2",
+      "pluginVersion": "",
       "targets": [
         {
           "datasource": {
@@ -696,7 +696,7 @@
         "textMode": "auto",
         "wideLayout": true
       },
-      "pluginVersion": "10.2.2",
+      "pluginVersion": "",
       "targets": [
         {
           "alias": "",
@@ -806,7 +806,7 @@
         "textMode": "auto",
         "wideLayout": true
       },
-      "pluginVersion": "10.2.2",
+      "pluginVersion": "",
       "targets": [
         {
           "datasource": {
@@ -926,7 +926,7 @@
         "textMode": "auto",
         "wideLayout": true
       },
-      "pluginVersion": "10.2.2",
+      "pluginVersion": "",
       "targets": [
         {
           "datasource": {
@@ -1048,7 +1048,7 @@
         "textMode": "auto",
         "wideLayout": true
       },
-      "pluginVersion": "10.2.2",
+      "pluginVersion": "",
       "targets": [
         {
           "datasource": {
@@ -1162,7 +1162,7 @@
         "textMode": "auto",
         "wideLayout": true
       },
-      "pluginVersion": "10.2.2",
+      "pluginVersion": "",
       "targets": [
         {
           "datasource": {
@@ -1293,7 +1293,7 @@
         "textMode": "auto",
         "wideLayout": true
       },
-      "pluginVersion": "10.2.2",
+      "pluginVersion": "",
       "targets": [
         {
           "alias": "",
@@ -1824,7 +1824,24 @@
           },
           "unit": "hertz"
         },
-        "overrides": []
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Total Beam triggers"
+            },
+            "properties": [
+              {
+                "id": "custom.axisPlacement",
+                "value": "right"
+              },
+              {
+                "id": "unit",
+                "value": "none"
+              }
+            ]
+          }
+        ]
       },
       "gridPos": {
         "h": 7,
@@ -1895,6 +1912,18 @@
               "value": "maroda"
             }
           ]
+        },
+        {
+          "alias": "Total Beam triggers",
+          "datasource": {
+            "type": "influxdb",
+            "uid": "${influxdb}"
+          },
+          "hide": false,
+          "query": "SELECT cumulative_sum(sum(\"received\")) FROM \"dunedaq.trigger.opmon.TriggerDecisionInfo\" WHERE (\"session\"::tag = '${session}') AND $timeFilter AND type=~/^kCTBBeamChkv(HL|HxL|HLx|HxLx)$/ GROUP BY time($__interval)  fill(null)",
+          "rawQuery": true,
+          "refId": "B",
+          "resultFormat": "time_series"
         }
       ],
       "title": "Trigger decision rates per type",
@@ -2082,7 +2111,7 @@
         "showHeader": true,
         "sortBy": []
       },
-      "pluginVersion": "10.2.2",
+      "pluginVersion": "",
       "targets": [
         {
           "datasource": {
@@ -2201,8 +2230,8 @@
         "overrides": [
           {
             "matcher": {
-              "id": "byFrameRefID",
-              "options": "Beam prescale ratio"
+              "id": "byName",
+              "options": "Prescale Beam"
             },
             "properties": [
               {
@@ -2212,25 +2241,6 @@
               {
                 "id": "unit",
                 "value": "none"
-              },
-              {
-                "id": "custom.scaleDistribution",
-                "value": {
-                  "log": 2,
-                  "type": "log"
-                }
-              },
-              {
-                "id": "custom.spanNulls",
-                "value": false
-              },
-              {
-                "id": "min",
-                "value": 0.5
-              },
-              {
-                "id": "max",
-                "value": 32
               }
             ]
           }
@@ -2242,7 +2252,7 @@
         "x": 0,
         "y": 14
       },
-      "id": 49,
+      "id": 56,
       "links": [],
       "options": {
         "legend": {
@@ -2268,7 +2278,7 @@
           "measurement": "dunedaq.trigger.moduleleveltriggerinfo.Info",
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "SELECT non_negative_derivative(cumulative_sum(sum(\"count\")), 1s) FROM \"dunedaq.ctbmodules.opmon.TriggerInfo\" WHERE \"session\" = '${session}' AND trigger='LLT_9' AND $timeFilter  GROUP BY time($__interval) fill(null)",
+          "query": "SELECT non_negative_derivative(cumulative_sum(sum(\"count\")), 1s) FROM \"dunedaq.ctbmodules.opmon.TriggerInfo\" WHERE \"session\" = '${session}' AND trigger='LLT_1' AND $timeFilter  GROUP BY time($__interval) fill(null)",
           "rawQuery": true,
           "refId": "A",
           "resultFormat": "time_series",
@@ -2297,7 +2307,7 @@
           ]
         },
         {
-          "alias": "Prescale beam",
+          "alias": "Prescaled beam",
           "datasource": {
             "uid": "${influxdb}"
           },
@@ -2306,9 +2316,47 @@
           "measurement": "dunedaq.trigger.moduleleveltriggerinfo.Info",
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "SELECT non_negative_derivative(cumulative_sum(sum(\"count\")), 1s) FROM \"dunedaq.ctbmodules.opmon.TriggerInfo\" WHERE \"session\" = '${session}' AND $timeFilter AND \"trigger\"='HLT_1' GROUP BY time($__interval) fill(null)",
+          "query": "SELECT non_negative_derivative(cumulative_sum(sum(\"count\")), 1s) FROM \"dunedaq.ctbmodules.opmon.TriggerInfo\" WHERE \"session\" = '${session}' AND $timeFilter AND  \"trigger\"=~/HLT_(2|3|4|5)/  GROUP BY time($__interval) fill(null)",
           "rawQuery": true,
           "refId": "B",
+          "resultFormat": "time_series",
+          "select": [
+            [
+              {
+                "params": [
+                  "td_sent_count"
+                ],
+                "type": "field"
+              },
+              {
+                "params": [
+                  "1s"
+                ],
+                "type": "non_negative_derivative"
+              }
+            ]
+          ],
+          "tags": [
+            {
+              "key": "source_id",
+              "operator": "=",
+              "value": "${partition}_trigger.mlt"
+            }
+          ]
+        },
+        {
+          "alias": "Prescaled beam global",
+          "datasource": {
+            "uid": "${influxdb}"
+          },
+          "groupBy": [],
+          "hide": true,
+          "measurement": "dunedaq.trigger.moduleleveltriggerinfo.Info",
+          "orderByTime": "ASC",
+          "policy": "default",
+          "query": "SELECT non_negative_derivative(cumulative_sum(sum(\"count\")), 1s) FROM \"dunedaq.ctbmodules.opmon.TriggerInfo\" WHERE \"session\" = '${session}' AND $timeFilter AND  \"trigger\"='HLT_1'  GROUP BY time($__interval) fill(null)",
+          "rawQuery": true,
+          "refId": "G",
           "resultFormat": "time_series",
           "select": [
             [
@@ -2373,14 +2421,128 @@
           ]
         },
         {
+          "alias": "Raw beam counter",
+          "datasource": {
+            "uid": "${influxdb}"
+          },
+          "groupBy": [],
+          "hide": true,
+          "measurement": "dunedaq.trigger.moduleleveltriggerinfo.Info",
+          "orderByTime": "ASC",
+          "policy": "default",
+          "query": "SELECT sum(\"count\") FROM \"dunedaq.ctbmodules.opmon.TriggerInfo\" WHERE \"session\" = '${session}' AND trigger='LLT_1' AND $timeFilter  GROUP BY time($__interval) fill(null)",
+          "rawQuery": true,
+          "refId": "D",
+          "resultFormat": "time_series",
+          "select": [
+            [
+              {
+                "params": [
+                  "td_sent_count"
+                ],
+                "type": "field"
+              },
+              {
+                "params": [
+                  "1s"
+                ],
+                "type": "non_negative_derivative"
+              }
+            ]
+          ],
+          "tags": [
+            {
+              "key": "source_id",
+              "operator": "=",
+              "value": "${partition}_trigger.mlt"
+            }
+          ]
+        },
+        {
+          "alias": "Prescale beam spepcific counter",
+          "datasource": {
+            "uid": "${influxdb}"
+          },
+          "groupBy": [],
+          "hide": true,
+          "measurement": "dunedaq.trigger.moduleleveltriggerinfo.Info",
+          "orderByTime": "ASC",
+          "policy": "default",
+          "query": "SELECT sum(\"count\") FROM \"dunedaq.ctbmodules.opmon.TriggerInfo\" WHERE \"session\" = '${session}' AND $timeFilter AND \"trigger\"=~/HLT_(2|3|4|5)/ GROUP BY time($__interval) fill(null)",
+          "rawQuery": true,
+          "refId": "F",
+          "resultFormat": "time_series",
+          "select": [
+            [
+              {
+                "params": [
+                  "td_sent_count"
+                ],
+                "type": "field"
+              },
+              {
+                "params": [
+                  "1s"
+                ],
+                "type": "non_negative_derivative"
+              }
+            ]
+          ],
+          "tags": [
+            {
+              "key": "source_id",
+              "operator": "=",
+              "value": "${partition}_trigger.mlt"
+            }
+          ]
+        },
+        {
+          "alias": "Prescale beam global counter",
+          "datasource": {
+            "uid": "${influxdb}"
+          },
+          "groupBy": [],
+          "hide": true,
+          "measurement": "dunedaq.trigger.moduleleveltriggerinfo.Info",
+          "orderByTime": "ASC",
+          "policy": "default",
+          "query": "SELECT sum(\"count\") FROM \"dunedaq.ctbmodules.opmon.TriggerInfo\" WHERE \"session\" = '${session}' AND $timeFilter AND \"trigger\"='HLT_1' GROUP BY time($__interval) fill(null)",
+          "rawQuery": true,
+          "refId": "E",
+          "resultFormat": "time_series",
+          "select": [
+            [
+              {
+                "params": [
+                  "td_sent_count"
+                ],
+                "type": "field"
+              },
+              {
+                "params": [
+                  "1s"
+                ],
+                "type": "non_negative_derivative"
+              }
+            ]
+          ],
+          "tags": [
+            {
+              "key": "source_id",
+              "operator": "=",
+              "value": "${partition}_trigger.mlt"
+            }
+          ]
+        },
+        {
           "datasource": {
             "name": "Expression",
             "type": "__expr__",
             "uid": "__expr__"
           },
-          "expression": "$A/$B",
+          "expression": "$D/$F",
           "hide": false,
-          "refId": "Beam prescale ratio",
+          "refId": "Prescale Beam",
           "type": "math"
         }
       ],
@@ -2539,10 +2701,10 @@
       "type": "timeseries"
     }
   ],
-  "refresh": "5s",
+  "refresh": false,
   "schemaVersion": 38,
   "tags": [
-    "v5.3.3",
+    "v5.4.0",
     "Main"
   ],
   "templating": {
@@ -2607,17 +2769,33 @@
         "type": "query"
       },
       {
+        "current": {
+          "selected": false,
+          "text": "root-controller",
+          "value": "root-controller"
+        },
+        "datasource": {
+          "type": "influxdb",
+          "uid": "${influxdb}"
+        },
+        "definition": "SELECT \"application\" FROM (SELECT \"state\", \"application\" FROM \"dunedaq.drunc.opmon.FSMStatus\" WHERE $timeFilter AND session='$session')",
         "description": "Variable to set from which controller to take RunInfo information",
         "hide": 2,
+        "includeAll": false,
+        "multi": false,
         "name": "controller",
-        "query": "root-controller",
+        "options": [],
+        "query": "SELECT \"application\" FROM (SELECT \"state\", \"application\" FROM \"dunedaq.drunc.opmon.FSMStatus\" WHERE $timeFilter AND session='$session')",
+        "refresh": 2,
+        "regex": ".*root.*",
         "skipUrlSync": false,
-        "type": "constant"
+        "sort": 1,
+        "type": "query"
       }
     ]
   },
   "time": {
-    "from": "now-15m",
+    "from": "now-30m",
     "to": "now"
   },
   "timepicker": {
@@ -2647,7 +2825,7 @@
   },
   "timezone": "",
   "title": "DAQ overview",
-  "uid": "v5_3_3-overview",
-  "version": 6,
+  "uid": "v5_4_0-overview",
+  "version": 9,
   "weekStart": ""
 }

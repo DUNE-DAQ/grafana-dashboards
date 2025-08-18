@@ -9,35 +9,35 @@ commonAnnotations:
 
 
 # Generate a ConfigMap for each dashboard
-# for i in `ls`; do echo -n '- name: dune-daq-'; echo $(echo $i | cut -d'.' -f1 | tr '_' '-'); echo "  files: [ dashboards/${i} ]"; done
+# for i in `ls`; do echo -n '- name: dune-daq-'; echo $(echo $i | cut -d'.' -f1 | tr '_' '-' | tr '[:upper:]' '[:lower:]'); echo "  files: [ dashboards/${i} ]"; done
 configMapGenerator:
 - name: dune-daq-applications
   files: [ dashboards/applications.json ]
-- name: dune-daq-CTB
+- name: dune-daq-ctb
   files: [ dashboards/CTB.json ]
 - name: dune-daq-daq-overview
   files: [ dashboards/daq_overview.json ]
 - name: dune-daq-dataflow
   files: [ dashboards/dataflow.json ]
-- name: dune-daq-ERS
+- name: dune-daq-ers
   files: [ dashboards/ERS.json ]
 - name: dune-daq-frontend-ethernet
   files: [ dashboards/frontend_ethernet.json ]
 - name: dune-daq-frontend-felix
   files: [ dashboards/frontend_felix.json ]
-- name: dune-daq-FSMStatus
+- name: dune-daq-fsmstatus
   files: [ dashboards/FSMStatus.json ]
 - name: dune-daq-kafka
   files: [ dashboards/kafka.json ]
 - name: dune-daq-monitoring
   files: [ dashboards/monitoring.json ]
-- name: dune-daq-NetworkManager
+- name: dune-daq-networkmanager
   files: [ dashboards/NetworkManager.json ]
-- name: dune-daq-PDS
+- name: dune-daq-pds
   files: [ dashboards/PDS.json ]
-- name: dune-daq-ProcessManagement
+- name: dune-daq-processmanagement
   files: [ dashboards/ProcessManagement.json ]
-- name: dune-daq-Queues
+- name: dune-daq-queues
   files: [ dashboards/Queues.json ]
 - name: dune-daq-readout
   files: [ dashboards/readout.json ]
@@ -45,7 +45,6 @@ configMapGenerator:
   files: [ dashboards/run_info.json ]
 - name: dune-daq-timing
   files: [ dashboards/timing.json ]
-- name: dune-daq-TriggerFlow
+- name: dune-daq-triggerflow
   files: [ dashboards/TriggerFlow.json ]
 - name: dune-daq-trigger-primitives
-  files: [ dashboards/trigger_primitives.json ]

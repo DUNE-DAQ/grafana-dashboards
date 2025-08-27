@@ -268,7 +268,7 @@
         "textMode": "auto",
         "wideLayout": true
       },
-      "pluginVersion": "",
+      "pluginVersion": "10.2.2",
       "targets": [
         {
           "alias": "",
@@ -374,7 +374,7 @@
         "textMode": "auto",
         "wideLayout": true
       },
-      "pluginVersion": "",
+      "pluginVersion": "10.2.2",
       "targets": [
         {
           "alias": "",
@@ -483,7 +483,7 @@
         "textMode": "auto",
         "wideLayout": true
       },
-      "pluginVersion": "",
+      "pluginVersion": "10.2.2",
       "targets": [
         {
           "datasource": {
@@ -592,7 +592,7 @@
         "textMode": "value",
         "wideLayout": true
       },
-      "pluginVersion": "",
+      "pluginVersion": "10.2.2",
       "targets": [
         {
           "datasource": {
@@ -696,7 +696,7 @@
         "textMode": "auto",
         "wideLayout": true
       },
-      "pluginVersion": "",
+      "pluginVersion": "10.2.2",
       "targets": [
         {
           "alias": "",
@@ -806,7 +806,7 @@
         "textMode": "auto",
         "wideLayout": true
       },
-      "pluginVersion": "",
+      "pluginVersion": "10.2.2",
       "targets": [
         {
           "datasource": {
@@ -926,7 +926,7 @@
         "textMode": "auto",
         "wideLayout": true
       },
-      "pluginVersion": "",
+      "pluginVersion": "10.2.2",
       "targets": [
         {
           "datasource": {
@@ -1048,7 +1048,7 @@
         "textMode": "auto",
         "wideLayout": true
       },
-      "pluginVersion": "",
+      "pluginVersion": "10.2.2",
       "targets": [
         {
           "datasource": {
@@ -1162,7 +1162,7 @@
         "textMode": "auto",
         "wideLayout": true
       },
-      "pluginVersion": "",
+      "pluginVersion": "10.2.2",
       "targets": [
         {
           "datasource": {
@@ -1293,7 +1293,7 @@
         "textMode": "auto",
         "wideLayout": true
       },
-      "pluginVersion": "",
+      "pluginVersion": "10.2.2",
       "targets": [
         {
           "alias": "",
@@ -1827,8 +1827,8 @@
         "overrides": [
           {
             "matcher": {
-              "id": "byName",
-              "options": "Total Beam triggers"
+              "id": "byRegexp",
+              "options": "/Beam triggers/"
             },
             "properties": [
               {
@@ -1858,8 +1858,8 @@
           "showLegend": true
         },
         "tooltip": {
-          "mode": "single",
-          "sort": "none"
+          "mode": "multi",
+          "sort": "desc"
         }
       },
       "pluginVersion": "10.2.2",
@@ -1923,6 +1923,18 @@
           "query": "SELECT cumulative_sum(sum(\"received\")) FROM \"dunedaq.trigger.opmon.TriggerDecisionInfo\" WHERE (\"session\"::tag = '${session}') AND $timeFilter AND type=~/^kCTBBeamChkv(HL|HxL|HLx|HxLx)$/ GROUP BY time($__interval)  fill(null)",
           "rawQuery": true,
           "refId": "B",
+          "resultFormat": "time_series"
+        },
+        {
+          "alias": "$tag_type Beam triggers",
+          "datasource": {
+            "type": "influxdb",
+            "uid": "${influxdb}"
+          },
+          "hide": false,
+          "query": "SELECT cumulative_sum(sum(\"received\")) FROM \"dunedaq.trigger.opmon.TriggerDecisionInfo\" WHERE (\"session\"::tag = '${session}') AND $timeFilter AND type=~/^kCTBBeamChkv(HL|HxL|HLx|HxLx)$/ GROUP BY type, time($__interval)  fill(null)",
+          "rawQuery": true,
+          "refId": "C",
           "resultFormat": "time_series"
         }
       ],
@@ -2111,7 +2123,7 @@
         "showHeader": true,
         "sortBy": []
       },
-      "pluginVersion": "",
+      "pluginVersion": "10.2.2",
       "targets": [
         {
           "datasource": {
@@ -2701,7 +2713,7 @@
       "type": "timeseries"
     }
   ],
-  "refresh": false,
+  "refresh": "5s",
   "schemaVersion": 38,
   "tags": [
     "v5.4.0",
@@ -2826,6 +2838,6 @@
   "timezone": "",
   "title": "DAQ overview",
   "uid": "v5_4_0-overview",
-  "version": 9,
+  "version": 13,
   "weekStart": ""
 }

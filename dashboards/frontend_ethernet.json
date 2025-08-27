@@ -24,7 +24,7 @@
   "editable": true,
   "fiscalYearStartMonth": 0,
   "graphTooltip": 0,
-  "id": 335,
+  "id": 376,
   "links": [],
   "liveNow": false,
   "panels": [
@@ -2413,8 +2413,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
-                "value": null
+                "color": "green"
               },
               {
                 "color": "red",
@@ -2511,8 +2510,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
-                "value": null
+                "color": "green"
               },
               {
                 "color": "red",
@@ -2609,8 +2607,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
-                "value": null
+                "color": "green"
               },
               {
                 "color": "red",
@@ -2658,12 +2655,303 @@
       "type": "timeseries"
     },
     {
+      "datasource": {
+        "type": "influxdb",
+        "uid": "${influxdb}"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "drawStyle": "line",
+            "fillOpacity": 0,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "linear",
+            "lineStyle": {
+              "fill": "solid"
+            },
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "auto",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green"
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "cps"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 8,
+        "x": 0,
+        "y": 62
+      },
+      "id": 105,
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "tooltip": {
+          "mode": "multi",
+          "sort": "none"
+        }
+      },
+      "targets": [
+        {
+          "alias": "$tag_element: $tag_subelement - worker $tag_rte_worker_id",
+          "datasource": {
+            "uid": "${influxdb}"
+          },
+          "query": "SELECT  non_negative_derivative(cumulative_sum(sum(\"num_unhandled_non_ipv4\")), 1s) FROM \"dunedaq.dpdklibs.opmon.RTEWorkerInfo\"  WHERE session = '${session}' AND element=~/^${module}$/ AND subelement=~/^${wrapper}$/ AND $timeFilter GROUP BY time($__interval), element, subelement, rte_worker_id fill(null) ",
+          "rawQuery": true,
+          "refId": "A",
+          "resultFormat": "time_series"
+        }
+      ],
+      "title": "Non IPV4 frames",
+      "transformations": [],
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "influxdb",
+        "uid": "${influxdb}"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "drawStyle": "line",
+            "fillOpacity": 0,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "linear",
+            "lineStyle": {
+              "fill": "solid"
+            },
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "auto",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green"
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "cps"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 8,
+        "x": 8,
+        "y": 62
+      },
+      "id": 109,
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "tooltip": {
+          "mode": "multi",
+          "sort": "none"
+        }
+      },
+      "targets": [
+        {
+          "alias": "$tag_element: $tag_subelement - worker $tag_rte_worker_id",
+          "datasource": {
+            "uid": "${influxdb}"
+          },
+          "query": "SELECT  non_negative_derivative(cumulative_sum(sum(\"num_unhandled_non_udp\")), 1s) FROM \"dunedaq.dpdklibs.opmon.RTEWorkerInfo\"  WHERE session = '${session}' AND element=~/^${module}$/ AND subelement=~/^${wrapper}$/ AND $timeFilter GROUP BY time($__interval), element, subelement, rte_worker_id fill(null) ",
+          "rawQuery": true,
+          "refId": "A",
+          "resultFormat": "time_series"
+        }
+      ],
+      "title": "Non UDP frames",
+      "transformations": [],
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "influxdb",
+        "uid": "${influxdb}"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "drawStyle": "line",
+            "fillOpacity": 0,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "linear",
+            "lineStyle": {
+              "fill": "solid"
+            },
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "auto",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green"
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "cps"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 8,
+        "x": 16,
+        "y": 62
+      },
+      "id": 113,
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "tooltip": {
+          "mode": "multi",
+          "sort": "none"
+        }
+      },
+      "targets": [
+        {
+          "alias": "$tag_element: $tag_subelement - worker $tag_rte_worker_id",
+          "datasource": {
+            "uid": "${influxdb}"
+          },
+          "query": "SELECT  non_negative_derivative(cumulative_sum(sum(\"num_unhandled_non_jumbo_udp\")), 1s) FROM \"dunedaq.dpdklibs.opmon.RTEWorkerInfo\"  WHERE session = '${session}' AND element=~/^${module}$/ AND subelement=~/^${wrapper}$/ AND $timeFilter GROUP BY time($__interval), element, subelement, rte_worker_id fill(null) ",
+          "rawQuery": true,
+          "refId": "A",
+          "resultFormat": "time_series"
+        }
+      ],
+      "title": "Non jumbo UDP frames",
+      "transformations": [],
+      "type": "timeseries"
+    },
+    {
       "collapsed": false,
       "gridPos": {
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 62
+        "y": 70
       },
       "id": 54,
       "panels": [],
@@ -2717,8 +3005,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
-                "value": null
+                "color": "green"
               },
               {
                 "color": "red",
@@ -2734,7 +3021,7 @@
         "h": 9,
         "w": 6,
         "x": 0,
-        "y": 63
+        "y": 71
       },
       "id": 65,
       "options": {
@@ -2820,8 +3107,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
-                "value": null
+                "color": "green"
               },
               {
                 "color": "red",
@@ -2837,7 +3123,7 @@
         "h": 9,
         "w": 6,
         "x": 6,
-        "y": 63
+        "y": 71
       },
       "id": 67,
       "options": {
@@ -2915,8 +3201,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
-                "value": null
+                "color": "green"
               },
               {
                 "color": "red",
@@ -2932,7 +3217,7 @@
         "h": 9,
         "w": 6,
         "x": 12,
-        "y": 63
+        "y": 71
       },
       "id": 66,
       "options": {
@@ -3010,8 +3295,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
-                "value": null
+                "color": "green"
               },
               {
                 "color": "red",
@@ -3027,7 +3311,7 @@
         "h": 9,
         "w": 6,
         "x": 18,
-        "y": 63
+        "y": 71
       },
       "id": 68,
       "options": {
@@ -3105,8 +3389,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
-                "value": null
+                "color": "green"
               },
               {
                 "color": "red",
@@ -3120,9 +3403,9 @@
       },
       "gridPos": {
         "h": 9,
-        "w": 24,
+        "w": 12,
         "x": 0,
-        "y": 72
+        "y": 80
       },
       "id": 69,
       "maxPerRow": 3,
@@ -3139,20 +3422,117 @@
         }
       },
       "repeat": "module",
-      "repeatDirection": "h",
+      "repeatDirection": "v",
       "targets": [
         {
           "alias": "$tag_subelement",
           "datasource": {
             "uid": "${influxdb}"
           },
-          "query": "SELECT non_negative_derivative(last(\"dropped_frames\"), 1s) FROM \"dunedaq.dpdklibs.opmon.SourceInfo\" WHERE session = '${session}' AND element=~/^${module}$/ AND $timeFilter GROUP BY time($__interval), \"subelement\" fill(null)",
+          "query": "SELECT non_negative_derivative(last(\"failed_to_send_daq_payloads\"), 1s) FROM \"dunedaq.dpdklibs.opmon.SourceInfo\" WHERE session = '${session}' AND element=~/^${module}$/ AND $timeFilter GROUP BY time($__interval), \"subelement\" fill(null)",
           "rawQuery": true,
           "refId": "A",
           "resultFormat": "time_series"
         }
       ],
-      "title": "RX Dropped Frames rate for ${module}",
+      "title": "Payload failed to send to daq - rate for ${module}",
+      "transformations": [],
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "influxdb",
+        "uid": "${influxdb}"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "drawStyle": "line",
+            "fillOpacity": 0,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "auto",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green"
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "cps"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 9,
+        "w": 12,
+        "x": 12,
+        "y": 80
+      },
+      "id": 117,
+      "maxPerRow": 3,
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "right",
+          "showLegend": true
+        },
+        "tooltip": {
+          "mode": "multi",
+          "sort": "none"
+        }
+      },
+      "repeat": "module",
+      "repeatDirection": "v",
+      "targets": [
+        {
+          "alias": "$tag_subelement",
+          "datasource": {
+            "uid": "${influxdb}"
+          },
+          "query": "SELECT non_negative_derivative(last(\"failed_to_send_daq_payloads\"), 1s) FROM \"dunedaq.dpdklibs.opmon.SourceInfo\" WHERE session = '${session}' AND element=~/^${module}$/ AND $timeFilter GROUP BY time($__interval), \"subelement\" fill(null)",
+          "rawQuery": true,
+          "refId": "A",
+          "resultFormat": "time_series"
+        }
+      ],
+      "title": "Letfover bytes occurrency rate for ${module}",
       "transformations": [],
       "type": "timeseries"
     },
@@ -3166,7 +3546,7 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 90
+        "y": 89
       },
       "id": 22,
       "panels": [],
@@ -3229,8 +3609,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
-                "value": null
+                "color": "green"
               },
               {
                 "color": "red",
@@ -3246,7 +3625,7 @@
         "h": 8,
         "w": 6,
         "x": 0,
-        "y": 91
+        "y": 90
       },
       "id": 15,
       "options": {
@@ -3324,8 +3703,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
-                "value": null
+                "color": "green"
               },
               {
                 "color": "red",
@@ -3341,7 +3719,7 @@
         "h": 8,
         "w": 6,
         "x": 6,
-        "y": 91
+        "y": 90
       },
       "id": 34,
       "options": {
@@ -3419,8 +3797,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
-                "value": null
+                "color": "green"
               },
               {
                 "color": "red",
@@ -3436,7 +3813,7 @@
         "h": 8,
         "w": 6,
         "x": 12,
-        "y": 91
+        "y": 90
       },
       "id": 14,
       "options": {
@@ -3514,8 +3891,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
-                "value": null
+                "color": "green"
               },
               {
                 "color": "red",
@@ -3531,7 +3907,7 @@
         "h": 8,
         "w": 6,
         "x": 18,
-        "y": 91
+        "y": 90
       },
       "id": 13,
       "options": {
@@ -3609,8 +3985,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
-                "value": null
+                "color": "green"
               },
               {
                 "color": "red",
@@ -3626,7 +4001,7 @@
         "h": 8,
         "w": 12,
         "x": 0,
-        "y": 99
+        "y": 98
       },
       "id": 46,
       "maxPerRow": 4,
@@ -3707,8 +4082,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
-                "value": null
+                "color": "green"
               },
               {
                 "color": "red",
@@ -3724,7 +4098,7 @@
         "h": 8,
         "w": 12,
         "x": 12,
-        "y": 99
+        "y": 98
       },
       "id": 35,
       "maxPerRow": 4,
@@ -3807,8 +4181,8 @@
       {
         "current": {
           "selected": false,
-          "text": "sbhuller-np02app-test",
-          "value": "sbhuller-np02app-test"
+          "text": "main-np02-beam",
+          "value": "main-np02-beam"
         },
         "datasource": {
           "type": "influxdb",
@@ -4166,6 +4540,6 @@
   "timezone": "",
   "title": "Frontend Ethernet",
   "uid": "v5_4_0-frontend_ethernet",
-  "version": 23,
+  "version": 8,
   "weekStart": ""
 }

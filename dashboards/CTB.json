@@ -24,12 +24,85 @@
   "liveNow": false,
   "panels": [
     {
+      "datasource": {
+        "type": "influxdb",
+        "uid": "${influxdb}"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "continuous-RdYlGr"
+          },
+          "custom": {
+            "fillOpacity": 75,
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": 15000,
+            "lineWidth": 0,
+            "spanNulls": 15000
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 2,
+        "w": 24,
+        "x": 0,
+        "y": 0
+      },
+      "id": 31,
+      "options": {
+        "alignValue": "center",
+        "legend": {
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "mergeValues": true,
+        "rowHeight": 0.9,
+        "showValue": "auto",
+        "tooltip": {
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "targets": [
+        {
+          "alias": "$session",
+          "datasource": {
+            "type": "influxdb",
+            "uid": "${influxdb}"
+          },
+          "hide": false,
+          "query": "SELECT \"run_number\" FROM \"dunedaq.rcif.opmon.RunInfo\" WHERE \"session\" = '${session}' AND \"run_number\" >0 AND $timeFilter",
+          "rawQuery": true,
+          "refId": "A",
+          "resultFormat": "time_series"
+        }
+      ],
+      "transformations": [],
+      "type": "state-timeline"
+    },
+    {
       "collapsed": false,
       "gridPos": {
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 0
+        "y": 2
       },
       "id": 4,
       "panels": [],
@@ -78,7 +151,7 @@
         "h": 6,
         "w": 3,
         "x": 0,
-        "y": 1
+        "y": 3
       },
       "id": 6,
       "options": {
@@ -96,7 +169,7 @@
         "textMode": "auto",
         "wideLayout": true
       },
-      "pluginVersion": "",
+      "pluginVersion": "10.2.2",
       "targets": [
         {
           "alias": " ",
@@ -156,7 +229,7 @@
         "h": 6,
         "w": 3,
         "x": 3,
-        "y": 1
+        "y": 3
       },
       "id": 7,
       "options": {
@@ -174,7 +247,7 @@
         "textMode": "auto",
         "wideLayout": true
       },
-      "pluginVersion": "",
+      "pluginVersion": "10.2.2",
       "targets": [
         {
           "alias": " ",
@@ -254,7 +327,7 @@
         "h": 6,
         "w": 6,
         "x": 6,
-        "y": 1
+        "y": 3
       },
       "id": 5,
       "options": {
@@ -361,7 +434,7 @@
         "h": 6,
         "w": 6,
         "x": 12,
-        "y": 1
+        "y": 3
       },
       "id": 9,
       "options": {
@@ -456,7 +529,7 @@
         "h": 6,
         "w": 6,
         "x": 18,
-        "y": 1
+        "y": 3
       },
       "id": 10,
       "options": {
@@ -493,7 +566,7 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 7
+        "y": 9
       },
       "id": 14,
       "panels": [],
@@ -564,7 +637,7 @@
         "h": 8,
         "w": 12,
         "x": 0,
-        "y": 8
+        "y": 10
       },
       "id": 13,
       "options": {
@@ -691,7 +764,7 @@
         "h": 8,
         "w": 12,
         "x": 12,
-        "y": 8
+        "y": 10
       },
       "id": 15,
       "options": {
@@ -760,7 +833,7 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 16
+        "y": 18
       },
       "id": 2,
       "panels": [],
@@ -831,7 +904,7 @@
         "h": 10,
         "w": 8,
         "x": 0,
-        "y": 17
+        "y": 19
       },
       "id": 1,
       "options": {
@@ -971,7 +1044,7 @@
         "h": 10,
         "w": 8,
         "x": 8,
-        "y": 17
+        "y": 19
       },
       "id": 3,
       "options": {
@@ -1186,7 +1259,7 @@
         "h": 10,
         "w": 8,
         "x": 16,
-        "y": 17
+        "y": 19
       },
       "id": 12,
       "options": {
@@ -1256,7 +1329,7 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 27
+        "y": 29
       },
       "id": 16,
       "panels": [],
@@ -1323,7 +1396,7 @@
         "h": 7,
         "w": 8,
         "x": 0,
-        "y": 28
+        "y": 30
       },
       "id": 17,
       "options": {
@@ -1452,7 +1525,7 @@
         "h": 7,
         "w": 8,
         "x": 8,
-        "y": 28
+        "y": 30
       },
       "id": 18,
       "options": {
@@ -1654,7 +1727,7 @@
         "h": 7,
         "w": 8,
         "x": 16,
-        "y": 28
+        "y": 30
       },
       "id": 19,
       "options": {
@@ -1854,7 +1927,7 @@
         "h": 7,
         "w": 8,
         "x": 0,
-        "y": 35
+        "y": 37
       },
       "id": 20,
       "links": [],
@@ -2183,7 +2256,7 @@
         "h": 7,
         "w": 8,
         "x": 8,
-        "y": 35
+        "y": 37
       },
       "id": 21,
       "options": {
@@ -2335,7 +2408,7 @@
         "h": 7,
         "w": 8,
         "x": 16,
-        "y": 35
+        "y": 37
       },
       "id": 22,
       "options": {
@@ -2775,7 +2848,7 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 42
+        "y": 44
       },
       "id": 23,
       "panels": [],
@@ -2845,7 +2918,7 @@
         "h": 7,
         "w": 8,
         "x": 0,
-        "y": 43
+        "y": 45
       },
       "id": 24,
       "options": {
@@ -3027,7 +3100,7 @@
         "h": 7,
         "w": 8,
         "x": 8,
-        "y": 43
+        "y": 45
       },
       "id": 28,
       "options": {
@@ -3628,6 +3701,6 @@
   "timezone": "",
   "title": "CTB",
   "uid": "v5_4_0-ctb",
-  "version": 2,
+  "version": 3,
   "weekStart": ""
 }

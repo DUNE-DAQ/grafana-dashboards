@@ -18,10 +18,83 @@
   "editable": true,
   "fiscalYearStartMonth": 0,
   "graphTooltip": 0,
-  "id": 245,
+  "id": 428,
   "links": [],
   "liveNow": false,
   "panels": [
+    {
+      "datasource": {
+        "type": "influxdb",
+        "uid": "${influxdb}"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "continuous-RdYlGr"
+          },
+          "custom": {
+            "fillOpacity": 75,
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": 15000,
+            "lineWidth": 0,
+            "spanNulls": 15000
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 2,
+        "w": 24,
+        "x": 0,
+        "y": 0
+      },
+      "id": 282,
+      "options": {
+        "alignValue": "center",
+        "legend": {
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "mergeValues": true,
+        "rowHeight": 0.9,
+        "showValue": "auto",
+        "tooltip": {
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "targets": [
+        {
+          "alias": "$session",
+          "datasource": {
+            "type": "influxdb",
+            "uid": "${influxdb}"
+          },
+          "hide": false,
+          "query": "SELECT \"run_number\" FROM \"dunedaq.drunc.opmon.RunInfo\" WHERE \"session\"='${session}' AND $timeFilter AND run_number>0",
+          "rawQuery": true,
+          "refId": "A",
+          "resultFormat": "time_series"
+        }
+      ],
+      "transformations": [],
+      "type": "state-timeline"
+    },
     {
       "datasource": {
         "type": "influxdb",
@@ -87,7 +160,7 @@
         "h": 7,
         "w": 8,
         "x": 0,
-        "y": 0
+        "y": 2
       },
       "id": 8,
       "options": {
@@ -231,7 +304,7 @@
         "h": 7,
         "w": 8,
         "x": 8,
-        "y": 0
+        "y": 2
       },
       "id": 15,
       "options": {
@@ -383,7 +456,7 @@
         "h": 7,
         "w": 8,
         "x": 16,
-        "y": 0
+        "y": 2
       },
       "id": 32,
       "options": {
@@ -535,7 +608,7 @@
         "h": 7,
         "w": 8,
         "x": 0,
-        "y": 7
+        "y": 9
       },
       "id": 29,
       "options": {
@@ -687,7 +760,7 @@
         "h": 7,
         "w": 8,
         "x": 8,
-        "y": 7
+        "y": 9
       },
       "id": 30,
       "options": {
@@ -839,7 +912,7 @@
         "h": 7,
         "w": 8,
         "x": 16,
-        "y": 7
+        "y": 9
       },
       "id": 33,
       "options": {
@@ -936,7 +1009,7 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 14
+        "y": 16
       },
       "id": 47,
       "panels": [
@@ -1004,7 +1077,7 @@
             "h": 6,
             "w": 6,
             "x": 0,
-            "y": 23
+            "y": 31
           },
           "id": 2,
           "links": [],
@@ -1159,7 +1232,7 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 15
+        "y": 17
       },
       "id": 38,
       "panels": [
@@ -1227,7 +1300,7 @@
             "h": 6,
             "w": 6,
             "x": 0,
-            "y": 52
+            "y": 60
           },
           "id": 39,
           "links": [],
@@ -1378,7 +1451,7 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 16
+        "y": 18
       },
       "id": 48,
       "panels": [
@@ -1446,7 +1519,7 @@
             "h": 6,
             "w": 6,
             "x": 0,
-            "y": 17
+            "y": 25
           },
           "id": 55,
           "links": [],
@@ -1588,7 +1661,7 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 17
+        "y": 19
       },
       "id": 171,
       "panels": [
@@ -1656,7 +1729,7 @@
             "h": 6,
             "w": 6,
             "x": 0,
-            "y": 18
+            "y": 26
           },
           "id": 281,
           "links": [],
@@ -1822,8 +1895,8 @@
       {
         "current": {
           "selected": false,
-          "text": "np02-session",
-          "value": "np02-session"
+          "text": "claudia-test",
+          "value": "claudia-test"
         },
         "datasource": {
           "uid": "${influxdb}"
@@ -1900,13 +1973,13 @@
     ]
   },
   "time": {
-    "from": "now-15m",
+    "from": "now-30m",
     "to": "now"
   },
   "timepicker": {},
   "timezone": "",
   "title": "Network Manager",
   "uid": "v5_5_0-network-manager",
-  "version": 26,
+  "version": 2,
   "weekStart": ""
 }

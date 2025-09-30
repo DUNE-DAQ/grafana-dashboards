@@ -18,16 +18,89 @@
   "editable": true,
   "fiscalYearStartMonth": 0,
   "graphTooltip": 0,
-  "id": 293,
+  "id": 429,
   "links": [],
   "liveNow": false,
   "panels": [
+    {
+      "datasource": {
+        "type": "influxdb",
+        "uid": "${influxdb}"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "continuous-RdYlGr"
+          },
+          "custom": {
+            "fillOpacity": 75,
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": 15000,
+            "lineWidth": 0,
+            "spanNulls": 15000
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 2,
+        "w": 24,
+        "x": 0,
+        "y": 0
+      },
+      "id": 86,
+      "options": {
+        "alignValue": "center",
+        "legend": {
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "mergeValues": true,
+        "rowHeight": 0.9,
+        "showValue": "auto",
+        "tooltip": {
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "targets": [
+        {
+          "alias": "$session",
+          "datasource": {
+            "type": "influxdb",
+            "uid": "${influxdb}"
+          },
+          "hide": false,
+          "query": "SELECT \"run_number\" FROM \"dunedaq.drunc.opmon.RunInfo\" WHERE \"session\"='${session}' AND $timeFilter AND run_number>0",
+          "rawQuery": true,
+          "refId": "A",
+          "resultFormat": "time_series"
+        }
+      ],
+      "transformations": [],
+      "type": "state-timeline"
+    },
     {
       "gridPos": {
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 0
+        "y": 2
       },
       "id": 12,
       "title": "Data rates",
@@ -97,7 +170,7 @@
         "h": 10,
         "w": 8,
         "x": 0,
-        "y": 1
+        "y": 3
       },
       "id": 13,
       "options": {
@@ -194,7 +267,7 @@
         "h": 10,
         "w": 8,
         "x": 8,
-        "y": 1
+        "y": 3
       },
       "id": 15,
       "options": {
@@ -294,7 +367,7 @@
         "h": 10,
         "w": 8,
         "x": 16,
-        "y": 1
+        "y": 3
       },
       "id": 17,
       "options": {
@@ -393,7 +466,7 @@
         "h": 10,
         "w": 8,
         "x": 0,
-        "y": 11
+        "y": 13
       },
       "id": 54,
       "options": {
@@ -509,7 +582,7 @@
         "h": 10,
         "w": 8,
         "x": 0,
-        "y": 21
+        "y": 23
       },
       "id": 85,
       "options": {
@@ -555,7 +628,7 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 31
+        "y": 33
       },
       "id": 23,
       "panels": [
@@ -622,7 +695,7 @@
             "h": 10,
             "w": 8,
             "x": 0,
-            "y": 52
+            "y": 60
           },
           "id": 26,
           "options": {
@@ -718,7 +791,7 @@
             "h": 10,
             "w": 8,
             "x": 8,
-            "y": 52
+            "y": 60
           },
           "id": 29,
           "options": {
@@ -824,7 +897,7 @@
             "h": 10,
             "w": 8,
             "x": 16,
-            "y": 52
+            "y": 60
           },
           "id": 33,
           "options": {
@@ -877,7 +950,7 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 32
+        "y": 34
       },
       "id": 10,
       "panels": [],
@@ -931,8 +1004,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
-                "value": null
+                "color": "green"
               },
               {
                 "color": "red",
@@ -948,7 +1020,7 @@
         "h": 9,
         "w": 8,
         "x": 0,
-        "y": 33
+        "y": 35
       },
       "id": 2,
       "links": [],
@@ -1225,7 +1297,7 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 42
+        "y": 44
       },
       "id": 8,
       "panels": [],
@@ -1279,8 +1351,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
-                "value": null
+                "color": "green"
               },
               {
                 "color": "red",
@@ -1296,7 +1367,7 @@
         "h": 9,
         "w": 6,
         "x": 0,
-        "y": 43
+        "y": 45
       },
       "id": 5,
       "links": [],
@@ -1415,8 +1486,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
-                "value": null
+                "color": "green"
               },
               {
                 "color": "red",
@@ -1432,7 +1502,7 @@
         "h": 9,
         "w": 6,
         "x": 6,
-        "y": 43
+        "y": 45
       },
       "id": 4,
       "links": [],
@@ -1551,8 +1621,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
-                "value": null
+                "color": "green"
               },
               {
                 "color": "red",
@@ -1568,7 +1637,7 @@
         "h": 9,
         "w": 6,
         "x": 12,
-        "y": 43
+        "y": 45
       },
       "id": 3,
       "links": [],
@@ -1687,8 +1756,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
-                "value": null
+                "color": "green"
               },
               {
                 "color": "red",
@@ -1704,7 +1772,7 @@
         "h": 9,
         "w": 6,
         "x": 18,
-        "y": 43
+        "y": 45
       },
       "id": 6,
       "links": [],
@@ -1805,10 +1873,9 @@
       },
       {
         "current": {
-          "isNone": true,
           "selected": false,
-          "text": "None",
-          "value": ""
+          "text": "claudia-test",
+          "value": "claudia-test"
         },
         "datasource": {
           "type": "influxdb",
@@ -1925,6 +1992,6 @@
   "timezone": "",
   "title": "Photon Detection System",
   "uid": "v5_5_0-pds",
-  "version": 26,
+  "version": 2,
   "weekStart": ""
 }

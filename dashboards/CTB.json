@@ -19,7 +19,7 @@
   "editable": true,
   "fiscalYearStartMonth": 0,
   "graphTooltip": 0,
-  "id": 373,
+  "id": 418,
   "links": [],
   "liveNow": false,
   "panels": [
@@ -87,7 +87,7 @@
             "uid": "${influxdb}"
           },
           "hide": false,
-          "query": "SELECT \"run_number\" FROM \"dunedaq.rcif.opmon.RunInfo\" WHERE \"session\" = '${session}' AND \"run_number\" >0 AND $timeFilter",
+          "query": "SELECT \"run_number\" FROM \"dunedaq.drunc.opmon.RunInfo\" WHERE \"session\"='${session}' AND $timeFilter AND run_number>0",
           "rawQuery": true,
           "refId": "A",
           "resultFormat": "time_series"
@@ -3566,8 +3566,8 @@
       {
         "current": {
           "selected": false,
-          "text": "main-np02-beam",
-          "value": "main-np02-beam"
+          "text": "main-np02-operation",
+          "value": "main-np02-operation"
         },
         "datasource": {
           "type": "influxdb",
@@ -3694,13 +3694,13 @@
     ]
   },
   "time": {
-    "from": "now-30m",
+    "from": "now-12h",
     "to": "now"
   },
   "timepicker": {},
   "timezone": "",
   "title": "CTB",
   "uid": "v5_5_0-ctb",
-  "version": 3,
+  "version": 2,
   "weekStart": ""
 }

@@ -24,7 +24,7 @@
   "editable": true,
   "fiscalYearStartMonth": 0,
   "graphTooltip": 0,
-  "id": 371,
+  "id": 419,
   "links": [
     {
       "asDropdown": true,
@@ -111,32 +111,6 @@
   "liveNow": false,
   "panels": [
     {
-      "collapsed": false,
-      "datasource": {
-        "type": "datasource",
-        "uid": "grafana"
-      },
-      "gridPos": {
-        "h": 1,
-        "w": 24,
-        "x": 0,
-        "y": 0
-      },
-      "id": 31,
-      "panels": [],
-      "targets": [
-        {
-          "datasource": {
-            "type": "datasource",
-            "uid": "grafana"
-          },
-          "refId": "A"
-        }
-      ],
-      "title": "Status",
-      "type": "row"
-    },
-    {
       "datasource": {
         "type": "influxdb",
         "uid": "${influxdb}"
@@ -174,7 +148,7 @@
         "h": 2,
         "w": 24,
         "x": 0,
-        "y": 1
+        "y": 0
       },
       "id": 46,
       "options": {
@@ -200,7 +174,7 @@
             "uid": "${influxdb}"
           },
           "hide": false,
-          "query": "SELECT \"run_number\" FROM \"dunedaq.rcif.opmon.RunInfo\" WHERE \"session\" = '${session}' AND \"run_number\" >0 AND $timeFilter",
+          "query": "SELECT \"run_number\" FROM \"dunedaq.drunc.opmon.RunInfo\" WHERE \"session\"='${session}' AND $timeFilter AND run_number>0",
           "rawQuery": true,
           "refId": "A",
           "resultFormat": "time_series"
@@ -208,6 +182,32 @@
       ],
       "transformations": [],
       "type": "state-timeline"
+    },
+    {
+      "collapsed": false,
+      "datasource": {
+        "type": "datasource",
+        "uid": "grafana"
+      },
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 2
+      },
+      "id": 31,
+      "panels": [],
+      "targets": [
+        {
+          "datasource": {
+            "type": "datasource",
+            "uid": "grafana"
+          },
+          "refId": "A"
+        }
+      ],
+      "title": "Status",
+      "type": "row"
     },
     {
       "datasource": {
@@ -2760,8 +2760,8 @@
       {
         "current": {
           "selected": false,
-          "text": "main-np02-beam",
-          "value": "main-np02-beam"
+          "text": "claudia-test",
+          "value": "claudia-test"
         },
         "datasource": {
           "uid": "${influxdb}"
@@ -2838,6 +2838,6 @@
   "timezone": "",
   "title": "DAQ overview",
   "uid": "v5_5_0-overview",
-  "version": 13,
+  "version": 4,
   "weekStart": ""
 }

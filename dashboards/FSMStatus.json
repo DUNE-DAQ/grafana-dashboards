@@ -18,17 +18,90 @@
   "editable": true,
   "fiscalYearStartMonth": 0,
   "graphTooltip": 0,
-  "id": 378,
+  "id": 438,
   "links": [],
   "liveNow": false,
   "panels": [
+    {
+      "datasource": {
+        "type": "influxdb",
+        "uid": "${influxdb}"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "continuous-RdYlGr"
+          },
+          "custom": {
+            "fillOpacity": 75,
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": 15000,
+            "lineWidth": 0,
+            "spanNulls": 15000
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 2,
+        "w": 24,
+        "x": 0,
+        "y": 0
+      },
+      "id": 47,
+      "options": {
+        "alignValue": "center",
+        "legend": {
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "mergeValues": true,
+        "rowHeight": 0.9,
+        "showValue": "auto",
+        "tooltip": {
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "targets": [
+        {
+          "alias": "$session",
+          "datasource": {
+            "type": "influxdb",
+            "uid": "${influxdb}"
+          },
+          "hide": false,
+          "query": "SELECT \"run_number\" FROM \"dunedaq.drunc.opmon.RunInfo\" WHERE \"session\"='${session}' AND $timeFilter AND run_number>0",
+          "rawQuery": true,
+          "refId": "A",
+          "resultFormat": "time_series"
+        }
+      ],
+      "transformations": [],
+      "type": "state-timeline"
+    },
     {
       "collapsed": false,
       "gridPos": {
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 0
+        "y": 2
       },
       "id": 10,
       "panels": [],
@@ -38,7 +111,7 @@
     {
       "datasource": {
         "type": "influxdb",
-        "uid": "${influx}"
+        "uid": "${influxdb}"
       },
       "fieldConfig": {
         "defaults": {
@@ -73,7 +146,7 @@
         "h": 5,
         "w": 4,
         "x": 0,
-        "y": 1
+        "y": 3
       },
       "id": 1,
       "options": {
@@ -97,7 +170,7 @@
           "alias": "",
           "datasource": {
             "type": "influxdb",
-            "uid": "${influx}"
+            "uid": "${influxdb}"
           },
           "groupBy": [
             {
@@ -143,7 +216,7 @@
     {
       "datasource": {
         "type": "influxdb",
-        "uid": "${influx}"
+        "uid": "${influxdb}"
       },
       "fieldConfig": {
         "defaults": {
@@ -190,7 +263,7 @@
         "h": 5,
         "w": 4,
         "x": 4,
-        "y": 1
+        "y": 3
       },
       "id": 3,
       "options": {
@@ -243,7 +316,7 @@
     {
       "datasource": {
         "type": "influxdb",
-        "uid": "${influx}"
+        "uid": "${influxdb}"
       },
       "fieldConfig": {
         "defaults": {
@@ -268,7 +341,7 @@
         "h": 5,
         "w": 4,
         "x": 8,
-        "y": 1
+        "y": 3
       },
       "id": 24,
       "options": {
@@ -291,7 +364,7 @@
         {
           "datasource": {
             "type": "influxdb",
-            "uid": "${influx}"
+            "uid": "${influxdb}"
           },
           "query": "SELECT last(\"run_time_since_start\") FROM \"dunedaq.drunc.opmon.RunInfo\" WHERE \"session\" = '${session}' AND $timeFilter AND \"application\" = 'root-controller' AND run_time_since_start>0",
           "rawQuery": true,
@@ -305,7 +378,7 @@
     {
       "datasource": {
         "type": "influxdb",
-        "uid": "${influx}"
+        "uid": "${influxdb}"
       },
       "fieldConfig": {
         "defaults": {
@@ -333,7 +406,7 @@
         "h": 5,
         "w": 5,
         "x": 12,
-        "y": 1
+        "y": 3
       },
       "id": 4,
       "options": {
@@ -385,7 +458,7 @@
     {
       "datasource": {
         "type": "influxdb",
-        "uid": "${influx}"
+        "uid": "${influxdb}"
       },
       "fieldConfig": {
         "defaults": {
@@ -442,7 +515,7 @@
         "h": 5,
         "w": 7,
         "x": 17,
-        "y": 1
+        "y": 3
       },
       "id": 2,
       "options": {
@@ -490,7 +563,7 @@
     {
       "datasource": {
         "type": "influxdb",
-        "uid": "${influx}"
+        "uid": "${influxdb}"
       },
       "fieldConfig": {
         "defaults": {
@@ -538,7 +611,7 @@
         "h": 7,
         "w": 24,
         "x": 0,
-        "y": 6
+        "y": 8
       },
       "id": 5,
       "options": {
@@ -634,7 +707,7 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 13
+        "y": 15
       },
       "id": 11,
       "panels": [],
@@ -644,7 +717,7 @@
     {
       "datasource": {
         "type": "influxdb",
-        "uid": "${influx}"
+        "uid": "${influxdb}"
       },
       "fieldConfig": {
         "defaults": {
@@ -702,7 +775,7 @@
         "h": 8,
         "w": 12,
         "x": 0,
-        "y": 14
+        "y": 16
       },
       "id": 8,
       "options": {
@@ -760,7 +833,7 @@
     {
       "datasource": {
         "type": "influxdb",
-        "uid": "${influx}"
+        "uid": "${influxdb}"
       },
       "fieldConfig": {
         "defaults": {
@@ -817,7 +890,7 @@
         "h": 8,
         "w": 12,
         "x": 12,
-        "y": 14
+        "y": 16
       },
       "id": 9,
       "options": {
@@ -890,7 +963,7 @@
         "hide": 2,
         "includeAll": false,
         "multi": false,
-        "name": "influx",
+        "name": "influxdb",
         "options": [],
         "query": "influxdb",
         "queryValue": "",
@@ -902,12 +975,12 @@
       {
         "current": {
           "selected": false,
-          "text": "mrigan-replay",
-          "value": "mrigan-replay"
+          "text": "claudia-test",
+          "value": "claudia-test"
         },
         "datasource": {
           "type": "influxdb",
-          "uid": "${influx}"
+          "uid": "${influxdb}"
         },
         "definition": "SELECT \"session\" FROM (SELECT \"state\", \"session\" FROM \"dunedaq.drunc.opmon.FSMStatus\" WHERE $timeFilter)",
         "hide": 0,
@@ -931,7 +1004,7 @@
         },
         "datasource": {
           "type": "influxdb",
-          "uid": "${influx}"
+          "uid": "${influxdb}"
         },
         "definition": "SELECT \"application\" FROM (SELECT \"state\", \"application\" FROM \"dunedaq.drunc.opmon.FSMStatus\" WHERE $timeFilter AND session='$session')",
         "hide": 0,
@@ -959,7 +1032,7 @@
         },
         "datasource": {
           "type": "influxdb",
-          "uid": "${influx}"
+          "uid": "${influxdb}"
         },
         "definition": "SELECT \"Command\" FROM (SELECT \"execution_time_ns\", \"Command\" FROM \"dunedaq.drunc.opmon.CommandTime\" WHERE $timeFilter AND session='$session')",
         "hide": 0,

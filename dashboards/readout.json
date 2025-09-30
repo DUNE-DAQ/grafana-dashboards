@@ -24,10 +24,83 @@
   "editable": true,
   "fiscalYearStartMonth": 0,
   "graphTooltip": 0,
-  "id": 365,
+  "id": 432,
   "links": [],
   "liveNow": false,
   "panels": [
+    {
+      "datasource": {
+        "type": "influxdb",
+        "uid": "${influxdb}"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "continuous-RdYlGr"
+          },
+          "custom": {
+            "fillOpacity": 75,
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": 15000,
+            "lineWidth": 0,
+            "spanNulls": 15000
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 2,
+        "w": 24,
+        "x": 0,
+        "y": 0
+      },
+      "id": 853,
+      "options": {
+        "alignValue": "center",
+        "legend": {
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "mergeValues": true,
+        "rowHeight": 0.9,
+        "showValue": "auto",
+        "tooltip": {
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "targets": [
+        {
+          "alias": "$session",
+          "datasource": {
+            "type": "influxdb",
+            "uid": "${influxdb}"
+          },
+          "hide": false,
+          "query": "SELECT \"run_number\" FROM \"dunedaq.drunc.opmon.RunInfo\" WHERE \"session\"='${session}' AND $timeFilter AND run_number>0",
+          "rawQuery": true,
+          "refId": "A",
+          "resultFormat": "time_series"
+        }
+      ],
+      "transformations": [],
+      "type": "state-timeline"
+    },
     {
       "collapsed": false,
       "datasource": {
@@ -38,7 +111,7 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 0
+        "y": 2
       },
       "id": 46,
       "panels": [],
@@ -115,7 +188,7 @@
         "h": 7,
         "w": 8,
         "x": 0,
-        "y": 1
+        "y": 3
       },
       "id": 30,
       "options": {
@@ -245,7 +318,7 @@
         "h": 7,
         "w": 8,
         "x": 8,
-        "y": 1
+        "y": 3
       },
       "id": 21,
       "options": {
@@ -448,7 +521,7 @@
         "h": 7,
         "w": 8,
         "x": 16,
-        "y": 1
+        "y": 3
       },
       "id": 37,
       "options": {
@@ -649,7 +722,7 @@
         "h": 7,
         "w": 8,
         "x": 0,
-        "y": 8
+        "y": 10
       },
       "id": 11,
       "links": [],
@@ -979,7 +1052,7 @@
         "h": 7,
         "w": 8,
         "x": 8,
-        "y": 8
+        "y": 10
       },
       "id": 39,
       "options": {
@@ -1132,7 +1205,7 @@
         "h": 7,
         "w": 8,
         "x": 16,
-        "y": 8
+        "y": 10
       },
       "id": 23,
       "options": {
@@ -1572,12 +1645,140 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 15
+        "y": 17
       },
       "id": 68,
       "panels": [],
       "title": "Timestamps",
       "type": "row"
+    },
+    {
+      "datasource": {
+        "type": "influxdb",
+        "uid": "${influxdb}"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "Average timestamp",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "drawStyle": "line",
+            "fillOpacity": 0,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "auto",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "none"
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Global spread"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "s"
+              },
+              {
+                "id": "custom.axisPlacement",
+                "value": "right"
+              },
+              {
+                "id": "custom.axisLabel",
+                "value": "Spread"
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 10,
+        "w": 24,
+        "x": 0,
+        "y": 18
+      },
+      "id": 846,
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "tooltip": {
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "targets": [
+        {
+          "alias": "Global spread",
+          "datasource": {
+            "type": "influxdb",
+            "uid": "f68a27a2-f292-478c-8093-2a4adad3be1b"
+          },
+          "query": "SELECT spread(\"last_daq_timestamp\")/62500000 FROM \"dunedaq.datahandlinglibs.opmon.DataHandlerInfo\" WHERE \"session\" = '${session}' AND \"application\" =~ /^${application}$/ AND element =~/^${DLH}$/ AND  $timeFilter AND \"last_daq_timestamp\" > 0  GROUP BY time(1s) fill(null)",
+          "rawQuery": true,
+          "refId": "A",
+          "resultFormat": "time_series"
+        },
+        {
+          "alias": "$tag_application",
+          "datasource": {
+            "type": "influxdb",
+            "uid": "f68a27a2-f292-478c-8093-2a4adad3be1b"
+          },
+          "hide": false,
+          "query": "SELECT mean(\"last_daq_timestamp\") FROM \"dunedaq.datahandlinglibs.opmon.DataHandlerInfo\" WHERE \"session\" = '${session}' AND \"application\" =~ /^${application}$/ AND element =~/^${DLH}$/ AND  $timeFilter AND \"last_daq_timestamp\" > 0  GROUP BY application, time(1s) fill(null)",
+          "rawQuery": true,
+          "refId": "B",
+          "resultFormat": "time_series"
+        }
+      ],
+      "title": "Time stamp spread across applications",
+      "type": "timeseries"
     },
     {
       "datasource": {
@@ -1626,8 +1827,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
-                "value": null
+                "color": "green"
               },
               {
                 "color": "#EAB839",
@@ -1641,9 +1841,9 @@
       },
       "gridPos": {
         "h": 8,
-        "w": 6,
+        "w": 8,
         "x": 0,
-        "y": 16
+        "y": 28
       },
       "id": 51,
       "maxPerRow": 4,
@@ -1724,8 +1924,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
-                "value": null
+                "color": "green"
               },
               {
                 "color": "red",
@@ -1739,9 +1938,9 @@
       },
       "gridPos": {
         "h": 8,
-        "w": 6,
-        "x": 6,
-        "y": 16
+        "w": 8,
+        "x": 8,
+        "y": 28
       },
       "id": 49,
       "options": {
@@ -1831,8 +2030,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
-                "value": null
+                "color": "green"
               },
               {
                 "color": "red",
@@ -1846,9 +2044,9 @@
       },
       "gridPos": {
         "h": 8,
-        "w": 6,
-        "x": 12,
-        "y": 16
+        "w": 8,
+        "x": 16,
+        "y": 28
       },
       "id": 52,
       "options": {
@@ -1891,134 +2089,6 @@
       "type": "timeseries"
     },
     {
-      "datasource": {
-        "type": "influxdb",
-        "uid": "${influxdb}"
-      },
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "mode": "palette-classic"
-          },
-          "custom": {
-            "axisBorderShow": false,
-            "axisCenteredZero": false,
-            "axisColorMode": "text",
-            "axisLabel": "Average timestamp",
-            "axisPlacement": "auto",
-            "barAlignment": 0,
-            "drawStyle": "line",
-            "fillOpacity": 0,
-            "gradientMode": "none",
-            "hideFrom": {
-              "legend": false,
-              "tooltip": false,
-              "viz": false
-            },
-            "insertNulls": false,
-            "lineInterpolation": "linear",
-            "lineWidth": 1,
-            "pointSize": 5,
-            "scaleDistribution": {
-              "type": "linear"
-            },
-            "showPoints": "auto",
-            "spanNulls": false,
-            "stacking": {
-              "group": "A",
-              "mode": "none"
-            },
-            "thresholdsStyle": {
-              "mode": "off"
-            }
-          },
-          "mappings": [],
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "green",
-                "value": null
-              },
-              {
-                "color": "red",
-                "value": 80
-              }
-            ]
-          },
-          "unit": "none"
-        },
-        "overrides": [
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "Global spread"
-            },
-            "properties": [
-              {
-                "id": "unit",
-                "value": "s"
-              },
-              {
-                "id": "custom.axisPlacement",
-                "value": "right"
-              },
-              {
-                "id": "custom.axisLabel",
-                "value": "Spread"
-              }
-            ]
-          }
-        ]
-      },
-      "gridPos": {
-        "h": 10,
-        "w": 6,
-        "x": 18,
-        "y": 16
-      },
-      "id": 846,
-      "options": {
-        "legend": {
-          "calcs": [],
-          "displayMode": "list",
-          "placement": "bottom",
-          "showLegend": true
-        },
-        "tooltip": {
-          "mode": "single",
-          "sort": "none"
-        }
-      },
-      "targets": [
-        {
-          "alias": "Global spread",
-          "datasource": {
-            "type": "influxdb",
-            "uid": "f68a27a2-f292-478c-8093-2a4adad3be1b"
-          },
-          "query": "SELECT spread(\"last_daq_timestamp\")/62500000 FROM \"dunedaq.datahandlinglibs.opmon.DataHandlerInfo\" WHERE \"session\" = '${session}' AND \"application\" =~ /^${application}$/ AND element =~/^${DLH}$/ AND  $timeFilter AND \"last_daq_timestamp\" > 0  GROUP BY time(1s) fill(null)",
-          "rawQuery": true,
-          "refId": "A",
-          "resultFormat": "time_series"
-        },
-        {
-          "alias": "$tag_application",
-          "datasource": {
-            "type": "influxdb",
-            "uid": "f68a27a2-f292-478c-8093-2a4adad3be1b"
-          },
-          "hide": false,
-          "query": "SELECT mean(\"last_daq_timestamp\") FROM \"dunedaq.datahandlinglibs.opmon.DataHandlerInfo\" WHERE \"session\" = '${session}' AND \"application\" =~ /^${application}$/ AND element =~/^${DLH}$/ AND  $timeFilter AND \"last_daq_timestamp\" > 0  GROUP BY application, time(1s) fill(null)",
-          "rawQuery": true,
-          "refId": "B",
-          "resultFormat": "time_series"
-        }
-      ],
-      "title": "Time stamp spread across applications",
-      "type": "timeseries"
-    },
-    {
       "collapsed": false,
       "datasource": {
         "type": "prometheus",
@@ -2028,7 +2098,7 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 32
+        "y": 36
       },
       "id": 44,
       "panels": [],
@@ -2092,8 +2162,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
-                "value": null
+                "color": "green"
               },
               {
                 "color": "red",
@@ -2108,7 +2177,7 @@
         "h": 7,
         "w": 8,
         "x": 0,
-        "y": 33
+        "y": 37
       },
       "id": 38,
       "options": {
@@ -2275,8 +2344,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
-                "value": null
+                "color": "green"
               },
               {
                 "color": "red",
@@ -2291,7 +2359,7 @@
         "h": 7,
         "w": 8,
         "x": 8,
-        "y": 33
+        "y": 37
       },
       "id": 47,
       "options": {
@@ -2757,8 +2825,8 @@
       {
         "current": {
           "selected": false,
-          "text": "main-np02-operation",
-          "value": "main-np02-operation"
+          "text": "claudia-test",
+          "value": "claudia-test"
         },
         "datasource": {
           "type": "influxdb",
@@ -2868,6 +2936,6 @@
   "timezone": "",
   "title": "Readout",
   "uid": "v5_5_0-readout",
-  "version": 7,
+  "version": 3,
   "weekStart": ""
 }

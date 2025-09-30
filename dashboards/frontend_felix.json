@@ -24,7 +24,7 @@
   "editable": true,
   "fiscalYearStartMonth": 0,
   "graphTooltip": 0,
-  "id": 284,
+  "id": 424,
   "links": [],
   "liveNow": false,
   "panels": [
@@ -45,9 +45,9 @@
               "tooltip": false,
               "viz": false
             },
-            "insertNulls": 30000,
+            "insertNulls": 15000,
             "lineWidth": 0,
-            "spanNulls": false
+            "spanNulls": 15000
           },
           "mappings": [],
           "thresholds": {
@@ -63,12 +63,12 @@
         "overrides": []
       },
       "gridPos": {
-        "h": 3,
+        "h": 2,
         "w": 24,
         "x": 0,
         "y": 0
       },
-      "id": 55,
+      "id": 56,
       "options": {
         "alignValue": "center",
         "legend": {
@@ -92,13 +92,12 @@
             "uid": "${influxdb}"
           },
           "hide": false,
-          "query": "SELECT \"run_number\" FROM \"dunedaq.rcif.opmon.RunInfo\" WHERE \"session\" = '${session}' AND \"run_number\" >0 AND $timeFilter",
+          "query": "SELECT \"run_number\" FROM \"dunedaq.drunc.opmon.RunInfo\" WHERE \"session\"='${session}' AND $timeFilter AND run_number>0",
           "rawQuery": true,
           "refId": "A",
           "resultFormat": "time_series"
         }
       ],
-      "title": "Runs",
       "transformations": [],
       "type": "state-timeline"
     },
@@ -267,7 +266,7 @@
         "h": 7,
         "w": 24,
         "x": 0,
-        "y": 3
+        "y": 2
       },
       "id": 53,
       "options": {
@@ -424,7 +423,7 @@
         "h": 10,
         "w": 12,
         "x": 0,
-        "y": 10
+        "y": 9
       },
       "id": 49,
       "options": {
@@ -568,7 +567,7 @@
         "h": 10,
         "w": 12,
         "x": 12,
-        "y": 10
+        "y": 9
       },
       "id": 51,
       "options": {
@@ -712,7 +711,7 @@
         "h": 9,
         "w": 12,
         "x": 0,
-        "y": 20
+        "y": 19
       },
       "id": 50,
       "options": {
@@ -982,7 +981,7 @@
         "h": 9,
         "w": 12,
         "x": 12,
-        "y": 20
+        "y": 19
       },
       "id": 25,
       "options": {
@@ -1100,8 +1099,8 @@
       {
         "current": {
           "selected": false,
-          "text": "np04-pds-session",
-          "value": "np04-pds-session"
+          "text": "claudia-test",
+          "value": "claudia-test"
         },
         "datasource": {
           "uid": "${influxdb}"
@@ -1123,7 +1122,7 @@
     ]
   },
   "time": {
-    "from": "now-1h",
+    "from": "now-30m",
     "to": "now"
   },
   "timepicker": {
@@ -1154,6 +1153,6 @@
   "timezone": "",
   "title": "Frontend Felix",
   "uid": "v5_5_0-frontend-felix",
-  "version": 19,
+  "version": 2,
   "weekStart": ""
 }

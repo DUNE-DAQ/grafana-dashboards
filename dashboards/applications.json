@@ -107,7 +107,7 @@
           "measurement": "dunedaq.appfwk.appinfo.Info",
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "SELECT \"host\", last(\"state\") as \"state\" FROM \"dunedaq.appfwk.opmon.AppInfo\" WHERE $timeFilter GROUP BY \"application\", session",
+          "query": "SELECT \"host\", last(\"state\") as \"state\" FROM \"dunedaq.appfwk.opmon.AppInfo\" WHERE $timeFilter AND session=~/^${sessions}$/ AND application=~/^${applications}$/ GROUP BY \"application\", session",
           "rawQuery": true,
           "refId": "A",
           "resultFormat": "table",
@@ -158,6 +158,62 @@
         "regex": ".*_v5.2",
         "skipUrlSync": false,
         "type": "datasource"
+      },
+      {
+        "current": {
+          "selected": true,
+          "text": [
+            "All"
+          ],
+          "value": [
+            "$__all"
+          ]
+        },
+        "datasource": {
+          "type": "influxdb",
+          "uid": "${influxdb}"
+        },
+        "definition": "SELECT \"session\" FROM (SELECT \"state\",\"session\" FROM \"dunedaq.appfwk.opmon.AppInfo\" WHERE $timeFilter)",
+        "hide": 0,
+        "includeAll": true,
+        "label": "Sessions",
+        "multi": true,
+        "name": "sessions",
+        "options": [],
+        "query": "SELECT \"session\" FROM (SELECT \"state\",\"session\" FROM \"dunedaq.appfwk.opmon.AppInfo\" WHERE $timeFilter)",
+        "refresh": 2,
+        "regex": "",
+        "skipUrlSync": false,
+        "sort": 2,
+        "type": "query"
+      },
+      {
+        "current": {
+          "selected": true,
+          "text": [
+            "All"
+          ],
+          "value": [
+            "$__all"
+          ]
+        },
+        "datasource": {
+          "type": "influxdb",
+          "uid": "${influxdb}"
+        },
+        "definition": "SELECT \"application\" FROM (SELECT \"state\",\"application\" FROM \"dunedaq.appfwk.opmon.AppInfo\" WHERE $timeFilter)",
+        "hide": 0,
+        "includeAll": true,
+        "label": "Applications",
+        "multi": true,
+        "name": "applications",
+        "options": [],
+        "query": "SELECT \"application\" FROM (SELECT \"state\",\"application\" FROM \"dunedaq.appfwk.opmon.AppInfo\" WHERE $timeFilter)",
+        "refresh": 2,
+        "regex": "",
+        "skipUrlSync": false,
+        "sort": 2,
+        "type": "query"
       }
     ]
   },
@@ -169,6 +225,6 @@
   "timezone": "",
   "title": "Applications",
   "uid": "v5_5_0-applications",
-  "version": 4,
+  "version": 10,
   "weekStart": ""
 }

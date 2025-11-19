@@ -19,7 +19,7 @@
   "editable": true,
   "fiscalYearStartMonth": 0,
   "graphTooltip": 0,
-  "id": 238,
+  "id": 417,
   "links": [],
   "liveNow": false,
   "panels": [
@@ -78,8 +78,8 @@
         "showHeader": true,
         "sortBy": [
           {
-            "desc": false,
-            "displayName": "host"
+            "desc": true,
+            "displayName": "Time"
           }
         ]
       },
@@ -107,7 +107,7 @@
           "measurement": "dunedaq.appfwk.appinfo.Info",
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "SELECT \"host\", last(\"state\") AS \"state\", \"session\" FROM \"dunedaq.appfwk.opmon.AppInfo\" WHERE $timeFilter GROUP BY \"application\"",
+          "query": "SELECT \"host\", last(\"state\") as \"state\" FROM \"dunedaq.appfwk.opmon.AppInfo\" WHERE $timeFilter GROUP BY \"application\", session",
           "rawQuery": true,
           "refId": "A",
           "resultFormat": "table",
@@ -162,13 +162,13 @@
     ]
   },
   "time": {
-    "from": "now-15m",
+    "from": "now-30m",
     "to": "now"
   },
   "timepicker": {},
   "timezone": "",
   "title": "Applications",
   "uid": "v5_5_0-applications",
-  "version": 7,
+  "version": 4,
   "weekStart": ""
 }

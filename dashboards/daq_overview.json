@@ -24,7 +24,7 @@
   "editable": true,
   "fiscalYearStartMonth": 0,
   "graphTooltip": 0,
-  "id": 419,
+  "id": 442,
   "links": [
     {
       "asDropdown": true,
@@ -1307,7 +1307,7 @@
           "measurement": "dunedaq.dfmodules.datawriterinfo.Info",
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "SELECT sum(\"data\") FROM (SELECT last(\"records_written\") AS \"data\", \"source_id\" FROM \"dunedaq.dfmodules.opmon.DataWriterInfo\" WHERE (\"session\" = '${session}') AND time > now() - 30s GROUP BY \"element\" fill(null) )",
+          "query": "SELECT sum(\"data\") FROM (SELECT last(\"records_written\") AS \"data\" FROM \"dunedaq.dfmodules.opmon.DataWriterInfo\" WHERE \"session\" = '${session}' AND \"element\"=~/${data_writers}/ AND time > now() - 30s GROUP BY \"element\" fill(null) )",
           "rawQuery": true,
           "refId": "A",
           "resultFormat": "table",
@@ -2760,8 +2760,8 @@
       {
         "current": {
           "selected": false,
-          "text": "thea-pds-vst",
-          "value": "thea-pds-vst"
+          "text": "main-np02-crt-test",
+          "value": "main-np02-crt-test"
         },
         "datasource": {
           "uid": "${influxdb}"
@@ -2803,6 +2803,33 @@
         "skipUrlSync": false,
         "sort": 1,
         "type": "query"
+      },
+      {
+        "current": {
+          "selected": true,
+          "text": [
+            "All"
+          ],
+          "value": [
+            "$__all"
+          ]
+        },
+        "datasource": {
+          "type": "influxdb",
+          "uid": "${influxdb}"
+        },
+        "definition": "SELECT element FROM (SELECT \"element\", \"records_written\" FROM \"dunedaq.dfmodules.opmon.DataWriterInfo\" WHERE \"session\" = '${session}' AND $timeFilter )",
+        "hide": 2,
+        "includeAll": true,
+        "multi": true,
+        "name": "data_writers",
+        "options": [],
+        "query": "SELECT element FROM (SELECT \"element\", \"records_written\" FROM \"dunedaq.dfmodules.opmon.DataWriterInfo\" WHERE \"session\" = '${session}' AND $timeFilter )",
+        "refresh": 2,
+        "regex": "/^df/",
+        "skipUrlSync": false,
+        "sort": 1,
+        "type": "query"
       }
     ]
   },
@@ -2838,6 +2865,6 @@
   "timezone": "",
   "title": "DAQ overview",
   "uid": "v5_6_0-overview",
-  "version": 5,
+  "version": 4,
   "weekStart": ""
 }

@@ -4,7 +4,7 @@ This repository collects graphana dashboards created to support DAQ operations a
 
 | folder          | description                              |
 | --              | ---                                      |
-| dashboar        | DUNE DAQ system overview dashboards      |
+| dashboard       | DUNE DAQ system overview dashboards      |
 | external        | Dashboard to monitor infrastructure tools|
 
 # Info for developers
@@ -13,7 +13,7 @@ The most important documentation to develop DUNE DAQ dashboards are
  - InfluxDB documentation
 The respectively cover the graphic tools and the database that contains the data.
 
-Yet, in addition, it's necessary to know how the database is structured to be able to form the desired quearies. 
+Yet, in addition, it's necessary to know how the database is structured to be able to form the desired queries. 
 This documentation covers the particulars of the system we are monitoring. 
 
 ## Common variables of the dashboards
@@ -25,39 +25,39 @@ The first one is an automatic way to pick up the right data source.
 The second one is an easy way to select data only from the right session. 
 
 ### Data source variable
-This variable is always hidden and the queary can be the same for every dashboard.
+This variable is always hidden and the query can be the same for every dashboard.
 
 ### Session variable
 Most dashboards are describing content that only makes sense within a session. 
-Hence, these dashboards needs a variable callsed session. 
-It's important that the varialbe name is the same as other dashboard (case sensitive) in this way you can automatically select the same variable when opening a dashboard from the main entry one. 
-An example of queary is 
+Hence, these dashboards need a variable called session. 
+It's important that the variable name is the same as other dashboard (case sensitive) in this way you can automatically select the same variable when opening a dashboard from the main entry one. 
+An example of query is 
 ```
 SELECT "session" FROM (SELECT "state","session" FROM "dunedaq.appfwk.opmon.AppInfo" WHERE $timeFilter)
 ```
 But, it's good practice to change the `FROM` block so that the session is taken from a measurement that is actually used in the dashboard.
-Please note that since the session is stored in InfluxDB as a tag, the right way to extract the `session` correctly is via a nested queary. 
+Please note that since the session is stored in InfluxDB as a tag, the right way to extract the `session` correctly is via a nested query. 
 
 ### Other common practices for variables
 For measurements that are published by more that one object in a session, we tend to use a common pattern. 
 The patterns is 
  - having multi-value variables to allow a selection of the sources 
- - the quearies are filtering the data via the variables defined in the previous step.
+ - the queries are filtering the data via the variables defined in the previous step.
 Examples of this are application and DLH in the readout dashboard.
 
 ## Data structure 
 `opmonlib` describes the way we publish data. 
-Behind the scene, `opmonlib` turns protobuf objects into `OpMonEntry`s and a microservice transforms them in InflixDB measurements. 
-Understanding the mapping is the key ingredient to write effective quearies. 
+Behind the scene, `opmonlib` turns protobuf objects into `OpMonEntry`s and a microservice transforms them in InfluxDB measurements. 
+Understanding the mapping is the key ingredient to write effective queries. 
 
 ### Measurement
-The name of the measurement, a.k.a. the content of the `FROM` part of the queary is the name of the protobuf message, including it's namespace, which is defined in the `package` line of the protobuf. 
+The name of the measurement, a.k.a. the content of the `FROM` part of the query is the name of the protobuf message, including it's namespace, which is defined in the `package` line of the protobuf. 
 
 Example:
 [DataWriterInfo](https://github.com/DUNE-DAQ/dfmodules/blob/52ec3406ad8957cc4d921844cb68e3729e03b1ac/schema/dfmodules/opmon/DataWriter.proto#L5) objects are turned into `dunedaq.dfmodules.opmon.DataWriterInfo` measurements. 
 
 ### Fields
-The fields of a measurments are created by the content of the message. 
+The fields of a measurements are created by the content of the message. 
 They are the quantities you can `SELECT` from the database. 
 
 ### Tags

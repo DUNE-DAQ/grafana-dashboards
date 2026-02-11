@@ -2,16 +2,18 @@
 
 This repository collects graphana dashboards created to support DAQ operations and testing.
 
-| folder          | description                              |
-| --              | ---                                      |
-| dashboard       | DUNE DAQ system overview dashboards      |
-| external        | Dashboard to monitor infrastructure tools|
+| folder                     | description                              |
+| --                         | ---                                      |
+| dashboard                  | DUNE DAQ system overview dashboards      |
+| external-dashboards        | Dashboard to monitor infrastructure tools|
 
 # Info for developers
 The most important documentation to develop DUNE DAQ dashboards are
- - grafana documentation
- - InfluxDB documentation
-The respectively cover the graphic tools and the database that contains the data.
+ - [grafana documentation](https://grafana.com/docs/)
+ - [InfluxDB documentation](https://docs.influxdata.com/influxdb/v1/)
+
+They respectively cover the graphic tools and the database that contains the data.
+This is assumed to be known in the following. 
 
 Yet, in addition, it's necessary to know how the database is structured to be able to form the desired queries. 
 This documentation covers the particulars of the system we are monitoring. 
@@ -47,7 +49,7 @@ Examples of this are application and DLH in the readout dashboard.
 
 ## Data structure 
 `opmonlib` describes the way we publish data. 
-Behind the scene, `opmonlib` turns protobuf objects into `OpMonEntry`s and a microservice transforms them in InfluxDB measurements. 
+Behind the scene, `opmonlib` turns protobuf objects into `OpMonEntry`s and a [microservice](https://github.com/DUNE-DAQ/microservices/tree/develop/opmon-protobuf-dbwriter) transforms them into InfluxDB measurements. 
 Understanding the mapping is the key ingredient to write effective queries. 
 
 ### Measurement
@@ -62,7 +64,7 @@ They are the quantities you can `SELECT` from the database.
 
 ### Tags
 Tags are important features of InfluxDB that allow us to organise the data in the database. 
-Throught the way DUNE DAQ publishes data, we define a set of tags; some are common for every measurement and some are specific for the measurement. 
+Through the way DUNE DAQ publishes data, we define a set of tags; some are common for every measurement and some are specific for the measurement. 
 
 #### Default tags
 Every measurement in the database has a set of standard tags. 

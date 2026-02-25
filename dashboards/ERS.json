@@ -18,9 +18,8 @@
   "editable": true,
   "fiscalYearStartMonth": 0,
   "graphTooltip": 0,
-  "id": 241,
+  "id": 0,
   "links": [],
-  "liveNow": false,
   "panels": [
     {
       "datasource": {
@@ -36,6 +35,9 @@
             "align": "auto",
             "cellOptions": {
               "type": "color-text"
+            },
+            "footer": {
+              "reducers": []
             },
             "inspect": false
           },
@@ -71,7 +73,7 @@
             "steps": [
               {
                 "color": "light-yellow",
-                "value": null
+                "value": 0
               }
             ]
           }
@@ -166,14 +168,6 @@
       "id": 3,
       "options": {
         "cellHeight": "sm",
-        "footer": {
-          "countRows": false,
-          "fields": "",
-          "reducer": [
-            "sum"
-          ],
-          "show": false
-        },
         "showHeader": true,
         "sortBy": [
           {
@@ -182,7 +176,7 @@
           }
         ]
       },
-      "pluginVersion": "10.2.2",
+      "pluginVersion": "12.3.1",
       "targets": [
         {
           "datasource": {
@@ -193,7 +187,7 @@
           "group": [],
           "metricColumn": "none",
           "rawQuery": true,
-          "rawSql": "SELECT severity,time/1000000 as time,application_name,message,issue_name,host_name\nFROM ${table}\nWHERE session='${session}' AND time/1000000 >= ${__from} AND time/1000000 <= ${__to} AND severity in ([[severity]]) AND issue_name in ([[issue_full_name]]) AND application_name in ([[application_in]]) AND host_name in ([[host]]) AND message ~ '[[message_regex]]'   \nORDER BY -time\n",
+          "rawSql": "SELECT severity,time/1000000 as time,application_name,message,issue_name,host_name\nFROM ${table}\nWHERE session='${session}' AND time >= ${__from} * 1000000 AND time <= ${__to} * 1000000 AND severity in ([[severity]]) AND issue_name in ([[issue_full_name]]) AND application_name in ([[application_in]]) AND host_name in ([[host]]) AND message ~ '[[message_regex]]'   \nORDER BY -time\n",
           "refId": "A",
           "select": [
             [
@@ -236,8 +230,9 @@
       "type": "table"
     }
   ],
+  "preload": false,
   "refresh": "5s",
-  "schemaVersion": 38,
+  "schemaVersion": 42,
   "tags": [
     "v5.6.0",
     "Subsystem"
@@ -246,59 +241,52 @@
     "list": [
       {
         "current": {
-          "selected": false,
           "text": "KluPostgreSQL",
           "value": "c7e9e333-25c9-49e7-b209-b9492f70d419"
         },
         "hide": 2,
         "includeAll": false,
         "label": "PostgresSQL",
-        "multi": false,
         "name": "postgresql",
         "options": [],
         "query": "postgres",
         "refresh": 1,
         "regex": "",
-        "skipUrlSync": false,
         "type": "datasource"
       },
       {
+        "current": {
+          "text": "\"ERSstream\"",
+          "value": "\"ERSstream\""
+        },
         "hide": 2,
         "name": "table",
         "query": "\"ERSstream\"",
-        "skipUrlSync": false,
+        "skipUrlSync": true,
         "type": "constant"
       },
       {
         "current": {
-          "isNone": true,
-          "selected": false,
-          "text": "None",
-          "value": ""
+          "text": "np02-tpc-k8s",
+          "value": "np02-tpc-k8s"
         },
         "datasource": {
           "uid": "${postgresql}"
         },
         "definition": "SELECT session\nFROM ${table}\nWHERE time/1000000 >= ${__from} AND time/1000000 <= ${__to} \n",
-        "hide": 0,
         "includeAll": false,
         "label": "Session",
-        "multi": false,
         "name": "session",
         "options": [],
         "query": "SELECT session\nFROM ${table}\nWHERE time/1000000 >= ${__from} AND time/1000000 <= ${__to} \n",
         "refresh": 2,
         "regex": "",
-        "skipUrlSync": false,
         "sort": 1,
         "type": "query"
       },
       {
         "current": {
-          "selected": true,
-          "text": [
-            "All"
-          ],
+          "text": "All",
           "value": [
             "$__all"
           ]
@@ -307,7 +295,6 @@
           "uid": "${postgresql}"
         },
         "definition": "SELECT severity\nFROM ${table}\nWHERE session='${session}' AND time/1000000 >= ${__from} AND time/1000000 <= ${__to}\n",
-        "hide": 0,
         "includeAll": true,
         "label": "Severity",
         "multi": true,
@@ -316,16 +303,11 @@
         "query": "SELECT severity\nFROM ${table}\nWHERE session='${session}' AND time/1000000 >= ${__from} AND time/1000000 <= ${__to}\n",
         "refresh": 2,
         "regex": "",
-        "skipUrlSync": false,
-        "sort": 0,
         "type": "query"
       },
       {
         "current": {
-          "selected": true,
-          "text": [
-            "All"
-          ],
+          "text": "All",
           "value": [
             "$__all"
           ]
@@ -334,7 +316,6 @@
           "uid": "${postgresql}"
         },
         "definition": "SELECT application_name\nFROM ${table}\nWHERE session='${session}' AND time/1000000 >= ${__from} AND time/1000000 <= ${__to}\n\n",
-        "hide": 0,
         "includeAll": true,
         "label": "Application included",
         "multi": true,
@@ -343,16 +324,17 @@
         "query": "SELECT application_name\nFROM ${table}\nWHERE session='${session}' AND time/1000000 >= ${__from} AND time/1000000 <= ${__to}\n\n",
         "refresh": 2,
         "regex": "",
-        "skipUrlSync": false,
         "sort": 1,
         "type": "query"
       },
       {
         "current": {
-          "isNone": true,
-          "selected": false,
-          "text": "None",
-          "value": ""
+          "text": [
+            "df-s04-d0"
+          ],
+          "value": [
+            "df-s04-d0"
+          ]
         },
         "datasource": {
           "uid": "${postgresql}"
@@ -367,17 +349,14 @@
         "query": "SELECT application_name\nFROM ${table}\nWHERE session='${session}' AND time/1000000 >= ${__from} AND time/1000000 <= ${__to}",
         "refresh": 2,
         "regex": "",
-        "skipUrlSync": false,
         "sort": 1,
         "type": "query"
       },
       {
         "current": {
-          "selected": true,
           "text": ".*",
           "value": ".*"
         },
-        "hide": 0,
         "label": "Message Regex",
         "name": "message_regex",
         "options": [
@@ -388,15 +367,11 @@
           }
         ],
         "query": ".*",
-        "skipUrlSync": false,
         "type": "textbox"
       },
       {
         "current": {
-          "selected": true,
-          "text": [
-            "All"
-          ],
+          "text": "All",
           "value": [
             "$__all"
           ]
@@ -405,7 +380,6 @@
           "uid": "${postgresql}"
         },
         "definition": "SELECT issue_name\nFROM ${table}\nWHERE session='${session}' AND time/1000000 >= ${__from} AND time/1000000 <= ${__to}\n",
-        "hide": 0,
         "includeAll": true,
         "label": "Issue",
         "multi": true,
@@ -414,13 +388,11 @@
         "query": "SELECT issue_name\nFROM ${table}\nWHERE session='${session}' AND time/1000000 >= ${__from} AND time/1000000 <= ${__to}\n",
         "refresh": 2,
         "regex": "",
-        "skipUrlSync": false,
         "sort": 1,
         "type": "query"
       },
       {
         "current": {
-          "selected": false,
           "text": "All",
           "value": "$__all"
         },
@@ -428,7 +400,6 @@
           "uid": "${postgresql}"
         },
         "definition": "SELECT host_name\nFROM ${table}\nWHERE session='${session}' AND time/1000000 >= ${__from} AND time/1000000 <= ${__to}\n",
-        "hide": 0,
         "includeAll": true,
         "label": "Host",
         "multi": true,
@@ -437,20 +408,18 @@
         "query": "SELECT host_name\nFROM ${table}\nWHERE session='${session}' AND time/1000000 >= ${__from} AND time/1000000 <= ${__to}\n",
         "refresh": 2,
         "regex": "",
-        "skipUrlSync": false,
         "sort": 1,
         "type": "query"
       }
     ]
   },
   "time": {
-    "from": "now-15m",
+    "from": "now-1h",
     "to": "now"
   },
   "timepicker": {},
   "timezone": "",
   "title": "ERS",
   "uid": "v5_6_0-ers",
-  "version": 6,
-  "weekStart": ""
+  "version": 2
 }

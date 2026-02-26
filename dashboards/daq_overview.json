@@ -24,7 +24,7 @@
   "editable": true,
   "fiscalYearStartMonth": 0,
   "graphTooltip": 0,
-  "id": 442,
+  "id": 0,
   "links": [
     {
       "asDropdown": true,
@@ -108,7 +108,6 @@
       "url": "https://monit-grafana.cern.ch/d/ACGp9HB7z/traffic-errors-and-discards-basic?orgId=14&refresh=30s&var-source=raw&var-table=production&var-interface_pattern=d887-rv4-ip14-sju&var-pattern=d887-rv4-ip14-sju&var-interface=All&from=now-15m&to=now"
     }
   ],
-  "liveNow": false,
   "panels": [
     {
       "datasource": {
@@ -121,6 +120,7 @@
             "mode": "continuous-RdYlGr"
           },
           "custom": {
+            "axisPlacement": "auto",
             "fillOpacity": 75,
             "hideFrom": {
               "legend": false,
@@ -137,7 +137,7 @@
             "steps": [
               {
                 "color": "green",
-                "value": null
+                "value": 0
               }
             ]
           }
@@ -162,10 +162,12 @@
         "rowHeight": 0.9,
         "showValue": "auto",
         "tooltip": {
+          "hideZeros": false,
           "mode": "single",
           "sort": "none"
         }
       },
+      "pluginVersion": "12.3.1",
       "targets": [
         {
           "alias": "$session",
@@ -180,15 +182,11 @@
           "resultFormat": "time_series"
         }
       ],
-      "transformations": [],
+      "title": "",
       "type": "state-timeline"
     },
     {
       "collapsed": false,
-      "datasource": {
-        "type": "datasource",
-        "uid": "grafana"
-      },
       "gridPos": {
         "h": 1,
         "w": 24,
@@ -197,15 +195,6 @@
       },
       "id": 31,
       "panels": [],
-      "targets": [
-        {
-          "datasource": {
-            "type": "datasource",
-            "uid": "grafana"
-          },
-          "refId": "A"
-        }
-      ],
       "title": "Status",
       "type": "row"
     },
@@ -237,7 +226,7 @@
             "steps": [
               {
                 "color": "blue",
-                "value": null
+                "value": 0
               }
             ]
           },
@@ -252,23 +241,24 @@
         "y": 3
       },
       "id": 25,
-      "links": [],
       "maxDataPoints": 100,
       "options": {
         "colorMode": "value",
         "graphMode": "none",
         "justifyMode": "auto",
         "orientation": "horizontal",
+        "percentChangeColorMode": "standard",
         "reduceOptions": {
           "calcs": [],
           "fields": "/^last$/",
           "values": false
         },
+        "showPercentChange": false,
         "text": {},
         "textMode": "auto",
         "wideLayout": true
       },
-      "pluginVersion": "10.2.2",
+      "pluginVersion": "12.3.1",
       "targets": [
         {
           "alias": "",
@@ -312,7 +302,6 @@
         }
       ],
       "title": "State",
-      "transformations": [],
       "type": "stat"
     },
     {
@@ -343,7 +332,7 @@
             "steps": [
               {
                 "color": "blue",
-                "value": null
+                "value": 0
               }
             ]
           },
@@ -358,23 +347,24 @@
         "y": 3
       },
       "id": 54,
-      "links": [],
       "maxDataPoints": 100,
       "options": {
         "colorMode": "value",
         "graphMode": "none",
         "justifyMode": "auto",
         "orientation": "horizontal",
+        "percentChangeColorMode": "standard",
         "reduceOptions": {
           "calcs": [],
           "fields": "/^last$/",
           "values": false
         },
+        "showPercentChange": false,
         "text": {},
         "textMode": "auto",
         "wideLayout": true
       },
-      "pluginVersion": "10.2.2",
+      "pluginVersion": "12.3.1",
       "targets": [
         {
           "alias": "",
@@ -418,7 +408,6 @@
         }
       ],
       "title": "Substate",
-      "transformations": [],
       "type": "stat"
     },
     {
@@ -453,7 +442,7 @@
             "steps": [
               {
                 "color": "green",
-                "value": null
+                "value": 0
               }
             ]
           }
@@ -472,6 +461,7 @@
         "graphMode": "none",
         "justifyMode": "auto",
         "orientation": "auto",
+        "percentChangeColorMode": "standard",
         "reduceOptions": {
           "calcs": [
             "lastNotNull"
@@ -479,11 +469,12 @@
           "fields": "/^dunedaq\\.drunc\\.opmon\\.FSMStatus\\.last$/",
           "values": false
         },
+        "showPercentChange": false,
         "text": {},
         "textMode": "auto",
         "wideLayout": true
       },
-      "pluginVersion": "10.2.2",
+      "pluginVersion": "12.3.1",
       "targets": [
         {
           "datasource": {
@@ -523,7 +514,6 @@
         }
       ],
       "title": "FSM Error State",
-      "transformations": [],
       "type": "stat"
     },
     {
@@ -565,7 +555,7 @@
             "steps": [
               {
                 "color": "green",
-                "value": null
+                "value": 0
               }
             ]
           }
@@ -584,15 +574,17 @@
         "graphMode": "area",
         "justifyMode": "auto",
         "orientation": "auto",
+        "percentChangeColorMode": "standard",
         "reduceOptions": {
           "calcs": [],
           "fields": "/^dunedaq\\.drunc\\.opmon\\.RunInfo\\.last$/",
           "values": false
         },
+        "showPercentChange": false,
         "textMode": "value",
         "wideLayout": true
       },
-      "pluginVersion": "10.2.2",
+      "pluginVersion": "12.3.1",
       "targets": [
         {
           "datasource": {
@@ -663,7 +655,7 @@
             "steps": [
               {
                 "color": "text",
-                "value": null
+                "value": 0
               }
             ]
           },
@@ -678,13 +670,13 @@
         "y": 3
       },
       "id": 28,
-      "links": [],
       "maxDataPoints": 100,
       "options": {
         "colorMode": "value",
         "graphMode": "none",
         "justifyMode": "auto",
         "orientation": "horizontal",
+        "percentChangeColorMode": "standard",
         "reduceOptions": {
           "calcs": [
             "lastNotNull"
@@ -692,11 +684,12 @@
           "fields": "",
           "values": false
         },
+        "showPercentChange": false,
         "text": {},
         "textMode": "auto",
         "wideLayout": true
       },
-      "pluginVersion": "10.2.2",
+      "pluginVersion": "12.3.1",
       "targets": [
         {
           "alias": "",
@@ -735,7 +728,6 @@
         }
       ],
       "title": "Run time",
-      "transformations": [],
       "type": "stat"
     },
     {
@@ -775,7 +767,7 @@
             "steps": [
               {
                 "color": "semi-dark-orange",
-                "value": null
+                "value": 0
               }
             ]
           },
@@ -790,23 +782,24 @@
         "y": 3
       },
       "id": 50,
-      "links": [],
       "maxDataPoints": 100,
       "options": {
         "colorMode": "value",
         "graphMode": "none",
         "justifyMode": "auto",
         "orientation": "horizontal",
+        "percentChangeColorMode": "standard",
         "reduceOptions": {
           "calcs": [],
           "fields": "",
           "values": false
         },
+        "showPercentChange": false,
         "text": {},
         "textMode": "auto",
         "wideLayout": true
       },
-      "pluginVersion": "10.2.2",
+      "pluginVersion": "12.3.1",
       "targets": [
         {
           "datasource": {
@@ -896,7 +889,7 @@
             "steps": [
               {
                 "color": "green",
-                "value": null
+                "value": 0
               }
             ]
           }
@@ -915,6 +908,7 @@
         "graphMode": "none",
         "justifyMode": "auto",
         "orientation": "auto",
+        "percentChangeColorMode": "standard",
         "reduceOptions": {
           "calcs": [
             "lastNotNull"
@@ -922,11 +916,12 @@
           "fields": "",
           "values": false
         },
+        "showPercentChange": false,
         "text": {},
         "textMode": "auto",
         "wideLayout": true
       },
-      "pluginVersion": "10.2.2",
+      "pluginVersion": "12.3.1",
       "targets": [
         {
           "datasource": {
@@ -1017,7 +1012,7 @@
             "steps": [
               {
                 "color": "dark-green",
-                "value": null
+                "value": 0
               }
             ]
           },
@@ -1032,23 +1027,24 @@
         "y": 3
       },
       "id": 34,
-      "links": [],
       "maxDataPoints": 100,
       "options": {
         "colorMode": "value",
         "graphMode": "none",
         "justifyMode": "auto",
         "orientation": "horizontal",
+        "percentChangeColorMode": "standard",
         "reduceOptions": {
           "calcs": [],
           "fields": "",
           "values": false
         },
+        "showPercentChange": false,
         "text": {},
         "textMode": "auto",
         "wideLayout": true
       },
-      "pluginVersion": "10.2.2",
+      "pluginVersion": "12.3.1",
       "targets": [
         {
           "datasource": {
@@ -1091,7 +1087,6 @@
         }
       ],
       "title": "Sending triggers at",
-      "transformations": [],
       "type": "stat"
     },
     {
@@ -1131,7 +1126,7 @@
             "steps": [
               {
                 "color": "light-yellow",
-                "value": null
+                "value": 0
               }
             ]
           },
@@ -1146,23 +1141,24 @@
         "y": 3
       },
       "id": 51,
-      "links": [],
       "maxDataPoints": 100,
       "options": {
         "colorMode": "value",
         "graphMode": "none",
         "justifyMode": "auto",
         "orientation": "horizontal",
+        "percentChangeColorMode": "standard",
         "reduceOptions": {
           "calcs": [],
           "fields": "",
           "values": false
         },
+        "showPercentChange": false,
         "text": {},
         "textMode": "auto",
         "wideLayout": true
       },
-      "pluginVersion": "10.2.2",
+      "pluginVersion": "12.3.1",
       "targets": [
         {
           "datasource": {
@@ -1262,7 +1258,7 @@
             "steps": [
               {
                 "color": "dark-green",
-                "value": null
+                "value": 0
               }
             ]
           },
@@ -1277,23 +1273,24 @@
         "y": 3
       },
       "id": 52,
-      "links": [],
       "maxDataPoints": 100,
       "options": {
         "colorMode": "value",
         "graphMode": "none",
         "justifyMode": "auto",
         "orientation": "horizontal",
+        "percentChangeColorMode": "standard",
         "reduceOptions": {
           "calcs": [],
           "fields": "",
           "values": false
         },
+        "showPercentChange": false,
         "text": {},
         "textMode": "auto",
         "wideLayout": true
       },
-      "pluginVersion": "10.2.2",
+      "pluginVersion": "12.3.1",
       "targets": [
         {
           "alias": "",
@@ -1331,7 +1328,6 @@
         }
       ],
       "title": "Current Written TRs",
-      "transformations": [],
       "type": "stat"
     },
     {
@@ -1351,6 +1347,7 @@
             "axisLabel": "",
             "axisPlacement": "left",
             "barAlignment": 0,
+            "barWidthFactor": 0.6,
             "drawStyle": "line",
             "fillOpacity": 0,
             "gradientMode": "none",
@@ -1367,6 +1364,7 @@
               "type": "linear"
             },
             "showPoints": "never",
+            "showValues": false,
             "spanNulls": 15000,
             "stacking": {
               "group": "A",
@@ -1383,7 +1381,7 @@
             "steps": [
               {
                 "color": "green",
-                "value": null
+                "value": 0
               },
               {
                 "color": "red",
@@ -1493,7 +1491,6 @@
         "y": 7
       },
       "id": 47,
-      "links": [],
       "options": {
         "legend": {
           "calcs": [],
@@ -1502,11 +1499,12 @@
           "showLegend": true
         },
         "tooltip": {
+          "hideZeros": false,
           "mode": "multi",
           "sort": "none"
         }
       },
-      "pluginVersion": "8.0.6",
+      "pluginVersion": "12.3.1",
       "targets": [
         {
           "alias": "Generated triggers",
@@ -1763,7 +1761,6 @@
         }
       ],
       "title": "Global Trigger Rate",
-      "transformations": [],
       "type": "timeseries"
     },
     {
@@ -1783,6 +1780,7 @@
             "axisLabel": "",
             "axisPlacement": "auto",
             "barAlignment": 0,
+            "barWidthFactor": 0.6,
             "drawStyle": "line",
             "fillOpacity": 0,
             "gradientMode": "none",
@@ -1799,6 +1797,7 @@
               "type": "linear"
             },
             "showPoints": "auto",
+            "showValues": false,
             "spanNulls": false,
             "stacking": {
               "group": "A",
@@ -1814,7 +1813,7 @@
             "steps": [
               {
                 "color": "green",
-                "value": null
+                "value": 0
               },
               {
                 "color": "red",
@@ -1858,11 +1857,12 @@
           "showLegend": true
         },
         "tooltip": {
+          "hideZeros": false,
           "mode": "multi",
           "sort": "desc"
         }
       },
-      "pluginVersion": "10.2.2",
+      "pluginVersion": "12.3.1",
       "targets": [
         {
           "alias": "$tag_type",
@@ -1966,6 +1966,9 @@
               "type": "color-text"
             },
             "filterable": true,
+            "footer": {
+              "reducers": []
+            },
             "inspect": false
           },
           "mappings": [
@@ -2000,7 +2003,7 @@
             "steps": [
               {
                 "color": "yellow",
-                "value": null
+                "value": 0
               }
             ]
           }
@@ -2112,18 +2115,10 @@
       "id": 15,
       "options": {
         "cellHeight": "sm",
-        "footer": {
-          "countRows": false,
-          "fields": "",
-          "reducer": [
-            "sum"
-          ],
-          "show": false
-        },
         "showHeader": true,
         "sortBy": []
       },
-      "pluginVersion": "10.2.2",
+      "pluginVersion": "12.3.1",
       "targets": [
         {
           "datasource": {
@@ -2134,7 +2129,7 @@
           "group": [],
           "metricColumn": "none",
           "rawQuery": true,
-          "rawSql": "SELECT severity,time/1000000 as time,application_name,message,issue_name,host_name\nFROM \"ERSstream\"\nWHERE session='${session}' AND time/1000000 >= ${__from} AND time/1000000 <= ${__to}\nORDER BY -time\n",
+          "rawSql": "SELECT severity,time/1000000 as time,application_name,message,issue_name,host_name\nFROM \"ERSstream\"\nWHERE session='${session}' AND time >= ${__from}*1000000 AND time <= ${__to}*1000000\nORDER BY -time\n",
           "refId": "A",
           "select": [
             [
@@ -2176,7 +2171,6 @@
         }
       ],
       "title": "Message Reporting",
-      "transformations": [],
       "type": "table"
     },
     {
@@ -2196,6 +2190,7 @@
             "axisLabel": "",
             "axisPlacement": "auto",
             "barAlignment": 0,
+            "barWidthFactor": 0.6,
             "drawStyle": "line",
             "fillOpacity": 0,
             "gradientMode": "none",
@@ -2213,6 +2208,7 @@
               "type": "log"
             },
             "showPoints": "never",
+            "showValues": false,
             "spanNulls": true,
             "stacking": {
               "group": "A",
@@ -2229,7 +2225,7 @@
             "steps": [
               {
                 "color": "green",
-                "value": null
+                "value": 0
               },
               {
                 "color": "red",
@@ -2265,7 +2261,6 @@
         "y": 14
       },
       "id": 56,
-      "links": [],
       "options": {
         "legend": {
           "calcs": [],
@@ -2274,11 +2269,12 @@
           "showLegend": true
         },
         "tooltip": {
+          "hideZeros": false,
           "mode": "multi",
           "sort": "desc"
         }
       },
-      "pluginVersion": "8.0.6",
+      "pluginVersion": "12.3.1",
       "targets": [
         {
           "alias": "Raw beam",
@@ -2559,7 +2555,6 @@
         }
       ],
       "title": "CTB Beam triggers",
-      "transformations": [],
       "type": "timeseries"
     },
     {
@@ -2579,6 +2574,7 @@
             "axisLabel": "",
             "axisPlacement": "auto",
             "barAlignment": 0,
+            "barWidthFactor": 0.6,
             "drawStyle": "line",
             "fillOpacity": 0,
             "gradientMode": "none",
@@ -2595,6 +2591,7 @@
               "type": "linear"
             },
             "showPoints": "never",
+            "showValues": false,
             "spanNulls": 15000,
             "stacking": {
               "group": "A",
@@ -2610,7 +2607,7 @@
             "steps": [
               {
                 "color": "green",
-                "value": null
+                "value": 0
               },
               {
                 "color": "red",
@@ -2629,7 +2626,6 @@
         "y": 14
       },
       "id": 10,
-      "links": [],
       "options": {
         "legend": {
           "calcs": [],
@@ -2638,11 +2634,12 @@
           "showLegend": true
         },
         "tooltip": {
+          "hideZeros": false,
           "mode": "single",
           "sort": "none"
         }
       },
-      "pluginVersion": "8.0.6",
+      "pluginVersion": "12.3.1",
       "targets": [
         {
           "alias": "$tag_application - $tag_element ",
@@ -2709,12 +2706,12 @@
         }
       ],
       "title": "Data Writers Information",
-      "transformations": [],
       "type": "timeseries"
     }
   ],
-  "refresh": "5s",
-  "schemaVersion": 38,
+  "preload": false,
+  "refresh": "30s",
+  "schemaVersion": 42,
   "tags": [
     "v5.6.0",
     "Main"
@@ -2723,43 +2720,37 @@
     "list": [
       {
         "current": {
-          "selected": false,
           "text": "KafkaMonitoring_v5.2",
           "value": "f68a27a2-f292-478c-8093-2a4adad3be1b"
         },
         "hide": 2,
         "includeAll": false,
         "label": "InfluxDB",
-        "multi": false,
         "name": "influxdb",
         "options": [],
         "query": "influxdb",
         "refresh": 1,
         "regex": ".*_v5.2",
-        "skipUrlSync": false,
         "type": "datasource"
       },
       {
+        "allowCustomValue": false,
         "current": {
-          "selected": false,
           "text": "KluPostgreSQL",
           "value": "c7e9e333-25c9-49e7-b209-b9492f70d419"
         },
         "hide": 2,
         "includeAll": false,
         "label": "PostgresSQL",
-        "multi": false,
         "name": "postgresql",
         "options": [],
-        "query": "postgres",
+        "query": "grafana-postgresql-datasource",
         "refresh": 1,
         "regex": "",
-        "skipUrlSync": false,
         "type": "datasource"
       },
       {
         "current": {
-          "selected": false,
           "text": "main-np02-crt-test",
           "value": "main-np02-crt-test"
         },
@@ -2767,22 +2758,18 @@
           "uid": "${influxdb}"
         },
         "definition": "SELECT \"session\" FROM (SELECT \"state\",\"session\" FROM \"dunedaq.appfwk.opmon.AppInfo\" WHERE $timeFilter)",
-        "hide": 0,
         "includeAll": false,
         "label": "Session",
-        "multi": false,
         "name": "session",
         "options": [],
         "query": "SELECT \"session\" FROM (SELECT \"state\",\"session\" FROM \"dunedaq.appfwk.opmon.AppInfo\" WHERE $timeFilter)",
         "refresh": 2,
         "regex": "",
-        "skipUrlSync": false,
         "sort": 1,
         "type": "query"
       },
       {
         "current": {
-          "selected": false,
           "text": "root-controller",
           "value": "root-controller"
         },
@@ -2794,22 +2781,17 @@
         "description": "Variable to set from which controller to take RunInfo information",
         "hide": 2,
         "includeAll": false,
-        "multi": false,
         "name": "controller",
         "options": [],
         "query": "SELECT \"application\" FROM (SELECT \"state\", \"application\" FROM \"dunedaq.drunc.opmon.FSMStatus\" WHERE $timeFilter AND session='$session')",
         "refresh": 2,
         "regex": ".*root.*",
-        "skipUrlSync": false,
         "sort": 1,
         "type": "query"
       },
       {
         "current": {
-          "selected": true,
-          "text": [
-            "All"
-          ],
+          "text": "All",
           "value": [
             "$__all"
           ]
@@ -2827,7 +2809,6 @@
         "query": "SELECT element FROM (SELECT \"element\", \"records_written\" FROM \"dunedaq.dfmodules.opmon.DataWriterInfo\" WHERE \"session\" = '${session}' AND $timeFilter )",
         "refresh": 2,
         "regex": "/^df/",
-        "skipUrlSync": false,
         "sort": 1,
         "type": "query"
       }
@@ -2837,34 +2818,9 @@
     "from": "now-1h",
     "to": "now"
   },
-  "timepicker": {
-    "refresh_intervals": [
-      "5s",
-      "10s",
-      "30s",
-      "1m",
-      "5m",
-      "15m",
-      "30m",
-      "1h",
-      "2h",
-      "1d"
-    ],
-    "time_options": [
-      "5m",
-      "15m",
-      "1h",
-      "6h",
-      "12h",
-      "24h",
-      "2d",
-      "7d",
-      "30d"
-    ]
-  },
+  "timepicker": {},
   "timezone": "",
   "title": "DAQ overview",
   "uid": "v5_6_0-overview",
-  "version": 4,
-  "weekStart": ""
+  "version": 8
 }

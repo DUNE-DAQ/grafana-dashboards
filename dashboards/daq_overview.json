@@ -1178,7 +1178,7 @@
           "measurement": "dunedaq.trigger.moduleleveltriggerinfo.Info",
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "SELECT last(\"td_sent_count\") FROM \"dunedaq.trigger.opmon.ModuleLevelTriggerInfo\" WHERE session ='${session}' AND time > now() - 20s",
+          "query": "SELECT last(\"td_sent_count\") FROM \"dunedaq.trigger.opmon.ModuleLevelTriggerInfo\" WHERE session ='${session}' AND $timeFilter",
           "rawQuery": true,
           "refId": "A",
           "resultFormat": "table",
@@ -1205,7 +1205,7 @@
           ]
         }
       ],
-      "title": "Current Issued triggers",
+      "title": "Issued triggers",
       "transformations": [
         {
           "id": "calculateField",
@@ -1304,7 +1304,7 @@
           "measurement": "dunedaq.dfmodules.datawriterinfo.Info",
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "SELECT sum(\"data\") FROM (SELECT last(\"records_written\") AS \"data\" FROM \"dunedaq.dfmodules.opmon.DataWriterInfo\" WHERE \"session\" = '${session}' AND \"element\"=~/${data_writers}/ AND time > now() - 30s GROUP BY \"element\" fill(null) )",
+          "query": "SELECT sum(\"data\") FROM (SELECT last(\"records_written\") AS \"data\" FROM \"dunedaq.dfmodules.opmon.DataWriterInfo\" WHERE \"session\" = '${session}' AND \"element\"=~/${data_writers}/ AND $timeFilter GROUP BY \"element\" fill(null) )",
           "rawQuery": true,
           "refId": "A",
           "resultFormat": "table",
@@ -1327,7 +1327,7 @@
           ]
         }
       ],
-      "title": "Current Written TRs",
+      "title": "Written TRs",
       "type": "stat"
     },
     {
@@ -2710,7 +2710,7 @@
     }
   ],
   "preload": false,
-  "refresh": "30s",
+  "refresh": "5s",
   "schemaVersion": 42,
   "tags": [
     "v5.6.0",
@@ -2751,8 +2751,8 @@
       },
       {
         "current": {
-          "text": "main-np02-crt-test",
-          "value": "main-np02-crt-test"
+          "text": "main-np02-crt",
+          "value": "main-np02-crt"
         },
         "datasource": {
           "uid": "${influxdb}"
@@ -2822,5 +2822,5 @@
   "timezone": "",
   "title": "DAQ overview",
   "uid": "v5_6_0-overview",
-  "version": 8
+  "version": 12
 }

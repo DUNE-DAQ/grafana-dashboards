@@ -24,7 +24,7 @@
   "editable": true,
   "fiscalYearStartMonth": 0,
   "graphTooltip": 0,
-  "id": 0,
+  "id": 466,
   "links": [
     {
       "asDropdown": true,
@@ -33,7 +33,7 @@
       "keepTime": true,
       "tags": [
         "Subsystem",
-        "v5.7.0"
+        "v5.6.0"
       ],
       "targetBlank": true,
       "title": "Subsystems",
@@ -48,7 +48,7 @@
       "keepTime": true,
       "tags": [
         "Global",
-        "v5.7.0"
+        "v5.6.0"
       ],
       "targetBlank": true,
       "title": "Global",
@@ -62,7 +62,7 @@
       "includeVars": true,
       "keepTime": true,
       "tags": [
-        "v5.7.0",
+        "v5.6.0",
         "RunInfo"
       ],
       "targetBlank": true,
@@ -1862,6 +1862,30 @@
                 "value": "none"
               }
             ]
+          },
+          {
+            "__systemRef": "hideSeriesFrom",
+            "matcher": {
+              "id": "byNames",
+              "options": {
+                "mode": "exclude",
+                "names": [
+                  "Random"
+                ],
+                "prefix": "All except:",
+                "readOnly": true
+              }
+            },
+            "properties": [
+              {
+                "id": "custom.hideFrom",
+                "value": {
+                  "legend": false,
+                  "tooltip": true,
+                  "viz": true
+                }
+              }
+            ]
           }
         ]
       },
@@ -1872,6 +1896,7 @@
         "y": 7
       },
       "id": 53,
+      "interval": "20s",
       "options": {
         "legend": {
           "calcs": [],
@@ -2040,7 +2065,7 @@
             "properties": [
               {
                 "id": "custom.width",
-                "value": 345
+                "value": 1185
               }
             ]
           },
@@ -2052,7 +2077,7 @@
             "properties": [
               {
                 "id": "custom.width",
-                "value": 20
+                "value": 103
               },
               {
                 "id": "custom.cellOptions",
@@ -2111,7 +2136,7 @@
             "properties": [
               {
                 "id": "custom.width",
-                "value": 118
+                "value": 292
               }
             ]
           },
@@ -2124,6 +2149,18 @@
               {
                 "id": "custom.width",
                 "value": 25
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "last_seen"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 131
               }
             ]
           }
@@ -2152,7 +2189,7 @@
           "group": [],
           "metricColumn": "none",
           "rawQuery": true,
-          "rawSql": "SELECT severity,time/1000000 as time,application_name,message,issue_name,host_name\nFROM \"ERSstream\"\nWHERE session='${session}' AND time >= ${__from}*1000000 AND time <= ${__to}*1000000\nORDER BY -time\n",
+          "rawSql": "SELECT \n  severity, \n  max(time/1000000) as time, \n  max(application_name::text) as application_name, \n  regexp_replace(message::text, 'SourceID\\[[0-9]+\\]', 'SourceID[*]') as message,\n  issue_name, \n  max(host_name::text) as host_name,\n  count(*) as instances\nFROM \"ERSstream\"\nWHERE session='${session}' \n  AND time >= ${__from}*1000000 \n  AND time <= ${__to}*1000000\n  -- Noise Filtering Logic\n  AND NOT (\n    (severity = 'INFO' AND issue_name = 'datahandlinglibs::ClearedError')\n\n    OR \n    (severity = 'WARNING' AND issue_name = 'datahandlinglibs::NewErrorRegistered' \n      AND message NOT LIKE '% ___ similar messages suppressed%')\n    \n    OR\n\n    (severity = 'WARNING' \n      AND issue_name = 'dpdklibs::PacketErrors' \n      AND (\n        message LIKE '%counts: _'\n        OR message LIKE '%counts: __'\n        OR message LIKE '%counts: ___'\n        OR message LIKE '%counts: ____'\n      )\n    )\n  )\nGROUP BY \n  severity, \n  issue_name, \n  regexp_replace(message::text, 'SourceID\\[[0-9]+\\]', 'SourceID[*]')\nORDER BY time DESC",
           "refId": "A",
           "select": [
             [
@@ -2606,7 +2643,7 @@
               "tooltip": false,
               "viz": false
             },
-            "insertNulls": 60000,
+            "insertNulls": 15000,
             "lineInterpolation": "linear",
             "lineWidth": 2,
             "pointSize": 5,
@@ -2615,7 +2652,7 @@
             },
             "showPoints": "never",
             "showValues": false,
-            "spanNulls": 15000,
+            "spanNulls": 3600000,
             "stacking": {
               "group": "A",
               "mode": "none"
@@ -2640,7 +2677,32 @@
           },
           "unit": "Bps"
         },
-        "overrides": []
+        "overrides": [
+          {
+            "__systemRef": "hideSeriesFrom",
+            "matcher": {
+              "id": "byNames",
+              "options": {
+                "mode": "exclude",
+                "names": [
+                  "Total"
+                ],
+                "prefix": "All except:",
+                "readOnly": true
+              }
+            },
+            "properties": [
+              {
+                "id": "custom.hideFrom",
+                "value": {
+                  "legend": false,
+                  "tooltip": true,
+                  "viz": true
+                }
+              }
+            ]
+          }
+        ]
       },
       "gridPos": {
         "h": 7,
@@ -2737,7 +2799,7 @@
   "refresh": "5s",
   "schemaVersion": 42,
   "tags": [
-    "v5.7.0",
+    "v5.6.0",
     "Main"
   ],
   "templating": {
@@ -2775,8 +2837,8 @@
       },
       {
         "current": {
-          "text": "main-np02-ops",
-          "value": "main-np02-ops"
+          "text": "claudia",
+          "value": "claudia"
         },
         "datasource": {
           "uid": "${influxdb}"
@@ -2860,12 +2922,12 @@
     ]
   },
   "time": {
-    "from": "now-3h",
+    "from": "now-1h",
     "to": "now"
   },
   "timepicker": {},
   "timezone": "",
-  "title": "DAQ overview",
-  "uid": "v5_7_0-overview",
-  "version": 2
+  "title": "DAQ overview - shifter",
+  "uid": "v5_7_0-overview-shifter",
+  "version": 9
 }

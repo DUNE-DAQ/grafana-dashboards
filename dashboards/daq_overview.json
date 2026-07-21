@@ -2649,6 +2649,7 @@
         "y": 14
       },
       "id": 10,
+      "interval": "20s",
       "options": {
         "legend": {
           "calcs": [],
@@ -2705,7 +2706,7 @@
           "measurement": "dunedaq.dfmodules.datawriterinfo.Info",
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "SELECT non_negative_derivative(cumulative_sum(sum(\"new_bytes_output\")), 1s) FROM \"dunedaq.dfmodules.opmon.HDF5DataStoreInfo\" WHERE session = '${session}' AND $timeFilter GROUP BY time(30s)",
+          "query": "SELECT non_negative_derivative(cumulative_sum(sum(\"new_bytes_output\")), 1s) FROM \"dunedaq.dfmodules.opmon.HDF5DataStoreInfo\" WHERE session = '${session}' AND $timeFilter GROUP BY time($__interval)",
           "rawQuery": true,
           "refId": "A",
           "resultFormat": "time_series",
@@ -2774,8 +2775,8 @@
       },
       {
         "current": {
-          "text": "main-np02-pns",
-          "value": "main-np02-pns"
+          "text": "main-np02-ops",
+          "value": "main-np02-ops"
         },
         "datasource": {
           "uid": "${influxdb}"
@@ -2859,12 +2860,12 @@
     ]
   },
   "time": {
-    "from": "now-30m",
+    "from": "now-3h",
     "to": "now"
   },
   "timepicker": {},
   "timezone": "",
   "title": "DAQ overview",
   "uid": "v5_7_0-overview",
-  "version": 43
+  "version": 2
 }

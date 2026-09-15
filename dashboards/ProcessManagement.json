@@ -18,9 +18,8 @@
   "editable": true,
   "fiscalYearStartMonth": 0,
   "graphTooltip": 0,
-  "id": 329,
+  "id": 469,
   "links": [],
-  "liveNow": false,
   "panels": [
     {
       "collapsed": false,
@@ -52,22 +51,27 @@
             "axisLabel": "",
             "axisPlacement": "auto",
             "barAlignment": 0,
+            "barWidthFactor": 0.6,
             "drawStyle": "line",
-            "fillOpacity": 0,
-            "gradientMode": "none",
+            "fillOpacity": 22,
+            "gradientMode": "opacity",
             "hideFrom": {
               "legend": false,
               "tooltip": false,
               "viz": false
             },
             "insertNulls": false,
-            "lineInterpolation": "linear",
-            "lineWidth": 1,
-            "pointSize": 5,
+            "lineInterpolation": "stepAfter",
+            "lineStyle": {
+              "fill": "solid"
+            },
+            "lineWidth": 2,
+            "pointSize": 6,
             "scaleDistribution": {
               "type": "linear"
             },
             "showPoints": "auto",
+            "showValues": false,
             "spanNulls": false,
             "stacking": {
               "group": "A",
@@ -78,20 +82,22 @@
             }
           },
           "decimals": 0,
+          "fieldMinMax": false,
           "mappings": [],
           "thresholds": {
             "mode": "absolute",
             "steps": [
               {
                 "color": "green",
-                "value": null
+                "value": 0
               },
               {
                 "color": "red",
                 "value": 80
               }
             ]
-          }
+          },
+          "unit": "none"
         },
         "overrides": []
       },
@@ -102,31 +108,34 @@
         "y": 1
       },
       "id": 7,
+      "interval": "10s",
       "options": {
         "legend": {
           "calcs": [],
           "displayMode": "list",
           "placement": "bottom",
-          "showLegend": false
+          "showLegend": true
         },
         "tooltip": {
+          "hideZeros": false,
           "mode": "single",
           "sort": "none"
         }
       },
-      "pluginVersion": "10.2.2",
+      "pluginVersion": "12.3.1",
       "targets": [
         {
-          "alias": "",
+          "alias": "Total",
           "datasource": {
             "type": "influxdb",
             "uid": "f68a27a2-f292-478c-8093-2a4adad3be1b"
           },
           "groupBy": [],
+          "hide": false,
           "measurement": "dunedaq.drunc.opmon.ProcessStatus",
           "orderByTime": "DESC",
           "policy": "default",
-          "query": "SELECT mean(\"n_session\") FROM \"dunedaq.drunc.opmon.ProcessStatus\" WHERE $timeFilter GROUP BY time($__interval) fill(null)",
+          "query": "SELECT sum(\"n_session\")\nFROM (SELECT last(\"n_session\") AS \"n_session\" FROM \"dunedaq.drunc.opmon.ProcessStatus\" WHERE $timeFilter GROUP BY time($__interval), \"drunc_session\" ) \nGROUP BY time($__interval)\n",
           "rawQuery": true,
           "refId": "A",
           "resultFormat": "time_series",
@@ -165,6 +174,7 @@
             "axisLabel": "",
             "axisPlacement": "auto",
             "barAlignment": 0,
+            "barWidthFactor": 0.6,
             "drawStyle": "line",
             "fillOpacity": 0,
             "gradientMode": "none",
@@ -174,13 +184,17 @@
               "viz": false
             },
             "insertNulls": false,
-            "lineInterpolation": "linear",
+            "lineInterpolation": "smooth",
+            "lineStyle": {
+              "fill": "solid"
+            },
             "lineWidth": 1,
             "pointSize": 5,
             "scaleDistribution": {
               "type": "linear"
             },
             "showPoints": "auto",
+            "showValues": false,
             "spanNulls": false,
             "stacking": {
               "group": "A",
@@ -190,14 +204,15 @@
               "mode": "off"
             }
           },
+          "decimals": 0,
           "mappings": [],
-          "noValue": "no process",
+          "noValue": "0",
           "thresholds": {
             "mode": "absolute",
             "steps": [
               {
                 "color": "green",
-                "value": null
+                "value": 0
               },
               {
                 "color": "red",
@@ -216,24 +231,26 @@
         "y": 6
       },
       "id": 6,
+      "interval": "10s",
       "options": {
         "legend": {
           "calcs": [
-            "lastNotNull"
+            "last"
           ],
           "displayMode": "table",
           "placement": "right",
           "showLegend": true
         },
         "tooltip": {
+          "hideZeros": false,
           "mode": "multi",
           "sort": "desc"
         }
       },
-      "pluginVersion": "10.2.2",
+      "pluginVersion": "12.3.1",
       "targets": [
         {
-          "alias": "$tag_session",
+          "alias": "$tag_drunc_session",
           "datasource": {
             "type": "influxdb",
             "uid": "${influx}"
@@ -243,7 +260,7 @@
           "measurement": "dunedaq.drunc.opmon.ProcessStatus",
           "orderByTime": "DESC",
           "policy": "default",
-          "query": "SELECT mean(\"n_running\") FROM \"dunedaq.drunc.opmon.ProcessStatus\" WHERE session=~/${user}/ AND $timeFilter GROUP BY \"session\", time($__interval) fill(null)",
+          "query": "SELECT last(\"n_running\") AS \"n\"\nFROM \"dunedaq.drunc.opmon.ProcessStatus\"\nWHERE $timeFilter AND \"drunc_session\"=~/${sessions}/\nGROUP BY time($__interval), \"drunc_session\"",
           "rawQuery": true,
           "refId": "A",
           "resultFormat": "time_series",
@@ -268,6 +285,17 @@
           "tags": []
         },
         {
+          "datasource": {
+            "name": "Expression",
+            "type": "__expr__",
+            "uid": "__expr__"
+          },
+          "expression": "$B-$C",
+          "hide": false,
+          "refId": "Unnamed",
+          "type": "math"
+        },
+        {
           "alias": "Total",
           "datasource": {
             "type": "influxdb",
@@ -278,7 +306,42 @@
           "measurement": "dunedaq.drunc.opmon.ProcessStatus",
           "orderByTime": "DESC",
           "policy": "default",
-          "query": "SELECT sum(\"data\") FROM (SELECT mean(\"n_running\") AS \"data\" FROM \"dunedaq.drunc.opmon.ProcessStatus\" WHERE session=~/${user}/ AND $timeFilter GROUP BY \"session\", time($__interval) fill(null) ) GROUP BY time($__interval) fill(null)",
+          "query": "SELECT sum(\"n\")\nFROM ( SELECT last(\"n_running\") AS \"n\" FROM \"dunedaq.drunc.opmon.ProcessStatus\" WHERE $timeFilter GROUP BY \"drunc_session\" )\nGROUP BY time($__interval) ",
+          "rawQuery": true,
+          "refId": "B",
+          "resultFormat": "time_series",
+          "select": [
+            [
+              {
+                "params": [
+                  "n_running"
+                ],
+                "type": "field"
+              }
+            ],
+            [
+              {
+                "params": [
+                  "n_dead"
+                ],
+                "type": "field"
+              }
+            ]
+          ],
+          "tags": []
+        },
+        {
+          "alias": "Named",
+          "datasource": {
+            "type": "influxdb",
+            "uid": "${influx}"
+          },
+          "groupBy": [],
+          "hide": true,
+          "measurement": "dunedaq.drunc.opmon.ProcessStatus",
+          "orderByTime": "DESC",
+          "policy": "default",
+          "query": "SELECT sum(\"n\")\nFROM ( SELECT last(\"n_running\") AS \"n\" FROM \"dunedaq.drunc.opmon.ProcessStatus\" WHERE $timeFilter AND  \"drunc_session\"=~/${sessions}/  GROUP BY \"drunc_session\" )\nGROUP BY time($__interval) ",
           "rawQuery": true,
           "refId": "C",
           "resultFormat": "time_series",
@@ -325,6 +388,7 @@
             "axisLabel": "",
             "axisPlacement": "auto",
             "barAlignment": 0,
+            "barWidthFactor": 0.6,
             "drawStyle": "line",
             "fillOpacity": 0,
             "gradientMode": "none",
@@ -334,13 +398,17 @@
               "viz": false
             },
             "insertNulls": false,
-            "lineInterpolation": "linear",
+            "lineInterpolation": "smooth",
+            "lineStyle": {
+              "fill": "solid"
+            },
             "lineWidth": 1,
             "pointSize": 5,
             "scaleDistribution": {
               "type": "linear"
             },
             "showPoints": "auto",
+            "showValues": false,
             "spanNulls": false,
             "stacking": {
               "group": "A",
@@ -350,14 +418,15 @@
               "mode": "off"
             }
           },
+          "decimals": 0,
           "mappings": [],
-          "noValue": "no process",
+          "noValue": "0",
           "thresholds": {
             "mode": "absolute",
             "steps": [
               {
                 "color": "green",
-                "value": null
+                "value": 0
               },
               {
                 "color": "red",
@@ -367,20 +436,7 @@
           },
           "unit": "none"
         },
-        "overrides": [
-          {
-            "matcher": {
-              "id": "byRegexp",
-              "options": "/Dead .*/"
-            },
-            "properties": [
-              {
-                "id": "custom.axisPlacement",
-                "value": "right"
-              }
-            ]
-          }
-        ]
+        "overrides": []
       },
       "gridPos": {
         "h": 13,
@@ -388,25 +444,27 @@
         "x": 12,
         "y": 6
       },
-      "id": 11,
+      "id": 12,
+      "interval": "10s",
       "options": {
         "legend": {
           "calcs": [
-            "lastNotNull"
+            "last"
           ],
           "displayMode": "table",
           "placement": "right",
           "showLegend": true
         },
         "tooltip": {
+          "hideZeros": false,
           "mode": "multi",
           "sort": "desc"
         }
       },
-      "pluginVersion": "10.2.2",
+      "pluginVersion": "12.3.1",
       "targets": [
         {
-          "alias": "$tag_session",
+          "alias": "$tag_drunc_session",
           "datasource": {
             "type": "influxdb",
             "uid": "${influx}"
@@ -416,7 +474,53 @@
           "measurement": "dunedaq.drunc.opmon.ProcessStatus",
           "orderByTime": "DESC",
           "policy": "default",
-          "query": "SELECT mean(\"n_dead\") FROM \"dunedaq.drunc.opmon.ProcessStatus\" WHERE session=~/${user}/ AND $timeFilter GROUP BY \"session\", time($__interval) fill(null)",
+          "query": "SELECT last(\"n_dead\") AS \"n\"\nFROM \"dunedaq.drunc.opmon.ProcessStatus\"\nWHERE $timeFilter AND \"drunc_session\"=~/${sessions}/\nGROUP BY time($__interval), \"drunc_session\"",
+          "rawQuery": true,
+          "refId": "A",
+          "resultFormat": "time_series",
+          "select": [
+            [
+              {
+                "params": [
+                  "n_running"
+                ],
+                "type": "field"
+              }
+            ],
+            [
+              {
+                "params": [
+                  "n_dead"
+                ],
+                "type": "field"
+              }
+            ]
+          ],
+          "tags": []
+        },
+        {
+          "datasource": {
+            "name": "Expression",
+            "type": "__expr__",
+            "uid": "__expr__"
+          },
+          "expression": "$B-$C",
+          "hide": false,
+          "refId": "Unnamed",
+          "type": "math"
+        },
+        {
+          "alias": "Total",
+          "datasource": {
+            "type": "influxdb",
+            "uid": "${influx}"
+          },
+          "groupBy": [],
+          "hide": false,
+          "measurement": "dunedaq.drunc.opmon.ProcessStatus",
+          "orderByTime": "DESC",
+          "policy": "default",
+          "query": "SELECT sum(\"n\")\nFROM ( SELECT last(\"n_dead\") AS \"n\" FROM \"dunedaq.drunc.opmon.ProcessStatus\" WHERE $timeFilter GROUP BY \"drunc_session\" )\nGROUP BY time($__interval) ",
           "rawQuery": true,
           "refId": "B",
           "resultFormat": "time_series",
@@ -441,19 +545,19 @@
           "tags": []
         },
         {
-          "alias": "Total",
+          "alias": "Named",
           "datasource": {
             "type": "influxdb",
             "uid": "${influx}"
           },
           "groupBy": [],
-          "hide": false,
+          "hide": true,
           "measurement": "dunedaq.drunc.opmon.ProcessStatus",
           "orderByTime": "DESC",
           "policy": "default",
-          "query": "SELECT mean(\"n_dead\") FROM \"dunedaq.drunc.opmon.ProcessStatus\" WHERE session=~/${user}/ AND $timeFilter GROUP BY time($__interval) fill(null)",
+          "query": "SELECT sum(\"n\")\nFROM ( SELECT last(\"n_dead\") AS \"n\" FROM \"dunedaq.drunc.opmon.ProcessStatus\" WHERE $timeFilter AND  \"drunc_session\"=~/${sessions}/  GROUP BY \"drunc_session\" )\nGROUP BY time($__interval) ",
           "rawQuery": true,
-          "refId": "A",
+          "refId": "C",
           "resultFormat": "time_series",
           "select": [
             [
@@ -480,8 +584,9 @@
       "type": "timeseries"
     }
   ],
+  "preload": false,
   "refresh": "10s",
-  "schemaVersion": 38,
+  "schemaVersion": 42,
   "tags": [
     "v5.7.0",
     "Global"
@@ -490,28 +595,21 @@
     "list": [
       {
         "current": {
-          "selected": false,
           "text": "KafkaMonitoring_v5.2",
           "value": "f68a27a2-f292-478c-8093-2a4adad3be1b"
         },
         "hide": 2,
         "includeAll": false,
-        "multi": false,
         "name": "influx",
         "options": [],
         "query": "influxdb",
-        "queryValue": "",
         "refresh": 1,
         "regex": ".*_v5.2",
-        "skipUrlSync": false,
         "type": "datasource"
       },
       {
         "current": {
-          "selected": true,
-          "text": [
-            "All"
-          ],
+          "text": "All",
           "value": [
             "$__all"
           ]
@@ -521,16 +619,39 @@
           "uid": "${influx}"
         },
         "definition": "SELECT \"session\" FROM (SELECT \"n_running\", \"session\" FROM \"dunedaq.drunc.opmon.ProcessStatus\" WHERE $timeFilter)",
-        "hide": 0,
+        "hide": 2,
         "includeAll": true,
-        "label": "User",
         "multi": true,
         "name": "user",
         "options": [],
         "query": "SELECT \"session\" FROM (SELECT \"n_running\", \"session\" FROM \"dunedaq.drunc.opmon.ProcessStatus\" WHERE $timeFilter)",
         "refresh": 2,
         "regex": "",
-        "skipUrlSync": false,
+        "sort": 1,
+        "type": "query"
+      },
+      {
+        "allowCustomValue": false,
+        "current": {
+          "text": "All",
+          "value": "$__all"
+        },
+        "datasource": {
+          "type": "influxdb",
+          "uid": "${influx}"
+        },
+        "definition": "SELECT distinct(\"drunc_session\") FROM ( SELECT \"n_running\", \"drunc_session\" FROM \"dunedaq.drunc.opmon.ProcessStatus\" WHERE $timeFilter )",
+        "includeAll": true,
+        "label": "Sessions",
+        "multi": true,
+        "name": "sessions",
+        "options": [],
+        "query": {
+          "query": "SELECT distinct(\"drunc_session\") FROM ( SELECT \"n_running\", \"drunc_session\" FROM \"dunedaq.drunc.opmon.ProcessStatus\" WHERE $timeFilter )",
+          "refId": "InfluxVariableQueryEditor-VariableQuery"
+        },
+        "refresh": 1,
+        "regex": "",
         "sort": 1,
         "type": "query"
       }
@@ -543,7 +664,6 @@
   "timepicker": {},
   "timezone": "",
   "title": "Process Management",
-  "uid": "process-management-v5_7_0",
-  "version": 17,
-  "weekStart": ""
+  "uid": "process-management-emir-test",
+  "version": 49
 }

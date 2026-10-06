@@ -215,7 +215,7 @@
                 "result": {
                   "color": "dark-red",
                   "index": 0,
-                  "text": "SHUTDOWN"
+                  "text": "NO STATE"
                 }
               },
               "type": "special"
@@ -321,7 +321,7 @@
                 "result": {
                   "color": "dark-red",
                   "index": 0,
-                  "text": "SHUTDOWN"
+                  "text": "No State"
                 }
               },
               "type": "special"
@@ -374,13 +374,14 @@
           "expr": "",
           "format": "time_series",
           "groupBy": [],
+          "hide": false,
           "intervalFactor": 1,
           "measurement": "dunedaq.appfwk.appinfo.Info",
           "orderByTime": "ASC",
           "policy": "default",
           "query": "SELECT last(\"sub_state\") FROM \"dunedaq.drunc.opmon.FSMStatus\" WHERE \"session\" = '${session}' AND application='${controller}' AND $timeFilter",
           "rawQuery": true,
-          "refId": "A",
+          "refId": "B",
           "resultFormat": "table",
           "select": [
             [
@@ -1872,6 +1873,7 @@
         "y": 7
       },
       "id": 53,
+      "interval": "20s",
       "options": {
         "legend": {
           "calcs": [],
@@ -2731,6 +2733,112 @@
       ],
       "title": "Data Writers Information",
       "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "influxdb",
+        "uid": "${influxdb}"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "fieldMinMax": true,
+          "mappings": [
+            {
+              "options": {
+                "match": "null",
+                "result": {
+                  "color": "dark-green",
+                  "index": 0,
+                  "text": "N/A"
+                }
+              },
+              "type": "special"
+            }
+          ],
+          "thresholds": {
+            "mode": "percentage",
+            "steps": [
+              {
+                "color": "red",
+                "value": 0
+              },
+              {
+                "color": "green",
+                "value": 100
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 7,
+        "w": 12,
+        "x": 0,
+        "y": 21
+      },
+      "id": 57,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "area",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "percentChangeColorMode": "standard",
+        "reduceOptions": {
+          "calcs": [
+            "countAll"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "showPercentChange": false,
+        "textMode": "auto",
+        "wideLayout": true
+      },
+      "pluginVersion": "12.3.1",
+      "targets": [
+        {
+          "alias": "",
+          "datasource": {
+            "type": "influxdb",
+            "uid": "${influxdb}"
+          },
+          "hide": true,
+          "query": "SELECT element, subelement, queue FROM (SELECT last(\"packets_received\") AS data, element, subelement, queue FROM \"dunedaq.dpdklibs.opmon.QueueInfo\" WHERE session = '${session}' AND $timeFilter GROUP BY element, subelement, \"queue\" fill(null) ) ",
+          "rawQuery": true,
+          "refId": "A",
+          "resultFormat": "time_series"
+        },
+        {
+          "alias": "$tag_element: $tag_subelement, Queue $tag_queue",
+          "datasource": {
+            "type": "influxdb",
+            "uid": "${influxdb}"
+          },
+          "hide": false,
+          "query": "SELECT count(data) as \"Recieving Data\" FROM (SELECT non_negative_derivative(last(\"packets_received\"), 1s) AS data FROM \"dunedaq.dpdklibs.opmon.QueueInfo\" WHERE session = '${session}' AND $timeFilter GROUP BY time($__interval), element, subelement, \"queue\" fill(null) ) WHERE data > 0 GROUP BY element, subelement, queue",
+          "rawQuery": true,
+          "refId": "B",
+          "resultFormat": "table"
+        },
+        {
+          "alias": "$tag_element: $tag_subelement, Queue $tag_queue",
+          "datasource": {
+            "type": "influxdb",
+            "uid": "${influxdb}"
+          },
+          "hide": false,
+          "query": "SELECT count(data) as \"Total\" FROM (SELECT non_negative_derivative(last(\"packets_received\"), 1s) AS data FROM \"dunedaq.dpdklibs.opmon.QueueInfo\" WHERE session = '${session}' AND $timeFilter GROUP BY time($__interval), element, subelement, \"queue\" fill(null) ) WHERE data > -1 GROUP BY element, subelement, queue",
+          "rawQuery": true,
+          "refId": "D",
+          "resultFormat": "table"
+        }
+      ],
+      "title": "Active front-end streams",
+      "type": "stat"
     }
   ],
   "preload": false,
@@ -2775,8 +2883,8 @@
       },
       {
         "current": {
-          "text": "main-np02-ops",
-          "value": "main-np02-ops"
+          "text": "main-np02-dpdk-tests-rma-63",
+          "value": "main-np02-dpdk-tests-rma-63"
         },
         "datasource": {
           "uid": "${influxdb}"
@@ -2860,12 +2968,12 @@
     ]
   },
   "time": {
-    "from": "now-3h",
+    "from": "now-1h",
     "to": "now"
   },
   "timepicker": {},
   "timezone": "",
   "title": "DAQ overview",
   "uid": "v5_7_0-overview",
-  "version": 2
+  "version": 23
 }

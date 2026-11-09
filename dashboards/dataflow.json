@@ -1979,7 +1979,7 @@
             "uid": "${influxdb}"
           },
           "hide": false,
-          "query": "SELECT min(\"completion_time\") FROM \"dunedaq.dfmodules.opmon.TRCompleteInfo\" WHERE \"session\"='${session}' AND subelement=~/.*_${application}/ AND $timeFilter GROUP BY time($__interval) fill(null)",
+          "query": "SELECT min(\"completion_time\") FROM \"dunedaq.dfmodules.opmon.TRCompleteInfo\" WHERE \"session\"='${session}' AND application=~/${dfo}/ AND $timeFilter GROUP BY time($__interval) fill(null)",
           "rawQuery": true,
           "refId": "E",
           "resultFormat": "time_series"
@@ -1991,7 +1991,7 @@
             "uid": "${influxdb}"
           },
           "hide": false,
-          "query": "SELECT max(\"completion_time\") FROM \"dunedaq.dfmodules.opmon.TRCompleteInfo\" WHERE \"session\"='${session}' AND subelement=~/.*_${application}/ AND $timeFilter GROUP BY time($__interval) fill(null)",
+          "query": "SELECT max(\"completion_time\") FROM \"dunedaq.dfmodules.opmon.TRCompleteInfo\" WHERE \"session\"='${session}' AND application=~/${dfo}/ AND $timeFilter GROUP BY time($__interval) fill(null)",
           "rawQuery": true,
           "refId": "F",
           "resultFormat": "time_series"
@@ -2015,7 +2015,7 @@
             "uid": "${influxdb}"
           },
           "hide": false,
-          "query": "SELECT mean(\"completion_time\") FROM \"dunedaq.dfmodules.opmon.TRCompleteInfo\" WHERE \"session\"='${session}' AND subelement=~/.*_${application}/ AND $timeFilter GROUP BY time($__interval) fill(null)",
+          "query": "SELECT mean(\"completion_time\") FROM \"dunedaq.dfmodules.opmon.TRCompleteInfo\" WHERE \"session\"='${session}' AND application=~/${dfo}/ AND $timeFilter GROUP BY time($__interval) fill(null)",
           "rawQuery": true,
           "refId": "D",
           "resultFormat": "time_series"
@@ -2312,8 +2312,8 @@
         },
         "tooltip": {
           "hideZeros": false,
-          "mode": "single",
-          "sort": "none"
+          "mode": "multi",
+          "sort": "desc"
         }
       },
       "pluginVersion": "12.3.1",
@@ -2337,12 +2337,13 @@
               "type": "fill"
             }
           ],
+          "hide": false,
           "measurement": "dunedaq.dfmodules.dfapplicationinfo.Info",
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "SELECT min(\"min_time_since_assignment\") FROM \"dunedaq.dfmodules.opmon.DFApplicationInfo\" WHERE \"session\" = '${session}' AND \"subelement\"=~/.+_${application}/ AND $timeFilter AND \"outstanding_decisions\" > 0 GROUP BY time($__interval) fill(null)",
+          "query": "SELECT  min(\"min_time_since_assignment\") FROM \"dunedaq.dfmodules.opmon.DataflowStatusInfo\" WHERE \"session\" = '${session}'  AND \"application\"=~/${application}/ AND total_time_since_assignment > 0 AND $timeFilter GROUP BY  time($__interval) fill(null)   ",
           "rawQuery": true,
-          "refId": "A",
+          "refId": "E",
           "resultFormat": "time_series",
           "select": [
             [
@@ -2389,76 +2390,21 @@
           "measurement": "dunedaq.dfmodules.dfapplicationinfo.Info",
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "SELECT max(\"max_time_since_assignment\") FROM \"dunedaq.dfmodules.opmon.DFApplicationInfo\" WHERE \"session\" = '${session}' AND \"subelement\"=~/.+_${application}/  AND $timeFilter AND \"outstanding_decisions\" > 0 GROUP BY time($__interval) fill(null) ",
+          "query": "SELECT  max(\"max_time_since_assignment\") FROM \"dunedaq.dfmodules.opmon.DataflowStatusInfo\" WHERE \"session\" = '${session}'  AND \"application\"=~/${application}/ AND total_time_since_assignment > 0 AND $timeFilter GROUP BY  time($__interval) fill(null)   ",
           "rawQuery": true,
-          "refId": "B",
+          "refId": "A",
           "resultFormat": "time_series",
           "select": [
             [
               {
                 "params": [
-                  "max_time_since_assignment"
+                  "min_time_since_assignment"
                 ],
                 "type": "field"
               },
               {
                 "params": [],
-                "type": "max"
-              }
-            ]
-          ],
-          "tags": [
-            {
-              "key": "partition_id",
-              "operator": "=",
-              "value": "maroda"
-            }
-          ]
-        },
-        {
-          "alias": "$tag_subelement",
-          "datasource": {
-            "uid": "${influxdb}"
-          },
-          "groupBy": [
-            {
-              "params": [
-                "$__interval"
-              ],
-              "type": "time"
-            },
-            {
-              "params": [
-                "source_id"
-              ],
-              "type": "tag"
-            },
-            {
-              "params": [
-                "null"
-              ],
-              "type": "fill"
-            }
-          ],
-          "hide": false,
-          "measurement": "dunedaq.dfmodules.dfapplicationinfo.Info",
-          "orderByTime": "ASC",
-          "policy": "default",
-          "query": "SELECT sum(\"total_time_since_assignment\")/sum(\"outstanding_decisions\") FROM  \"dunedaq.dfmodules.opmon.DFApplicationInfo\"  WHERE \"session\" = '${session}' AND \"subelement\"=~/.+_${application}/  AND $timeFilter AND \"outstanding_decisions\" > 0 GROUP BY \"subelement\", time($__interval) fill(null) ",
-          "rawQuery": true,
-          "refId": "C",
-          "resultFormat": "time_series",
-          "select": [
-            [
-              {
-                "params": [
-                  "total_time_since_assignment"
-                ],
-                "type": "field"
-              },
-              {
-                "params": [],
-                "type": "mean"
+                "type": "min"
               }
             ]
           ],
@@ -2499,7 +2445,62 @@
           "measurement": "dunedaq.dfmodules.dfapplicationinfo.Info",
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "SELECT sum(\"total_time_since_assignment\")/sum(\"outstanding_decisions\") FROM  \"dunedaq.dfmodules.opmon.DFApplicationInfo\"  WHERE \"session\" = '${session}' AND \"subelement\"=~/.+_${df_app}/  AND $timeFilter AND \"outstanding_decisions\" > 0 GROUP BY time($__interval) fill(null)",
+          "query": "SELECT sum(\"total_time_since_assignment\")/(sum(\"slots_building\")+sum(\"slots_writing\")) FROM  \"dunedaq.dfmodules.opmon.DataflowStatusInfo\" WHERE \"session\" = '${session}' AND  \"application\"=~/${application}/ AND $timeFilter AND \"total_time_since_assignment\" > 0 GROUP BY time($__interval) fill(null)",
+          "rawQuery": true,
+          "refId": "B",
+          "resultFormat": "time_series",
+          "select": [
+            [
+              {
+                "params": [
+                  "total_time_since_assignment"
+                ],
+                "type": "field"
+              },
+              {
+                "params": [],
+                "type": "mean"
+              }
+            ]
+          ],
+          "tags": [
+            {
+              "key": "partition_id",
+              "operator": "=",
+              "value": "maroda"
+            }
+          ]
+        },
+        {
+          "alias": "$tag_application",
+          "datasource": {
+            "uid": "${influxdb}"
+          },
+          "groupBy": [
+            {
+              "params": [
+                "$__interval"
+              ],
+              "type": "time"
+            },
+            {
+              "params": [
+                "source_id"
+              ],
+              "type": "tag"
+            },
+            {
+              "params": [
+                "null"
+              ],
+              "type": "fill"
+            }
+          ],
+          "hide": false,
+          "measurement": "dunedaq.dfmodules.dfapplicationinfo.Info",
+          "orderByTime": "ASC",
+          "policy": "default",
+          "query": "SELECT sum(\"total_time_since_assignment\")/(sum(\"slots_building\")+sum(\"slots_writing\")) FROM  \"dunedaq.dfmodules.opmon.DataflowStatusInfo\" WHERE \"session\" = '${session}' AND  \"application\"=~/${application}/ AND $timeFilter AND \"total_time_since_assignment\" > 0 GROUP BY \"application\", time($__interval) fill(null)",
           "rawQuery": true,
           "refId": "D",
           "resultFormat": "time_series",
@@ -2527,15 +2528,6 @@
         }
       ],
       "title": "Pending TD waiting time",
-      "transformations": [
-        {
-          "id": "renameByRegex",
-          "options": {
-            "regex": "[^.]+\\.[^.]+\\.[^.]+\\.([^.]+)",
-            "renamePattern": "$1 average"
-          }
-        }
-      ],
       "type": "timeseries"
     },
     {
@@ -6039,8 +6031,8 @@
       },
       {
         "current": {
-          "text": "main-np02-dfo",
-          "value": "main-np02-dfo"
+          "text": "main-np02-dfo-test",
+          "value": "main-np02-dfo-test"
         },
         "datasource": {
           "uid": "${influxdb}"
@@ -6146,28 +6138,16 @@
         "query": "Fragment",
         "skipUrlSync": true,
         "type": "constant"
-      },
-      {
-        "current": {
-          "text": "",
-          "value": ""
-        },
-        "name": "query0",
-        "options": [],
-        "query": "",
-        "refresh": 1,
-        "regex": "",
-        "type": "query"
       }
     ]
   },
   "time": {
-    "from": "2026-10-22T15:55:14.081Z",
-    "to": "2026-10-22T16:35:32.423Z"
+    "from": "2026-11-04T13:46:07.706Z",
+    "to": "2026-11-04T14:36:59.121Z"
   },
   "timepicker": {},
   "timezone": "",
   "title": "Dataflow",
   "uid": "v5_8_0-dataflow",
-  "version": 33
+  "version": 42
 }

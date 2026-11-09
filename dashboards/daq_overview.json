@@ -272,7 +272,7 @@
           "measurement": "dunedaq.appfwk.appinfo.Info",
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "SELECT last(\"state\") FROM \"dunedaq.drunc.opmon.FSMStatus\" WHERE \"session\" = '${session}' AND application='${controller}' AND $timeFilter",
+          "query": "SELECT last(\"state\") FROM \"dunedaq.drunc.opmon.FSMStatus\" WHERE \"session\" = '${session}' AND application='${controller}' AND $timeFilter ",
           "rawQuery": true,
           "refId": "A",
           "resultFormat": "table",
@@ -2676,7 +2676,7 @@
           "measurement": "dunedaq.dfmodules.datawriterinfo.Info",
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "SELECT non_negative_derivative(cumulative_sum(sum(\"new_bytes_output\")), 1s) FROM \"dunedaq.dfmodules.opmon.HDF5DataStoreInfo\" WHERE session = '${session}' AND $timeFilter GROUP BY time($__interval), \"application\", \"element\"\nfill(null)",
+          "query": "SELECT non_negative_derivative(cumulative_sum(sum(\"new_bytes_output\")), 1s) FROM \"dunedaq.dfmodules.opmon.FileDataStoreImplInfo\" WHERE session = '${session}' AND $timeFilter GROUP BY time($__interval), \"application\", \"element\"\nfill(null)",
           "rawQuery": true,
           "refId": "C",
           "resultFormat": "time_series",
@@ -2708,7 +2708,7 @@
           "measurement": "dunedaq.dfmodules.datawriterinfo.Info",
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "SELECT non_negative_derivative(cumulative_sum(sum(\"new_bytes_output\")), 1s) FROM \"dunedaq.dfmodules.opmon.HDF5DataStoreInfo\" WHERE session = '${session}' AND $timeFilter GROUP BY time($__interval)",
+          "query": "SELECT non_negative_derivative(cumulative_sum(sum(\"new_bytes_output\")), 1s) FROM \"dunedaq.dfmodules.opmon.FileDataStoreImplInfo\" WHERE session = '${session}' AND $timeFilter GROUP BY time($__interval)",
           "rawQuery": true,
           "refId": "A",
           "resultFormat": "time_series",
@@ -2883,8 +2883,8 @@
       },
       {
         "current": {
-          "text": "main-np02-dpdk-tests-rma-63",
-          "value": "main-np02-dpdk-tests-rma-63"
+          "text": "main-np02-dfo-test",
+          "value": "main-np02-dfo-test"
         },
         "datasource": {
           "uid": "${influxdb}"
@@ -2968,12 +2968,12 @@
     ]
   },
   "time": {
-    "from": "now-1h",
-    "to": "now"
+    "from": "2026-11-04T13:46:07.706Z",
+    "to": "2026-11-04T14:36:59.121Z"
   },
   "timepicker": {},
   "timezone": "",
   "title": "DAQ overview",
   "uid": "v5_8_0-overview",
-  "version": 23
+  "version": 5
 }

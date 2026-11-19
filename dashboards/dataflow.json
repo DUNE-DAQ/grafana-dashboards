@@ -3306,23 +3306,7 @@
           },
           "unit": "µs"
         },
-        "overrides": [
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "avg ms per TR"
-            },
-            "properties": [
-              {
-                "id": "color",
-                "value": {
-                  "fixedColor": "semi-dark-green",
-                  "mode": "fixed"
-                }
-              }
-            ]
-          }
-        ]
+        "overrides": []
       },
       "gridPos": {
         "h": 8,
@@ -3421,6 +3405,55 @@
           "query": "SELECT sum(\"writing_time_us\") / sum(\"new_records_written\") FROM \"dunedaq.dfmodules.opmon.DataWriterInfo\" WHERE \"session\" = '${session}' AND \"application\"=~/${application}/ AND $timeFilter AND \"new_records_written\" > 0 GROUP BY time($__interval) fill(null)",
           "rawQuery": true,
           "refId": "A",
+          "resultFormat": "time_series",
+          "select": [
+            [
+              {
+                "params": [
+                  "average_millisecond_per_trigger"
+                ],
+                "type": "field"
+              },
+              {
+                "params": [],
+                "type": "distinct"
+              }
+            ]
+          ],
+          "tags": [
+            {
+              "key": "source_id",
+              "operator": "=",
+              "value": "maroda_test_dataflow.trb"
+            }
+          ]
+        },
+        {
+          "alias": "Partition Maximum",
+          "datasource": {
+            "uid": "${influxdb}"
+          },
+          "groupBy": [
+            {
+              "params": [
+                "$__interval"
+              ],
+              "type": "time"
+            },
+            {
+              "params": [
+                "null"
+              ],
+              "type": "fill"
+            }
+          ],
+          "hide": false,
+          "measurement": "dunedaq.dfmodules.triggerrecordbuilderinfo.Info",
+          "orderByTime": "ASC",
+          "policy": "default",
+          "query": "SELECT max(\"max_writing_time_us\") FROM \"dunedaq.dfmodules.opmon.DataWriterInfo\" WHERE \"session\" = '${session}' AND \"application\"=~/${application}/ AND $timeFilter AND \"max_writing_time_us\" > 0 GROUP BY time($__interval) fill(null)",
+          "rawQuery": true,
+          "refId": "C",
           "resultFormat": "time_series",
           "select": [
             [
@@ -6031,8 +6064,8 @@
       },
       {
         "current": {
-          "text": "main-np02-dfo-test",
-          "value": "main-np02-dfo-test"
+          "text": "ehn1-local-1x1-config-biery-olzr",
+          "value": "ehn1-local-1x1-config-biery-olzr"
         },
         "datasource": {
           "uid": "${influxdb}"
@@ -6051,9 +6084,7 @@
         "allowCustomValue": false,
         "current": {
           "text": "All",
-          "value": [
-            "$__all"
-          ]
+          "value": "$__all"
         },
         "datasource": {
           "uid": "${influxdb}"
@@ -6142,12 +6173,12 @@
     ]
   },
   "time": {
-    "from": "2026-11-04T13:46:07.706Z",
-    "to": "2026-11-04T14:36:59.121Z"
+    "from": "now-30m",
+    "to": "now"
   },
   "timepicker": {},
   "timezone": "",
   "title": "Dataflow",
   "uid": "v5_8_0-dataflow",
-  "version": 42
+  "version": 45
 }
